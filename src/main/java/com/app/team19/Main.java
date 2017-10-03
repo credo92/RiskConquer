@@ -47,7 +47,7 @@ public class Main extends Application {
 			BorderPane borderPane = new BorderPane();
 			borderPane.setBottom(vbox);
 			borderPane.prefWidthProperty().bind(scene.widthProperty());
-			borderPane.setCenter(loadImage(scene, classLoader));
+			//borderPane.setCenter(loadImage(scene, classLoader));
 
 			root.getChildren().addAll(borderPane );
 
