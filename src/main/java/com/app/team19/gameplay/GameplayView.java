@@ -1,48 +1,60 @@
 package com.app.team19.gameplay;
 
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class GameplayView extends Application {
+public class GameplayView implements EventHandler<ActionEvent> {
 
-    public void print(){
-    System.out.println("testing");
+    public void handle(ActionEvent event) {
+
+        final Stage dialog = new Stage();
+        dialog.setTitle("Select Number of Leaders");
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.alwaysOnTopProperty();
+        dialog.isResizable();
+
+        //Defining DialogVbox
+        VBox dialogVbox = new VBox(20);
+
+        //Defining Buttons
+        Button buttonOne = new Button("One");
+        Button buttonTwo = new Button("Two");
+        Button buttonThree = new Button("Three");
+        Button buttonFour = new Button("Four");
+        Button cancel = new Button("Cancel");
+
+        //Adding Buttons to dialogVbox
+        dialogVbox.getChildren().add(buttonOne);
+        dialogVbox.getChildren().add(buttonTwo);
+        dialogVbox.getChildren().add(buttonThree);
+        dialogVbox.getChildren().add(buttonFour);
+        dialogVbox.getChildren().add(cancel);
+
+
+
+        buttonOne.setOnAction(event1 -> {GameplayController gc = new GameplayController();
+        gc.selectedNumberOfPlayers(1);
+        });
+        buttonTwo.setOnAction(event1 -> {GameplayController gc = new GameplayController();
+            gc.selectedNumberOfPlayers(2);
+        });
+        buttonThree.setOnAction(event1 -> {GameplayController gc = new GameplayController();
+            gc.selectedNumberOfPlayers(3);
+        });
+        buttonFour.setOnAction(event1 -> {GameplayController gc = new GameplayController();
+            gc.selectedNumberOfPlayers(4);
+        });
+
+        Scene dialogScene = new Scene(dialogVbox, 400, 300);
+        dialogScene.getStylesheets().add("application.css");
+        dialog.setScene(dialogScene);
+        dialog.show();
+
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Select Number of Leaders");
-        Group root = new Group();
-        Scene scene = new Scene(root, 300, 300);
-
-        VBox vbox = new VBox();
-        vbox.setAlignment(Pos.BOTTOM_CENTER);
-        vbox.getChildren().addAll();
-
-
-        BorderPane borderPane = new BorderPane();
-        borderPane.setBottom(vbox);
-        borderPane.prefWidthProperty().bind(scene.widthProperty());
-        //borderPane.setCenter(loadImage(scene, classLoader));
-
-        root.getChildren().addAll(borderPane );
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
 }
