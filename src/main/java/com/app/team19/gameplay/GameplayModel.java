@@ -1,4 +1,4 @@
-package gameplay;
+package com.app.team19.gameplay;
 
-public class gameplay_model {
+public class GameplayModel {
 }
