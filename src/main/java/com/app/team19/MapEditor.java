@@ -18,12 +18,16 @@ public class MapEditor implements EventHandler<ActionEvent> {
 		Scene scene = null;
 		try {
 			scene = new Scene(FXMLLoader.load(getClass().getResource("MapLayout.fxml")));
-		
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		MapFileParser fileParser = new MapFileParser();
 
+		/*Map map = fileParser.parseAndReadMapFile();
+		System.out.println(map.toString());
+	*/	
 		mapEditorStage.setScene(scene);
 		mapEditorStage.show();
 	}
