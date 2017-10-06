@@ -4,27 +4,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<Pane prefHeight="832.0" prefWidth="1109.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane prefHeight="832.0" prefWidth="1109.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.team19.MapEditorController">
    <children>
       <HBox layoutX="34.0" layoutY="739.0" prefHeight="67.0" prefWidth="1041.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="77.0" prefWidth="135.0" text="Load Map" />
+            <Button fx:id="loadMap" mnemonicParsing="false" onAction="#loadExistingMap" prefHeight="77.0" prefWidth="135.0" text="Load Map" />
             <Button mnemonicParsing="false" prefHeight="67.0" prefWidth="151.0" text="Save Map" />
-            <Button mnemonicParsing="false" prefHeight="68.0" prefWidth="141.0" text="Exit" />
+            <Button fx:id="exitButton" mnemonicParsing="false" onAction="#mapEditorExit" prefHeight="68.0" prefWidth="141.0" text="Exit" />
          </children>
       </HBox>
-      <Pane layoutX="7.0" layoutY="8.0" prefHeight="720.0" prefWidth="1095.0">
+     <Pane layoutX="7.0" layoutY="8.0" prefHeight="720.0" prefWidth="1095.0">
          <children>
-            <TextField layoutX="79.0" layoutY="28.0" />
+            <TextField fx:id="author" layoutX="79.0" layoutY="28.0" />
             <Label layoutX="21.0" layoutY="28.0" prefHeight="31.0" prefWidth="91.0" text="Author :" />
-            <TextField layoutX="361.0" layoutY="28.0" />
+            <TextField fx:id="image" layoutX="361.0" layoutY="28.0" />
             <Label layoutX="296.0" layoutY="28.0" prefHeight="31.0" prefWidth="91.0" text="Image :" />
-            <TextField layoutX="627.0" layoutY="28.0" />
+            <TextField fx:id="scroll" layoutX="627.0" layoutY="28.0" />
             <Label layoutX="567.0" layoutY="28.0" prefHeight="31.0" prefWidth="91.0" text="Scroll :" />
-            <TextField layoutX="79.0" layoutY="78.0" />
+            <TextField fx:id="warn" layoutX="79.0" layoutY="78.0" />
             <Label layoutX="21.0" layoutY="78.0" prefHeight="31.0" prefWidth="91.0" text="Warn: " />
-            <TextField layoutX="361.0" layoutY="78.0" />
+            <TextField fx:id="wrap" layoutX="361.0" layoutY="78.0" />
             <Label layoutX="296.0" layoutY="78.0" prefHeight="31.0" prefWidth="91.0" text="Wrap:" />
          </children>
       </Pane>

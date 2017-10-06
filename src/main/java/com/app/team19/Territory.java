@@ -10,7 +10,22 @@ public class Territory {
 	private String name;
 	private int xCoordinate;
 	private int yCoordinate;
-	private String belongToContinent;
+	private Continent belongToContinent;
+	private List<String> adjTerritories;
+	/**
+	 * @return the adjTerritories
+	 */
+	public List<String> getAdjTerritories() {
+		return adjTerritories;
+	}
+
+	/**
+	 * @param adjTerritories the adjTerritories to set
+	 */
+	public void setAdjTerritories(List<String> adjTerritories) {
+		this.adjTerritories = adjTerritories;
+	}
+
 	private List<Territory> adjacentTerritories;
 
 	/**
@@ -76,7 +91,7 @@ public class Territory {
 	/**
 	 * @return the belongToContinent
 	 */
-	public String getBelongToContinent() {
+	public Continent getBelongToContinent() {
 		return belongToContinent;
 	}
 
@@ -84,8 +99,26 @@ public class Territory {
 	 * @param belongToContinent
 	 *            the belongToContinent to set
 	 */
-	public void setBelongToContinent(String belongToContinent) {
+	public void setBelongToContinent(Continent belongToContinent) {
 		this.belongToContinent = belongToContinent;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (obj == this) {
+			return true;
+		}
+
+		if (!(obj instanceof Territory)) {
+			return false;
+		}
+
+		Territory territory = (Territory) obj;
+		return territory.getName().equalsIgnoreCase(name);
 	}
 
 }

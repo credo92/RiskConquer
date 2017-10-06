@@ -68,10 +68,11 @@ public class MapFileParser {
 
 		StringTokenizer token = new StringTokenizer(scan.nextLine(), "|");
 		while (token.hasMoreTokens()) {
-			if (token.nextToken().equalsIgnoreCase("[Map]")) {
+			String element = token.nextToken();
+			if (element.equalsIgnoreCase("[Map]")) {
 				continue;
 			} else {
-				String[] data = token.nextToken().split("=");
+				String[] data = element.split("=");
 				mapAttributes.put(data[0], data[1]);
 			}
 		}
@@ -84,43 +85,95 @@ public class MapFileParser {
 
 	private List<Continent> processContinent(Scanner scan) {
 		List<Continent> continents = new ArrayList<>();
-		HashMap<String, String> continentDetails = new HashMap<>();
-
 		StringTokenizer token = new StringTokenizer(scan.nextLine(), "|");
 		while (token.hasMoreTokens()) {
-			if (token.nextToken().equalsIgnoreCase("[Continents]")) {
+			String element = token.nextToken();
+			if (element.equalsIgnoreCase("[Continents]")) {
 				continue;
 			} else {
 				Continent continent = new Continent();
-				String[] data = token.nextToken().split("=");
+				String[] data = element.split("=");
 				continent.setName(data[0]);
 				continent.setValue(data[1]);
 				continents.add(continent);
 			}
 		}
 
-		/*while (scan.hasNext()) {
-			processTerritory(scan.nextLine());
-		}*/
+		List<Territory> territories = new ArrayList<>();
+		while (scan.hasNext()) {
+			String territoryData = scan.nextLine();
+			territories.addAll(processTerritory(territoryData, continents));
+		}
 
-		return continents;
-	}
+		HashMap<String, Territory> tMap = new HashMap<>();
+		for (Territory t : territories) {
+			tMap.put(t.getName(), t);
+		}
 
-	private Map processTerritory(String territoryData) {
-
-		StringTokenizer token = new StringTokenizer(territoryData, "|");
-		while (token.hasMoreTokens()) {
-			if (token.nextToken().equalsIgnoreCase("[Territories]")) {
-				continue;
-			} else {
-				Territory territory = new Territory();
-				String[] data = token.nextToken().split(",");
-				for (String s : data) {
-					territory.setName(s);
+		for (Territory t : territories) {
+			for (String name : t.getAdjTerritories()) {
+				if (tMap.containsKey(name)) {
+					if (t.getAdjacentTerritories() == null) {
+						t.setAdjacentTerritories(new ArrayList<Territory>());
+					}
+					t.getAdjacentTerritories().add(tMap.get(name));
+				} else {
+					System.out.println("Unkown territory found.");
 				}
 			}
 		}
 
-		return null;
+		// Add the territories to their continent
+		for(Continent continent : continents) {
+			for (Territory territory : territories) {
+				if (territory.getBelongToContinent().equals(continent)) {
+					if (continent.getTerritories() == null) {
+						continent.setTerritories(new ArrayList<>());
+					}
+					continent.getTerritories().add(territory);
+				}
+			}
+		}
+		return continents;
+	}
+
+	private List<Territory> processTerritory(String territoryData, List<Continent> continents) {
+
+		List<Territory> territories = new ArrayList<>();
+		StringTokenizer token = new StringTokenizer(territoryData, "|");
+		while (token.hasMoreTokens()) {
+			String element = token.nextToken();
+			if (element.equalsIgnoreCase("[Territories]")) {
+				continue;
+			} else {
+				Territory territory = new Territory();
+				List<String> adjacentTerritories = new ArrayList<>();
+				String[] data = element.split(",");
+				territory.setName(data[0]);
+				territory.setxCoordinate(Integer.parseInt(data[1]));
+				territory.setyCoordinate(Integer.parseInt(data[2]));
+				int continentCount = 0;
+				for (Continent continent : continents) {
+					if (continent.getName().equalsIgnoreCase(data[3])) {
+						continentCount++;
+						territory.setBelongToContinent(continent);
+					}
+				}
+				if (continentCount > 1) {
+					System.out.println("Error in map structure. A continent can be assigned to more than 1 continent.");
+				}
+				if (continentCount == 0) {
+					System.out.println("Error in map structure. A country should be assigned to a continent.");
+				}
+
+				for (int i = 4; i < data.length; i++) {
+					adjacentTerritories.add(data[i]);
+				}
+				territory.setAdjTerritories(adjacentTerritories);
+				territories.add(territory);
+			}
+		}
+
+		return territories;
 	}
 }
