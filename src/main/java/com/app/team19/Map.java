@@ -8,7 +8,7 @@ import java.util.List;
  *
  */
 public class Map {
-	private HashMap<String, String> mapData = new HashMap<>();
+	private HashMap<String, String> mapData;
 
 	private List<Continent> continents;
 
