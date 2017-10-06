@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-
+import javafx.beans.value.ObservableValue;
 import javafx.stage.FileChooser;
 
 public class MapFileParser {

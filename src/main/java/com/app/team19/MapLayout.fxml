@@ -9,7 +9,7 @@
       <HBox layoutX="34.0" layoutY="739.0" prefHeight="67.0" prefWidth="1041.0">
          <children>
             <Button fx:id="loadMap" mnemonicParsing="false" onAction="#loadExistingMap" prefHeight="77.0" prefWidth="135.0" text="Load Map" />
-            <Button mnemonicParsing="false" prefHeight="67.0" prefWidth="151.0" text="Save Map" />
+            <Button fx:id="saveMap" mnemonicParsing="false" onAction="#saveMap" prefHeight="67.0" prefWidth="151.0" text="Save Map" />
             <Button fx:id="exitButton" mnemonicParsing="false" onAction="#mapEditorExit" prefHeight="68.0" prefWidth="141.0" text="Exit" />
          </children>
       </HBox>

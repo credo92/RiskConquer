@@ -2,9 +2,8 @@ package com.app.team19;
 
 import java.util.List;
 
-
 /**
- * @author Garvpreet Singh.
+ * @author rahul
  *
  */
 public class Territory {
@@ -13,6 +12,7 @@ public class Territory {
 	private int yCoordinate;
 	private Continent belongToContinent;
 	private List<String> adjTerritories;
+	private List<Territory> adjacentTerritories;
 	/**
 	 * @return the adjTerritories
 	 */
@@ -27,10 +27,10 @@ public class Territory {
 		this.adjTerritories = adjTerritories;
 	}
 
-	private List<Territory> adjacentTerritories;
+	
 
 	/**
-	 * @return
+	 * @return the name
 	 */
 	public String getName() {
 		return name;
