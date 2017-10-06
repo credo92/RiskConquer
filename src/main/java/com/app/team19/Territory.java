@@ -2,8 +2,9 @@ package com.app.team19;
 
 import java.util.List;
 
+
 /**
- * @author rahul
+ * @author Garvpreet Singh.
  *
  */
 public class Territory {
@@ -14,7 +15,7 @@ public class Territory {
 	private List<Territory> adjacentTerritories;
 
 	/**
-	 * @return the name
+	 * @return
 	 */
 	public String getName() {
 		return name;
