@@ -47,7 +47,7 @@ public class Main extends Application {
 			BorderPane borderPane = new BorderPane();
 			borderPane.setBottom(vbox);
 			borderPane.prefWidthProperty().bind(scene.widthProperty());
-			borderPane.setCenter(loadImage(scene, classLoader));
+			//borderPane.setCenter(loadImage(scene, classLoader));
 
 			root.getChildren().addAll(borderPane );
 
@@ -111,7 +111,8 @@ public class Main extends Application {
 	 */
 	public static Button startGameButton(Scene scene) {
 		Button startGameButton = new Button("Start Game");
-		startGameButton.setOnAction(e -> System.out.println("Game started"));
+		startGameButton.setOnAction(new MapSelectorEditor());
+		//startGameButton.setOnAction(e -> System.out.println("Game started"));
 		startGameButton.setMaxWidth(scene.getWidth());
 
 		return startGameButton;
