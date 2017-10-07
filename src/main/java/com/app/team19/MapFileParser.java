@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-import javafx.beans.value.ObservableValue;
+
 import javafx.stage.FileChooser;
 
 public class MapFileParser {
@@ -78,6 +78,11 @@ public class MapFileParser {
 		}
 		map.setMapData(mapAttributes);
 		List<Continent> continents = processContinent(scan);
+		HashMap<String, Continent> contMap = new HashMap<>();
+		for (Continent continent : continents) {
+			contMap.put(continent.getName(), continent);
+		}
+		map.setContinentMap(contMap);
 		map.setContinents(continents);
 
 		return map;
@@ -125,15 +130,20 @@ public class MapFileParser {
 
 		// Add the territories to their continent
 		for(Continent continent : continents) {
+			HashMap<String, Territory> contTMap = new HashMap<>();
 			for (Territory territory : territories) {
 				if (territory.getBelongToContinent().equals(continent)) {
 					if (continent.getTerritories() == null) {
 						continent.setTerritories(new ArrayList<>());
+						contTMap.put(territory.getName(), territory);
 					}
 					continent.getTerritories().add(territory);
+					contTMap.put(territory.getName(), territory);
 				}
 			}
+			continent.setTerritoryMap(contTMap);
 		}
+		
 		return continents;
 	}
 

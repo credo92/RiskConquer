@@ -1,5 +1,6 @@
 package com.app.team19;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -9,6 +10,20 @@ import java.util.List;
 public class Continent {
 	private String name;
 	private String value;
+	private HashMap<String, Territory> territoryMap;
+	/**
+	 * @return the territoryMap
+	 */
+	public HashMap<String, Territory> getTerritoryMap() {
+		return territoryMap;
+	}
+
+	/**
+	 * @param territoryMap the territoryMap to set
+	 */
+	public void setTerritoryMap(HashMap<String, Territory> territoryMap) {
+		this.territoryMap = territoryMap;
+	}
 
 	private List<Territory> territories;
 
