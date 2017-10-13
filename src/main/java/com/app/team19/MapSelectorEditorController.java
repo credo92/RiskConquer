@@ -1,7 +1,12 @@
 package com.app.team19;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.risk.entity.Map;
+import com.risk.map.util.MapFileParser;
+import com.risk.map.util.MapUtil;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -26,7 +31,8 @@ public class MapSelectorEditorController implements Initializable {
 	private void loadExistingMap(ActionEvent event) {
 
 		MapFileParser fileParser = new MapFileParser();
-		map = fileParser.parseAndReadMapFile();
+		File file = MapUtil.showFileChooser();
+		map = fileParser.parseAndReadMapFile(file);
 		
 		final Stage mapSelectorStage = new Stage();
 		mapSelectorStage.setTitle("Map Selector");
