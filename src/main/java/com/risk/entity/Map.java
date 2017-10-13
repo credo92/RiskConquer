@@ -1,4 +1,4 @@
-package com.app.team19;
+package com.risk.entity;
 
 import java.util.HashMap;
 import java.util.List;

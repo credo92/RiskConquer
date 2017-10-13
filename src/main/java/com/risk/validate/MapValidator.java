@@ -1,4 +1,4 @@
-package com.app.team19;
+package com.risk.validate;
 
 public class MapValidator {
 

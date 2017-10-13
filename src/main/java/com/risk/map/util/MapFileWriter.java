@@ -1,8 +1,14 @@
-package com.app.team19;
+package com.risk.map.util;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.risk.entity.Continent;
+import com.risk.entity.Map;
+import com.risk.entity.Territory;
 
 public class MapFileWriter {
 
@@ -13,7 +19,7 @@ public class MapFileWriter {
 				System.out.println("Cannot write map data to file. Null map object found");
 			}
 			String data = parseMapObjectToMapFileFormat(map);
-			fileWriter = new FileWriter(file);
+			fileWriter = new FileWriter(file, false);
 			fileWriter.write(data);
 			fileWriter.close();
 		} catch (IOException ex) {
@@ -57,16 +63,21 @@ public class MapFileWriter {
 		mapFile.append("[Territories]");
 		mapFile.append("\n");
 		for (Continent continent : map.getContinents()) {
-			for (Territory territory : continent.getTerritories()) {
-				mapFile.append(territory.getName() + "," + territory.getxCoordinate() + "," + territory.getyCoordinate()
-						+ "," + territory.getBelongToContinent().getName());
-				for (String adjTerritory : territory.getAdjTerritories()) {
-					mapFile.append(",");
-					mapFile.append(adjTerritory);
+			List<Territory> territories = continent.getTerritories();
+			if (territories != null) {
+				for (Territory territory : continent.getTerritories()) {
+					mapFile.append(territory.getName() + "," + territory.getxCoordinate() + ","
+							+ territory.getyCoordinate() + "," + territory.getBelongToContinent().getName());
+					for (Territory adjTerritory : territory.getAdjacentTerritories()) {
+						mapFile.append(",");
+						mapFile.append(adjTerritory.getName());
+					}
+					mapFile.append("\n");
 				}
 				mapFile.append("\n");
+			} else {
+				MapUtil.infoBox("Add a territory to a contient", "Error", "Error");
 			}
-			mapFile.append("\n");
 		}
 		return mapFile;
 	}
