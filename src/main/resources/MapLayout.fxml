@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane prefHeight="877.0" prefWidth="1226.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risk.controller.MapEditorController">
+<Pane prefHeight="877.0" prefWidth="1226.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
       <HBox layoutX="7.0" layoutY="824.0" prefHeight="39.0" prefWidth="1041.0">
          <children>

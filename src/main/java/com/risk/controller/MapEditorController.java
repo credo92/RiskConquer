@@ -12,7 +12,6 @@ import java.util.ResourceBundle;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Territory;
-import com.risk.map.util.MapFileParser;
 import com.risk.map.util.MapFileWriter;
 import com.risk.map.util.MapUtil;
 
@@ -43,6 +42,16 @@ public class MapEditorController implements Initializable {
 	public static final ObservableList<String> adjTerritoryData = FXCollections.observableArrayList();
 
 	private Map map;
+
+	private File file;
+
+	public MapEditorController() {
+	}
+
+	public MapEditorController(Map map, File file) {
+		this.map = map;
+		this.file = file;
+	}
 
 	@FXML
 	private TextField author;
@@ -100,13 +109,16 @@ public class MapEditorController implements Initializable {
 
 	@FXML
 	private void addNewContinent(ActionEvent event) {
-		
+
 		Continent continent = new Continent();
-		
+
 		continent.setName(newContinentName.getText());
 		continent.setValue(newContinentValue.getText());
-		
-		//continentData.add(continent);
+
+		// continentData.add(continent);
+		if (continentList == null) {
+			continentList = new ListView<Continent>();
+		}
 		continentList.getItems().add(continent);
 		map.getContinents().add(continent);
 		MapUtil.clearTextField(newContinentName, newContinentValue);
@@ -118,11 +130,7 @@ public class MapEditorController implements Initializable {
 		Platform.exit();
 	}
 
-	@FXML
-	private void loadExistingMap(ActionEvent event) {
-
-		MapFileParser fileParser = new MapFileParser();
-		map = fileParser.parseAndReadMapFile();
+	private void loadMapData() {
 
 		author.setText(map.getMapData().get("author"));
 		image.setText(map.getMapData().get("image"));
@@ -202,18 +210,19 @@ public class MapEditorController implements Initializable {
 	@FXML
 	private void saveMap(ActionEvent event) {
 		MapFileWriter fileWriter = new MapFileWriter();
-		FileChooser fileChooser = new FileChooser();
 
-		// Set extension filter
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Map files (*.map)", "*.map");
-		fileChooser.getExtensionFilters().add(extFilter);
+		if (this.file == null) {
+			FileChooser fileChooser = new FileChooser();
 
-		// Show save file dialog
-		File file = fileChooser.showSaveDialog(null);
+			// Set extension filter
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Map files (*.map)", "*.map");
+			fileChooser.getExtensionFilters().add(extFilter);
 
-		if (file != null) {
-			fileWriter.writeMapToFile(map, file);
+			// Show save file dialog
+			file = fileChooser.showSaveDialog(null);
 		}
+
+		fileWriter.writeMapToFile(map, file);
 	}
 
 	@FXML
@@ -223,23 +232,27 @@ public class MapEditorController implements Initializable {
 
 	@FXML
 	private void addNewTerritory(ActionEvent event) {
+
 		Territory territory = new Territory();
 		List<Territory> tList = new ArrayList<>();
+
 		territory.setName(newTerritoryName.getText());
 		territory.setxCoordinate(Integer.parseInt(territoryXaxis.getText()));
 		territory.setyCoordinate(Integer.parseInt(territoryYaxis.getText()));
 		territory.setBelongToContinent(continentList.getSelectionModel().getSelectedItem());
+
 		tList.add(selectAdjTerritories.getSelectionModel().getSelectedItem());
+
 		territory.setAdjacentTerritories(tList);
-		
+
 		if (continentList.getSelectionModel().getSelectedItem().getTerritories() == null) {
 			List<Territory> newTList = new ArrayList<>();
 			newTList.add(territory);
-			continentList.getSelectionModel().getSelectedItem().setTerritories(newTList);  
+			continentList.getSelectionModel().getSelectedItem().setTerritories(newTList);
 		} else {
 			continentList.getSelectionModel().getSelectedItem().getTerritories().add(territory);
 		}
-
+		
 		territoryList.getItems().add(territory);
 	}
 
@@ -250,6 +263,11 @@ public class MapEditorController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		if (this.map == null) {
+			map = new Map();
+		} else {
+			loadMapData();
+		}
 		InputStream inputStream = null;
 		try {
 			inputStream = new FileInputStream(new File(getClass().getClassLoader().getResource("risk.jpg").getFile()));

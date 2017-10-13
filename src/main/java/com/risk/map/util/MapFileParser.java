@@ -13,26 +13,22 @@ import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Territory;
 
-import javafx.stage.FileChooser;
-
 public class MapFileParser {
 
-	public Map parseAndReadMapFile() {
+	private Map map;
 
-		File file = showFileChooser();
-		Map map = convertMapFileToMapObject(file);
-
+	/**
+	 * @return the map
+	 */
+	public Map getMap() {
 		return map;
 	}
 
-	private File showFileChooser() {
-		FileChooser fileChooser = new FileChooser();
+	public Map parseAndReadMapFile(File file) {
 
-		FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Map files (*.map)", "*.map");
-		fileChooser.getExtensionFilters().add(extensionFilter);
-		File file = fileChooser.showOpenDialog(null);
+		this.map = convertMapFileToMapObject(file);
 
-		return file;
+		return map;
 	}
 
 	private Map convertMapFileToMapObject(final File file) {
@@ -133,7 +129,7 @@ public class MapFileParser {
 		}
 
 		// Add the territories to their continent
-		for(Continent continent : continents) {
+		for (Continent continent : continents) {
 			HashMap<String, Territory> contTMap = new HashMap<>();
 			for (Territory territory : territories) {
 				if (territory.getBelongToContinent().equals(continent)) {
@@ -147,7 +143,7 @@ public class MapFileParser {
 			}
 			continent.setTerritoryMap(contTMap);
 		}
-		
+
 		return continents;
 	}
 

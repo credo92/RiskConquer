@@ -1,5 +1,8 @@
 package com.app.team19;
 
+import com.risk.map.util.MapFileParser;
+import com.risk.map.util.MapUtil;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,35 +18,35 @@ public class MapOption implements EventHandler<ActionEvent> {
 
 	@Override
 	public void handle(ActionEvent event) {
-		
+
 		Group root = new Group();
-		
+
 		final Stage mapOptionStage = new Stage();
 		mapOptionStage.setTitle("Choose option");
 		Scene scene = new Scene(root, 300, 300);
-		//scene.getStylesheets().add("application.css");
-		
+		// scene.getStylesheets().add("application.css");
+
 		VBox vbox = new VBox();
 		vbox.setAlignment(Pos.BOTTOM_CENTER);
 		vbox.getChildren().addAll(newMapButton(scene), editMapButton(scene));
-		
+
 		BorderPane borderPane = new BorderPane();
 		borderPane.setBottom(vbox);
 		borderPane.prefWidthProperty().bind(scene.widthProperty());
 		borderPane.setCenter(Main.loadImage(scene, getClass().getClassLoader()));
-		root.getChildren().addAll(borderPane );
-		
+		root.getChildren().addAll(borderPane);
+
 		mapOptionStage.setScene(scene);
-		//mapOptionStage.alwaysOnTopProperty();
+		// mapOptionStage.alwaysOnTopProperty();
 		mapOptionStage.show();
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public static Button newMapButton(Scene scene) {
 		Button mapEditorButton = new Button("New Map");
-		mapEditorButton.setOnAction(new MapEditor());
+		mapEditorButton.setOnAction(new CreateMap());
 		mapEditorButton.setMaxWidth(scene.getWidth());
 
 		return mapEditorButton;

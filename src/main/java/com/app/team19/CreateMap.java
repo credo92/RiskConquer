@@ -1,12 +1,8 @@
 package com.app.team19;
 
-import java.io.File;
 import java.io.IOException;
 
 import com.risk.controller.MapEditorController;
-import com.risk.entity.Map;
-import com.risk.map.util.MapFileParser;
-import com.risk.map.util.MapUtil;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,19 +11,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MapEditor implements EventHandler<ActionEvent> {
+public class CreateMap implements EventHandler<ActionEvent> {
 
 	@Override
 	public void handle(ActionEvent event) {
 
-		final Stage mapEditorStage = new Stage();
-		mapEditorStage.setTitle("Map Editor");
+		final Stage newMapStage = new Stage();
+		newMapStage.setTitle("New Map");
 
-		File file = MapUtil.showFileChooser();
-
-		MapFileParser fileLoaderAndParser = new MapFileParser();
-		Map map = fileLoaderAndParser.parseAndReadMapFile(file);
-		MapEditorController controller = new MapEditorController(map, file);
+		MapEditorController controller = new MapEditorController();
 
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("MapLayout.fxml"));
 		loader.setController(controller);
@@ -41,7 +33,7 @@ public class MapEditor implements EventHandler<ActionEvent> {
 		}
 
 		Scene scene = new Scene(root);
-		mapEditorStage.setScene(scene);
-		mapEditorStage.show();
+		newMapStage.setScene(scene);
+		newMapStage.show();
 	}
 }
