@@ -1,8 +1,12 @@
-package com.app.team19;
+package com.risk.map.util;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import com.risk.entity.Continent;
+import com.risk.entity.Map;
+import com.risk.entity.Territory;
 
 public class MapFileWriter {
 

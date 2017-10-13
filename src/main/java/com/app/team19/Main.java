@@ -100,7 +100,7 @@ public class Main extends Application {
 	 */
 	public static Button mapEditorButton(Scene scene) {
 		Button mapEditorButton = new Button("Map Editor");
-		mapEditorButton.setOnAction(new MapEditor());
+		mapEditorButton.setOnAction(new MapOption());
 		mapEditorButton.setMaxWidth(scene.getWidth());
 
 		return mapEditorButton;

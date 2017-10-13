@@ -1,4 +1,4 @@
-package com.app.team19;
+package com.risk.map.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+
+import com.risk.entity.Continent;
+import com.risk.entity.Map;
+import com.risk.entity.Territory;
 
 import javafx.stage.FileChooser;
 

@@ -17,7 +17,7 @@ public class MapEditor implements EventHandler<ActionEvent> {
 		mapEditorStage.setTitle("Map Editor");
 		Scene scene = null;
 		try {
-			scene = new Scene(FXMLLoader.load(getClass().getResource("MapLayout.fxml")));
+			scene = new Scene(FXMLLoader.load(getClass().getClassLoader().getResource("MapLayout.fxml")));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

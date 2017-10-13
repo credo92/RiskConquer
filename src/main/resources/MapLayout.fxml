@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane prefHeight="877.0" prefWidth="1226.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.team19.MapEditorController">
+<Pane prefHeight="877.0" prefWidth="1226.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risk.controller.MapEditorController">
    <children>
       <HBox layoutX="7.0" layoutY="824.0" prefHeight="39.0" prefWidth="1041.0">
          <children>
-            <Button fx:id="loadMap" mnemonicParsing="false" onAction="#loadExistingMap" prefHeight="77.0" prefWidth="135.0" text="Load Map" />
             <Button fx:id="saveMap" mnemonicParsing="false" onAction="#saveMap" prefHeight="67.0" prefWidth="151.0" text="Save Map" />
             <Button fx:id="exitButton" mnemonicParsing="false" onAction="#mapEditorExit" prefHeight="68.0" prefWidth="141.0" text="Exit" />
          </children>
@@ -65,10 +65,12 @@
                         <ComboBox fx:id="selectAdjTerritories" layoutX="17.0" layoutY="234.0" prefHeight="31.0" prefWidth="253.0" />
                         <Label layoutX="14.0" layoutY="201.0" prefHeight="21.0" prefWidth="163.0" text="Adjacent Territories :" />
                         <Button fx:id="delTerrit" layoutX="164.0" layoutY="296.0" mnemonicParsing="false" onAction="#deleteTerritory" prefHeight="31.0" prefWidth="74.0" text="Delete" />
+                        <Label fx:id="selectedContinent" layoutX="99.0" layoutY="22.0" prefHeight="21.0" prefWidth="174.0" text="Label" />
                      </children>
                   </AnchorPane>
               </content>
             </TitledPane>
+            <ImageView fx:id="riskImage" fitHeight="510.0" fitWidth="273.0" layoutX="21.0" layoutY="281.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
    </children>
