@@ -1,9 +1,5 @@
 package com.app.team19;
 
-import com.risk.map.util.MapFileParser;
-import com.risk.map.util.MapUtil;
-
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -28,7 +24,7 @@ public class MapOption implements EventHandler<ActionEvent> {
 
 		VBox vbox = new VBox();
 		vbox.setAlignment(Pos.BOTTOM_CENTER);
-		vbox.getChildren().addAll(newMapButton(scene), editMapButton(scene));
+		vbox.getChildren().addAll(newMapButton(scene), editMapButton(scene), exitMapButton(scene));
 
 		BorderPane borderPane = new BorderPane();
 		borderPane.setBottom(vbox);
@@ -58,6 +54,14 @@ public class MapOption implements EventHandler<ActionEvent> {
 	public static Button editMapButton(Scene scene) {
 		Button mapEditorButton = new Button("Load & Edit Map");
 		mapEditorButton.setOnAction(new MapEditor());
+		mapEditorButton.setMaxWidth(scene.getWidth());
+
+		return mapEditorButton;
+	}
+
+	public static Button exitMapButton(Scene scene) {
+		Button mapEditorButton = new Button("Exit");
+		mapEditorButton.setOnAction(e -> ((Stage) mapEditorButton.getScene().getWindow()).close());
 		mapEditorButton.setMaxWidth(scene.getWidth());
 
 		return mapEditorButton;

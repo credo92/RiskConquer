@@ -1,5 +1,6 @@
 package com.risk.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,6 +13,12 @@ public class Map {
 	private List<Continent> continents;
 	private HashMap<String, Continent> continentMap;
 
+	public Map() {
+		mapData = new HashMap<>();
+		continents = new ArrayList<>();
+		continentMap = new HashMap<>();
+	}
+
 	/**
 	 * @return the continentMap
 	 */
@@ -20,7 +27,8 @@ public class Map {
 	}
 
 	/**
-	 * @param continentMap the continentMap to set
+	 * @param continentMap
+	 *            the continentMap to set
 	 */
 	public void setContinentMap(HashMap<String, Continent> continentMap) {
 		this.continentMap = continentMap;

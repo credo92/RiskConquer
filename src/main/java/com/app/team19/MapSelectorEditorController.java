@@ -2,7 +2,6 @@ package com.app.team19;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -12,7 +11,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 
 public class MapSelectorEditorController implements Initializable {
-	
+
 	@FXML
 	private ChoiceBox<Integer> numberOfPlayersCB;
 	

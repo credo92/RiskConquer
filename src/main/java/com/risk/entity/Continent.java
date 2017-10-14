@@ -1,5 +1,6 @@
 package com.risk.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,6 +12,13 @@ public class Continent {
 	private String name;
 	private String value;
 	private HashMap<String, Territory> territoryMap;
+	private List<Territory> territories;
+
+	public Continent() {
+		territoryMap = new HashMap<>();
+		territories = new ArrayList<>();
+	}
+
 	/**
 	 * @return the territoryMap
 	 */
@@ -19,13 +27,12 @@ public class Continent {
 	}
 
 	/**
-	 * @param territoryMap the territoryMap to set
+	 * @param territoryMap
+	 *            the territoryMap to set
 	 */
 	public void setTerritoryMap(HashMap<String, Territory> territoryMap) {
 		this.territoryMap = territoryMap;
 	}
-
-	private List<Territory> territories;
 
 	/**
 	 * @return the name
@@ -70,6 +77,26 @@ public class Continent {
 	 */
 	public void setTerritories(List<Territory> territories) {
 		this.territories = territories;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (obj == this) {
+			return true;
+		}
+
+		if (!(obj instanceof Continent)) {
+			return false;
+		}
+
+		Continent continent = (Continent) obj;
+		return continent.getName().equalsIgnoreCase(name);
 	}
 
 	public String toString() {

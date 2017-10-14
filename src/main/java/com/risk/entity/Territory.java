@@ -1,5 +1,6 @@
 package com.risk.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +14,12 @@ public class Territory {
 	private Continent belongToContinent;
 	private List<String> adjTerritories;
 	private List<Territory> adjacentTerritories;
+
+	public Territory() {
+		adjTerritories = new ArrayList<>();
+		adjacentTerritories = new ArrayList<>();
+	}
+
 	/**
 	 * @return the adjTerritories
 	 */
@@ -21,13 +28,12 @@ public class Territory {
 	}
 
 	/**
-	 * @param adjTerritories the adjTerritories to set
+	 * @param adjTerritories
+	 *            the adjTerritories to set
 	 */
 	public void setAdjTerritories(List<String> adjTerritories) {
 		this.adjTerritories = adjTerritories;
 	}
-
-	
 
 	/**
 	 * @return the name
@@ -104,7 +110,9 @@ public class Territory {
 		this.belongToContinent = belongToContinent;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
