@@ -12,10 +12,18 @@ import java.util.StringTokenizer;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Territory;
+import com.risk.exception.InvalidMapException;
+import com.risk.validate.MapValidator;
 
+/**
+ * @author rahul
+ *
+ */
 public class MapFileParser {
 
 	private Map map;
+	
+	private HashMap<String, Integer> territoryContinentCount = new HashMap<>();
 
 	/**
 	 * @return the map
@@ -24,14 +32,26 @@ public class MapFileParser {
 		return map;
 	}
 
-	public Map parseAndReadMapFile(File file) {
+	/**
+	 * @param file
+	 * @return
+	 * @throws InvalidMapException
+	 */
+	public Map parseAndReadMapFile(File file) throws InvalidMapException {
 
 		this.map = convertMapFileToMapObject(file);
+
+		MapValidator.validateMap(map);
 
 		return map;
 	}
 
-	private Map convertMapFileToMapObject(final File file) {
+	/**
+	 * @param file
+	 * @return
+	 * @throws InvalidMapException
+	 */
+	private Map convertMapFileToMapObject(final File file) throws InvalidMapException{
 		StringBuilder stringBuilder = new StringBuilder();
 
 		Scanner mapFileScanner = null;
@@ -46,8 +66,7 @@ public class MapFileParser {
 				}
 			}
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			System.out.println("No map file selected");
 		}
 
 		mapFileScanner = new Scanner(stringBuilder.toString());
@@ -61,7 +80,12 @@ public class MapFileParser {
 		return map;
 	}
 
-	private Map processMap(Scanner scan) {
+	/**
+	 * @param scan
+	 * @return
+	 * @throws InvalidMapException
+	 */
+	private Map processMap(Scanner scan) throws InvalidMapException {
 		Map map = new Map();
 
 		HashMap<String, String> mapAttributes = new HashMap<>();
@@ -88,7 +112,12 @@ public class MapFileParser {
 		return map;
 	}
 
-	private List<Continent> processContinent(Scanner scan) {
+	/**
+	 * @param scan
+	 * @return
+	 * @throws InvalidMapException
+	 */
+	private List<Continent> processContinent(Scanner scan) throws InvalidMapException {
 		List<Continent> continents = new ArrayList<>();
 		StringTokenizer token = new StringTokenizer(scan.nextLine(), "|");
 		while (token.hasMoreTokens()) {
@@ -123,7 +152,7 @@ public class MapFileParser {
 					}
 					t.getAdjacentTerritories().add(tMap.get(name));
 				} else {
-					System.out.println("Unkown territory found.");
+					throw new InvalidMapException("Territory: " + name + " not mapped with any continent.");
 				}
 			}
 		}
@@ -147,7 +176,14 @@ public class MapFileParser {
 		return continents;
 	}
 
-	private List<Territory> processTerritory(String territoryData, List<Continent> continents) {
+	/**
+	 * @param territoryData
+	 * @param continents
+	 * @return
+	 * @throws InvalidMapException
+	 */
+	private List<Territory> processTerritory(String territoryData, List<Continent> continents)
+			throws InvalidMapException {
 
 		List<Territory> territories = new ArrayList<>();
 		StringTokenizer token = new StringTokenizer(territoryData, "|");
@@ -162,20 +198,22 @@ public class MapFileParser {
 				territory.setName(data[0]);
 				territory.setxCoordinate(Integer.parseInt(data[1]));
 				territory.setyCoordinate(Integer.parseInt(data[2]));
-				int continentCount = 0;
+				
 				for (Continent continent : continents) {
 					if (continent.getName().equalsIgnoreCase(data[3])) {
-						continentCount++;
 						territory.setBelongToContinent(continent);
+						if (territoryContinentCount.get(data[0]) == null) {
+							territoryContinentCount.put(data[0], 1);
+						} else {
+							throw new InvalidMapException(
+									"A Territory cannot be assigned to more than one Continent.");
+						}
 					}
 				}
-				if (continentCount > 1) {
-					System.out.println("Error in map structure. A continent can be assigned to more than 1 continent.");
+				if (territoryContinentCount.get(data[0]) == null) {
+					throw new InvalidMapException(
+							"A Territory should be assigned to one Continent.");
 				}
-				if (continentCount == 0) {
-					System.out.println("Error in map structure. A country should be assigned to a continent.");
-				}
-
 				for (int i = 4; i < data.length; i++) {
 					adjacentTerritories.add(data[i]);
 				}
