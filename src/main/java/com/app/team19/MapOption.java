@@ -33,7 +33,7 @@ public class MapOption implements EventHandler<ActionEvent> {
 		BorderPane borderPane = new BorderPane();
 		borderPane.setBottom(vbox);
 		borderPane.prefWidthProperty().bind(scene.widthProperty());
-		borderPane.setCenter(Main.loadImage(scene, getClass().getClassLoader()));
+		//borderPane.setCenter(Main.loadImage(scene, getClass().getClassLoader()));
 		root.getChildren().addAll(borderPane);
 
 		mapOptionStage.setScene(scene);

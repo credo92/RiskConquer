@@ -268,7 +268,7 @@ public class MapEditorController implements Initializable {
 		} else {
 			loadMapData();
 		}
-		InputStream inputStream = null;
+		/*InputStream inputStream = null;
 		try {
 			inputStream = new FileInputStream(new File(getClass().getClassLoader().getResource("risk.jpg").getFile()));
 		} catch (FileNotFoundException e) {
@@ -277,7 +277,7 @@ public class MapEditorController implements Initializable {
 		}
 		Image image = new Image(inputStream);
 
-		riskImage.setImage(image);
+		riskImage.setImage(image);*/
 	}
 
 	private void loadAdjTerritoryList() {

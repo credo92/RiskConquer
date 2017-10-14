@@ -110,9 +110,10 @@ public class Main extends Application {
 	 * @return
 	 */
 	public static Button startGameButton(Scene scene) {
-		Button startGameButton = new Button("Start Game");
+		Button startGameButton = new Button("Load Map and Start Game");
+		/*startGameButton.setOnAction(new MapEditor());
+		startGameButton.setMaxWidth(scene.getWidth());*/
 		startGameButton.setOnAction(new MapSelectorEditor());
-		//startGameButton.setOnAction(e -> System.out.println("Game started"));
 		startGameButton.setMaxWidth(scene.getWidth());
 
 		return startGameButton;
