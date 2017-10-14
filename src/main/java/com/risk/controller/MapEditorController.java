@@ -338,8 +338,8 @@ public class MapEditorController implements Initializable {
 		} else {
 			loadMapData();
 		}
-
-		InputStream inputStream = null;
+    
+		/*InputStream inputStream = null;
 		try {
 			inputStream = new FileInputStream(new File(getClass().getClassLoader().getResource("risk.jpg").getFile()));
 		} catch (FileNotFoundException e) {
@@ -347,7 +347,8 @@ public class MapEditorController implements Initializable {
 			e.printStackTrace();
 		}
 		Image image = new Image(inputStream);
-		riskImage.setImage(image);
+		riskImage.setImage(image);*/
+	}
 
 		/// initialize continent list**********start*****************
 		continentList.setCellFactory(param -> new ListCell<Continent>() {

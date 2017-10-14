@@ -1,63 +1,54 @@
 package com.app.team19;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import com.risk.entity.Map;
-import com.risk.exception.InvalidMapException;
-import com.risk.map.util.MapFileParser;
-import com.risk.map.util.MapUtil;
-
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextArea;
 
 public class MapSelectorEditorController implements Initializable {
 
-	private Map map;
-
 	@FXML
-	private Button loadMap;
-
+	private ChoiceBox<Integer> numberOfPlayersCB;
+	
 	@FXML
-	private Button exit;
-
-	@FXML
-	private void loadExistingMap(ActionEvent event) {
-
-		MapFileParser fileParser = new MapFileParser();
-		File file = MapUtil.showFileChooser();
-		try {
-			map = fileParser.parseAndReadMapFile(file);
-		} catch (InvalidMapException ex) {
-			System.out.println("Exception :" +ex.getMessage());
-		}
-		final Stage mapSelectorStage = new Stage();
-		mapSelectorStage.setTitle("Map Selector");
-		Scene scene = null;
-		try {
-			scene = new Scene(FXMLLoader.load(getClass().getResource("PlayerSelectorLayout.fxml")));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		mapSelectorStage.setScene(scene);
-		mapSelectorStage.show();
+	private TextArea gameConsole;
+	
+	private int numberOfPlayersSelected;
+	
+	public int getNumberOfPlayersSelected() {
+		return numberOfPlayersSelected;
 	}
 
-	@FXML
-	private void mapSelectorEditorExit(ActionEvent event) {
-		System.out.println("Exiting the platform");
-		Platform.exit();
+	public void setNumberOfPlayersSelected(int numberOfPlayersSelected) {
+		this.numberOfPlayersSelected = numberOfPlayersSelected;
+	}
+	
+	public void initializeTotalPlayers() {
+		numberOfPlayersCB.getItems().removeAll(numberOfPlayersCB.getItems());
+		numberOfPlayersCB.getItems().addAll(2,3,4,5);
+	}
+	
+	public void selectionOfPlayersListener() {
+		numberOfPlayersCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Integer>() {
+			@Override
+			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
+				setNumberOfPlayersSelected(numberOfPlayersCB.getSelectionModel().getSelectedItem());				
+			}
+		});	
 	}
 
+	public void appendTextToGameConsole(String valueOf) {
+        Platform.runLater(() -> gameConsole.appendText(valueOf));
+    }
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-	}
+		initializeTotalPlayers();
+		selectionOfPlayersListener();			
+	}	
 }
