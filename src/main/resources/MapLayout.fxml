@@ -6,12 +6,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane prefHeight="877.0" prefWidth="1226.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+<Pane prefHeight="877.0" prefWidth="1226.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox layoutX="7.0" layoutY="824.0" prefHeight="39.0" prefWidth="1041.0">
+      <HBox layoutX="37.0" layoutY="824.0" prefHeight="39.0" prefWidth="1041.0">
          <children>
             <Button fx:id="saveMap" mnemonicParsing="false" onAction="#saveMap" prefHeight="67.0" prefWidth="151.0" text="Save Map" />
             <Button fx:id="exitButton" mnemonicParsing="false" onAction="#mapEditorExit" prefHeight="68.0" prefWidth="141.0" text="Exit" />
+            <Label fx:id="outPutLabel" prefHeight="21.0" prefWidth="89.0" text="      Output:" />
+            <TextArea fx:id="outPutConsole" prefHeight="39.0" prefWidth="657.0" />
          </children>
       </HBox>
      <Pane layoutX="5.0" prefHeight="814.0" prefWidth="1217.0">
@@ -46,6 +48,7 @@
                         <TextField fx:id="newContinentValue" layoutX="92.0" layoutY="43.0" prefHeight="31.0" prefWidth="68.0" />
                         <Label layoutX="14.0" layoutY="48.0" prefHeight="21.0" prefWidth="69.0" text="Value" />
                         <Button fx:id="deleteCont" layoutX="178.0" layoutY="223.0" mnemonicParsing="false" onAction="#deleteContinent" prefHeight="31.0" prefWidth="74.0" text="Delete" />
+                        <Button fx:id="updateCont" layoutX="16.0" layoutY="223.0" mnemonicParsing="false" onAction="#updateContinent" text="Update" />
                      </children>
                   </AnchorPane>
               </content>
@@ -66,11 +69,13 @@
                         <Label layoutX="14.0" layoutY="201.0" prefHeight="21.0" prefWidth="163.0" text="Adjacent Territories :" />
                         <Button fx:id="delTerrit" layoutX="164.0" layoutY="296.0" mnemonicParsing="false" onAction="#deleteTerritory" prefHeight="31.0" prefWidth="74.0" text="Delete" />
                         <Label fx:id="selectedContinent" layoutX="99.0" layoutY="22.0" prefHeight="21.0" prefWidth="174.0" text="Label" />
+                        <Button fx:id="updateTerrt" layoutX="8.0" layoutY="296.0" mnemonicParsing="false" onAction="#updateTerritory" text="Update" />
                      </children>
                   </AnchorPane>
               </content>
             </TitledPane>
             <ImageView fx:id="riskImage" fitHeight="510.0" fitWidth="273.0" layoutX="21.0" layoutY="281.0" pickOnBounds="true" preserveRatio="true" />
+            <Button fx:id="deleteAdjTerr" layoutX="1141.0" layoutY="407.0" mnemonicParsing="false" onAction="#deleteAdjTerritory" text="Delete" />
          </children>
       </Pane>
    </children>
