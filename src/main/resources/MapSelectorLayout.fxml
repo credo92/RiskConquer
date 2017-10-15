@@ -7,7 +7,7 @@
 
 <Pane layoutX="5.0" prefHeight="814.0" prefWidth="1217.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-      <HBox layoutX="14.0" prefHeight="48.0" prefWidth="508.0">
+      <HBox layoutX="14.0" prefHeight="48.0" prefWidth="335.0">
          <children>
              <Label prefHeight="31.0" prefWidth="177.0" text="Select number of players: " />
             <ChoiceBox fx:id="numberOfPlayersCB" prefWidth="150.0" />
@@ -23,5 +23,6 @@
       <ListView fx:id="adjTerritory" layoutX="434.0" layoutY="424.0" prefHeight="251.0" prefWidth="228.0" />
       <Label layoutX="435.0" layoutY="44.0" prefHeight="31.0" prefWidth="200.0" text="Selected Terriotry" />
       <Label layoutX="435.0" layoutY="395.0" prefHeight="31.0" prefWidth="200.0" text="Adjacent Terriotry" />
+      <Label fx:id="playerChosen" layoutX="362.0" layoutY="4.0" prefHeight="31.0" prefWidth="297.0" text="Playing........" />
     </children>
 </Pane>

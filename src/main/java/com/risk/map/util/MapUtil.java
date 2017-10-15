@@ -1,6 +1,7 @@
 package com.risk.map.util;
 
 import java.io.File;
+import java.util.Optional;
 
 import com.risk.entity.Map;
 import com.risk.exception.InvalidMapException;
@@ -10,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 
 /**
@@ -83,5 +85,17 @@ public class MapUtil {
 		}
 
 		textArea.setText(message);
+	}
+
+	public static String inputDailougeBox() {
+		String input = "0";
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("Input");
+		dialog.setHeaderText("Enter number of armies to be placed.");
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()) {
+			input = result.get();
+		}
+		return input;
 	}
 }

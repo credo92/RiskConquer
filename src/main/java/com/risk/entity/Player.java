@@ -1,5 +1,6 @@
 package com.risk.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ public class Player {
 	public Player(int id, String name) {
 		this.id = id;
 		this.name = name;
+		this.assignedTerritory = new ArrayList<>();
 	}
 
 	/**

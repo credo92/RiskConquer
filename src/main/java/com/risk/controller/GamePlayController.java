@@ -9,17 +9,22 @@ import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
+import com.risk.map.util.MapUtil;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class GamePlayController implements Initializable {
@@ -45,10 +50,13 @@ public class GamePlayController implements Initializable {
 	private Pane dataDisplay;
 
 	@FXML
-	private ListView selectedTerritory;
+	private ListView<Territory> selectedTerritory;
 
 	@FXML
-	private ListView adjTerritory;
+	private ListView<Territory> adjTerritory;
+
+	@FXML
+	private Label playerChosen;
 
 	@FXML
 	private TextArea gameConsole;
@@ -56,6 +64,8 @@ public class GamePlayController implements Initializable {
 	private int numberOfPlayersSelected;
 
 	private List<Player> gamePlayers;
+
+	private Player playerPlaying;
 
 	private StringBuilder gameConsoleOutput;
 
@@ -104,6 +114,45 @@ public class GamePlayController implements Initializable {
 		gamePlayers = new ArrayList<>();
 		initializeTotalPlayers();
 		selectionOfPlayersListener();
+
+		selectedTerritory.setCellFactory(param -> new ListCell<Territory>() {
+			@Override
+			protected void updateItem(Territory item, boolean empty) {
+				super.updateItem(item, empty);
+
+				if (empty || item == null || item.getName() == null) {
+					setText(null);
+				} else {
+					setText(item.getName() + "-" + item.getArmies());
+				}
+			}
+		});
+		selectedTerritory.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+
+			}
+		});
+
+		adjTerritory.setCellFactory(param -> new ListCell<Territory>() {
+			@Override
+			protected void updateItem(Territory item, boolean empty) {
+				super.updateItem(item, empty);
+
+				if (empty || item == null || item.getName() == null) {
+					setText(null);
+				} else {
+					setText(item.getName() + "-" + item.getArmies());
+				}
+			}
+		});
+		adjTerritory.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+
+			}
+		});
+
 	}
 
 	@FXML
@@ -120,6 +169,16 @@ public class GamePlayController implements Initializable {
 
 	@FXML
 	private void reinforcement(ActionEvent event) {
+		Territory territory = selectedTerritory.getSelectionModel().getSelectedItem();
+		if (territory == null) {
+			MapUtil.infoBox("Select a territory to place army on.", "Message", "");
+			return;
+		}
+		
+		Integer armies = Integer.valueOf(MapUtil.inputDailougeBox());
+		territory.setArmies(territory.getArmies() + armies);
+		selectedTerritory.refresh();
+		
 	}
 
 	private void loadMapData() {
@@ -147,6 +206,8 @@ public class GamePlayController implements Initializable {
 					if (territory.getPlayer() == null) {
 						count++;
 						territory.setPlayer(player);
+
+						player.getAssignedTerritory().add(territory);
 						appendTextToGameConsole(territory.getName() + " assigned to " + player.getName() + " ! \n");
 						break;
 					}
@@ -155,5 +216,16 @@ public class GamePlayController implements Initializable {
 			}
 		}
 		appendTextToGameConsole("======Territories assignation complete======\n");
+		loadPlayerInRoundRobin();
+	}
+
+	private void loadPlayerInRoundRobin() {
+		int totalArmies = 10;
+		int count = 0;
+		for (Territory territory : gamePlayers.get(0).getAssignedTerritory())
+			selectedTerritory.getItems().add(territory);
+		
+		playerPlaying = gamePlayers.get(0);
+		playerChosen.setText(playerPlaying.getName());
 	}
 }

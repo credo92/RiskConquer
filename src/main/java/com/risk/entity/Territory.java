@@ -16,10 +16,25 @@ public class Territory {
 	private List<Territory> adjacentTerritories;
 	
 	private Player player;
+	private int armies;
 
 	public Territory() {
 		adjTerritories = new ArrayList<>();
 		adjacentTerritories = new ArrayList<>();
+	}
+	
+	/**
+	 * @return the armies
+	 */
+	public int getArmies() {
+		return armies;
+	}
+
+	/**
+	 * @param armies the armies to set
+	 */
+	public void setArmies(int armies) {
+		this.armies = armies;
 	}
 
 	/**
