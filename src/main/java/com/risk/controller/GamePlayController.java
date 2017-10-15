@@ -83,7 +83,7 @@ public class GamePlayController implements Initializable {
 
 	public void initializeTotalPlayers() {
 		numberOfPlayersCB.getItems().removeAll(numberOfPlayersCB.getItems());
-		numberOfPlayersCB.getItems().addAll(2, 3, 4, 5);
+		numberOfPlayersCB.getItems().addAll(3, 4, 5, 6);
 	}
 
 	public void selectionOfPlayersListener() {
@@ -100,6 +100,7 @@ public class GamePlayController implements Initializable {
 				appendTextToGameConsole("=======Players created======\n");
 				numberOfPlayersCB.setDisable(true);
 				assignTerritoryToPlayer();
+				assignArmiesToPlayers();
 			}
 		});
 	}
@@ -206,7 +207,7 @@ public class GamePlayController implements Initializable {
 					if (territory.getPlayer() == null) {
 						count++;
 						territory.setPlayer(player);
-
+						territory.setArmies(1);
 						player.getAssignedTerritory().add(territory);
 						appendTextToGameConsole(territory.getName() + " assigned to " + player.getName() + " ! \n");
 						break;
@@ -217,6 +218,24 @@ public class GamePlayController implements Initializable {
 		}
 		appendTextToGameConsole("======Territories assignation complete======\n");
 		loadPlayerInRoundRobin();
+	}
+	
+	private void assignArmiesToPlayers() {
+		appendTextToGameConsole("======Assigning armies now.======\n");
+		int armySizePerPlayer = 0;
+		int noOfPlayers = gamePlayers.size();
+		if(noOfPlayers==3)
+			armySizePerPlayer=35;
+		else if(noOfPlayers==4)
+			armySizePerPlayer=30;
+		else if(noOfPlayers==5)
+			armySizePerPlayer=25;
+		else if(noOfPlayers==6)
+			armySizePerPlayer=20;
+		
+		for(Player player:gamePlayers) {
+			player.setArmies(armySizePerPlayer);
+		}
 	}
 
 	private void loadPlayerInRoundRobin() {
