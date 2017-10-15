@@ -5,14 +5,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane layoutX="5.0" prefHeight="814.0" prefWidth="1217.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.team19.MapSelectorEditorController">
+<Pane layoutX="5.0" prefHeight="814.0" prefWidth="1217.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-      <HBox layoutX="14.0" prefHeight="135.0" prefWidth="508.0">
+      <HBox layoutX="14.0" prefHeight="48.0" prefWidth="508.0">
          <children>
-             <Label prefHeight="31.0" prefWidth="163.0" text="Select number of players: " />
+             <Label prefHeight="31.0" prefWidth="177.0" text="Select number of players: " />
             <ChoiceBox fx:id="numberOfPlayersCB" prefWidth="150.0" />
          </children>
       </HBox>
-      <TextArea fx:id="gameConsole" editable="false" layoutX="526.0" layoutY="14.0" prefHeight="791.0" prefWidth="677.0" style="-fx-background-color: #fff; -fx-border-color: #000;" />
+      <TextArea fx:id="gameConsole" editable="false" layoutX="12.0" layoutY="56.0" prefHeight="749.0" prefWidth="379.0" style="-fx-background-color: #fff; -fx-border-color: #000;" />
+      <Button fx:id="attack" layoutX="434.0" layoutY="696.0" mnemonicParsing="false" onAction="#attack" prefHeight="31.0" prefWidth="228.0" text="Attack" />
+      <Button fx:id="fortify" layoutX="434.0" layoutY="730.0" mnemonicParsing="false" onAction="#fortify" prefHeight="31.0" prefWidth="228.0" text="Fortify" />
+      <Button fx:id="endTurn" layoutX="434.0" layoutY="765.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="31.0" prefWidth="228.0" text="End Turn" />
+      <Button fx:id="reinforcement" layoutX="434.0" layoutY="357.0" mnemonicParsing="false" onAction="#reinforcement" prefHeight="31.0" prefWidth="228.0" text="Reinforcements" />
+      <Pane fx:id="dataDisplay" layoutX="675.0" layoutY="14.0" prefHeight="783.0" prefWidth="528.0" />
+      <ListView fx:id="selectedTerritory" layoutX="434.0" layoutY="78.0" prefHeight="272.0" prefWidth="228.0" />
+      <ListView fx:id="adjTerritory" layoutX="434.0" layoutY="424.0" prefHeight="251.0" prefWidth="228.0" />
+      <Label layoutX="435.0" layoutY="44.0" prefHeight="31.0" prefWidth="200.0" text="Selected Terriotry" />
+      <Label layoutX="435.0" layoutY="395.0" prefHeight="31.0" prefWidth="200.0" text="Adjacent Terriotry" />
     </children>
 </Pane>

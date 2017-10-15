@@ -20,7 +20,7 @@ public class MapOption implements EventHandler<ActionEvent> {
 		final Stage mapOptionStage = new Stage();
 		mapOptionStage.setTitle("Choose option");
 		Scene scene = new Scene(root, 300, 300);
-		// scene.getStylesheets().add("application.css");
+		scene.getStylesheets().add("application.css");
 
 		VBox vbox = new VBox();
 		vbox.setAlignment(Pos.BOTTOM_CENTER);
@@ -29,11 +29,11 @@ public class MapOption implements EventHandler<ActionEvent> {
 		BorderPane borderPane = new BorderPane();
 		borderPane.setBottom(vbox);
 		borderPane.prefWidthProperty().bind(scene.widthProperty());
-		//borderPane.setCenter(Main.loadImage(scene, getClass().getClassLoader()));
+		borderPane.setCenter(Main.loadImage(scene, getClass().getClassLoader()));
 		root.getChildren().addAll(borderPane);
 
 		mapOptionStage.setScene(scene);
-		// mapOptionStage.alwaysOnTopProperty();
+		mapOptionStage.alwaysOnTopProperty();
 		mapOptionStage.show();
 	}
 
