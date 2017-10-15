@@ -1,9 +1,14 @@
 package com.risk.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import com.risk.entity.Continent;
 import com.risk.entity.Map;
+import com.risk.entity.Player;
+import com.risk.entity.Territory;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -50,6 +55,10 @@ public class GamePlayController implements Initializable {
 
 	private int numberOfPlayersSelected;
 
+	private List<Player> gamePlayers;
+
+	private StringBuilder gameConsoleOutput;
+
 	public GamePlayController(Map map) {
 		this.map = map;
 	}
@@ -72,6 +81,15 @@ public class GamePlayController implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
 				setNumberOfPlayersSelected(numberOfPlayersCB.getSelectionModel().getSelectedItem());
+				gamePlayers.clear();
+				for (int i = 0; i < getNumberOfPlayersSelected(); i++) {
+					String name = "Player" + i;
+					gamePlayers.add(new Player(i, name));
+					appendTextToGameConsole(name + " created!\n");
+				}
+				appendTextToGameConsole("=======Players created======\n");
+				numberOfPlayersCB.setDisable(true);
+				assignTerritoryToPlayer();
 			}
 		});
 	}
@@ -82,6 +100,8 @@ public class GamePlayController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		gameConsoleOutput = new StringBuilder();
+		gamePlayers = new ArrayList<>();
 		initializeTotalPlayers();
 		selectionOfPlayersListener();
 	}
@@ -102,4 +122,38 @@ public class GamePlayController implements Initializable {
 	private void reinforcement(ActionEvent event) {
 	}
 
+	private void loadMapData() {
+
+	}
+
+	private void assignTerritoryToPlayer() {
+		appendTextToGameConsole("======Assigning territories======\n");
+		List<Territory> allterritories = new ArrayList<>();
+
+		if (map.getContinents() != null) {
+			for (Continent continent : map.getContinents()) {
+				if (continent != null && continent.getTerritories() != null) {
+					for (Territory territory : continent.getTerritories()) {
+						allterritories.add(territory);
+					}
+				}
+			}
+		}
+		int count = 0;
+		int totalTerritory = allterritories.size();
+		while (count < totalTerritory) {
+			for (Player player : gamePlayers) {
+				for (Territory territory : allterritories) {
+					if (territory.getPlayer() == null) {
+						count++;
+						territory.setPlayer(player);
+						appendTextToGameConsole(territory.getName() + " assigned to " + player.getName() + " ! \n");
+						break;
+					}
+					continue;
+				}
+			}
+		}
+		appendTextToGameConsole("======Territories assignation complete======\n");
+	}
 }

@@ -14,6 +14,8 @@ public class Territory {
 	private Continent belongToContinent;
 	private List<String> adjTerritories;
 	private List<Territory> adjacentTerritories;
+	
+	private Player player;
 
 	public Territory() {
 		adjTerritories = new ArrayList<>();
@@ -109,6 +111,21 @@ public class Territory {
 	public void setBelongToContinent(Continent belongToContinent) {
 		this.belongToContinent = belongToContinent;
 	}
+	
+	/**
+	 * @return the player
+	 */
+	public Player getPlayer() {
+		return player;
+	}
+
+	/**
+	 * @param player the player to set
+	 */
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
 
 	/*
 	 * (non-Javadoc)
