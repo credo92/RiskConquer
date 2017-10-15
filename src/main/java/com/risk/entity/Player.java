@@ -8,7 +8,7 @@ import java.util.List;
  *
  */
 public class Player {
-	
+
 	private int id;
 
 	private String name;
@@ -17,9 +17,10 @@ public class Player {
 
 	private List<Territory> assignedTerritory;
 
-	public Player(int id, String name) {
+	public Player(int id, String name, int armies) {
 		this.id = id;
 		this.name = name;
+		this.armies = armies;
 		this.assignedTerritory = new ArrayList<>();
 	}
 

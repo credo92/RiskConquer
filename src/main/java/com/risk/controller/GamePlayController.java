@@ -2,6 +2,7 @@ package com.risk.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -25,7 +26,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 public class GamePlayController implements Initializable {
 
@@ -47,7 +48,7 @@ public class GamePlayController implements Initializable {
 	private Button reinforcement;
 
 	@FXML
-	private Pane dataDisplay;
+	private VBox dataDisplay;
 
 	@FXML
 	private ListView<Territory> selectedTerritory;
@@ -61,11 +62,16 @@ public class GamePlayController implements Initializable {
 	@FXML
 	private TextArea gameConsole;
 
+	@FXML
+	private Button placeArmy;
+
 	private int numberOfPlayersSelected;
 
 	private List<Player> gamePlayers;
 
 	private Player playerPlaying;
+
+	private Iterator<Player> iteratePlayer;
 
 	private StringBuilder gameConsoleOutput;
 
@@ -94,11 +100,12 @@ public class GamePlayController implements Initializable {
 				gamePlayers.clear();
 				for (int i = 0; i < getNumberOfPlayersSelected(); i++) {
 					String name = "Player" + i;
-					gamePlayers.add(new Player(i, name));
+					gamePlayers.add(new Player(i, name, 20));
 					appendTextToGameConsole(name + " created!\n");
 				}
 				appendTextToGameConsole("=======Players created======\n");
 				numberOfPlayersCB.setDisable(true);
+				iteratePlayer = gamePlayers.iterator();
 				assignTerritoryToPlayer();
 			}
 		});
@@ -114,7 +121,7 @@ public class GamePlayController implements Initializable {
 		gamePlayers = new ArrayList<>();
 		initializeTotalPlayers();
 		selectionOfPlayersListener();
-
+		loadMapData();
 		selectedTerritory.setCellFactory(param -> new ListCell<Territory>() {
 			@Override
 			protected void updateItem(Territory item, boolean empty) {
@@ -168,23 +175,43 @@ public class GamePlayController implements Initializable {
 	}
 
 	@FXML
+	private void placeArmy(ActionEvent event) {
+		int playerArmies = playerPlaying.getArmies();
+		if (playerArmies > 0) {
+			Territory territory = selectedTerritory.getSelectionModel().getSelectedItem();
+			territory.setArmies(territory.getArmies() + 1);
+			playerPlaying.setArmies(playerArmies - 1);
+		}
+		loadMapData();
+		selectedTerritory.refresh();
+		loadPlayerInRoundRobin();
+	}
+
+	@FXML
 	private void reinforcement(ActionEvent event) {
 		Territory territory = selectedTerritory.getSelectionModel().getSelectedItem();
 		if (territory == null) {
 			MapUtil.infoBox("Select a territory to place army on.", "Message", "");
 			return;
 		}
-		
+
 		Integer armies = Integer.valueOf(MapUtil.inputDailougeBox());
 		territory.setArmies(territory.getArmies() + armies);
 		selectedTerritory.refresh();
-		
+
 	}
 
 	private void loadMapData() {
-
+		dataDisplay.getChildren().clear();
+		for (Continent continent : map.getContinents()) {
+			dataDisplay.autosize();
+			dataDisplay.getChildren().add(MapUtil.createNewTitledPane(continent));
+		}
 	}
 
+	/**
+	 * Distribute all territory among the player.
+	 */
 	private void assignTerritoryToPlayer() {
 		appendTextToGameConsole("======Assigning territories======\n");
 		List<Territory> allterritories = new ArrayList<>();
@@ -206,7 +233,8 @@ public class GamePlayController implements Initializable {
 					if (territory.getPlayer() == null) {
 						count++;
 						territory.setPlayer(player);
-
+						territory.setArmies(territory.getArmies() + 1);
+						player.setArmies(player.getArmies() - 1);
 						player.getAssignedTerritory().add(territory);
 						appendTextToGameConsole(territory.getName() + " assigned to " + player.getName() + " ! \n");
 						break;
@@ -220,12 +248,17 @@ public class GamePlayController implements Initializable {
 	}
 
 	private void loadPlayerInRoundRobin() {
-		int totalArmies = 10;
-		int count = 0;
-		for (Territory territory : gamePlayers.get(0).getAssignedTerritory())
+		if (!iteratePlayer.hasNext()) {
+			iteratePlayer = gamePlayers.iterator();
+		}
+		playerPlaying = iteratePlayer.next();
+
+		selectedTerritory.getItems().clear();
+		adjTerritory.getItems().clear();
+		for (Territory territory : playerPlaying.getAssignedTerritory()) {
 			selectedTerritory.getItems().add(territory);
-		
-		playerPlaying = gamePlayers.get(0);
-		playerChosen.setText(playerPlaying.getName());
+		}
+		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
 	}
+
 }
