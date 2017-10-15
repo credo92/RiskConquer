@@ -3,15 +3,20 @@ package com.risk.map.util;
 import java.io.File;
 import java.util.Optional;
 
+import com.risk.entity.Continent;
 import com.risk.entity.Map;
+import com.risk.entity.Territory;
 import com.risk.exception.InvalidMapException;
 import com.risk.validate.MapValidator;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 /**
@@ -97,5 +102,23 @@ public class MapUtil {
 			input = result.get();
 		}
 		return input;
+	}
+
+	public static TitledPane createNewTitledPane(Continent continent) {
+		VBox hbox = new VBox();
+		for (Territory territory : continent.getTerritories()) {
+			Label label1 = new Label();
+			if (territory.getPlayer() != null) {
+				label1.setText(
+						territory.getName() + ":-" + territory.getArmies() + "-" + territory.getPlayer().getName());
+			} else {
+				label1.setText(territory.getName() + ":-" + territory.getArmies());
+			}
+			hbox.getChildren().add(label1);
+		}
+		TitledPane pane = new TitledPane(continent.getName(), hbox);
+
+		return pane;
+
 	}
 }
