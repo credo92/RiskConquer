@@ -1,19 +1,13 @@
 package com.risk.controller;
 
 import java.net.URL;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import org.w3c.dom.css.Counter;
 
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
@@ -21,9 +15,6 @@ import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.map.util.MapUtil;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -39,7 +30,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 
 public class GamePlayController implements Initializable {
 
@@ -71,6 +61,8 @@ public class GamePlayController implements Initializable {
 
 	@FXML
 	private Label playerTime;
+
+	private ScheduledExecutorService executor;
 
 	@FXML
 	private Label playerChosen;
@@ -193,10 +185,16 @@ public class GamePlayController implements Initializable {
 
 	@FXML
 	private void fortify(ActionEvent event) {
+		// initialize re-inforcement for the next player
+		initializeReinforcement();
 	}
 
 	@FXML
 	private void endTurn(ActionEvent event) {
+		if (!executor.isShutdown()) {
+			executor.shutdownNow();
+		}
+		start();
 	}
 
 	@FXML
@@ -204,27 +202,60 @@ public class GamePlayController implements Initializable {
 		int playerArmies = playerPlaying.getArmies();
 		if (playerArmies > 0) {
 			Territory territory = selectedTerritory.getSelectionModel().getSelectedItem();
+			if (territory == null) {
+				territory = selectedTerritory.getItems().get(0);
+			}
 			territory.setArmies(territory.getArmies() + 1);
 			playerPlaying.setArmies(playerArmies - 1);
 		}
 		loadMapData();
 		selectedTerritory.refresh();
+		executor.shutdownNow();
+		if (executor.isShutdown()) {
+			start();
+		}
+		int count = 0;
 
+		for (Player player : gamePlayers) {
+			if (player.getArmies() == 0) {
+				count++;
+			}
+		}
+		if (count == gamePlayers.size()) {
+			appendTextToGameConsole("===============================\n");
+			appendTextToGameConsole("=====Armies assignation complete====\n");
+			executor.shutdownNow();
+			if (executor.isShutdown()) {
+				initializeReinforcement();
+			}
+		}
 		// loadPlayerInRoundRobin();
 	}
 
 	@FXML
 	private void reinforcement(ActionEvent event) {
-		Territory territory = selectedTerritory.getSelectionModel().getSelectedItem();
-		if (territory == null) {
-			MapUtil.infoBox("Select a territory to place army on.", "Message", "");
-			return;
+		if (playerPlaying.getArmies() > 0) {
+			Territory territory = selectedTerritory.getSelectionModel().getSelectedItem();
+			if (territory == null) {
+				MapUtil.infoBox("Select a territory to place army on.", "Message", "");
+				return;
+			}
+
+			Integer armies = Integer.valueOf(MapUtil.inputDailougeBox());
+			if (playerPlaying.getArmies() < armies) {
+				MapUtil.infoBox("You do not have sufficent armies.", "Message", "");
+				return;
+			}
+			territory.setArmies(territory.getArmies() + armies);
+			playerPlaying.setArmies(playerPlaying.getArmies() - armies);
+			appendTextToGameConsole(armies + ": assigned to territory " + territory.getName() + "\n");
+			selectedTerritory.refresh();
+			playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
 		}
-
-		Integer armies = Integer.valueOf(MapUtil.inputDailougeBox());
-		territory.setArmies(territory.getArmies() + armies);
-		selectedTerritory.refresh();
-
+		// start attack phase
+		if (playerPlaying.getArmies() <= 0) {
+			initializeAttack();
+		}
 	}
 
 	private void loadMapData() {
@@ -279,7 +310,7 @@ public class GamePlayController implements Initializable {
 		int armySizePerPlayer = 0;
 		int noOfPlayers = gamePlayers.size();
 		if (noOfPlayers == 3)
-			armySizePerPlayer = 35;
+			armySizePerPlayer = 15;
 		else if (noOfPlayers == 4)
 			armySizePerPlayer = 30;
 		else if (noOfPlayers == 5)
@@ -317,19 +348,46 @@ public class GamePlayController implements Initializable {
 			} else {
 				playerPlaying.setArmies((territoryCount / 3) + currentArmies);
 			}
+			playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
 		} else {
 			appendTextToGameConsole("Error!. No player playing.");
 		}
 	}
 
 	private void start() {
-		ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+		executor = Executors.newSingleThreadScheduledExecutor();
 		executor.scheduleWithFixedDelay(new Runnable() {
 			@Override
 			public void run() {
-				Platform.runLater(()-> loadPlayerInRoundRobin());
+				Platform.runLater(() -> loadPlayerInRoundRobin());
 			}
 
-		}, 0, 10000, TimeUnit.MILLISECONDS);
+		}, 0, 300000, TimeUnit.MILLISECONDS);
+	}
+
+	private void initializeReinforcement() {
+		/*
+		 * if (!executor.isShutdown()) { executor.shutdownNow(); }
+		 */
+		start();
+		calculateReinforcementArmies();
+		placeArmy.setDisable(true);
+		reinforcement.requestFocus();
+		appendTextToGameConsole("===============================\n");
+		appendTextToGameConsole("=========Start Reinforcement! =========== \n");
+		appendTextToGameConsole(playerPlaying.getName() + "\n");
+	}
+
+	private void initializeAttack() {
+		attack.requestFocus();
+		appendTextToGameConsole("===================================================== \n");
+		appendTextToGameConsole("=========Attack phase under developement! =========== \n");
+		initializeFortification();
+	}
+
+	private void initializeFortification() {
+		fortify.requestFocus();
+		appendTextToGameConsole("===================================================== \n");
+		appendTextToGameConsole("=========Fortification phase started! =========== \n");
 	}
 }
