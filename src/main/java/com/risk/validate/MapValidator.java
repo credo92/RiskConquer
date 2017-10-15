@@ -12,7 +12,8 @@ import com.risk.exception.InvalidMapException;
  *
  */
 public class MapValidator {
-
+static int territorySize;
+static Continent continent = new Continent();
 	/**
 	 * @param map
 	 * @throws InvalidMapException
@@ -30,13 +31,18 @@ public class MapValidator {
 			throw new InvalidMapException("Empty file no Map exist.");
 		}
 	}
+	
+	public static int getTerritorySize() {
+		territorySize = continent.getTerritories().size();
+		return territorySize;
+	}
 
 	/**
 	 * @param continent
 	 * @throws InvalidMapException
 	 */
 	public static void validateContinent(Continent continent) throws InvalidMapException {
-		if (continent.getTerritories().size() < 1) {
+		if (getTerritorySize() < 1) {
 			throw new InvalidMapException(
 					"Continent: " + continent.getName() + " should contain atleast one territory");
 		}
