@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane layoutX="5.0" prefHeight="814.0" prefWidth="1217.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane layoutX="5.0" prefHeight="814.0" prefWidth="1312.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
       <HBox layoutX="14.0" prefHeight="48.0" prefWidth="335.0">
          <children>
@@ -24,10 +24,11 @@
       <Label layoutX="435.0" layoutY="395.0" prefHeight="31.0" prefWidth="200.0" text="Adjacent Terriotry" />
       <Label fx:id="playerChosen" layoutX="367.0" prefHeight="31.0" prefWidth="297.0" text="Playing........" />
       <Button fx:id="placeArmy" layoutX="566.0" layoutY="2.0" mnemonicParsing="false" onAction="#placeArmy" text="Place Army" />
-      <ScrollPane layoutX="670.0" layoutY="14.0" prefViewportHeight="794.0" prefViewportWidth="540.0">
+      <ScrollPane layoutX="814.0" layoutY="13.0" prefHeight="796.0" prefViewportHeight="794.0" prefViewportWidth="540.0" prefWidth="496.0">
          <content>
-            <VBox fx:id="dataDisplay" layoutX="670.0" layoutY="14.0" prefHeight="794.0" prefWidth="540.0" />
+            <VBox fx:id="dataDisplay" layoutX="670.0" layoutY="14.0" prefHeight="787.0" prefWidth="491.0" />
          </content>
       </ScrollPane>
+      <Label fx:id="playerTime" layoutX="685.0" layoutY="4.0" prefHeight="31.0" prefWidth="94.0" text="00:00" />
     </children>
 </Pane>
