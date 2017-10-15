@@ -185,6 +185,39 @@ public class GamePlayController implements Initializable {
 
 	@FXML
 	private void fortify(ActionEvent event) {
+		Territory selectedTerr = this.selectedTerritory.getSelectionModel().getSelectedItem();
+		Territory adjTerr = this.adjTerritory.getSelectionModel().getSelectedItem();
+		if(selectedTerr==null) {
+			MapUtil.infoBox("Please choose Selected Territory as source.", "Message", "");
+			return;
+		}
+		else if(adjTerr==null) {
+			MapUtil.infoBox("Please choose Adjacent Territory as destination.", "Message", "");
+			return;
+		}
+		else if(!(adjTerr.getPlayer().equals(playerPlaying))) {
+			MapUtil.infoBox("Adjacent Territory does not belong to you.", "Message", "");
+			return;
+		}
+		appendTextToGameConsole("======Fortification started======\n");
+		Integer armies = Integer.valueOf(MapUtil.inputDialogueBoxForArmiesFortification());
+		if(armies>0) {
+			if(selectedTerr.getArmies()==armies) {
+				MapUtil.infoBox("You cannot move all the armies.", "Message", "");
+				return;
+			}
+			else if(selectedTerr.getArmies()<armies) {
+				MapUtil.infoBox("You don't have " + armies + " armies.", "Message", "");
+				return;
+			}
+			else {
+				selectedTerr.setArmies(selectedTerr.getArmies()-armies);
+				adjTerr.setArmies(adjTerr.getArmies()+armies);
+				selectedTerritory.refresh();
+				adjTerritory.refresh();
+				appendTextToGameConsole("======Fortification ended======\n");
+			}
+		}
 		// initialize re-inforcement for the next player
 		initializeReinforcement();
 	}
