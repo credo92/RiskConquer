@@ -83,4 +83,24 @@ public class Player {
 	public void setAssignedTerritory(List<Territory> assignedTerritory) {
 		this.assignedTerritory = assignedTerritory;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (obj == this) {
+			return true;
+		}
+
+		if (!(obj instanceof Player)) {
+			return false;
+		}
+
+		Player player = (Player) obj;
+		return player.getName().equalsIgnoreCase(name);
+	}
 }

@@ -103,6 +103,17 @@ public class MapUtil {
 		}
 		return input;
 	}
+	
+	public static int inputDialogueBoxForArmiesFortification() {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("Input a number");
+		dialog.setHeaderText("Enter number of armies for fortification (1 less than total number)");
+		Optional<String> result = dialog.showAndWait();
+		if(result.isPresent())
+			return Integer.parseInt(result.get());
+		else
+			return 0;		
+	}
 
 	public static TitledPane createNewTitledPane(Continent continent) {
 		VBox hbox = new VBox();
