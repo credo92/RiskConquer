@@ -1,10 +1,19 @@
 package com.risk.controller;
 
 import java.net.URL;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.w3c.dom.css.Counter;
 
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
@@ -12,6 +21,9 @@ import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.map.util.MapUtil;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,6 +39,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class GamePlayController implements Initializable {
 
@@ -55,6 +68,9 @@ public class GamePlayController implements Initializable {
 
 	@FXML
 	private ListView<Territory> adjTerritory;
+
+	@FXML
+	private Label playerTime;
 
 	@FXML
 	private Label playerChosen;
@@ -107,7 +123,7 @@ public class GamePlayController implements Initializable {
 				numberOfPlayersCB.setDisable(true);
 				iteratePlayer = gamePlayers.iterator();
 				assignArmiesToPlayers();
-        assignTerritoryToPlayer();
+				assignTerritoryToPlayer();
 			}
 		});
 	}
@@ -123,6 +139,7 @@ public class GamePlayController implements Initializable {
 		initializeTotalPlayers();
 		selectionOfPlayersListener();
 		loadMapData();
+
 		selectedTerritory.setCellFactory(param -> new ListCell<Territory>() {
 			@Override
 			protected void updateItem(Territory item, boolean empty) {
@@ -131,14 +148,15 @@ public class GamePlayController implements Initializable {
 				if (empty || item == null || item.getName() == null) {
 					setText(null);
 				} else {
-					setText(item.getName() + "-" + item.getArmies());
+					setText(item.getName() + ":-" + item.getArmies() + "-" + item.getPlayer().getName());
 				}
 			}
 		});
 		selectedTerritory.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-
+				Territory territory = selectedTerritory.getSelectionModel().getSelectedItem();
+				populateAdjTerritory(territory);
 			}
 		});
 
@@ -150,7 +168,7 @@ public class GamePlayController implements Initializable {
 				if (empty || item == null || item.getName() == null) {
 					setText(null);
 				} else {
-					setText(item.getName() + "-" + item.getArmies());
+					setText(item.getName() + "-" + item.getArmies() + "-" + item.getPlayer().getName());
 				}
 			}
 		});
@@ -160,7 +178,13 @@ public class GamePlayController implements Initializable {
 
 			}
 		});
+	}
 
+	private void populateAdjTerritory(Territory territory) {
+		this.adjTerritory.getItems().clear();
+		for (Territory adjTerr : territory.getAdjacentTerritories()) {
+			this.adjTerritory.getItems().add(adjTerr);
+		}
 	}
 
 	@FXML
@@ -185,7 +209,8 @@ public class GamePlayController implements Initializable {
 		}
 		loadMapData();
 		selectedTerritory.refresh();
-		loadPlayerInRoundRobin();
+
+		// loadPlayerInRoundRobin();
 	}
 
 	@FXML
@@ -245,24 +270,26 @@ public class GamePlayController implements Initializable {
 			}
 		}
 		appendTextToGameConsole("======Territories assignation complete======\n");
-		loadPlayerInRoundRobin();
+		loadMapData();
+		start();
 	}
-	
+
 	private void assignArmiesToPlayers() {
 		appendTextToGameConsole("======Assigning armies now.======\n");
 		int armySizePerPlayer = 0;
 		int noOfPlayers = gamePlayers.size();
-		if(noOfPlayers==3)
-			armySizePerPlayer=35;
-		else if(noOfPlayers==4)
-			armySizePerPlayer=30;
-		else if(noOfPlayers==5)
-			armySizePerPlayer=25;
-		else if(noOfPlayers==6)
-			armySizePerPlayer=20;
-		
-		for(Player player:gamePlayers) {
+		if (noOfPlayers == 3)
+			armySizePerPlayer = 35;
+		else if (noOfPlayers == 4)
+			armySizePerPlayer = 30;
+		else if (noOfPlayers == 5)
+			armySizePerPlayer = 25;
+		else if (noOfPlayers == 6)
+			armySizePerPlayer = 20;
+
+		for (Player player : gamePlayers) {
 			player.setArmies(armySizePerPlayer);
+			appendTextToGameConsole(player.getName() + " assigned: " + armySizePerPlayer + "\n");
 		}
 	}
 
@@ -271,7 +298,8 @@ public class GamePlayController implements Initializable {
 			iteratePlayer = gamePlayers.iterator();
 		}
 		playerPlaying = iteratePlayer.next();
-
+		appendTextToGameConsole("===================================\n");
+		appendTextToGameConsole(playerPlaying.getName() + "!....started playing.\n");
 		selectedTerritory.getItems().clear();
 		adjTerritory.getItems().clear();
 		for (Territory territory : playerPlaying.getAssignedTerritory()) {
@@ -280,4 +308,28 @@ public class GamePlayController implements Initializable {
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
 	}
 
+	private void calculateReinforcementArmies() {
+		if (this.playerPlaying != null) {
+			int currentArmies = playerPlaying.getArmies();
+			int territoryCount = playerPlaying.getAssignedTerritory().size();
+			if (territoryCount < 9) {
+				playerPlaying.setArmies(currentArmies + 3);
+			} else {
+				playerPlaying.setArmies((territoryCount / 3) + currentArmies);
+			}
+		} else {
+			appendTextToGameConsole("Error!. No player playing.");
+		}
+	}
+
+	private void start() {
+		ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+		executor.scheduleWithFixedDelay(new Runnable() {
+			@Override
+			public void run() {
+				Platform.runLater(()-> loadPlayerInRoundRobin());
+			}
+
+		}, 0, 10000, TimeUnit.MILLISECONDS);
+	}
 }
