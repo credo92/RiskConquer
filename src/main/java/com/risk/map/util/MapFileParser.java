@@ -22,7 +22,7 @@ import com.risk.validate.MapValidator;
 public class MapFileParser {
 
 	private Map map;
-	
+
 	private HashMap<String, Integer> territoryContinentCount = new HashMap<>();
 
 	/**
@@ -51,7 +51,7 @@ public class MapFileParser {
 	 * @return
 	 * @throws InvalidMapException
 	 */
-	private Map convertMapFileToMapObject(final File file) throws InvalidMapException{
+	private Map convertMapFileToMapObject(final File file) throws InvalidMapException {
 		StringBuilder stringBuilder = new StringBuilder();
 
 		Scanner mapFileScanner = null;
@@ -71,11 +71,6 @@ public class MapFileParser {
 
 		mapFileScanner = new Scanner(stringBuilder.toString());
 		Map map = processMap(mapFileScanner);
-		/*
-		 * map = processContinent(mapFileScanner.nextLine(), map); while
-		 * (mapFileScanner.hasNextLine()) { map =
-		 * processTerritory(mapFileScanner.nextLine(), map); }
-		 */
 		mapFileScanner.close();
 		return map;
 	}
@@ -198,21 +193,19 @@ public class MapFileParser {
 				territory.setName(data[0]);
 				territory.setxCoordinate(Integer.parseInt(data[1]));
 				territory.setyCoordinate(Integer.parseInt(data[2]));
-				
+
 				for (Continent continent : continents) {
 					if (continent.getName().equalsIgnoreCase(data[3])) {
 						territory.setBelongToContinent(continent);
 						if (territoryContinentCount.get(data[0]) == null) {
 							territoryContinentCount.put(data[0], 1);
 						} else {
-							throw new InvalidMapException(
-									"A Territory cannot be assigned to more than one Continent.");
+							throw new InvalidMapException("A Territory cannot be assigned to more than one Continent.");
 						}
 					}
 				}
 				if (territoryContinentCount.get(data[0]) == null) {
-					throw new InvalidMapException(
-							"A Territory should be assigned to one Continent.");
+					throw new InvalidMapException("A Territory should be assigned to one Continent.");
 				}
 				for (int i = 4; i < data.length; i++) {
 					adjacentTerritories.add(data[i]);

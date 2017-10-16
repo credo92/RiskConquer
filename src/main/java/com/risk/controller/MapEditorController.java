@@ -1,12 +1,7 @@
 package com.risk.controller;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import com.risk.entity.Continent;
@@ -14,6 +9,7 @@ import com.risk.entity.Map;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidMapException;
 import com.risk.map.util.MapUtil;
+import com.risk.model.MapModel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,7 +24,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -38,6 +33,8 @@ public class MapEditorController implements Initializable {
 	private Map map;
 
 	private File file;
+
+	private MapModel mapModel;
 
 	@FXML
 	private TextField author;
@@ -118,20 +115,22 @@ public class MapEditorController implements Initializable {
 	public static final ObservableList<Territory> adjTerritoryData = FXCollections.observableArrayList();
 
 	public MapEditorController() {
+		this.mapModel = new MapModel();
 	}
 
 	public MapEditorController(Map map, File file) {
 		this.map = map;
 		this.file = file;
+		this.mapModel = new MapModel();
 	}
 
 	@FXML
 	private void updateContinent(ActionEvent event) {
 		Continent continent = continentList.getSelectionModel().getSelectedItem();
-		continent.setValue(newContinentValue.getText());
+		continent = mapModel.updateContinent(continent, newContinentValue.getText());
 
-		newContinentName.setDisable(false);
-		addContinent.setDisable(false);
+		MapUtil.disableControl(newContinentName, addContinent);
+
 		MapUtil.clearTextField(newContinentName, newContinentValue);
 	}
 
@@ -139,35 +138,24 @@ public class MapEditorController implements Initializable {
 	private void updateTerritory(ActionEvent event) {
 		Territory territory = territoryList.getSelectionModel().getSelectedItem();
 
-		territory.setxCoordinate(Integer.valueOf(territoryXaxis.getText()));
-		territory.setyCoordinate(Integer.valueOf(territoryYaxis.getText()));
-
 		Territory adjTerritory = selectAdjTerritories.getSelectionModel().getSelectedItem();
-		if (adjTerritory != null) {
-			if (!territory.getAdjacentTerritories().contains(adjTerritory))
-				territory.getAdjacentTerritories().add(adjTerritory);
-		}
-		newTerritoryName.setDisable(false);
-		addTerritory.setDisable(false);
+		territory = mapModel.updateTerritory(territory, territoryXaxis.getText(), territoryYaxis.getText(),
+				adjTerritory);
+		MapUtil.disableControl(newTerritoryName, addTerritory);
+
 		MapUtil.clearTextField(newTerritoryName, territoryXaxis, territoryYaxis);
 	}
 
 	@FXML
 	private void addNewContinent(ActionEvent event) {
 
-		Continent continent = new Continent();
-
-		continent.setName(newContinentName.getText());
-		continent.setValue(newContinentValue.getText());
-
-		// continentData.add(continent);
+		Continent continent = mapModel.addContinent(newContinentName.getText(), newContinentValue.getText());
 		if (continentList == null) {
 			continentList = new ListView<Continent>();
 		}
 		continentList.getItems().add(continent);
 		map.getContinents().add(continent);
 		MapUtil.clearTextField(newContinentName, newContinentValue);
-
 	}
 
 	@FXML
@@ -177,7 +165,6 @@ public class MapEditorController implements Initializable {
 	}
 
 	private void loadMapData() {
-
 		author.setText(map.getMapData().get("author"));
 		image.setText(map.getMapData().get("image"));
 		scroll.setText(map.getMapData().get("scroll"));
@@ -187,30 +174,26 @@ public class MapEditorController implements Initializable {
 		// Load adjacent erritory
 		loadAdjTerritoryList();
 		for (Continent continent : map.getContinents()) {
-			continentData.add(continent);
+			continentList.getItems().add(continent);
 		}
-		continentList.setItems(continentData);
 	}
 
 	private void populateTerritory(Continent continent) {
-		territoryData.clear();
-		adjTerritoryData.clear();
+		territoryList.getItems().clear();
 		if (continent != null && continent.getTerritories() != null) {
 			for (Territory territory : continent.getTerritories()) {
-				territoryData.add(territory);
+				territoryList.getItems().add(territory);
 			}
-			territoryList.setItems(territoryData);
 		}
 	}
 
 	private void populateAdjTerritory(Territory territory) {
-		adjTerritoryData.clear();
+		adjTerritoryList.getItems().clear();
 		for (Territory adjTerritory : territory.getAdjacentTerritories()) {
 			if (adjTerritory != null) {
-				adjTerritoryData.add(adjTerritory);
+				adjTerritoryList.getItems().add(adjTerritory);
 			}
 		}
-		adjTerritoryList.setItems(adjTerritoryData);
 		adjTerritoryList.setCellFactory(param -> new ListCell<Territory>() {
 			@Override
 			protected void updateItem(Territory item, boolean empty) {
@@ -243,7 +226,6 @@ public class MapEditorController implements Initializable {
 			MapUtil.infoBox(ex.getMessage(), "Error", "InvalidMap");
 			return;
 		}
-		
 		Stage stage = (Stage) saveMap.getScene().getWindow();
 		stage.close();
 	}
@@ -261,10 +243,8 @@ public class MapEditorController implements Initializable {
 		if (map.getContinents() != null) {
 			map.getContinents().remove(continent);
 			continentList.getItems().remove(continent);
-
 			MapUtil.outPutMessgae(outPutConsole, "Continent removed successfully.", true);
 		}
-
 	}
 
 	@FXML
@@ -286,27 +266,13 @@ public class MapEditorController implements Initializable {
 	@FXML
 	private void addNewTerritory(ActionEvent event) {
 
-		Territory territory = new Territory();
-		List<Territory> tList = new ArrayList<>();
-
-		territory.setName(newTerritoryName.getText());
-		territory.setxCoordinate(Integer.parseInt(territoryXaxis.getText()));
-		territory.setyCoordinate(Integer.parseInt(territoryYaxis.getText()));
-		territory.setBelongToContinent(continentList.getSelectionModel().getSelectedItem());
-
+		Continent continent = continentList.getSelectionModel().getSelectedItem();
 		Territory adjTerritory = selectAdjTerritories.getSelectionModel().getSelectedItem();
-		if (adjTerritory != null) {
-			tList.add(adjTerritory);
-		}
-		territory.setAdjacentTerritories(tList);
 
-		if (continentList.getSelectionModel().getSelectedItem().getTerritories() == null) {
-			List<Territory> newTList = new ArrayList<>();
-			newTList.add(territory);
-			continentList.getSelectionModel().getSelectedItem().setTerritories(newTList);
-		} else {
-			continentList.getSelectionModel().getSelectedItem().getTerritories().add(territory);
-		}
+		Territory territory = mapModel.addTerritory(newTerritoryName.getText(), territoryXaxis.getText(),
+				territoryYaxis.getText(), adjTerritory, continent);
+
+		continent = mapModel.assignTerrToContinent(continent, territory);
 		selectAdjTerritories.getItems().add(territory);
 		territoryList.getItems().add(territory);
 	}
@@ -338,19 +304,9 @@ public class MapEditorController implements Initializable {
 		} else {
 			loadMapData();
 		}
-    
-		InputStream inputStream = null;
-		try {
-			inputStream = new FileInputStream(new File(getClass().getClassLoader().getResource("risk.jpg").getFile()));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Image image = new Image(inputStream);
-		riskImage.setImage(image);
-	
 
-		/// initialize continent list**********start*****************
+		riskImage = MapUtil.loadImageView(riskImage, getClass().getClassLoader());
+
 		continentList.setCellFactory(param -> new ListCell<Continent>() {
 			@Override
 			protected void updateItem(Continent item, boolean empty) {
@@ -367,19 +323,10 @@ public class MapEditorController implements Initializable {
 
 			@Override
 			public void handle(MouseEvent event) {
-				Continent continent = continentList.getSelectionModel().getSelectedItem();
-				selectedContinent.setText(continent.getName());
-				newContinentName.setText(continent.getName());
-				newContinentName.setDisable(true);
-				newContinentValue.setText(continent.getValue());
-				addContinent.setDisable(true);
-				outPutConsole.clear();
-				populateTerritory(continentList.getSelectionModel().getSelectedItem());
+				onMouseClickContinentList(event);
 			}
 		});
-		/// initialize continent list******done************************
 
-		/// initialize territory list********start*********************
 		territoryList.setCellFactory(param -> new ListCell<Territory>() {
 			@Override
 			protected void updateItem(Territory item, boolean empty) {
@@ -396,21 +343,10 @@ public class MapEditorController implements Initializable {
 
 			@Override
 			public void handle(MouseEvent event) {
-				Territory territory = territoryList.getSelectionModel().getSelectedItem();
-
-				newTerritoryName.setText(territory.getName());
-				territoryXaxis.setText(String.valueOf(territory.getxCoordinate()));
-				territoryYaxis.setText(String.valueOf(territory.getyCoordinate()));
-				newTerritoryName.setDisable(true);
-				addTerritory.setDisable(true);
-				outPutConsole.clear();
-
-				populateAdjTerritory(territory);
+				onMouseClickTerritoryList(event);
 			}
 		});
-		/// initialize territory list*******done***************
 
-		/// initialize adjacentterritory list **********start**************
 		selectAdjTerritories.setCellFactory(param -> new ListCell<Territory>() {
 			@Override
 			protected void updateItem(Territory item, boolean empty) {
@@ -423,7 +359,6 @@ public class MapEditorController implements Initializable {
 				}
 			}
 		});
-		/// initialize adjacentterritory list*******done*******************
 	}
 
 	private void loadAdjTerritoryList() {
@@ -445,5 +380,30 @@ public class MapEditorController implements Initializable {
 		map.getMapData().put("warn", warn.getText());
 		map.getMapData().put("wrap", wrap.getText());
 		return map;
+	}
+
+	private void onMouseClickContinentList(MouseEvent event) {
+		Continent continent = continentList.getSelectionModel().getSelectedItem();
+		selectedContinent.setText(continent.getName());
+		newContinentName.setText(continent.getName());
+		newContinentName.setDisable(true);
+		newContinentValue.setText(continent.getValue());
+		addContinent.setDisable(true);
+		outPutConsole.clear();
+		populateTerritory(continentList.getSelectionModel().getSelectedItem());
+	}
+
+	private void onMouseClickTerritoryList(MouseEvent event) {
+		Territory territory = territoryList.getSelectionModel().getSelectedItem();
+
+		newTerritoryName.setText(territory.getName());
+		territoryXaxis.setText(String.valueOf(territory.getxCoordinate()));
+		territoryYaxis.setText(String.valueOf(territory.getyCoordinate()));
+		newTerritoryName.setDisable(true);
+		addTerritory.setDisable(true);
+		outPutConsole.clear();
+
+		populateAdjTerritory(territory);
+
 	}
 }

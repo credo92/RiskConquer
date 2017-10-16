@@ -14,6 +14,7 @@ import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.map.util.MapUtil;
+import com.risk.model.GameModel;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -31,85 +32,168 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
+/**
+ * Game play controller to control all the 
+ * @author rahul
+ * @version 1.0.0
+ *
+ */
 public class GamePlayController implements Initializable {
 
+	/**
+	 * The @map refrence.
+	 */
 	private Map map;
 
+	/**
+	 * The @gameModel refrence.
+	 */
+	private GameModel gameModel;
+
+	/**
+	 * The @numberOfPlayers count of players.
+	 */
 	@FXML
 	private ChoiceBox<Integer> numberOfPlayers;
 
+	/**
+	 * The @attack button.
+	 */
 	@FXML
 	private Button attack;
 
+	/**
+	 * The @fortify button.
+	 */
 	@FXML
 	private Button fortify;
 
+	/**
+	 * The @endTurn button.
+	 */
 	@FXML
 	private Button endTurn;
 
+	/**
+	 * The @reinforcement button.
+	 */
 	@FXML
 	private Button reinforcement;
 
+	/**
+	 * The @dataDisplay display container.
+	 */
 	@FXML
 	private VBox dataDisplay;
 
+	/**
+	 * The @selectedTerritoryList list of territories drop down.
+	 */
 	@FXML
 	private ListView<Territory> selectedTerritoryList;
 
+	/**
+	 * The @adjTerritoryList adjacent territory list.
+	 */
 	@FXML
 	private ListView<Territory> adjTerritoryList;
 
+	/**
+	 * The @playerTime time remaining for the player.
+	 */
 	@FXML
 	private Label playerTime;
 
+	/**
+	 * The @executor scheduler.
+	 */
 	private ScheduledExecutorService executor;
 
+	/**
+	 * The @playerChosen current player playing.
+	 */
 	@FXML
 	private Label playerChosen;
 
+	/**
+	 * The @gameConsole output console.
+	 */
 	@FXML
 	private TextArea gameConsole;
 
+	/**
+	 * The @placeArmy button.
+	 */
 	@FXML
 	private Button placeArmy;
 
+	/**
+	 * The @numberOfPlayersSelected .
+	 */
 	private int numberOfPlayersSelected;
 
+	/**
+	 * The @gamePlayerList list of players in the game.
+	 */
 	private List<Player> gamePlayerList;
 
+	/**
+	 * The @playerPlaying current player playing.
+	 */
 	private Player playerPlaying;
 
+	/**
+	 * The @playerIterator.
+	 */
 	private Iterator<Player> playerIterator;
 
+	/**
+	 * Constructor for GamePlayController
+	 * 
+	 * @param map
+	 *            reference to the loaded map
+	 */
 	public GamePlayController(Map map) {
 		this.map = map;
+		this.gameModel = new GameModel();
 	}
 
+	/**
+	 * Initialize the number of players.
+	 */
 	public void initializeTotalPlayers() {
 		numberOfPlayers.getItems().removeAll(numberOfPlayers.getItems());
 		numberOfPlayers.getItems().addAll(3, 4, 5, 6);
 	}
 
+	/**
+	 * Create player object on selection of number of players to be played.
+	 */
 	public void selectionOfPlayersListener() {
 		numberOfPlayers.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Integer>() {
 			@Override
 			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
 				setNumberOfPlayersSelected(numberOfPlayers.getSelectionModel().getSelectedItem());
+
 				gamePlayerList.clear();
-				for (int i = 0; i < getNumberOfPlayersSelected(); i++) {
-					String name = "Player" + i;
-					gamePlayerList.add(new Player(i, name));
-					MapUtil.appendTextToGameConsole(name + " created!\n", gameConsole);
-				}
-				MapUtil.appendTextToGameConsole("=========Players created=========\n", gameConsole);
+				gamePlayerList = gameModel.createPlayer(getNumberOfPlayersSelected(), gamePlayerList, gameConsole);
+				MapUtil.appendTextToGameConsole("===Players creation complete===\n", gameConsole);
+
 				numberOfPlayers.setDisable(true);
 				playerIterator = gamePlayerList.iterator();
-				assignArmiesToPlayers();
+
+				gameModel.assignArmiesToPlayers(gamePlayerList, gameConsole);
 				assignTerritoryToPlayer();
 			}
 		});
 	}
 
+	/*
+	 * (non-Javadoc) Game controller initializer, loading map data.
+	 * 
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL,
+	 * java.util.ResourceBundle)
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		gamePlayerList = new ArrayList<>();
@@ -157,6 +241,12 @@ public class GamePlayController implements Initializable {
 		});
 	}
 
+	/**
+	 * Populate adjacent territory of a given territory.
+	 * 
+	 * @param territory
+	 *            territory to be checked
+	 */
 	private void populateAdjTerritory(Territory territory) {
 		this.adjTerritoryList.getItems().clear();
 		for (Territory adjTerr : territory.getAdjacentTerritories()) {
@@ -164,46 +254,64 @@ public class GamePlayController implements Initializable {
 		}
 	}
 
+	/**
+	 * Attack Phase of the game play.
+	 * 
+	 * @param event
+	 *            event.
+	 */
 	@FXML
 	private void attack(ActionEvent event) {
 	}
 
+	/**
+	 * Fortify phase of the game play.
+	 * 
+	 * @param event
+	 *            event
+	 */
 	@FXML
 	private void fortify(ActionEvent event) {
-		Territory selectedTerr = this.selectedTerritoryList.getSelectionModel().getSelectedItem();
-		Territory adjTerr = this.adjTerritoryList.getSelectionModel().getSelectedItem();
-		if (selectedTerr == null) {
+		Territory selectedTerritory = this.selectedTerritoryList.getSelectionModel().getSelectedItem();
+		Territory adjTerritory = this.adjTerritoryList.getSelectionModel().getSelectedItem();
+
+		if (selectedTerritory == null) {
 			MapUtil.infoBox("Please choose Selected Territory as source.", "Message", "");
 			return;
-		} else if (adjTerr == null) {
+		} else if (adjTerritory == null) {
 			MapUtil.infoBox("Please choose Adjacent Territory as destination.", "Message", "");
 			return;
-		} else if (!(adjTerr.getPlayer().equals(playerPlaying))) {
+		} else if (!(adjTerritory.getPlayer().equals(playerPlaying))) {
 			MapUtil.infoBox("Adjacent Territory does not belong to you.", "Message", "");
 			return;
 		}
-		MapUtil.appendTextToGameConsole("======Fortification started======\n", gameConsole);
+
 		Integer armies = Integer.valueOf(MapUtil.inputDialogueBoxForArmiesFortification());
 		if (armies > 0) {
-			if (selectedTerr.getArmies() == armies) {
+			if (selectedTerritory.getArmies() == armies) {
 				MapUtil.infoBox("You cannot move all the armies.", "Message", "");
 				return;
-			} else if (selectedTerr.getArmies() < armies) {
+			} else if (selectedTerritory.getArmies() < armies) {
 				MapUtil.infoBox("You don't have " + armies + " armies.", "Message", "");
 				return;
 			} else {
-				selectedTerr.setArmies(selectedTerr.getArmies() - armies);
-				adjTerr.setArmies(adjTerr.getArmies() + armies);
+				selectedTerritory.setArmies(selectedTerritory.getArmies() - armies);
+				adjTerritory.setArmies(adjTerritory.getArmies() + armies);
 				selectedTerritoryList.refresh();
 				adjTerritoryList.refresh();
 				MapUtil.appendTextToGameConsole("=======Fortification ended=======\n", gameConsole);
 			}
 		}
-		executor.shutdown();
 		// initialize re-inforcement for the next player
 		initializeReinforcement();
 	}
 
+	/**
+	 * Action on endTurn event, load another player.
+	 * 
+	 * @param event
+	 *            event
+	 */
 	@FXML
 	private void endTurn(ActionEvent event) {
 		if (!executor.isShutdown()) {
@@ -212,6 +320,12 @@ public class GamePlayController implements Initializable {
 		start();
 	}
 
+	/**
+	 * Place armies on territory in round robin manner.
+	 * 
+	 * @param event
+	 *            event
+	 */
 	@FXML
 	private void placeArmy(ActionEvent event) {
 		int playerArmies = playerPlaying.getArmies();
@@ -225,26 +339,25 @@ public class GamePlayController implements Initializable {
 		}
 		loadMapData();
 		selectedTerritoryList.refresh();
-		executor.shutdownNow();
-		if (executor.isShutdown()) {
-			start();
-		}
-		int count = 0;
 
-		for (Player player : gamePlayerList) {
-			if (player.getArmies() == 0) {
-				count++;
+		boolean armiesExhausted = gameModel.checkIfPlayersArmiesExhausted(gamePlayerList);
+		if (armiesExhausted) {
+			initializeReinforcement();
+		} else {
+			executor.shutdownNow();
+			if (executor.isShutdown()) {
+				start();
 			}
 		}
-		if (count == gamePlayerList.size()) {
-			MapUtil.appendTextToGameConsole("====================================\n", gameConsole);
-			MapUtil.appendTextToGameConsole("=====Armies assignation complete====\n", gameConsole);
-			executor.shutdownNow();
-			initializeReinforcement();
-		}
-		// loadPlayerInRoundRobin();
 	}
 
+	/**
+	 * Game reinforcement phase. Assinging armies to the player and player assinging
+	 * armies to their territory.
+	 * 
+	 * @param event
+	 *            event
+	 */
 	@FXML
 	private void reinforcement(ActionEvent event) {
 		if (playerPlaying.getArmies() > 0) {
@@ -272,6 +385,9 @@ public class GamePlayController implements Initializable {
 		}
 	}
 
+	/**
+	 * Load map data on the game screen.
+	 */
 	private void loadMapData() {
 		dataDisplay.getChildren().clear();
 		for (Continent continent : map.getContinents()) {
@@ -284,67 +400,22 @@ public class GamePlayController implements Initializable {
 	 * Distribute all territory among the player.
 	 */
 	private void assignTerritoryToPlayer() {
-		MapUtil.appendTextToGameConsole("======Assigning territories========\n", gameConsole);
-		List<Territory> allterritories = new ArrayList<>();
-
-		if (map.getContinents() != null) {
-			for (Continent continent : map.getContinents()) {
-				if (continent != null && continent.getTerritories() != null) {
-					for (Territory territory : continent.getTerritories()) {
-						allterritories.add(territory);
-					}
-				}
-			}
-		}
-		int count = 0;
-		int totalTerritory = allterritories.size();
-		while (count < totalTerritory) {
-			for (Player player : gamePlayerList) {
-				for (Territory territory : allterritories) {
-					if (territory.getPlayer() == null) {
-						count++;
-						territory.setPlayer(player);
-						territory.setArmies(territory.getArmies() + 1);
-						player.setArmies(player.getArmies() - 1);
-						player.getAssignedTerritory().add(territory);
-						MapUtil.appendTextToGameConsole(
-								territory.getName() + " assigned to " + player.getName() + " ! \n", gameConsole);
-						break;
-					}
-					continue;
-				}
-			}
-		}
+		MapUtil.appendTextToGameConsole("===Assigning territories===\n", gameConsole);
+		gameModel.assignTerritoryToPlayer(map, gamePlayerList, gameConsole);
 		MapUtil.appendTextToGameConsole("===Territories assignation complete===\n", gameConsole);
 		loadMapData();
 		start();
 	}
 
-	private void assignArmiesToPlayers() {
-		MapUtil.appendTextToGameConsole("========Assigning armies now.======\n", gameConsole);
-		int armySizePerPlayer = 0;
-		int noOfPlayers = gamePlayerList.size();
-		if (noOfPlayers == 3)
-			armySizePerPlayer = 15;
-		else if (noOfPlayers == 4)
-			armySizePerPlayer = 30;
-		else if (noOfPlayers == 5)
-			armySizePerPlayer = 25;
-		else if (noOfPlayers == 6)
-			armySizePerPlayer = 20;
-
-		for (Player player : gamePlayerList) {
-			player.setArmies(armySizePerPlayer);
-			MapUtil.appendTextToGameConsole(player.getName() + " assigned: " + armySizePerPlayer + "\n", gameConsole);
-		}
-	}
-
-	private void loadPlayerInRoundRobin() {
+	/**
+	 * Load the information of the current player playing.
+	 */
+	private void loadPlayingPlayer() {
 		if (!playerIterator.hasNext()) {
 			playerIterator = gamePlayerList.iterator();
 		}
 		playerPlaying = playerIterator.next();
-		MapUtil.appendTextToGameConsole("=====================================\n", gameConsole);
+		MapUtil.appendTextToGameConsole("=========================\n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "!....started playing.\n", gameConsole);
 		selectedTerritoryList.getItems().clear();
 		adjTerritoryList.getItems().clear();
@@ -354,15 +425,12 @@ public class GamePlayController implements Initializable {
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
 	}
 
+	/**
+	 * Calculate reinforcement armies based ont the game rules.
+	 */
 	private void calculateReinforcementArmies() {
 		if (this.playerPlaying != null) {
-			int currentArmies = playerPlaying.getArmies();
-			int territoryCount = playerPlaying.getAssignedTerritory().size();
-			if (territoryCount < 9) {
-				playerPlaying.setArmies(currentArmies + 3);
-			} else {
-				playerPlaying.setArmies((territoryCount / 3) + currentArmies);
-			}
+			playerPlaying = gameModel.calculateReinforcementArmies(playerPlaying);
 			playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
 		} else {
 			MapUtil.appendTextToGameConsole("Error!. No player playing.", gameConsole);
@@ -374,22 +442,28 @@ public class GamePlayController implements Initializable {
 		executor.scheduleWithFixedDelay(new Runnable() {
 			@Override
 			public void run() {
-				Platform.runLater(() -> loadPlayerInRoundRobin());
+				Platform.runLater(() -> loadPlayingPlayer());
 			}
 
 		}, 0, 300000, TimeUnit.MILLISECONDS);
 	}
 
+	/**
+	 * Initialize reinforcement phase of the game.
+	 */
 	private void initializeReinforcement() {
-		start();
-		calculateReinforcementArmies();
+		loadPlayingPlayer();
 		placeArmy.setDisable(true);
 		reinforcement.requestFocus();
 		MapUtil.appendTextToGameConsole("=======================================\n", gameConsole);
 		MapUtil.appendTextToGameConsole("======Start Reinforcement! =========== \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "\n", gameConsole);
+		calculateReinforcementArmies();
 	}
 
+	/**
+	 * Initialize attack phase of the game.
+	 */
 	private void initializeAttack() {
 		attack.requestFocus();
 		MapUtil.appendTextToGameConsole("======================================= \n", gameConsole);
@@ -397,18 +471,26 @@ public class GamePlayController implements Initializable {
 		initializeFortification();
 	}
 
+	/**
+	 * Initialize fortification phase of the game.
+	 */
 	private void initializeFortification() {
 		fortify.requestFocus();
 		MapUtil.appendTextToGameConsole("======================================= \n", gameConsole);
 		MapUtil.appendTextToGameConsole("====Fortification phase started! ====== \n", gameConsole);
 	}
 
+	/**
+	 * @return int number of layer selected
+	 */
 	public int getNumberOfPlayersSelected() {
 		return numberOfPlayersSelected;
 	}
 
+	/**
+	 * @param numberOfPlayersSelected
+	 */
 	public void setNumberOfPlayersSelected(int numberOfPlayersSelected) {
 		this.numberOfPlayersSelected = numberOfPlayersSelected;
 	}
-
 }
