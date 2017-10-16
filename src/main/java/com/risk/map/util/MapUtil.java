@@ -1,6 +1,9 @@
 package com.risk.map.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Optional;
 
 import com.risk.entity.Continent;
@@ -12,11 +15,14 @@ import com.risk.validate.MapValidator;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
@@ -32,6 +38,13 @@ public class MapUtil {
 	public static void clearTextField(TextField... fields) {
 		for (TextField field : fields) {
 			field.clear();
+		}
+	}
+
+	public static void disableControl(Control... controls) {
+		for (Control control : controls) {
+			control.setDisable(true);
+			;
 		}
 	}
 
@@ -136,5 +149,19 @@ public class MapUtil {
 
 	public static void appendTextToGameConsole(String valueOf, TextArea gameConsole) {
 		Platform.runLater(() -> gameConsole.appendText(valueOf));
+	}
+
+	public static ImageView loadImageView(ImageView imageView, ClassLoader classLoader) {
+		InputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(new File(classLoader.getResource("risk.jpg").getFile()));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Image image = new Image(inputStream);
+		imageView.setImage(image);
+		
+		return imageView;
 	}
 }
