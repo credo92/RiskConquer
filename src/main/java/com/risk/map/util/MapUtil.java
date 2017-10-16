@@ -41,9 +41,19 @@ public class MapUtil {
 		}
 	}
 
+	/**
+	 * @param controls
+	 */
 	public static void disableControl(Control... controls) {
 		for (Control control : controls) {
 			control.setDisable(true);
+			;
+		}
+	}
+	
+	public static void enableControl(Control... controls) {
+		for (Control control : controls) {
+			control.setDisable(false);
 			;
 		}
 	}

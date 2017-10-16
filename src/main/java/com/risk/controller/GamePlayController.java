@@ -33,7 +33,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 /**
- * Game play controller to control all the 
+ * Game play controller to control all the
+ * 
  * @author rahul
  * @version 1.0.0
  *
@@ -200,6 +201,7 @@ public class GamePlayController implements Initializable {
 		initializeTotalPlayers();
 		selectionOfPlayersListener();
 		loadMapData();
+		MapUtil.disableControl(reinforcement, fortify, attack);
 
 		selectedTerritoryList.setCellFactory(param -> new ListCell<Territory>() {
 			@Override
@@ -453,7 +455,8 @@ public class GamePlayController implements Initializable {
 	 */
 	private void initializeReinforcement() {
 		loadPlayingPlayer();
-		placeArmy.setDisable(true);
+		MapUtil.disableControl(placeArmy, fortify,attack);
+		MapUtil.enableControl(reinforcement);
 		reinforcement.requestFocus();
 		MapUtil.appendTextToGameConsole("=======================================\n", gameConsole);
 		MapUtil.appendTextToGameConsole("======Start Reinforcement! =========== \n", gameConsole);
@@ -465,6 +468,8 @@ public class GamePlayController implements Initializable {
 	 * Initialize attack phase of the game.
 	 */
 	private void initializeAttack() {
+		MapUtil.disableControl(reinforcement);
+		MapUtil.enableControl(attack);
 		attack.requestFocus();
 		MapUtil.appendTextToGameConsole("======================================= \n", gameConsole);
 		MapUtil.appendTextToGameConsole("===Attack phase under developement! === \n", gameConsole);
@@ -475,6 +480,8 @@ public class GamePlayController implements Initializable {
 	 * Initialize fortification phase of the game.
 	 */
 	private void initializeFortification() {
+		MapUtil.disableControl(reinforcement,attack);
+		MapUtil.enableControl(fortify);
 		fortify.requestFocus();
 		MapUtil.appendTextToGameConsole("======================================= \n", gameConsole);
 		MapUtil.appendTextToGameConsole("====Fortification phase started! ====== \n", gameConsole);
