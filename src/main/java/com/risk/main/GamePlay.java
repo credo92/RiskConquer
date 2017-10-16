@@ -1,8 +1,9 @@
-package com.app.team19;
+package com.risk.main;
 
 import java.io.File;
 import java.io.IOException;
 
+import com.risk.controller.GamePlayController;
 import com.risk.controller.MapEditorController;
 import com.risk.entity.Map;
 import com.risk.exception.InvalidMapException;
@@ -14,15 +15,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class MapEditor implements EventHandler<ActionEvent> {
+public class GamePlay implements EventHandler<ActionEvent> {
 
 	@Override
 	public void handle(ActionEvent event) {
-
-		final Stage mapEditorStage = new Stage();
-		mapEditorStage.setTitle("Map Editor");
 
 		File file = MapUtil.showFileChooser();
 
@@ -34,21 +33,35 @@ public class MapEditor implements EventHandler<ActionEvent> {
 			MapUtil.infoBox(ex.getMessage(), "Error", "Invalid Map");
 			return;
 		}
-		MapEditorController controller = new MapEditorController(map, file);
+		GamePlayController controller = new GamePlayController(map);
 
-		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("MapLayout.fxml"));
+		// TODO validation of map file selected before proceeding to select
+
+		final Stage mapSelectorStage = new Stage();
+		mapSelectorStage.setTitle("Game Screen");
+
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("MapSelectorLayout.fxml"));
 		loader.setController(controller);
-
 		Parent root = null;
 		try {
 			root = (Parent) loader.load();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		Scene scene = new Scene(root);
-		mapEditorStage.setScene(scene);
-		mapEditorStage.show();
+		mapSelectorStage.setScene(scene);
+		mapSelectorStage.show();
+	}
+
+	/**
+	 * @return
+	 */
+	public static Button loadExistingMapButton(Scene scene) {
+		Button loadMapButton = new Button("Load Map");
+		loadMapButton.setOnAction(new MapEditor());
+		loadMapButton.setMaxWidth(scene.getWidth());
+
+		return loadMapButton;
 	}
 }

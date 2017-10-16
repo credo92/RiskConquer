@@ -17,10 +17,9 @@ public class Player {
 
 	private List<Territory> assignedTerritory;
 
-	public Player(int id, String name, int armies) {
+	public Player(int id, String name) {
 		this.id = id;
 		this.name = name;
-		this.armies = armies;
 		this.assignedTerritory = new ArrayList<>();
 	}
 
@@ -83,7 +82,7 @@ public class Player {
 	public void setAssignedTerritory(List<Territory> assignedTerritory) {
 		this.assignedTerritory = assignedTerritory;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 

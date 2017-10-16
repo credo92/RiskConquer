@@ -243,7 +243,7 @@ public class MapEditorController implements Initializable {
 			MapUtil.infoBox(ex.getMessage(), "Error", "InvalidMap");
 			return;
 		}
-
+		
 		Stage stage = (Stage) saveMap.getScene().getWindow();
 		stage.close();
 	}
