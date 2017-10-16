@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class CreateMap implements EventHandler<ActionEvent> {
-
+	 Parent rootNode = null;
 	@Override
 	public void handle(ActionEvent event) {
 
@@ -27,6 +27,7 @@ public class CreateMap implements EventHandler<ActionEvent> {
 		Parent root = null;
 		try {
 			root = (Parent) loader.load();
+		    this.rootNode = root;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -36,4 +37,5 @@ public class CreateMap implements EventHandler<ActionEvent> {
 		newMapStage.setScene(scene);
 		newMapStage.show();
 	}
+	
 }
