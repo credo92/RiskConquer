@@ -27,7 +27,7 @@
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>8.1.2</version>
 				<configuration>
-					<mainClass>com.app.team19.Main</mainClass>
+					<mainClass>com.risk.main.Main</mainClass>
 					<nativeInstallers />
 				</configuration>
 			</plugin>

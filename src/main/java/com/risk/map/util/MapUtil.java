@@ -9,6 +9,7 @@ import com.risk.entity.Territory;
 import com.risk.exception.InvalidMapException;
 import com.risk.validate.MapValidator;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -39,10 +40,10 @@ public class MapUtil {
 	 */
 	public static File showFileChooser() {
 		FileChooser fileChooser = new FileChooser();
-
+		File file = null;
 		FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Map files (*.map)", "*.map");
 		fileChooser.getExtensionFilters().add(extensionFilter);
-		File file = fileChooser.showOpenDialog(null);
+		file = fileChooser.showOpenDialog(null);
 
 		return file;
 	}
@@ -103,16 +104,16 @@ public class MapUtil {
 		}
 		return input;
 	}
-	
+
 	public static int inputDialogueBoxForArmiesFortification() {
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.setTitle("Input a number");
 		dialog.setHeaderText("Enter number of armies for fortification (1 less than total number)");
 		Optional<String> result = dialog.showAndWait();
-		if(result.isPresent())
+		if (result.isPresent())
 			return Integer.parseInt(result.get());
 		else
-			return 0;		
+			return 0;
 	}
 
 	public static TitledPane createNewTitledPane(Continent continent) {
@@ -131,5 +132,9 @@ public class MapUtil {
 
 		return pane;
 
+	}
+
+	public static void appendTextToGameConsole(String valueOf, TextArea gameConsole) {
+		Platform.runLater(() -> gameConsole.appendText(valueOf));
 	}
 }
