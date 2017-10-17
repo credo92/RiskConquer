@@ -79,7 +79,7 @@ public class MapValidator {
 				}
 			}
 		}
-		if (set.size() >= 0) {
+		if (set.size() > 0) {
 			isASubGraph = true;
 		}
 		return isASubGraph;
