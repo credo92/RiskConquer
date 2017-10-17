@@ -138,7 +138,8 @@ public class MapFileParser {
 		for (Territory t : territories) {
 			tMap.put(t.getName(), t);
 		}
-
+		
+		//Map adjacnet territory object to territory
 		for (Territory t : territories) {
 			for (String name : t.getAdjTerritories()) {
 				if (tMap.containsKey(name)) {

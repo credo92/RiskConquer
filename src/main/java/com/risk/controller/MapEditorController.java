@@ -108,12 +108,6 @@ public class MapEditorController implements Initializable {
 	@FXML
 	private ComboBox<Territory> selectAdjTerritories;
 
-	public static final ObservableList<Continent> continentData = FXCollections.observableArrayList();
-
-	public static final ObservableList<Territory> territoryData = FXCollections.observableArrayList();
-
-	public static final ObservableList<Territory> adjTerritoryData = FXCollections.observableArrayList();
-
 	public MapEditorController() {
 		this.mapModel = new MapModel();
 	}
@@ -129,7 +123,7 @@ public class MapEditorController implements Initializable {
 		Continent continent = continentList.getSelectionModel().getSelectedItem();
 		continent = mapModel.updateContinent(continent, newContinentValue.getText());
 
-		MapUtil.disableControl(newContinentName, addContinent);
+		MapUtil.enableControl(newContinentName, addContinent);
 
 		MapUtil.clearTextField(newContinentName, newContinentValue);
 	}
@@ -141,7 +135,8 @@ public class MapEditorController implements Initializable {
 		Territory adjTerritory = selectAdjTerritories.getSelectionModel().getSelectedItem();
 		territory = mapModel.updateTerritory(territory, territoryXaxis.getText(), territoryYaxis.getText(),
 				adjTerritory);
-		MapUtil.disableControl(newTerritoryName, addTerritory);
+
+		MapUtil.enableControl(newTerritoryName, addTerritory);
 
 		MapUtil.clearTextField(newTerritoryName, territoryXaxis, territoryYaxis);
 	}
@@ -149,7 +144,14 @@ public class MapEditorController implements Initializable {
 	@FXML
 	private void addNewContinent(ActionEvent event) {
 
-		Continent continent = mapModel.addContinent(newContinentName.getText(), newContinentValue.getText());
+		Continent continent = null;
+
+		try {
+			continent = mapModel.addContinent(map, newContinentName.getText(), newContinentValue.getText());
+		} catch (InvalidMapException ex) {
+			MapUtil.infoBox(ex.getMessage(), "Error", "Invalid Map");
+			return;
+		}
 		if (continentList == null) {
 			continentList = new ListView<Continent>();
 		}
@@ -269,8 +271,15 @@ public class MapEditorController implements Initializable {
 		Continent continent = continentList.getSelectionModel().getSelectedItem();
 		Territory adjTerritory = selectAdjTerritories.getSelectionModel().getSelectedItem();
 
-		Territory territory = mapModel.addTerritory(newTerritoryName.getText(), territoryXaxis.getText(),
-				territoryYaxis.getText(), adjTerritory, continent);
+		Territory territory = null;
+
+		try {
+			territory = mapModel.addTerritory(map, newTerritoryName.getText(), territoryXaxis.getText(),
+					territoryYaxis.getText(), adjTerritory, continent);
+		} catch (InvalidMapException ex) {
+			MapUtil.infoBox(ex.getMessage(), "Error", "Invalid Map");
+			return;
+		}
 
 		continent = mapModel.assignTerrToContinent(continent, territory);
 		selectAdjTerritories.getItems().add(territory);
