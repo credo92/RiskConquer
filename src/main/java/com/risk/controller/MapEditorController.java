@@ -280,7 +280,7 @@ public class MapEditorController implements Initializable {
 			MapUtil.infoBox(ex.getMessage(), "Error", "Invalid Map");
 			return;
 		}
-
+		MapUtil.clearTextField(newTerritoryName,territoryXaxis,territoryYaxis);
 		continent = mapModel.assignTerrToContinent(continent, territory);
 		selectAdjTerritories.getItems().add(territory);
 		territoryList.getItems().add(territory);
@@ -398,6 +398,9 @@ public class MapEditorController implements Initializable {
 		newContinentName.setDisable(true);
 		newContinentValue.setText(continent.getValue());
 		addContinent.setDisable(true);
+		MapUtil.clearTextField(newTerritoryName, territoryXaxis, territoryYaxis);
+		MapUtil.enableControl(newTerritoryName, addTerritory);
+		adjTerritoryList.getItems().clear();
 		outPutConsole.clear();
 		populateTerritory(continentList.getSelectionModel().getSelectedItem());
 	}
