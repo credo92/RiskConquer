@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Territory;
@@ -280,7 +282,7 @@ public class MapEditorController implements Initializable {
 			MapUtil.infoBox(ex.getMessage(), "Error", "Invalid Map");
 			return;
 		}
-		MapUtil.clearTextField(newTerritoryName,territoryXaxis,territoryYaxis);
+		MapUtil.clearTextField(newTerritoryName, territoryXaxis, territoryYaxis);
 		continent = mapModel.assignTerrToContinent(continent, territory);
 		selectAdjTerritories.getItems().add(territory);
 		territoryList.getItems().add(territory);
@@ -383,12 +385,21 @@ public class MapEditorController implements Initializable {
 
 	private Map saveOrUpdateMapDetail(Map map) {
 
-		map.getMapData().put("author", author.getText());
-		map.getMapData().put("image", image.getText());
-		map.getMapData().put("scroll", scroll.getText());
-		map.getMapData().put("warn", warn.getText());
-		map.getMapData().put("wrap", wrap.getText());
+		map.getMapData().put("author", getDummyNameIfBlank(author.getText()));
+		map.getMapData().put("image", getDummyNameIfBlank(image.getText()));
+		map.getMapData().put("scroll", getDummyNameIfBlank(scroll.getText()));
+		map.getMapData().put("warn", getDummyNameIfBlank(warn.getText()));
+		map.getMapData().put("wrap", getDummyNameIfBlank(wrap.getText()));
 		return map;
+	}
+
+	/**
+	 * Get dummy if value blank
+	 * @param value
+	 * @return String dummy if string is blank
+	 */
+	private String getDummyNameIfBlank(String value) {
+		return StringUtils.isNotEmpty(value) ? value : "Dummy";
 	}
 
 	private void onMouseClickContinentList(MouseEvent event) {
