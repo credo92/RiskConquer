@@ -24,12 +24,14 @@ public class MapValidator {
 	 */
 	public static void validateMap(Map map) throws InvalidMapException {
 		if (map != null) {
-			for (Continent continent : map.getContinents()) {
-				if (continent != null) {
-					validateContinent(continent, map);
-				} else {
-					throw new InvalidMapException("Map should contain atleast one continent.");
+			if (map.getContinents().size() > 0) {
+				for (Continent continent : map.getContinents()) {
+					if (continent != null) {
+						validateContinent(continent, map);
+					}
 				}
+			} else {
+				throw new InvalidMapException("Map should contain atleast one continent.");
 			}
 			isTerritoryUniquelyAssociated(map);
 		} else {

@@ -1,14 +1,22 @@
 package com.risk.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.risk.entity.Continent;
+import com.risk.entity.Map;
 import com.risk.entity.Territory;
+import com.risk.exception.InvalidMapException;
 
 public class MapModelTest {
+	static Map map;
 	static Continent continent;
 	static Territory territory;
 	static Territory adjTerritory;
@@ -21,6 +29,13 @@ public class MapModelTest {
 	String xAxis2 = "2";
 	String yAxis1 = "1";
 	String yAxis2 = "2";
+	String mapAuthor = "Robert";
+	String mapImage = "world.map";
+	String mapWrap = "no";
+	String mapScroll = "horizontal";
+	String mapWarn = "yes";
+	
+	static HashMap<String, String> mapData;
 	
 	/**
 	 * This method is invoked at the start of the test class.
@@ -28,11 +43,27 @@ public class MapModelTest {
 	@BeforeClass
 	public static void beforeClass() {
 		System.out.println("Testing MapModel.java started");
+		map = new Map();
 		continent = new Continent();
 		territory = new Territory();
 		adjTerritory = new Territory();
-		mapModel = new MapModel();
+		mapModel = new MapModel();		
 	}	
+	
+	/**
+	 * This method is invoked at the start of all the test methods.
+	 */
+	@Before
+	public void beforeTest() {
+		mapData = new HashMap<>();
+		mapData.put("author", mapAuthor);
+		mapData.put("image", mapImage);
+		mapData.put("wrap", mapWrap);
+		mapData.put("scroll", mapScroll);
+		mapData.put("warn", mapWarn);		
+		map.setMapData(mapData);
+		
+	}
 	
 	/**
 	 * This method is invoked at the end of the test class.
@@ -44,10 +75,11 @@ public class MapModelTest {
 	
 	/**
 	 * This method is to test add Continent functionality.
+	 * @throws InvalidMapException 
 	 */
 	@Test
-	public void addContinent() {
-		continent =  mapModel.addContinent(continentName, controlValue1);
+	public void addContinent() throws InvalidMapException {
+		continent =  mapModel.addContinent(map, continentName, controlValue1);
 		Assert.assertNotNull(continent);
 		Assert.assertEquals(continent.getName(), continentName);
 		Assert.assertEquals(continent.getValue(), controlValue1);
@@ -64,12 +96,40 @@ public class MapModelTest {
 		Assert.assertNotEquals(continent.getValue(), controlValue1);
 	}
 	
+	
+	public Territory addTerritory(Map map,String name, String xAxis, String yAxis, Territory adjTerritory,
+			Continent continent) throws InvalidMapException{
+
+		Territory territory = new Territory();
+		List<Territory> tList = new ArrayList<>();
+
+		territory.setName(name);
+		territory.setxCoordinate(Integer.parseInt(xAxis));
+		territory.setyCoordinate(Integer.parseInt(yAxis));
+		territory.setBelongToContinent(continent);
+		if (adjTerritory != null) {
+			tList.add(adjTerritory);
+		}
+		territory.setAdjacentTerritories(tList);
+		
+		//check for unique territory
+		for(Continent existContinent: map.getContinents()) {
+			if (existContinent.getTerritories().contains(territory)) {
+				throw new InvalidMapException("Territory: "+ name+" already exist in continent "+ existContinent.getName());
+			}
+		}
+		
+		return territory;
+	}
+	
+	
 	/**
 	 * This method is to test add Territory functionality.
+	 * @throws InvalidMapException 
 	 */
 	@Test
-	public void addTerritory() {
-		territory = mapModel.addTerritory(territoryName, xAxis1, yAxis1, null, continent);
+	public void addTerritory() throws InvalidMapException {
+		territory = mapModel.addTerritory(map, territoryName, xAxis1, yAxis1, null, continent);
 		Assert.assertNotNull(territory);
 		Assert.assertEquals(territory.getName(), territoryName);
 		Assert.assertEquals(territory.getxCoordinate(), Integer.parseInt(xAxis1));
@@ -92,11 +152,12 @@ public class MapModelTest {
 	
 	/**
 	 * This method is to test assigning territory to a continent.
+	 * @throws InvalidMapException 
 	 */
 	@Test
-	public void assignTerrToContinent() {
+	public void assignTerrToContinent() throws InvalidMapException {
 		Territory newTerritory = new Territory();
-		newTerritory = mapModel.addTerritory("Canada", "1", "10", null, continent);
+		newTerritory = mapModel.addTerritory(map, "Canada", "1", "10", null, continent);
 		continent = mapModel.assignTerrToContinent(continent, newTerritory);
 		Assert.assertNotNull(continent);
 		Assert.assertTrue(continent.getTerritories().contains(newTerritory));
