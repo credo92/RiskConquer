@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * @author rahul
+ * This is an entity class for Continent with name, value, territoryMap and territories as its member variables.
+ * @version 1.0.0
  *
  */
 public class Continent {
