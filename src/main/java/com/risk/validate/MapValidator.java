@@ -1,6 +1,5 @@
 package com.risk.validate;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +12,7 @@ import com.risk.exception.InvalidMapException;
 
 /**
  * Map validator.
+ * 
  * @author rahul
  * @version 1.0.0
  */
@@ -98,14 +98,13 @@ public class MapValidator {
 		return isASubGraph;
 	}
 
+	
 	/**
 	 * Check if the territory is a valid territory. It has atleast one adjacent
 	 * territory.
-	 * 
-	 * @param territory
-	 *            territory to be tested
-	 * @throws InvalidMapException
-	 *             invalid map exception.
+	 * @param territory territory object
+	 * @param map map object
+	 * @throws InvalidMapException invalid map exception
 	 */
 	public static void validateTerritory(Territory territory, Map map) throws InvalidMapException {
 
@@ -126,15 +125,12 @@ public class MapValidator {
 			}
 		}
 	}
+
 	
 	/**
 	 * Check if a territory forms a connected graph or not.
-	 * 
-	 * @param map
-	 *            map object
-	 * @throws InvalidMapException
-	 *             invalid map exception
-	 * @return true or false depending upon the result of the function.
+	 * @param territory territory object
+	 * @return boolean isTerritory a connected graph
 	 */
 	public static boolean isTerritoryAConnectedGraph(Territory territory) {
 		HashSet<Territory> territorySet = new HashSet<>();
@@ -142,9 +138,9 @@ public class MapValidator {
 		List<Territory> territoryList = continent.getTerritories();
 		territorySet.add(territory);
 		territory.setProcessed(true);
-		
+
 		checkGraph(territory, territorySet);
-		for (Territory terr: continent.getTerritories()) {
+		for (Territory terr : continent.getTerritories()) {
 			terr.setProcessed(false);
 		}
 		if (territorySet.containsAll(territoryList)) {
@@ -153,7 +149,7 @@ public class MapValidator {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Check if a graph is connected or not.
 	 * 
@@ -161,8 +157,6 @@ public class MapValidator {
 	 *            territory object
 	 * @param tSet
 	 *            tSet object
-	 * @throws InvalidMapException
-	 *             invalid map exception
 	 */
 	public static void checkGraph(Territory territory, HashSet<Territory> tSet) {
 		boolean isUnProcessedTerritory = false;

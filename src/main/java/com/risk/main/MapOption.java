@@ -48,6 +48,7 @@ public class MapOption implements EventHandler<ActionEvent> {
 	}
 
 	/**
+	 * Load new map
 	 * @param scene {@link Scene} to depict UI screen.
 	 * @return {@link Button} wherein button opens up a new map
 	 */
@@ -60,6 +61,7 @@ public class MapOption implements EventHandler<ActionEvent> {
 	}
 
 	/**
+	 * Edit existing map
 	 * @param scene {@link Scene} to depict UI screen.
 	 * @return {@link Button} wherein button opens up a screen to load and edit map.
 	 */
@@ -72,6 +74,7 @@ public class MapOption implements EventHandler<ActionEvent> {
 	}
 	
 	/**
+	 * Exit Map editor screen.
 	 * @param scene {@link Scene} to depict UI screen.
 	 * @return {@link Button} wherein button exits the window.
 	 */

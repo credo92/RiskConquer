@@ -511,7 +511,7 @@ public class GamePlayController implements Initializable {
 	}
 
 	/**
-	 * @param numberOfPlayersSelected
+	 * @param numberOfPlayersSelected number of player selected
 	 */
 	public void setNumberOfPlayersSelected(int numberOfPlayersSelected) {
 		this.numberOfPlayersSelected = numberOfPlayersSelected;

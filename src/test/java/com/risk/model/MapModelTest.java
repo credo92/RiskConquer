@@ -1,8 +1,6 @@
 package com.risk.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -47,7 +45,6 @@ public class MapModelTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() {
-		System.out.println("Testing MapModel.java started");
 		map = new Map();
 		continent = new Continent();
 		territory = new Territory();
@@ -71,16 +68,8 @@ public class MapModelTest {
 	}
 	
 	/**
-	 * This method is invoked at the end of the test class.
-	 */
-	@AfterClass
-	public static void afterClass() {
-		System.out.println("Testing MapModel.java completed");
-	}	
-	
-	/**
 	 * This method is to test add Continent functionality.
-	 * @throws InvalidMapException 
+	 * @throws InvalidMapException invaild map exception
 	 */
 	@Test
 	public void addContinent() throws InvalidMapException {
@@ -103,7 +92,7 @@ public class MapModelTest {
 	
 	/**
 	 * This method is to test add Territory functionality.
-	 * @throws InvalidMapException 
+	 * @throws InvalidMapException invaild map exception
 	 */
 	@Test
 	public void addTerritory() throws InvalidMapException {
@@ -130,7 +119,7 @@ public class MapModelTest {
 	
 	/**
 	 * This method is to test assigning territory to a continent.
-	 * @throws InvalidMapException 
+	 * @throws InvalidMapException invaild map exception
 	 */
 	@Test
 	public void assignTerrToContinent() throws InvalidMapException {

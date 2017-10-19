@@ -3,7 +3,6 @@ package com.risk.validate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -46,7 +45,6 @@ public class MapValidatorTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() {
-		System.out.println("Testing MapValidator.java started");
 		continent = new Continent();
 		territory = new Territory();
 		map = new Map();
@@ -72,15 +70,7 @@ public class MapValidatorTest {
 		listOfContinents = new ArrayList<>();
 		listOfContinents.add(continent);
 	}
-	
-	/**
-	 * This method is invoked at the end of the test class.
-	 */
-	@AfterClass
-	public static void afterClass() {
-		System.out.println("Testing MapValidator.java completed");
-	}
-	
+		
 	/**
 	 * This method is used to test if a map is null or not.
 	 * @throws InvalidMapException invalid map exception.

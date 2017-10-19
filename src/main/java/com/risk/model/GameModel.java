@@ -13,16 +13,21 @@ import javafx.scene.control.TextArea;
 
 /**
  * This class is used to represent modeling of Game.
+ * 
  * @author rahul
  * @version 1.0.0.
  *
  */
 public class GameModel {
-	
+
 	/**
-	 * This method is used to assign armies to players and display data in the textarea in UI.
-	 * @param players number of players input by user.
-	 * @param textArea to show up data on UI.
+	 * This method is used to assign armies to players and display data in the
+	 * textarea in UI.
+	 * 
+	 * @param players
+	 *            number of players input by user.
+	 * @param textArea
+	 *            to show up data on UI.
 	 */
 	public void assignArmiesToPlayers(List<Player> players, TextArea textArea) {
 		MapUtil.appendTextToGameConsole("===Assigning armies to players.===\n", textArea);
@@ -31,7 +36,7 @@ public class GameModel {
 		int noOfPlayers = players.size();
 
 		if (noOfPlayers == 3)
-			armySizePerPlayer = 15;
+			armySizePerPlayer = 35;
 		else if (noOfPlayers == 4)
 			armySizePerPlayer = 30;
 		else if (noOfPlayers == 5)
@@ -47,9 +52,13 @@ public class GameModel {
 
 	/**
 	 * This method is used to create a number of instances of Player class.
-	 * @param noOfPlayer user input.
-	 * @param players objects of class {@link Player}
-	 * @param textArea to show up data on UI.
+	 * 
+	 * @param noOfPlayer
+	 *            user input.
+	 * @param players
+	 *            objects of class {@link Player}
+	 * @param textArea
+	 *            to show up data on UI.
 	 * @return list of players.
 	 */
 	public List<Player> createPlayer(int noOfPlayer, List<Player> players, TextArea textArea) {
@@ -61,13 +70,12 @@ public class GameModel {
 		return players;
 	}
 
+	
 	/**
-	 * Calculate the number of armies for each reinforcement phase as per the Risk
-	 * rules
-	 * 
-	 * @param playerPlaying
-	 *            current player playing
-	 * @return Player the current player object
+	 * Calculate the number of armies for each reinforcement phase as per the Risk rules
+	 * @param map map object
+	 * @param playerPlaying current player playing
+	 * @return Player player updated
 	 */
 	public Player calculateReinforcementArmies(Map map, Player playerPlaying) {
 		int currentArmies = playerPlaying.getArmies();
@@ -96,7 +104,7 @@ public class GameModel {
 	 *            map object
 	 * @param playerPlaying
 	 *            the player currently playing
-	 * @return List<Continent> continents owened by player.
+	 * @return List continents owened by player.
 	 */
 	public List<Continent> getContinentsOwnedByPlayer(Map map, Player playerPlaying) {
 		List<Continent> continents = new ArrayList<>();
@@ -120,8 +128,11 @@ public class GameModel {
 
 	/**
 	 * Check if there are armies to be fortified.
-	 * @param map map object
-	 * @param playerPlaying current player playing
+	 * 
+	 * @param map
+	 *            map object
+	 * @param playerPlaying
+	 *            current player playing
 	 * @return boolean is fortifcation of armies available.
 	 */
 	public boolean isFortificationPhaseValid(Map map, Player playerPlaying) {
@@ -145,8 +156,11 @@ public class GameModel {
 	}
 
 	/**
+	 * CHeck if player armies is exhausted
+	 * 
 	 * @param players
-	 * @return
+	 *            player object
+	 * @return boolean if player armies is exhausted
 	 */
 	public boolean checkIfPlayersArmiesExhausted(List<Player> players) {
 		int count = 0;
@@ -164,9 +178,14 @@ public class GameModel {
 	}
 
 	/**
+	 * Assign territory to player
+	 * 
 	 * @param map
+	 *            map object
 	 * @param players
+	 *            players list
 	 * @param textAres
+	 *            game console
 	 */
 	public void assignTerritoryToPlayer(Map map, List<Player> players, TextArea textAres) {
 

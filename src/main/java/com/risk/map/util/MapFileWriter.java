@@ -8,7 +8,6 @@ import java.util.List;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Territory;
-import com.risk.exception.InvalidMapException;
 
 /**
  * @author Garvpreet Singh
