@@ -7,5 +7,8 @@ package com.risk.constant;
  */
 public class MapConstant {
 
+	/**
+	 * The @ERROR message.
+	 */
 	public static final String ERROR = "Error";
 }
