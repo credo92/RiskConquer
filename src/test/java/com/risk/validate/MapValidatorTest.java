@@ -3,8 +3,10 @@ package com.risk.validate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,6 +37,13 @@ public class MapValidatorTest {
 	
 	String continentName = "Asia";
 	String controlValue = "7";
+	
+	/*private String name;
+	private int xCoordinate;
+	private int yCoordinate;
+	private Continent belongToContinent;
+	private List<String> adjTerritories;
+	private List<Territory> adjacentTerritories;*/
 	
 	static HashMap<String, String> mapData;
 	List<Continent> listOfContinents;
@@ -98,6 +107,15 @@ public class MapValidatorTest {
 	}
 	
 	/**
+	 * This method is used to test if a continent is null or not.
+	 * @throws InvalidMapException invalid map exception.
+	 */
+	@Test (expected = InvalidMapException.class)
+	public void validateContinentForNullTerritory() throws InvalidMapException {
+		MapValidator.validateContinent(new Continent(),map);	
+	}
+	
+	/**
 	 * This method is used to test if a continent has atleast one territory or not.
 	 * @throws InvalidMapException invalid map exception.
 	 */
@@ -105,5 +123,33 @@ public class MapValidatorTest {
 	public void validateContinentForTerritory() throws InvalidMapException {
 		map.setContinents(listOfContinents);
 		MapValidator.validateContinent(continent,map);	
+	}
+	
+	/**
+	 * This method is used to test if a continent is a sub-graph.
+	 * @throws InvalidMapException invalid map exception.
+	 */
+	public void validateContinentForSubGraph() throws InvalidMapException {		
+		Assert.assertFalse(MapValidator.continentIsASubGraph(continent, map));
+	}
+	
+	/**
+	 * This method is used to test if a territory has adjacent territory or not.
+	 * @throws InvalidMapException invalid map exception.
+	 */
+	@Test (expected = InvalidMapException.class)
+	public void validateTerritory() throws InvalidMapException {
+		Territory terr = new Territory();
+		MapValidator.validateTerritory(terr, map);
+	}
+	
+	/**
+	 * This method is used to test if a territory is uniquely associated.
+	 * @throws InvalidMapException invalid map exception.
+	 */
+	@Test (expected = InvalidMapException.class)
+	public void isTerritoryUniquelyAssociated() throws InvalidMapException {
+		Territory terr = new Territory();
+		MapValidator.validateTerritory(terr, map);
 	}
 }

@@ -94,34 +94,7 @@ public class MapModelTest {
 		Assert.assertNotNull(continent);
 		Assert.assertEquals(continent.getValue(), controlValue2);
 		Assert.assertNotEquals(continent.getValue(), controlValue1);
-	}
-	
-	
-	public Territory addTerritory(Map map,String name, String xAxis, String yAxis, Territory adjTerritory,
-			Continent continent) throws InvalidMapException{
-
-		Territory territory = new Territory();
-		List<Territory> tList = new ArrayList<>();
-
-		territory.setName(name);
-		territory.setxCoordinate(Integer.parseInt(xAxis));
-		territory.setyCoordinate(Integer.parseInt(yAxis));
-		territory.setBelongToContinent(continent);
-		if (adjTerritory != null) {
-			tList.add(adjTerritory);
-		}
-		territory.setAdjacentTerritories(tList);
-		
-		//check for unique territory
-		for(Continent existContinent: map.getContinents()) {
-			if (existContinent.getTerritories().contains(territory)) {
-				throw new InvalidMapException("Territory: "+ name+" already exist in continent "+ existContinent.getName());
-			}
-		}
-		
-		return territory;
-	}
-	
+	}	
 	
 	/**
 	 * This method is to test add Territory functionality.
