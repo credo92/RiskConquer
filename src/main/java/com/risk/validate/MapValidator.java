@@ -13,7 +13,6 @@ import com.risk.exception.InvalidMapException;
 
 /**
  * Map validator.
- * 
  * @author rahul
  * @version 1.0.0
  */
@@ -127,7 +126,16 @@ public class MapValidator {
 			}
 		}
 	}
-
+	
+	/**
+	 * Check if a territory forms a connected graph or not.
+	 * 
+	 * @param map
+	 *            map object
+	 * @throws InvalidMapException
+	 *             invalid map exception
+	 * @return true or false depending upon the result of the function.
+	 */
 	public static boolean isTerritoryAConnectedGraph(Territory territory) {
 		HashSet<Territory> territorySet = new HashSet<>();
 		Continent continent = territory.getBelongToContinent();
@@ -145,7 +153,17 @@ public class MapValidator {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * Check if a graph is connected or not.
+	 * 
+	 * @param territory
+	 *            territory object
+	 * @param tSet
+	 *            tSet object
+	 * @throws InvalidMapException
+	 *             invalid map exception
+	 */
 	public static void checkGraph(Territory territory, HashSet<Territory> tSet) {
 		boolean isUnProcessedTerritory = false;
 		for (Territory t : territory.getAdjacentTerritories()) {

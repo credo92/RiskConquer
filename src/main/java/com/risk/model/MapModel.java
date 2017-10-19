@@ -9,8 +9,7 @@ import com.risk.entity.Territory;
 import com.risk.exception.InvalidMapException;
 
 /**
- * Model class for the map
- * 
+ * Model class for the map 
  * @author rahul
  * @version 1.0.0
  */

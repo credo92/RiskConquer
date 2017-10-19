@@ -28,11 +28,14 @@ import javafx.stage.FileChooser;
 
 /**
  * @author rahul
+ * This class is used to handle utilities for maps.
+ * @version 1.0.0
  *
  */
 public class MapUtil {
 
 	/**
+	 * This method is used to clear off all the field on form elements.
 	 * @param field
 	 */
 	public static void clearTextField(TextField... fields) {
@@ -42,24 +45,28 @@ public class MapUtil {
 	}
 
 	/**
+	 * This method is used to disable the field on form elements.
 	 * @param controls
 	 */
 	public static void disableControl(Control... controls) {
 		for (Control control : controls) {
 			control.setDisable(true);
-			;
 		}
 	}
 	
+	/**
+	 * This method is used to enable the field on form elements.
+	 * @param controls
+	 */
 	public static void enableControl(Control... controls) {
 		for (Control control : controls) {
 			control.setDisable(false);
-			;
 		}
 	}
 
 	/**
-	 * @return
+	 * This method is used to open up a dialog box to choose a map file.
+	 * @return file of type object {@link File}
 	 */
 	public static File showFileChooser() {
 		FileChooser fileChooser = new FileChooser();
@@ -67,11 +74,11 @@ public class MapUtil {
 		FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Map files (*.map)", "*.map");
 		fileChooser.getExtensionFilters().add(extensionFilter);
 		file = fileChooser.showOpenDialog(null);
-
 		return file;
 	}
 
 	/**
+	 * This method is used to save map object into a map file.
 	 * @param file
 	 * @param map
 	 */
@@ -92,7 +99,10 @@ public class MapUtil {
 
 		fileWriter.writeMapToFile(map, file);
 	}
-
+	
+	/**
+	 * This method is used to open up a alert box.
+	 */
 	public static void infoBox(String infoMessage, String titleBar, String headerMessage) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle(titleBar);
@@ -102,6 +112,7 @@ public class MapUtil {
 	}
 
 	/**
+	 * This method is used to print a message in green or red in textarea.
 	 * @param textArea
 	 * @param message
 	 * @param isSuccess
@@ -115,7 +126,11 @@ public class MapUtil {
 
 		textArea.setText(message);
 	}
-
+	
+	/**
+	 * This method is used to get input in a dialog box.
+	 * @return String input entered by a user
+	 */
 	public static String inputDailougeBox() {
 		String input = "0";
 		TextInputDialog dialog = new TextInputDialog();
@@ -127,7 +142,11 @@ public class MapUtil {
 		}
 		return input;
 	}
-
+	
+	/**
+	 * This method is used to get input in a dialog box for fortification so that user can enter a number of armies.
+	 * @return Integer number of armies entered by a user.
+	 */
 	public static int inputDialogueBoxForArmiesFortification() {
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.setTitle("Input a number");
@@ -138,7 +157,11 @@ public class MapUtil {
 		else
 			return 0;
 	}
-
+	
+	/**
+	 * This method is used to create a new titled pane to show all the continent data.
+	 * @return TitledPane pane to display data.
+	 */
 	public static TitledPane createNewTitledPane(Continent continent) {
 		VBox hbox = new VBox();
 		for (Territory territory : continent.getTerritories()) {
@@ -156,11 +179,20 @@ public class MapUtil {
 		return pane;
 
 	}
-
+	
+	/**
+	 * This method is used to show custom messages on UI.
+	 */
 	public static void appendTextToGameConsole(String valueOf, TextArea gameConsole) {
 		Platform.runLater(() -> gameConsole.appendText(valueOf));
 	}
-
+	
+	/**
+	 * This method is used to load Image view from a folder.
+	 * @param imageView image to show up.
+	 * @param classLoader to load up the image.
+	 * @return ImageView imageView to .
+	 */
 	public static ImageView loadImageView(ImageView imageView, ClassLoader classLoader) {
 		InputStream inputStream = null;
 		try {

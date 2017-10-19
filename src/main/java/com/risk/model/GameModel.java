@@ -12,13 +12,17 @@ import com.risk.map.util.MapUtil;
 import javafx.scene.control.TextArea;
 
 /**
+ * This class is used to represent modeling of Game.
  * @author rahul
+ * @version 1.0.0.
  *
  */
 public class GameModel {
+	
 	/**
-	 * @param players
-	 * @param textArea
+	 * This method is used to assign armies to players and display data in the textarea in UI.
+	 * @param players number of players input by user.
+	 * @param textArea to show up data on UI.
 	 */
 	public void assignArmiesToPlayers(List<Player> players, TextArea textArea) {
 		MapUtil.appendTextToGameConsole("===Assigning armies to players.===\n", textArea);
@@ -42,10 +46,11 @@ public class GameModel {
 	}
 
 	/**
-	 * @param noOfPlayer
-	 * @param players
-	 * @param textArea
-	 * @return
+	 * This method is used to create a number of instances of Player class.
+	 * @param noOfPlayer user input.
+	 * @param players objects of class {@link Player}
+	 * @param textArea to show up data on UI.
+	 * @return list of players.
 	 */
 	public List<Player> createPlayer(int noOfPlayer, List<Player> players, TextArea textArea) {
 		for (int i = 0; i < noOfPlayer; i++) {

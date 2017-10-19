@@ -17,6 +17,8 @@ import com.risk.validate.MapValidator;
 
 /**
  * @author rahul
+ * This class is used to handle parsing of map files.
+ * @version 1.0.0
  *
  */
 public class MapFileParser {
@@ -33,22 +35,22 @@ public class MapFileParser {
 	}
 
 	/**
-	 * @param file
-	 * @return
+	 * This method is use to parse and read map file before converting into {@link Map} object.
+	 * This further validates map object.
+	 * @param file of type {@link File}
+	 * @return map object of type {@link Map}
 	 * @throws InvalidMapException
 	 */
 	public Map parseAndReadMapFile(File file) throws InvalidMapException {
-
 		this.map = convertMapFileToMapObject(file);
-
 		MapValidator.validateMap(map);
-
 		return map;
 	}
 
 	/**
-	 * @param file
-	 * @return
+	 * This method is use to convert map file into {@link Map} object
+	 * @param file of type {@link File}
+	 * @return map object of type {@link Map}
 	 * @throws InvalidMapException
 	 */
 	private Map convertMapFileToMapObject(final File file) throws InvalidMapException {
@@ -76,8 +78,9 @@ public class MapFileParser {
 	}
 
 	/**
-	 * @param scan
-	 * @return
+	 * This function is used to process map for manipulations.
+	 * @param scan object of type {@link Scanner}
+	 * @return map object of type {@link Map}
 	 * @throws InvalidMapException
 	 */
 	private Map processMap(Scanner scan) throws InvalidMapException {
@@ -108,8 +111,9 @@ public class MapFileParser {
 	}
 
 	/**
-	 * @param scan
-	 * @return
+	 * This function is used to process continents for manipulations.
+	 * @param scan object of type {@link Scanner}
+	 * @return a list of continents after processing
 	 * @throws InvalidMapException
 	 */
 	private List<Continent> processContinent(Scanner scan) throws InvalidMapException {
@@ -173,9 +177,10 @@ public class MapFileParser {
 	}
 
 	/**
+	 * This function is used to process territory for manipulations.
 	 * @param territoryData
 	 * @param continents
-	 * @return
+	 * @return list of territories after processing
 	 * @throws InvalidMapException
 	 */
 	private List<Territory> processTerritory(String territoryData, List<Continent> continents)

@@ -8,9 +8,21 @@ import java.util.List;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Territory;
+import com.risk.exception.InvalidMapException;
 
+/**
+ * @author Garvpreet Singh
+ * This class is used to handle writing map objects into map file.
+ * @version 1.0.0
+ *
+ */
 public class MapFileWriter {
-
+	
+	/**
+	 * This method is use to write map object to map file.
+	 * @param map of type {@link Map}
+	 * @param file of type {@link File}	 
+	 */
 	public void writeMapToFile(Map map, File file) {
 		FileWriter fileWriter = null;
 		try {
@@ -25,16 +37,26 @@ public class MapFileWriter {
 			System.out.println("Cannot write map data to file. Null map object found" + ex.getMessage());
 		}
 	}
-
+	
+	/**
+	 * This method is use to parse map object to map file format.
+	 * @param map of type {@link Map}
+	 * @param file of type {@link File}	 
+	 * @return String map object in string.
+	 */
 	private String parseMapObjectToMapFileFormat(Map map) {
-
 		StringBuilder mapFile = new StringBuilder();
 		mapFile = proessMapData(map, mapFile);
 		return mapFile.toString();
 	}
-
+	
+	/**
+	 * This method is use to process map object.
+	 * @param map of type {@link Map}
+	 * @param mapFile of type {@link StringBuilder}	 
+	 * @return {@link StringBuilder} mapFile
+	 */
 	private StringBuilder proessMapData(Map map, StringBuilder mapFile) {
-
 		mapFile.append("[Map]");
 		mapFile.append("\n");
 		for (java.util.Map.Entry<String, String> e : map.getMapData().entrySet()) {
@@ -44,7 +66,13 @@ public class MapFileWriter {
 		mapFile = processContinentData(map, mapFile);
 		return mapFile;
 	}
-
+	
+	/**
+	 * This method is use to process continent data.
+	 * @param map of type {@link Map}
+	 * @param mapFile of type {@link StringBuilder}	 
+	 * @return {@link StringBuilder} mapFile
+	 */
 	private StringBuilder processContinentData(Map map, StringBuilder mapFile) {
 		mapFile.append("\n");
 		mapFile.append("[Continents]");
@@ -56,7 +84,13 @@ public class MapFileWriter {
 		mapFile = processTerritoryData(map, mapFile);
 		return mapFile;
 	}
-
+	
+	/**
+	 * This method is use to process territory data.
+	 * @param map of type {@link Map}
+	 * @param mapFile of type {@link StringBuilder}	 
+	 * @return {@link StringBuilder} mapFile
+	 */
 	private StringBuilder processTerritoryData(Map map, StringBuilder mapFile) {
 		mapFile.append("\n");
 		mapFile.append("[Territories]");
