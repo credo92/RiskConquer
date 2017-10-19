@@ -18,8 +18,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * @author rahul
  * This class is used to launch the application.
+ * @author rahul
  * @version 1.0.0
  *
  */
@@ -61,6 +61,7 @@ public class Main extends Application {
 	}
 
 	/**
+	 * Load image view.
 	 * @param scene object of {@link Scene}
 	 * @param classLoader object of {@link ClassLoader}
 	 * @return imageView object of {@link ImageView}
@@ -87,6 +88,7 @@ public class Main extends Application {
 	}
 
 	/**
+	 * Exit button
 	 * @param scene {@link Scene} to depict UI screen.
 	 * @return exitButton {@link Button} wherein button exits the application and kill its instance
 	 */
@@ -98,6 +100,7 @@ public class Main extends Application {
 	}
 
 	/**
+	 * Map editor button
 	 * @param scene {@link Scene} to depict UI screen.
 	 * @return {@link Button} wherein button opens up a new map screen for editing.
 	 */
@@ -110,6 +113,7 @@ public class Main extends Application {
 	}
 
 	/**
+	 * Start game button
 	 * @param scene {@link Scene} to depict UI screen.
 	 * @return {@link Button} wherein button loads a chosen map and starts the game.
 	 */
@@ -125,7 +129,7 @@ public class Main extends Application {
 
 	/**
 	 * This is the main method to launch the application.
-	 * @param args
+	 * @param args arguments
 	 */
 	public static void main(String[] args) {
 		launch(args);

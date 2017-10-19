@@ -27,16 +27,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 /**
- * @author rahul
- * This class is used to handle utilities for maps.
+ * @author rahul This class is used to handle utilities for maps.
  * @version 1.0.0
  *
  */
 public class MapUtil {
 
 	/**
-	 * This method is used to clear off all the field on form elements.
-	 * @param field
+	 *  This method is used to clear off all the field on form elements.
+	 * @param fields text fields
 	 */
 	public static void clearTextField(TextField... fields) {
 		for (TextField field : fields) {
@@ -46,17 +45,21 @@ public class MapUtil {
 
 	/**
 	 * This method is used to disable the field on form elements.
+	 * 
 	 * @param controls
+	 *            controls
 	 */
 	public static void disableControl(Control... controls) {
 		for (Control control : controls) {
 			control.setDisable(true);
 		}
 	}
-	
+
 	/**
 	 * This method is used to enable the field on form elements.
+	 * 
 	 * @param controls
+	 *            controls
 	 */
 	public static void enableControl(Control... controls) {
 		for (Control control : controls) {
@@ -66,6 +69,7 @@ public class MapUtil {
 
 	/**
 	 * This method is used to open up a dialog box to choose a map file.
+	 * 
 	 * @return file of type object {@link File}
 	 */
 	public static File showFileChooser() {
@@ -79,8 +83,9 @@ public class MapUtil {
 
 	/**
 	 * This method is used to save map object into a map file.
-	 * @param file
-	 * @param map
+	 * @param file file object
+	 * @param map map object
+	 * @throws InvalidMapException invalid map file exception
 	 */
 	public static void saveMap(File file, Map map) throws InvalidMapException {
 		MapValidator.validateMap(map);
@@ -99,9 +104,16 @@ public class MapUtil {
 
 		fileWriter.writeMapToFile(map, file);
 	}
-	
+
 	/**
-	 * This method is used to open up a alert box.
+	 * Info box to display message.
+	 * 
+	 * @param infoMessage
+	 *            infomessage box
+	 * @param titleBar
+	 *            title bar for message
+	 * @param headerMessage
+	 *            header message
 	 */
 	public static void infoBox(String infoMessage, String titleBar, String headerMessage) {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -113,9 +125,13 @@ public class MapUtil {
 
 	/**
 	 * This method is used to print a message in green or red in textarea.
+	 * 
 	 * @param textArea
+	 *            text area refrence
 	 * @param message
+	 *            message
 	 * @param isSuccess
+	 *            is success message
 	 */
 	public static void outPutMessgae(TextArea textArea, String message, boolean isSuccess) {
 		if (isSuccess) {
@@ -126,9 +142,10 @@ public class MapUtil {
 
 		textArea.setText(message);
 	}
-	
+
 	/**
 	 * This method is used to get input in a dialog box.
+	 * 
 	 * @return String input entered by a user
 	 */
 	public static String inputDailougeBox() {
@@ -142,9 +159,11 @@ public class MapUtil {
 		}
 		return input;
 	}
-	
+
 	/**
-	 * This method is used to get input in a dialog box for fortification so that user can enter a number of armies.
+	 * This method is used to get input in a dialog box for fortification so that
+	 * user can enter a number of armies.
+	 * 
 	 * @return Integer number of armies entered by a user.
 	 */
 	public static int inputDialogueBoxForArmiesFortification() {
@@ -157,10 +176,13 @@ public class MapUtil {
 		else
 			return 0;
 	}
-	
+
 	/**
-	 * This method is used to create a new titled pane to show all the continent data.
-	 * @return TitledPane pane to display data.
+	 * Create new titled pain.
+	 * 
+	 * @param continent
+	 *            continent object
+	 * @return TitledPane Titled pane
 	 */
 	public static TitledPane createNewTitledPane(Continent continent) {
 		VBox hbox = new VBox();
@@ -177,20 +199,27 @@ public class MapUtil {
 		TitledPane pane = new TitledPane(continent.getName(), hbox);
 
 		return pane;
-
 	}
-	
+
 	/**
-	 * This method is used to show custom messages on UI.
+	 * Output to game console screen
+	 * 
+	 * @param valueOf
+	 *            text value
+	 * @param gameConsole
+	 *            game console object
 	 */
 	public static void appendTextToGameConsole(String valueOf, TextArea gameConsole) {
 		Platform.runLater(() -> gameConsole.appendText(valueOf));
 	}
-	
+
 	/**
 	 * This method is used to load Image view from a folder.
-	 * @param imageView image to show up.
-	 * @param classLoader to load up the image.
+	 * 
+	 * @param imageView
+	 *            image to show up.
+	 * @param classLoader
+	 *            to load up the image.
 	 * @return ImageView imageView to .
 	 */
 	public static ImageView loadImageView(ImageView imageView, ClassLoader classLoader) {
@@ -203,7 +232,7 @@ public class MapUtil {
 		}
 		Image image = new Image(inputStream);
 		imageView.setImage(image);
-		
+
 		return imageView;
 	}
 }

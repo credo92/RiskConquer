@@ -101,6 +101,9 @@ public class Continent {
 		return continent.getName().equalsIgnoreCase(name);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		return "Name: " + name + "value: " + "List of territory :" + territories.toString();
 	}

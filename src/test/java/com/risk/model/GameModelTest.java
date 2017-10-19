@@ -1,7 +1,6 @@
 package com.risk.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -42,7 +41,6 @@ public class GameModelTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() {
-		System.out.println("Testing GameModel.java started");
 		gameModel = new GameModel();
 		continent = new Continent();
 		territory1 = new Territory();
@@ -76,14 +74,6 @@ public class GameModelTest {
 		listOfTerritories.add(territory1);
 		player.setAssignedTerritory(listOfTerritories);
 	}
-	
-	/**
-	 * This method is invoked at the end of the test class.
-	 */
-	@AfterClass
-	public static void afterClass() {
-		System.out.println("Testing GameModel.java completed");
-	}	
 	
 	/**
 	 * This method tests number of armies for 100 initial armies and 1 territory during each reinforcement phase.

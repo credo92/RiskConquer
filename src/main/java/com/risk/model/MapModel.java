@@ -86,20 +86,17 @@ public class MapModel {
 		return territory;
 	}
 
+
 	/**
-	 * Add new territory.
-	 * 
-	 * @param name
-	 *            name of the continent
-	 * @param xAxis
-	 *            yaxis
-	 * @param yAxis
-	 *            x axis
-	 * @param adjTerritory
-	 *            adjterritory
-	 * @param continent
-	 *            continent under which to create territory
-	 * @return territory newly created territory
+	 * Add territory
+	 * @param map map object
+	 * @param name name of the territory
+	 * @param xAxis x axis of the territory
+	 * @param yAxis y axis of the territory
+	 * @param adjTerritory adj territory list
+	 * @param continent continent
+	 * @return Territory new object
+	 * @throws InvalidMapException invalid map exception
 	 */
 	public Territory addTerritory(Map map, String name, String xAxis, String yAxis, Territory adjTerritory,
 			Continent continent) throws InvalidMapException {

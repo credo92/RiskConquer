@@ -31,6 +31,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+/**
+ * Map editor controller.
+ * @author Rahul Goyal
+ * @version 1.0.0
+ *
+ */
 public class MapEditorController implements Initializable {
 
 	/**
