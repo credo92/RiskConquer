@@ -1,17 +1,15 @@
 package com.risk.map.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import java.util.Scanner;
-
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.risk.entity.Map;
+import com.risk.exception.InvalidMapException;
 
 /**
  * Test class for {@link MapFileParser}
@@ -19,56 +17,96 @@ import org.junit.Test;
  * @version 0.0.1
  */
 public class MapFileParserTest {
+	
+	File file;
+	static MapFileParser mfp;
+	ClassLoader classLoader;
+	String validFile = "World.map";
+	String invalidFileContinent = "World_Invalid_Continent.map";
+	String invalidFileTerritoryAbandoned = "World_Invalid_Territory_Abandoned.map";
+	String invalidFileTerritorySubgraph = "World_Invalid_Territory_Subgraph.map";
+	String invalidFileContinentSubgraph = "World_Invalid_Continent_Subgraph.map";
+	String invalidFileTerritoryDuplication = "World_Invalid_Territory_Duplication.map";
+	
 	/**
 	 * This method is invoked at the start of the test class.
 	 */
 	@BeforeClass
 	public static void beforeClass() {
-		System.out.println("Testing MapFileParser.java started");		
+		mfp = new MapFileParser();
 	}	
 	
+	/**
+	 * This method is invoked at the start of the every test method.
+	 */
 	@Before
-	public void beforeTest() {
-		//ClassLoader classLoader = getClass().getClassLoader();
-		//File file = new File(classLoader.getResource("World.map").getFile());
-	/*	String fileName = getClass().getResource("World.map").getFile();
-		try {
-			InputStream stream = new FileInputStream(new File(getClass().getResource("World.map").getPath()));
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	*/	
-		/*File file = new File(getClass().getClassLoader().getResource("World.map").getFile());
-		System.out.println(file.getAbsolutePath());		
-		
-		StringBuilder result = new StringBuilder("");
-		try (Scanner scanner = new Scanner(file)) {
-			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
-				result.append(line).append("\n");
-			}
-			scanner.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println(result.toString());	*/
+	public void beforeTest() throws IOException {		
+		classLoader = getClass().getClassLoader();		
+	}	
+	
+	/** 
+	 * This method is used to test the size of continent.
+	 * @throws InvalidMapException
+	 */
+	@Test
+	public void checkValidNumberOfContinents() throws InvalidMapException {
+		file = new File(classLoader.getResource(validFile).getFile());
+		Map map = mfp.parseAndReadMapFile(file);
+		Assert.assertEquals(map.getContinents().size(), 7);
 	}
 	
 	/**
-	 * This method is invoked at the end of the test class.
+	 * This method is used to test if a continent has a territory in it.
+	 * @throws InvalidMapException
 	 */
-	@AfterClass
-	public static void afterClass() {
-		System.out.println("Testing MapFileParser.java completed");
-	}	
+	@Test (expected=InvalidMapException.class)
+	public void checkInvalidMapForContinentWithoutTerritory() throws InvalidMapException {
+		file = new File(classLoader.getResource(invalidFileContinent).getFile());
+		MapFileParser mfp = new MapFileParser();
+		mfp.parseAndReadMapFile(file);
+	}
 	
-	@Test
-	public void testFunc() {
-		System.out.println("hi");
-		MapFileParser mp = new MapFileParser();
-		Assert.assertEquals(true, true);
-		Assert.assertNotNull(mp);
+	/**
+	 * This method is used to test if a territory belongs to any continent or not.
+	 * @throws InvalidMapException
+	 */
+	@Test (expected=InvalidMapException.class)
+	public void checkInvalidMapForAbandonedTerritory() throws InvalidMapException {
+		file = new File(classLoader.getResource(invalidFileTerritoryAbandoned).getFile());
+		MapFileParser mfp = new MapFileParser();
+		mfp.parseAndReadMapFile(file);
+	}
+	
+	/**
+	 * This method is used to test if a set of territories are connected or not.
+	 * @throws InvalidMapException
+	 */
+	@Test (expected=InvalidMapException.class)
+	public void checkInvalidMapForTerritorySubgraph() throws InvalidMapException {
+		file = new File(classLoader.getResource(invalidFileTerritorySubgraph).getFile());
+		MapFileParser mfp = new MapFileParser();
+		mfp.parseAndReadMapFile(file);
+	}
+	
+	/**
+	 * This method is used to test if a set of continent are connected or not.
+	 * @throws InvalidMapException
+	 */
+	@Test (expected=InvalidMapException.class)
+	public void checkInvalidMapForContinentSubgraph() throws InvalidMapException {
+		file = new File(classLoader.getResource(invalidFileContinentSubgraph).getFile());
+		MapFileParser mfp = new MapFileParser();
+		mfp.parseAndReadMapFile(file);
+	}
+	
+	/**
+	 * This method is used to test if a territory exists in multiple continents.
+	 * @throws InvalidMapException
+	 */
+	@Test (expected=InvalidMapException.class)
+	public void checkInvalidMapForTerritoryDuplication() throws InvalidMapException {
+		file = new File(classLoader.getResource(invalidFileTerritoryDuplication).getFile());
+		MapFileParser mfp = new MapFileParser();
+		mfp.parseAndReadMapFile(file);
 	}
 }
