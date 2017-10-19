@@ -86,7 +86,7 @@ public class MapModelTest {
 	}
 	
 	/**
-	 * This method is to test update Continent functionality.
+	 * This method is to test update Continent functionality, like to change its value.
 	 */
 	@Test
 	public void updateContinent() {
