@@ -10,8 +10,18 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * @author Garvpreet Singh
+ * This class is used to provide view to user to choose map options in the game.
+ * @version 1.0.0
+ */
 public class MapOption implements EventHandler<ActionEvent> {
-
+	
+	/*
+	 * (non-Javadoc)
+	 * This method is overridden to create a scene at UI end.
+	 * @see javafx.event.EventHandler#handle(javafx.event.Event)
+	 */
 	@Override
 	public void handle(ActionEvent event) {
 
@@ -38,7 +48,8 @@ public class MapOption implements EventHandler<ActionEvent> {
 	}
 
 	/**
-	 * @return
+	 * @param scene {@link Scene} to depict UI screen.
+	 * @return {@link Button} wherein button opens up a new map
 	 */
 	public static Button newMapButton(Scene scene) {
 		Button mapEditorButton = new Button("New Map");
@@ -49,7 +60,8 @@ public class MapOption implements EventHandler<ActionEvent> {
 	}
 
 	/**
-	 * @return
+	 * @param scene {@link Scene} to depict UI screen.
+	 * @return {@link Button} wherein button opens up a screen to load and edit map.
 	 */
 	public static Button editMapButton(Scene scene) {
 		Button mapEditorButton = new Button("Load & Edit Map");
@@ -58,7 +70,11 @@ public class MapOption implements EventHandler<ActionEvent> {
 
 		return mapEditorButton;
 	}
-
+	
+	/**
+	 * @param scene {@link Scene} to depict UI screen.
+	 * @return {@link Button} wherein button exits the window.
+	 */
 	public static Button exitMapButton(Scene scene) {
 		Button mapEditorButton = new Button("Exit");
 		mapEditorButton.setOnAction(e -> ((Stage) mapEditorButton.getScene().getWindow()).close());

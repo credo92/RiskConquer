@@ -17,8 +17,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+/**
+ * @author Garvpreet Singh
+ * This class is used to initiate Game play screen from MapSelectorLayout.fxml
+ * @version 1.0.0
+ */
 public class GamePlay implements EventHandler<ActionEvent> {
-
+	/*
+	 * (non-Javadoc)
+	 * This method is overridden to create a scene at UI end.
+	 * @see javafx.event.EventHandler#handle(javafx.event.Event)
+	 */
 	@Override
 	public void handle(ActionEvent event) {
 
@@ -54,7 +63,8 @@ public class GamePlay implements EventHandler<ActionEvent> {
 	}
 
 	/**
-	 * @return
+	 * @param scene {@link Scene} to depict UI screen.
+	 * @return {@link Button} wherein button opens up a new map
 	 */
 	public static Button loadExistingMapButton(Scene scene) {
 		Button loadMapButton = new Button("Load Map");
