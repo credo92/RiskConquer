@@ -2,6 +2,7 @@ package com.risk.controller;
 
 import java.io.File;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
@@ -230,7 +231,9 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Update territory event
-	 * @param event action event
+	 * 
+	 * @param event
+	 *            action event
 	 */
 	@FXML
 	private void updateTerritory(ActionEvent event) {
@@ -247,7 +250,9 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Add new continent
-	 * @param event action event
+	 * 
+	 * @param event
+	 *            action event
 	 */
 	@FXML
 	private void addNewContinent(ActionEvent event) {
@@ -270,7 +275,9 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Exit map editor.
-	 * @param event action event.
+	 * 
+	 * @param event
+	 *            action event.
 	 */
 	@FXML
 	private void mapEditorExit(ActionEvent event) {
@@ -297,7 +304,9 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Populate territory for the continent
-	 * @param continent continent object.
+	 * 
+	 * @param continent
+	 *            continent object.
 	 */
 	private void populateTerritory(Continent continent) {
 		territoryList.getItems().clear();
@@ -310,7 +319,9 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Populate adjacent territory.
-	 * @param territory territory object.
+	 * 
+	 * @param territory
+	 *            territory object.
 	 */
 	private void populateAdjTerritory(Territory territory) {
 		adjTerritoryList.getItems().clear();
@@ -341,7 +352,9 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Save map file.
-	 * @param event action event
+	 * 
+	 * @param event
+	 *            action event
 	 */
 	@FXML
 	private void saveMap(ActionEvent event) {
@@ -358,7 +371,9 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Delete continent.
-	 * @param event action event
+	 * 
+	 * @param event
+	 *            action event
 	 */
 	@FXML
 	private void deleteContinent(ActionEvent event) {
@@ -379,7 +394,9 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Delete adjacent territory
-	 * @param event action event
+	 * 
+	 * @param event
+	 *            action event
 	 */
 	@FXML
 	private void deleteAdjTerritory(ActionEvent event) {
@@ -399,7 +416,9 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Add new territory
-	 * @param event action event
+	 * 
+	 * @param event
+	 *            action event
 	 */
 	@FXML
 	private void addNewTerritory(ActionEvent event) {
@@ -424,12 +443,14 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Delete territory
-	 * @param event action event
+	 * 
+	 * @param event
+	 *            action event
 	 */
 	@FXML
 	private void deleteTerritory(ActionEvent event) {
 		Territory territory = territoryList.getSelectionModel().getSelectedItem();
-
+		HashSet<Territory> territoryToBeRemovedFrom = new HashSet<>();
 		Continent continent = continentList.getSelectionModel().getSelectedItem();
 
 		if (continent != null && continent.getTerritories() != null) {
@@ -438,6 +459,24 @@ public class MapEditorController implements Initializable {
 						"There should be atleast one territory associated with the continent.", false);
 				return;
 			}
+			for (Continent cont : map.getContinents()) {
+				for (Territory terr : cont.getTerritories()) {
+					if (terr.getAdjacentTerritories().contains(territory)
+							&& (terr.getAdjacentTerritories().size() == 1)) {
+						MapUtil.outPutMessgae(outPutConsole, "Territory: " + territory.getName()
+								+ " is the only adjacent territory to " + terr.getName() + ", hence cannot delete.",
+								false);
+						return;
+					}
+					if (terr.getAdjacentTerritories().contains(territory)  && terr.getAdjacentTerritories().size()>1) {
+						territoryToBeRemovedFrom.add(terr);
+					}
+				}
+			}
+			//If there was no exception than remove this territory from this other territory
+			for (Territory t : territoryToBeRemovedFrom) {
+				t.getAdjacentTerritories().remove(territory);
+			}
 			continent.getTerritories().remove(territory);
 			territoryList.getItems().remove(territory);
 			MapUtil.outPutMessgae(outPutConsole, "Territory removed successfully.", true);
@@ -445,9 +484,11 @@ public class MapEditorController implements Initializable {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * Initialize view screen.
-	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+	/*
+	 * (non-Javadoc) Initialize view screen.
+	 * 
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL,
+	 * java.util.ResourceBundle)
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -529,7 +570,9 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Update map data.
-	 * @param map map object
+	 * 
+	 * @param map
+	 *            map object
 	 * @return map updated map object
 	 */
 	private Map saveOrUpdateMapDetail(Map map) {
@@ -545,7 +588,8 @@ public class MapEditorController implements Initializable {
 	/**
 	 * Get dummy if value blank
 	 * 
-	 * @param value string value
+	 * @param value
+	 *            string value
 	 * @return String dummy if string is blank
 	 */
 	private String getDummyNameIfBlank(String value) {
@@ -554,7 +598,9 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Mouse click event for continent list
-	 * @param event action event
+	 * 
+	 * @param event
+	 *            action event
 	 */
 	private void onMouseClickContinentList(MouseEvent event) {
 		Continent continent = continentList.getSelectionModel().getSelectedItem();
@@ -572,7 +618,9 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Mouse click event for territory
-	 * @param event action event
+	 * 
+	 * @param event
+	 *            action event
 	 */
 	private void onMouseClickTerritoryList(MouseEvent event) {
 		Territory territory = territoryList.getSelectionModel().getSelectedItem();
