@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * @author rahul
+ * This is an entity class for Continent with mapData, continents, continentMap and territories as its member variables.
+ * @version 1.0.0
  *
  */
 public class Map {
@@ -63,7 +65,10 @@ public class Map {
 	public void setContinents(List<Continent> continents) {
 		this.continents = continents;
 	}
-
+	
+	/**
+	 * @return a string after converting value from mapData object.
+	 */
 	public String toString() {
 		return "Map data: " + mapData.toString() + "List of continents : " + continents.toString();
 	}
