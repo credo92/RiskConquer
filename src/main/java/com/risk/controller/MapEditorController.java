@@ -32,94 +32,192 @@ import javafx.stage.Stage;
 
 public class MapEditorController implements Initializable {
 
+	/**
+	 * The @map.
+	 */
 	private Map map;
 
+	/**
+	 * The @file.
+	 */
 	private File file;
 
+	/**
+	 * The @mapModel.
+	 */
 	private MapModel mapModel;
 
+	/**
+	 * The @author.
+	 */
 	@FXML
 	private TextField author;
 
+	/**
+	 * The @image.
+	 */
 	@FXML
 	private TextField image;
 
+	/**
+	 * The @scroll.
+	 */
 	@FXML
 	private TextField scroll;
 
+	/**
+	 * The @warn.
+	 */
 	@FXML
 	private TextField warn;
 
+	/**
+	 * The @wrap.
+	 */
 	@FXML
 	private TextField wrap;
 
+	/**
+	 * The @exitButton.
+	 */
 	@FXML
 	private Button exitButton;
 
+	/**
+	 * The @saveMap.
+	 */
 	@FXML
 	private Button saveMap;
 
+	/**
+	 * The @selectedContinent.
+	 */
 	@FXML
 	private Label selectedContinent;
 
+	/**
+	 * The @continentList.
+	 */
 	@FXML
 	private ListView<Continent> continentList;
 
+	/**
+	 * The @territoryList.
+	 */
 	@FXML
 	private ListView<Territory> territoryList;
 
+	/**
+	 * The @adjTerritoryList.
+	 */
 	@FXML
 	private ListView<Territory> adjTerritoryList;
 
+	/**
+	 * The @newContinentName.
+	 */
 	@FXML
 	private TextField newContinentName;
 
+	/**
+	 * The @newContinentValue.
+	 */
 	@FXML
 	private TextField newContinentValue;
 
+	/**
+	 * The @newTerritoryName.
+	 */
 	@FXML
 	private TextField newTerritoryName;
 
+	/**
+	 * The @territoryXaxis.
+	 */
 	@FXML
 	private TextField territoryXaxis;
 
+	/**
+	 * The @territoryYaxis.
+	 */
 	@FXML
 	private TextField territoryYaxis;
 
+	/**
+	 * The @riskImage.
+	 */
 	@FXML
 	private ImageView riskImage;
 
+	/**
+	 * The @addContinent.
+	 */
 	@FXML
 	private Button addContinent;
 
+	/**
+	 * The @updateCont.
+	 */
 	@FXML
 	private Button updateCont;
 
+	/**
+	 * The @addTerritory.
+	 */
 	@FXML
 	private Button addTerritory;
 
+	/**
+	 * The @updateTerrt.
+	 */
 	@FXML
 	private Button updateTerrt;
 
+	/**
+	 * The @deleteAdjTerr.
+	 */
 	@FXML
 	private Button deleteAdjTerr;
 
+	/**
+	 * The @outPutConsole.
+	 */
 	@FXML
 	private TextArea outPutConsole;
 
+	/**
+	 * The @selectAdjTerritories.
+	 */
 	@FXML
 	private ComboBox<Territory> selectAdjTerritories;
 
+	/**
+	 * Constructur for MapEditorController
+	 */
 	public MapEditorController() {
 		this.mapModel = new MapModel();
 	}
 
+	/**
+	 * Constructur for MapEditorController
+	 * 
+	 * @param map
+	 *            map object
+	 * @param file
+	 *            file object
+	 */
 	public MapEditorController(Map map, File file) {
 		this.map = map;
 		this.file = file;
 		this.mapModel = new MapModel();
 	}
 
+	/**
+	 * Update continent event
+	 * 
+	 * @param event
+	 *            action event
+	 */
 	@FXML
 	private void updateContinent(ActionEvent event) {
 		Continent continent = continentList.getSelectionModel().getSelectedItem();
@@ -130,6 +228,10 @@ public class MapEditorController implements Initializable {
 		MapUtil.clearTextField(newContinentName, newContinentValue);
 	}
 
+	/**
+	 * Update territory event
+	 * @param event action event
+	 */
 	@FXML
 	private void updateTerritory(ActionEvent event) {
 		Territory territory = territoryList.getSelectionModel().getSelectedItem();
@@ -143,6 +245,10 @@ public class MapEditorController implements Initializable {
 		MapUtil.clearTextField(newTerritoryName, territoryXaxis, territoryYaxis);
 	}
 
+	/**
+	 * Add new continent
+	 * @param event action event
+	 */
 	@FXML
 	private void addNewContinent(ActionEvent event) {
 
@@ -162,12 +268,19 @@ public class MapEditorController implements Initializable {
 		MapUtil.clearTextField(newContinentName, newContinentValue);
 	}
 
+	/**
+	 * Exit map editor.
+	 * @param event action event.
+	 */
 	@FXML
 	private void mapEditorExit(ActionEvent event) {
 		Stage stage = (Stage) exitButton.getScene().getWindow();
 		stage.close();
 	}
 
+	/**
+	 * Load map data on the view.
+	 */
 	private void loadMapData() {
 		author.setText(map.getMapData().get("author"));
 		image.setText(map.getMapData().get("image"));
@@ -182,6 +295,10 @@ public class MapEditorController implements Initializable {
 		}
 	}
 
+	/**
+	 * Populate territory for the continent
+	 * @param continent continent object.
+	 */
 	private void populateTerritory(Continent continent) {
 		territoryList.getItems().clear();
 		if (continent != null && continent.getTerritories() != null) {
@@ -191,6 +308,10 @@ public class MapEditorController implements Initializable {
 		}
 	}
 
+	/**
+	 * Populate adjacent territory.
+	 * @param territory territory object.
+	 */
 	private void populateAdjTerritory(Territory territory) {
 		adjTerritoryList.getItems().clear();
 		for (Territory adjTerritory : territory.getAdjacentTerritories()) {
@@ -219,7 +340,8 @@ public class MapEditorController implements Initializable {
 	}
 
 	/**
-	 * @param event
+	 * Save map file.
+	 * @param event action event
 	 */
 	@FXML
 	private void saveMap(ActionEvent event) {
@@ -234,6 +356,10 @@ public class MapEditorController implements Initializable {
 		stage.close();
 	}
 
+	/**
+	 * Delete continent.
+	 * @param event action event
+	 */
 	@FXML
 	private void deleteContinent(ActionEvent event) {
 		Continent continent = continentList.getSelectionModel().getSelectedItem();
@@ -251,6 +377,10 @@ public class MapEditorController implements Initializable {
 		}
 	}
 
+	/**
+	 * Delete adjacent territory
+	 * @param event action event
+	 */
 	@FXML
 	private void deleteAdjTerritory(ActionEvent event) {
 		Territory adjTerritory = adjTerritoryList.getSelectionModel().getSelectedItem();
@@ -267,6 +397,10 @@ public class MapEditorController implements Initializable {
 		}
 	}
 
+	/**
+	 * Add new territory
+	 * @param event action event
+	 */
 	@FXML
 	private void addNewTerritory(ActionEvent event) {
 
@@ -288,6 +422,10 @@ public class MapEditorController implements Initializable {
 		territoryList.getItems().add(territory);
 	}
 
+	/**
+	 * Delete territory
+	 * @param event action event
+	 */
 	@FXML
 	private void deleteTerritory(ActionEvent event) {
 		Territory territory = territoryList.getSelectionModel().getSelectedItem();
@@ -305,9 +443,12 @@ public class MapEditorController implements Initializable {
 			MapUtil.outPutMessgae(outPutConsole, "Territory removed successfully.", true);
 
 		}
-
 	}
 
+	/* (non-Javadoc)
+	 * Initialize view screen.
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		if (this.map == null) {
@@ -372,6 +513,9 @@ public class MapEditorController implements Initializable {
 		});
 	}
 
+	/**
+	 * Load adjacent territory list
+	 */
 	private void loadAdjTerritoryList() {
 
 		ObservableList<Territory> adjTerritoryList = FXCollections.observableArrayList();
@@ -383,6 +527,11 @@ public class MapEditorController implements Initializable {
 		selectAdjTerritories.setItems(adjTerritoryList);
 	}
 
+	/**
+	 * Update map data.
+	 * @param map map object
+	 * @return map updated map object
+	 */
 	private Map saveOrUpdateMapDetail(Map map) {
 
 		map.getMapData().put("author", getDummyNameIfBlank(author.getText()));
@@ -395,13 +544,18 @@ public class MapEditorController implements Initializable {
 
 	/**
 	 * Get dummy if value blank
-	 * @param value
+	 * 
+	 * @param value string value
 	 * @return String dummy if string is blank
 	 */
 	private String getDummyNameIfBlank(String value) {
 		return StringUtils.isNotEmpty(value) ? value : "Dummy";
 	}
 
+	/**
+	 * Mouse click event for continent list
+	 * @param event action event
+	 */
 	private void onMouseClickContinentList(MouseEvent event) {
 		Continent continent = continentList.getSelectionModel().getSelectedItem();
 		selectedContinent.setText(continent.getName());
@@ -416,6 +570,10 @@ public class MapEditorController implements Initializable {
 		populateTerritory(continentList.getSelectionModel().getSelectedItem());
 	}
 
+	/**
+	 * Mouse click event for territory
+	 * @param event action event
+	 */
 	private void onMouseClickTerritoryList(MouseEvent event) {
 		Territory territory = territoryList.getSelectionModel().getSelectedItem();
 
