@@ -15,6 +15,11 @@ import com.risk.entity.Map;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidMapException;
 
+/**
+ * Map Model Test class.
+ * @author Garvpreet Singh
+ * @version 1.0.0
+ */
 public class MapModelTest {
 	static Map map;
 	static Continent continent;

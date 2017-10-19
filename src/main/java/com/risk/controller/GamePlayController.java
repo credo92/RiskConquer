@@ -304,6 +304,10 @@ public class GamePlayController implements Initializable {
 				MapUtil.appendTextToGameConsole("=======Fortification ended=======\n", gameConsole);
 			}
 		}
+		else {
+			MapUtil.infoBox("Invalid entry", "Message", "");
+			return;
+		}
 
 		// initialize re-inforcement for the next player
 		loadPlayingPlayer();
