@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * @author rahul
  * This is an entity class for Player with id, name, armies and assignedTerritories as its member variables.
+ * @version 1.0.0
  *
  */
 public class Player {

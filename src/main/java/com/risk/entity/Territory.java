@@ -5,7 +5,9 @@ import java.util.List;
 
 /**
  * @author rahul
- *
+ * This is an entity class for Territory with name, xCoordinate, yCoordinate, continent to which it belongs and adjacent Territories as its member variables.
+ * @version 1.0.0
+ * 
  */
 public class Territory {
 	private String name;
