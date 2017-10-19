@@ -123,7 +123,7 @@ public class MapValidatorTest {
 	public void validateContinentForTerritory() throws InvalidMapException {
 		map.setContinents(listOfContinents);
 		MapValidator.validateContinent(continent,map);	
-	}
+	} 
 	
 	/**
 	 * This method is used to test if a continent is a sub-graph.
