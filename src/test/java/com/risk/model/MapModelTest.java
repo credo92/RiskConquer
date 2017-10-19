@@ -111,7 +111,7 @@ public class MapModelTest {
 	}
 	
 	/**
-	 * This method is to test update Territory functionality.
+	 * This method is to test update Territory functionality whether territory gets updated or not.
 	 */
 	@Test
 	public void updateTerritory() {
