@@ -38,13 +38,6 @@ public class MapValidatorTest {
 	String continentName = "Asia";
 	String controlValue = "7";
 	
-	/*private String name;
-	private int xCoordinate;
-	private int yCoordinate;
-	private Continent belongToContinent;
-	private List<String> adjTerritories;
-	private List<Territory> adjacentTerritories;*/
-	
 	static HashMap<String, String> mapData;
 	List<Continent> listOfContinents;
 	

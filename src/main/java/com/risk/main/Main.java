@@ -19,13 +19,15 @@ import javafx.stage.Stage;
 
 /**
  * @author rahul
+ * This class is used to launch the application.
+ * @version 1.0.0
  *
  */
 public class Main extends Application {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 * This method initiates the startup screen as soon as the application launches.
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
 	 */
 	@Override
@@ -41,8 +43,7 @@ public class Main extends Application {
 			
 			VBox vbox = new VBox();
 			vbox.setAlignment(Pos.BOTTOM_CENTER);
-			vbox.getChildren().addAll(startGameButton(scene), mapEditorButton(scene), exitButton(scene));
-			
+			vbox.getChildren().addAll(startGameButton(scene), mapEditorButton(scene), exitButton(scene));			
 			
 			BorderPane borderPane = new BorderPane();
 			borderPane.setBottom(vbox);
@@ -60,9 +61,9 @@ public class Main extends Application {
 	}
 
 	/**
-	 * @param scene
-	 * @param classLoader
-	 * @return
+	 * @param scene object of {@link Scene}
+	 * @param classLoader object of {@link ClassLoader}
+	 * @return imageView object of {@link ImageView}
 	 */
 	public static ImageView loadImage(Scene scene, ClassLoader classLoader) {
 		final ImageView imageView = new ImageView();
@@ -86,7 +87,8 @@ public class Main extends Application {
 	}
 
 	/**
-	 * @return
+	 * @param scene {@link Scene} to depict UI screen.
+	 * @return exitButton {@link Button} wherein button exits the application and kill its instance
 	 */
 	public static Button exitButton(Scene scene) {
 		Button exitButton = new Button("Exit");
@@ -96,7 +98,8 @@ public class Main extends Application {
 	}
 
 	/**
-	 * @return
+	 * @param scene {@link Scene} to depict UI screen.
+	 * @return {@link Button} wherein button opens up a new map screen for editing.
 	 */
 	public static Button mapEditorButton(Scene scene) {
 		Button mapEditorButton = new Button("Map Editor");
@@ -107,7 +110,8 @@ public class Main extends Application {
 	}
 
 	/**
-	 * @return
+	 * @param scene {@link Scene} to depict UI screen.
+	 * @return {@link Button} wherein button loads a chosen map and starts the game.
 	 */
 	public static Button startGameButton(Scene scene) {
 		Button startGameButton = new Button("Load Map and Start Game");
@@ -120,6 +124,7 @@ public class Main extends Application {
 	}
 
 	/**
+	 * This is the main method to launch the application.
 	 * @param args
 	 */
 	public static void main(String[] args) {

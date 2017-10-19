@@ -16,8 +16,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * @author Garvpreet Singh
+ * This class is used to handle maps from MapSelectorLayout.fxml
+ * @version 1.0.0
+ */
 public class MapEditor implements EventHandler<ActionEvent> {
-
+	
+	/*
+	 * (non-Javadoc)
+	 * This method is overridden to create a scene at UI end from MapLayout.fxml
+	 * @see javafx.event.EventHandler#handle(javafx.event.Event)
+	 */
 	@Override
 	public void handle(ActionEvent event) {
 

@@ -2,6 +2,7 @@ package com.risk.controller;
 
 import java.io.File;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
@@ -429,7 +430,7 @@ public class MapEditorController implements Initializable {
 	@FXML
 	private void deleteTerritory(ActionEvent event) {
 		Territory territory = territoryList.getSelectionModel().getSelectedItem();
-
+		HashSet<Territory> territoryToBeRemovedFrom = new HashSet<>();
 		Continent continent = continentList.getSelectionModel().getSelectedItem();
 
 		if (continent != null && continent.getTerritories() != null) {
@@ -438,6 +439,24 @@ public class MapEditorController implements Initializable {
 						"There should be atleast one territory associated with the continent.", false);
 				return;
 			}
+			for (Continent cont : map.getContinents()) {
+				for (Territory terr : cont.getTerritories()) {
+					if (terr.getAdjacentTerritories().contains(territory)
+							&& (terr.getAdjacentTerritories().size() == 1)) {
+						MapUtil.outPutMessgae(outPutConsole, "Territory: " + territory.getName()
+								+ " is the only adjacent territory to " + terr.getName() + ", hence cannot delete.",
+								false);
+						return;
+					}
+					if (terr.getAdjacentTerritories().contains(territory)  && terr.getAdjacentTerritories().size()>1) {
+						territoryToBeRemovedFrom.add(terr);
+					}
+				}
+			}
+			//If there was no exception than remove this territory from this other territory
+			for (Territory t : territoryToBeRemovedFrom) {
+				t.getAdjacentTerritories().remove(territory);
+			}
 			continent.getTerritories().remove(territory);
 			territoryList.getItems().remove(territory);
 			MapUtil.outPutMessgae(outPutConsole, "Territory removed successfully.", true);
@@ -445,9 +464,11 @@ public class MapEditorController implements Initializable {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * Initialize view screen.
-	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+	/*
+	 * (non-Javadoc) Initialize view screen.
+	 * 
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL,
+	 * java.util.ResourceBundle)
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
