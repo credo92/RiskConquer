@@ -3,6 +3,7 @@ package com.risk.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.risk.constant.MapConstant;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
@@ -36,13 +37,13 @@ public class GameModel {
 		int noOfPlayers = players.size();
 
 		if (noOfPlayers == 3)
-			armySizePerPlayer = 35;
+			armySizePerPlayer = MapConstant.ARMIES_THREE_PLAYER;
 		else if (noOfPlayers == 4)
-			armySizePerPlayer = 30;
+			armySizePerPlayer = MapConstant.ARMIES_FOUR_PLAYER;
 		else if (noOfPlayers == 5)
-			armySizePerPlayer = 25;
+			armySizePerPlayer = MapConstant.ARMIES_FIVE_PLAYER;
 		else if (noOfPlayers == 6)
-			armySizePerPlayer = 20;
+			armySizePerPlayer = MapConstant.ARMIES_SIX_PLAYER;
 
 		for (Player player : players) {
 			player.setArmies(armySizePerPlayer);
