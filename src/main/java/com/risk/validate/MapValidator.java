@@ -67,7 +67,7 @@ public class MapValidator {
 	 * @param map map object
 	 * @return boolean true or false
 	 */
-	private static boolean continentIsASubGraph(Continent continent, Map map) {
+	public static boolean continentIsASubGraph(Continent continent, Map map) {
 		boolean isASubGraph = false;
 		HashSet<Continent> set = new HashSet<>();
 		for (Territory territory : continent.getTerritories()) {
