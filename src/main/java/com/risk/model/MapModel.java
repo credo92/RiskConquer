@@ -10,37 +10,45 @@ import com.risk.exception.InvalidMapException;
 
 /**
  * Model class for the map
+ * 
  * @author rahul
  * @version 1.0.0
  */
 public class MapModel {
 
-	
 	/**
 	 * Create new continent.
-	 * @param map map object
-	 * @param name name of the continent
-	 * @param controlValue control value of the continent
+	 * 
+	 * @param map
+	 *            map object
+	 * @param name
+	 *            name of the continent
+	 * @param controlValue
+	 *            control value of the continent
 	 * @return Continent created succefully
-	 * @throws InvalidMapException invalid map exception
+	 * @throws InvalidMapException
+	 *             invalid map exception
 	 */
 	public Continent addContinent(Map map, String name, String controlValue) throws InvalidMapException {
 		Continent continent = new Continent();
 
 		continent.setName(name);
 		continent.setValue(controlValue);
-		
+
 		if (map.getContinents().contains(continent)) {
 			throw new InvalidMapException("Continent with name: " + name.toUpperCase() + " already exist.");
 		}
-		
+
 		return continent;
 	}
 
 	/**
-	 *  Update continent.
-	 * @param continent continent object to be updated
-	 * @param controlValue control value to be updated
+	 * Update continent.
+	 * 
+	 * @param continent
+	 *            continent object to be updated
+	 * @param controlValue
+	 *            control value to be updated
 	 * @return continent update continent.
 	 */
 	public Continent updateContinent(Continent continent, String controlValue) {
@@ -52,10 +60,15 @@ public class MapModel {
 
 	/**
 	 * Update territory.
-	 * @param territory territory to be updated
-	 * @param xAxis y axis
-	 * @param yAxis x axis
-	 * @param adjTerritory list of adj territory
+	 * 
+	 * @param territory
+	 *            territory to be updated
+	 * @param xAxis
+	 *            y axis
+	 * @param yAxis
+	 *            x axis
+	 * @param adjTerritory
+	 *            list of adj territory
 	 * @return territory updated territory
 	 */
 	public Territory updateTerritory(Territory territory, String xAxis, String yAxis, Territory adjTerritory) {
@@ -63,8 +76,12 @@ public class MapModel {
 		territory.setxCoordinate(Integer.valueOf(xAxis));
 		territory.setyCoordinate(Integer.valueOf(yAxis));
 		if (adjTerritory != null) {
-			if (!territory.getAdjacentTerritories().contains(adjTerritory))
+			if (!territory.getAdjacentTerritories().contains(adjTerritory)) {
 				territory.getAdjacentTerritories().add(adjTerritory);
+			}
+			if (!adjTerritory.getAdjacentTerritories().contains(territory)) {
+				adjTerritory.getAdjacentTerritories().add(territory);
+			}
 		}
 
 		return territory;
@@ -72,15 +89,21 @@ public class MapModel {
 
 	/**
 	 * Add new territory.
-	 * @param name name of the continent
-	 * @param xAxis yaxis
-	 * @param yAxis x axis
-	 * @param adjTerritory adjterritory
-	 * @param continent continent under which to create territory
+	 * 
+	 * @param name
+	 *            name of the continent
+	 * @param xAxis
+	 *            yaxis
+	 * @param yAxis
+	 *            x axis
+	 * @param adjTerritory
+	 *            adjterritory
+	 * @param continent
+	 *            continent under which to create territory
 	 * @return territory newly created territory
 	 */
-	public Territory addTerritory(Map map,String name, String xAxis, String yAxis, Territory adjTerritory,
-			Continent continent) throws InvalidMapException{
+	public Territory addTerritory(Map map, String name, String xAxis, String yAxis, Territory adjTerritory,
+			Continent continent) throws InvalidMapException {
 
 		Territory territory = new Territory();
 		List<Territory> tList = new ArrayList<>();
@@ -93,21 +116,27 @@ public class MapModel {
 			tList.add(adjTerritory);
 		}
 		territory.setAdjacentTerritories(tList);
-		
-		//check for unique territory
-		for(Continent existContinent: map.getContinents()) {
+
+		// check for unique territory
+		for (Continent existContinent : map.getContinents()) {
 			if (existContinent.getTerritories().contains(territory)) {
-				throw new InvalidMapException("Territory: "+ name+" already exist in continent "+ existContinent.getName());
+				throw new InvalidMapException(
+						"Territory: " + name + " already exist in continent " + existContinent.getName());
 			}
 		}
-		
+		if (adjTerritory != null) {
+			adjTerritory.getAdjacentTerritories().add(territory);
+		}
 		return territory;
 	}
 
 	/**
 	 * Assign territory to a contiennt
-	 * @param continent continent object
-	 * @param territory territory object
+	 * 
+	 * @param continent
+	 *            continent object
+	 * @param territory
+	 *            territory object
 	 * @return continent updated continent.
 	 */
 	public Continent assignTerrToContinent(Continent continent, Territory territory) {

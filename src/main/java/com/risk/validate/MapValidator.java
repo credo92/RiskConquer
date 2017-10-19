@@ -1,5 +1,6 @@
 package com.risk.validate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +13,7 @@ import com.risk.exception.InvalidMapException;
 
 /**
  * Map validator.
+ * 
  * @author rahul
  * @version 1.0.0
  */
@@ -19,8 +21,11 @@ public class MapValidator {
 
 	/**
 	 * Validate the map data.
-	 * @param map map object
-	 * @throws InvalidMapException invalid exception 
+	 * 
+	 * @param map
+	 *            map object
+	 * @throws InvalidMapException
+	 *             invalid exception
 	 */
 	public static void validateMap(Map map) throws InvalidMapException {
 		if (map != null) {
@@ -41,9 +46,13 @@ public class MapValidator {
 
 	/**
 	 * Validate continet. It should have atleast one territory.
-	 * @param continent continent object
-	 * @param map map object
-	 * @throws InvalidMapException invalid map exception
+	 * 
+	 * @param continent
+	 *            continent object
+	 * @param map
+	 *            map object
+	 * @throws InvalidMapException
+	 *             invalid map exception
 	 */
 	public static void validateContinent(Continent continent, Map map) throws InvalidMapException {
 		if (continent.getTerritories().size() < 1) {
@@ -63,8 +72,11 @@ public class MapValidator {
 
 	/**
 	 * Check if graph is a connected graph.
-	 * @param continent continent object
-	 * @param map map object
+	 * 
+	 * @param continent
+	 *            continent object
+	 * @param map
+	 *            map object
 	 * @return boolean true or false
 	 */
 	public static boolean continentIsASubGraph(Continent continent, Map map) {
@@ -88,24 +100,74 @@ public class MapValidator {
 	}
 
 	/**
-	 * Check if the territory is a valid territory. It has atleast one adjacent territory.
-	 * @param territory territory to be tested
-	 * @throws InvalidMapException invalid map exception.
+	 * Check if the territory is a valid territory. It has atleast one adjacent
+	 * territory.
+	 * 
+	 * @param territory
+	 *            territory to be tested
+	 * @throws InvalidMapException
+	 *             invalid map exception.
 	 */
 	public static void validateTerritory(Territory territory, Map map) throws InvalidMapException {
 
-		List<Territory> adjTerritory = territory.getAdjacentTerritories();
+		List<Territory> adjTerritoryList = territory.getAdjacentTerritories();
 
-		if (adjTerritory != null && adjTerritory.size() < 1) {
+		if (adjTerritoryList != null && adjTerritoryList.size() < 1) {
 			throw new InvalidMapException(
 					"Territory: " + territory.getName() + " should be mapped with atleas one adjacent territory.");
+		} else if (!isTerritoryAConnectedGraph(territory)) {
+			throw new InvalidMapException(
+					"Territory: " + territory.getName() + " is not forming a connected sub graph.");
+		} else {
+			for (Territory adjTerritory : adjTerritoryList) {
+				if (!adjTerritory.getAdjacentTerritories().contains(territory)) {
+					throw new InvalidMapException("Territory " + territory.getName().toUpperCase()
+							+ " is not an linked to all its adjacent territory " + adjTerritory.getName());
+				}
+			}
+		}
+	}
+
+	public static boolean isTerritoryAConnectedGraph(Territory territory) {
+		HashSet<Territory> territorySet = new HashSet<>();
+		Continent continent = territory.getBelongToContinent();
+		List<Territory> territoryList = continent.getTerritories();
+		territorySet.add(territory);
+		territory.setProcessed(true);
+		
+		checkGraph(territory, territorySet);
+		for (Territory terr: continent.getTerritories()) {
+			terr.setProcessed(false);
+		}
+		if (territorySet.containsAll(territoryList)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static void checkGraph(Territory territory, HashSet<Territory> tSet) {
+		boolean isUnProcessedTerritory = false;
+		for (Territory t : territory.getAdjacentTerritories()) {
+			if (t.getBelongToContinent().equals(territory.getBelongToContinent()) && !t.isProcessed()) {
+				t.setProcessed(true);
+				isUnProcessedTerritory = true;
+				tSet.add(t);
+				checkGraph(t, tSet);
+			}
+		}
+		if (!isUnProcessedTerritory) {
+			return;
 		}
 	}
 
 	/**
 	 * Check if the territories are uniquely associated with the continent.
-	 * @param map map object
-	 * @throws InvalidMapException invalid map exception
+	 * 
+	 * @param map
+	 *            map object
+	 * @throws InvalidMapException
+	 *             invalid map exception
 	 */
 	public static void isTerritoryUniquelyAssociated(Map map) throws InvalidMapException {
 		HashMap<Territory, Integer> territoryAssociation = new HashMap<>();

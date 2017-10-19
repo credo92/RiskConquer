@@ -14,6 +14,7 @@ public class Territory {
 	private Continent belongToContinent;
 	private List<String> adjTerritories;
 	private List<Territory> adjacentTerritories;
+	private boolean isProcessed;
 	
 	private Player player;
 	private int armies;
@@ -28,6 +29,20 @@ public class Territory {
 	 */
 	public int getArmies() {
 		return armies;
+	}
+	
+	/**
+	 * @return the isProcessed
+	 */
+	public boolean isProcessed() {
+		return isProcessed;
+	}
+
+	/**
+	 * @param isProcessed the isProcessed to set
+	 */
+	public void setProcessed(boolean isProcessed) {
+		this.isProcessed = isProcessed;
 	}
 
 	/**
