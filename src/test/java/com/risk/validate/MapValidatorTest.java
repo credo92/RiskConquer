@@ -126,7 +126,7 @@ public class MapValidatorTest {
 	} 
 	
 	/**
-	 * This method is used to test if a continent is a sub-graph.
+	 * This method is used to test if a continent is a sub-graph or not.
 	 * @throws InvalidMapException invalid map exception.
 	 */
 	public void validateContinentForSubGraph() throws InvalidMapException {		
