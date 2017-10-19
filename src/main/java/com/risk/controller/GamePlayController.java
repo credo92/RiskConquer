@@ -304,8 +304,12 @@ public class GamePlayController implements Initializable {
 				MapUtil.appendTextToGameConsole("=======Fortification ended=======\n", gameConsole);
 			}
 		}
+
 		// initialize re-inforcement for the next player
+		loadPlayingPlayer();
+
 		initializeReinforcement();
+
 	}
 
 	/**
@@ -344,7 +348,9 @@ public class GamePlayController implements Initializable {
 
 		boolean armiesExhausted = gameModel.checkIfPlayersArmiesExhausted(gamePlayerList);
 		if (armiesExhausted) {
-			initializeReinforcement();
+			executor.shutdownNow();
+			loadPlayingPlayer();
+			initializeAttack();
 		} else {
 			executor.shutdownNow();
 			if (executor.isShutdown()) {
@@ -417,14 +423,14 @@ public class GamePlayController implements Initializable {
 			playerIterator = gamePlayerList.iterator();
 		}
 		playerPlaying = playerIterator.next();
-		MapUtil.appendTextToGameConsole("=========================\n", gameConsole);
+		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "!....started playing.\n", gameConsole);
 		selectedTerritoryList.getItems().clear();
 		adjTerritoryList.getItems().clear();
 		for (Territory territory : playerPlaying.getAssignedTerritory()) {
 			selectedTerritoryList.getItems().add(territory);
 		}
-		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
+		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");
 	}
 
 	/**
@@ -432,7 +438,7 @@ public class GamePlayController implements Initializable {
 	 */
 	private void calculateReinforcementArmies() {
 		if (this.playerPlaying != null) {
-			playerPlaying = gameModel.calculateReinforcementArmies(playerPlaying);
+			playerPlaying = gameModel.calculateReinforcementArmies(map, playerPlaying);
 			playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
 		} else {
 			MapUtil.appendTextToGameConsole("Error!. No player playing.", gameConsole);
@@ -454,11 +460,10 @@ public class GamePlayController implements Initializable {
 	 * Initialize reinforcement phase of the game.
 	 */
 	private void initializeReinforcement() {
-		loadPlayingPlayer();
-		MapUtil.disableControl(placeArmy, fortify,attack);
+		MapUtil.disableControl(placeArmy, fortify, attack);
 		MapUtil.enableControl(reinforcement);
 		reinforcement.requestFocus();
-		MapUtil.appendTextToGameConsole("=======================================\n", gameConsole);
+		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("======Start Reinforcement! =========== \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "\n", gameConsole);
 		calculateReinforcementArmies();
@@ -468,10 +473,10 @@ public class GamePlayController implements Initializable {
 	 * Initialize attack phase of the game.
 	 */
 	private void initializeAttack() {
-		MapUtil.disableControl(reinforcement);
+		MapUtil.disableControl(reinforcement, placeArmy);
 		MapUtil.enableControl(attack);
 		attack.requestFocus();
-		MapUtil.appendTextToGameConsole("======================================= \n", gameConsole);
+		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("===Attack phase under developement! === \n", gameConsole);
 		initializeFortification();
 	}
@@ -480,11 +485,18 @@ public class GamePlayController implements Initializable {
 	 * Initialize fortification phase of the game.
 	 */
 	private void initializeFortification() {
-		MapUtil.disableControl(reinforcement,attack);
-		MapUtil.enableControl(fortify);
-		fortify.requestFocus();
-		MapUtil.appendTextToGameConsole("======================================= \n", gameConsole);
-		MapUtil.appendTextToGameConsole("====Fortification phase started! ====== \n", gameConsole);
+		if (gameModel.isFortificationPhaseValid(map, playerPlaying)) {
+			MapUtil.disableControl(reinforcement, attack, placeArmy);
+			MapUtil.enableControl(fortify);
+			fortify.requestFocus();
+			MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
+			MapUtil.appendTextToGameConsole("====Fortification phase started! ====== \n", gameConsole);
+		} else {
+			MapUtil.appendTextToGameConsole("====Fortification phase started! ====== \n", gameConsole);
+			MapUtil.appendTextToGameConsole(playerPlaying.getName() + " has no armies to be fortified.", gameConsole);
+			loadPlayingPlayer();
+			initializeReinforcement();
+		}
 	}
 
 	/**

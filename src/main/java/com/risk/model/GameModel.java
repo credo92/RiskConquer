@@ -57,19 +57,86 @@ public class GameModel {
 	}
 
 	/**
+	 * Calculate the number of armies for each reinforcement phase as per the Risk
+	 * rules
+	 * 
 	 * @param playerPlaying
-	 * @return
+	 *            current player playing
+	 * @return Player the current player object
 	 */
-	public Player calculateReinforcementArmies(Player playerPlaying) {
+	public Player calculateReinforcementArmies(Map map, Player playerPlaying) {
 		int currentArmies = playerPlaying.getArmies();
 		int territoryCount = playerPlaying.getAssignedTerritory().size();
 		if (territoryCount < 9) {
-			playerPlaying.setArmies(currentArmies + 3);
+			currentArmies = currentArmies + 3;
 		} else {
-			playerPlaying.setArmies((territoryCount / 3) + currentArmies);
+			currentArmies = currentArmies + (territoryCount / 3);
 		}
 
+		List<Continent> continents = getContinentsOwnedByPlayer(map, playerPlaying);
+		if (continents.size() > 0) {
+			for (Continent continent : continents) {
+				currentArmies = currentArmies + Integer.parseInt(continent.getValue());
+			}
+		}
+		playerPlaying.setArmies(currentArmies);
+
 		return playerPlaying;
+	}
+
+	/**
+	 * Get the list of continents owened by the player.
+	 * 
+	 * @param map
+	 *            map object
+	 * @param playerPlaying
+	 *            the player currently playing
+	 * @return List<Continent> continents owened by player.
+	 */
+	public List<Continent> getContinentsOwnedByPlayer(Map map, Player playerPlaying) {
+		List<Continent> continents = new ArrayList<>();
+
+		for (Continent continent : map.getContinents()) {
+			boolean continentBelongToPlayer = true;
+			for (Territory territory : continent.getTerritories()) {
+				if (!territory.getPlayer().equals(playerPlaying)) {
+					continentBelongToPlayer = false;
+					break;
+				}
+			}
+			if (continentBelongToPlayer) {
+				System.out.println("Player: " + playerPlaying.getName() + " own continent: " + continent.getName());
+				continents.add(continent);
+			}
+		}
+
+		return continents;
+	}
+
+	/**
+	 * Check if there are armies to be fortified.
+	 * @param map map object
+	 * @param playerPlaying current player playing
+	 * @return boolean is fortifcation of armies available.
+	 */
+	public boolean isFortificationPhaseValid(Map map, Player playerPlaying) {
+		boolean isFortificationAvaialble = false;
+		outer: for (Continent continent : map.getContinents()) {
+			for (Territory territory : continent.getTerritories()) {
+				if (territory.getPlayer().equals(playerPlaying)) {
+					if (territory.getArmies() > 1) {
+						for (Territory adjterritory : territory.getAdjacentTerritories()) {
+							if (adjterritory.getPlayer().equals(playerPlaying)) {
+								isFortificationAvaialble = true;
+								break outer;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return isFortificationAvaialble;
 	}
 
 	/**
