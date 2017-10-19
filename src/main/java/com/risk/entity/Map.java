@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * @author rahul
- * This is an entity class for Continent with mapData, continents, continentMap and territories as its member variables.
+ * This is an entity class for Map with mapData, continents, continentMap and territories as its member variables.
  * @version 1.0.0
  *
  */
