@@ -6,14 +6,14 @@ public class Card {
 	CardEnum cardEnum;
 
 	private String cardType;
-	private String cardTerritoryName;
+	private String cardWithTerritoryName;
 
 	public String getCardTerritoryName() {
-		return cardTerritoryName;
+		return cardWithTerritoryName;
 	}
 
 	public void setCardTerritoryName(String cardWithTerritoryName) {
-		this.cardTerritoryName = cardWithTerritoryName;
+		this.cardWithTerritoryName = cardWithTerritoryName;
 	}
 
 	public Card(CardEnum cardEnum) {
