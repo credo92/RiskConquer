@@ -3,7 +3,11 @@ package com.risk.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+
+import com.risk.constant.CardType;
 import com.risk.constant.MapConstant;
+import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
@@ -71,7 +75,7 @@ public class GameModel {
 		return players;
 	}
 
-	
+
 	/**
 	 * Calculate the number of armies for each reinforcement phase as per the Risk rules
 	 * @param map map object
@@ -178,6 +182,52 @@ public class GameModel {
 		}
 	}
 	
+	/**
+	 * Generating Random Card Type and Assigning to card Object
+	 * 
+	 * @param card
+	 * 		Card card
+	 */
+	public Card getCardType(Card card){
+		CardType cardType = null;
+		CardType[] cards = cardType.values();
+		Random random = new Random();		
+		card.setCardEnum(cards[random.nextInt(cards.length)]);
+		return card;
+	}
+
+
+	/**
+	 * Assign Card to Territory
+	 * 
+	 * @param Territory
+	 *            Territory list
+	 * @param textAres
+	 *            game console
+	 */
+	public void assignCardToTerritory(Map map, TextArea textAres) {
+
+		List<Territory> allterritories = new ArrayList<>();
+
+		if (map.getContinents() != null) {
+			for (Continent continent : map.getContinents()) {
+				if (continent != null && continent.getTerritories() != null) {
+					for (Territory territory : continent.getTerritories()) {
+						allterritories.add(territory);
+					}
+				}
+			}
+		}
+		for (Territory territory : allterritories) {
+			Card card = new Card();
+			card.setTerritory(territory);
+			territory.setCard(getCardType(card));
+			MapUtil.appendTextToGameConsole(
+					territory.getName() + " has card of type " + territory.getCard().getCardEnum().name() + " ! \n", textAres);
+		}			
+	}
+
+
 	/**
 	 * Assign territory to player
 	 * 

@@ -3,6 +3,8 @@ package com.risk.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.risk.constant.CardType;
+
 /**
  * @author rahul
  * This is an entity class for Territory with name, xCoordinate, yCoordinate, continent to which it belongs and adjacent Territories as its member variables.
@@ -19,6 +21,18 @@ public class Territory {
 	private boolean isProcessed;
 	
 	private Player player;
+	private Card card;
+	
+
+	public Card getCard() {
+		return card;
+	}
+
+	public void setCard(Card card) {
+		this.card = card;
+	}
+
+
 	private int armies;
 
 	public Territory() {

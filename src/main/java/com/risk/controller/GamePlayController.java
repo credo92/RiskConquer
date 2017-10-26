@@ -185,6 +185,7 @@ public class GamePlayController implements Initializable {
 
 				gameModel.assignArmiesToPlayers(gamePlayerList, gameConsole);
 				assignTerritoryToPlayer();
+				assignCardToTerritory();
 			}
 		});
 	}
@@ -417,6 +418,17 @@ public class GamePlayController implements Initializable {
 		MapUtil.appendTextToGameConsole("===Territories assignation complete===\n", gameConsole);
 		loadMapData();
 		start();
+	}
+	
+	/**
+	 * Assign card to each territories.
+	 */
+	private void assignCardToTerritory() {
+		MapUtil.appendTextToGameConsole("===Assigning Card to territories===\n", gameConsole);
+		gameModel.assignCardToTerritory(map, gameConsole);
+		MapUtil.appendTextToGameConsole("===Card assignation complete===\n", gameConsole);
+//		loadMapData();
+//		start();
 	}
 
 	/**

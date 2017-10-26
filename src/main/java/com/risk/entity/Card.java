@@ -1,31 +1,34 @@
 package com.risk.entity;
 
-import com.risk.constant.CardEnum;
+import com.risk.constant.CardType;
+
+/**
+ * @author vipul
+ * This is an entity class for Card with cardEnum and Territory object
+ * @version 1.0.1
+ * 
+ */
 
 public class Card {
-	CardEnum cardEnum;
+	CardType cardEnum;
+	private Territory territory;
 
-	private String cardType;
-	private String cardWithTerritoryName;
-
-	public String getCardTerritoryName() {
-		return cardWithTerritoryName;
+	
+	public Territory getTerritory() {
+		return territory;
 	}
-
-	public void setCardTerritoryName(String cardWithTerritoryName) {
-		this.cardWithTerritoryName = cardWithTerritoryName;
+	public void setTerritory(Territory territory) {
+		this.territory = territory;
 	}
-
-	public Card(CardEnum cardEnum) {
+	public Card(){
 		this.cardEnum = cardEnum;
 	}
-
-	public String getCardType() {
-		return cardType;
+	public CardType getCardEnum() {
+		return cardEnum;
 	}
 
-	public void setCardType(String cardType) {
-		this.cardType = cardType;
+	public void setCardEnum(CardType cardEnum) {
+		this.cardEnum = cardEnum;
 	}
 
 }

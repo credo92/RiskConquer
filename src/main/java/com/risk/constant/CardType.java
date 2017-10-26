@@ -1,6 +1,6 @@
 package com.risk.constant;
 
-public enum CardEnum {
+public enum CardType {
 	INFANTRY,
 	CAVALRY,
 	ARTILLERY

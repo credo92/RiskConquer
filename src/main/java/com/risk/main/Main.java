@@ -108,7 +108,6 @@ public class Main extends Application {
 		Button mapEditorButton = new Button("Map Editor");
 		mapEditorButton.setOnAction(new MapOption());
 		mapEditorButton.setMaxWidth(scene.getWidth());
-
 		return mapEditorButton;
 	}
 
@@ -123,7 +122,6 @@ public class Main extends Application {
 		startGameButton.setMaxWidth(scene.getWidth());*/
 		startGameButton.setOnAction(new GamePlay());
 		startGameButton.setMaxWidth(scene.getWidth());
-
 		return startGameButton;
 	}
 
