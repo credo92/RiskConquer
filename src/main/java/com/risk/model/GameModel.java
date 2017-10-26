@@ -1,8 +1,8 @@
 package com.risk.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
 import com.risk.constant.MapConstant;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
@@ -177,7 +177,7 @@ public class GameModel {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Assign territory to player
 	 * 

@@ -407,7 +407,7 @@ public class GamePlayController implements Initializable {
 			dataDisplay.getChildren().add(MapUtil.createNewTitledPane(continent));
 		}
 	}
-
+		
 	/**
 	 * Distribute all territory among the player.
 	 */
