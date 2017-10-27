@@ -183,21 +183,6 @@ public class GameModel {
 	}
 	
 	/**
-	 * Generating Random Card Type and Assigning to card Object
-	 * 
-	 * @param card
-	 * 		Card card
-	 */
-	public Card getCardType(Card card){
-		CardType cardType = null;
-		CardType[] cards = cardType.values();
-		Random random = new Random();		
-		card.setCardEnum(cards[random.nextInt(cards.length)]);
-		return card;
-	}
-
-
-	/**
 	 * Assign Card to Territory
 	 * 
 	 * @param Territory
@@ -206,9 +191,9 @@ public class GameModel {
 	 *            game console
 	 */
 	public void assignCardToTerritory(Map map, TextArea textAres) {
-
+		
 		List<Territory> allterritories = new ArrayList<>();
-
+		CardType cardType = null;
 		if (map.getContinents() != null) {
 			for (Continent continent : map.getContinents()) {
 				if (continent != null && continent.getTerritories() != null) {
@@ -219,11 +204,10 @@ public class GameModel {
 			}
 		}
 		for (Territory territory : allterritories) {
-			Card card = new Card();
-			card.setTerritory(territory);
-			territory.setCard(getCardType(card));
+			Card card = new Card(cardType.values()[(int) (Math.random() * cardType.values().length)]);
+			card.setTerritoryName(territory.getName());
 			MapUtil.appendTextToGameConsole(
-					territory.getName() + " has card of type " + territory.getCard().getCardEnum().name() + " ! \n", textAres);
+					territory.getName() + " has card of type " + card.getCardType().name() + " ! \n", textAres);
 		}			
 	}
 

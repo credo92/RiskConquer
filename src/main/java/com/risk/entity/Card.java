@@ -10,25 +10,19 @@ import com.risk.constant.CardType;
  */
 
 public class Card {
-	CardType cardEnum;
-	private Territory territory;
-
+	CardType cardType;
+	private String territoryName;
 	
-	public Territory getTerritory() {
-		return territory;
+	public String getTerritoryName() {
+		return territoryName;
 	}
-	public void setTerritory(Territory territory) {
-		this.territory = territory;
+	public void setTerritoryName(String territoryName) {
+		this.territoryName = territoryName;
 	}
-	public Card(){
-		this.cardEnum = cardEnum;
+	public Card(CardType cardType){
+		this.cardType = cardType;
 	}
-	public CardType getCardEnum() {
-		return cardEnum;
+	public CardType getCardType() {
+		return cardType;
 	}
-
-	public void setCardEnum(CardType cardEnum) {
-		this.cardEnum = cardEnum;
-	}
-
 }

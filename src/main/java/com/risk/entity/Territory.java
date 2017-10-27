@@ -21,18 +21,7 @@ public class Territory {
 	private boolean isProcessed;
 	
 	private Player player;
-	private Card card;
 	
-
-	public Card getCard() {
-		return card;
-	}
-
-	public void setCard(Card card) {
-		this.card = card;
-	}
-
-
 	private int armies;
 
 	public Territory() {
