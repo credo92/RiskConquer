@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Stack;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
@@ -147,6 +149,11 @@ public class GamePlayController implements Initializable {
 	 * The @playerIterator.
 	 */
 	private Iterator<Player> playerIterator;
+	
+	/**
+	 * The @stackOfCards.
+	 */
+	private Stack<Card> stackOfCards;
 
 	/**
 	 * Constructor for GamePlayController
@@ -425,10 +432,8 @@ public class GamePlayController implements Initializable {
 	 */
 	private void assignCardToTerritory() {
 		MapUtil.appendTextToGameConsole("===Assigning Card to territories===\n", gameConsole);
-		gameModel.assignCardToTerritory(map, gameConsole);
+		stackOfCards = gameModel.assignCardToTerritory(map, gameConsole);
 		MapUtil.appendTextToGameConsole("===Card assignation complete===\n", gameConsole);
-//		loadMapData();
-//		start();
 	}
 
 	/**

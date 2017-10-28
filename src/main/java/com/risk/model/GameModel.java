@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.Stack;
 
 import com.risk.constant.CardType;
 import com.risk.constant.MapConstant;
@@ -190,7 +191,8 @@ public class GameModel {
 	 * @param textAres
 	 *            game console
 	 */
-	public void assignCardToTerritory(Map map, TextArea textAres) {
+	public Stack assignCardToTerritory(Map map, TextArea textAres) {
+		Stack<Card> stackOfCards= new Stack();
 		
 		List<Territory> allterritories = new ArrayList<>();
 		CardType cardType = null;
@@ -206,9 +208,11 @@ public class GameModel {
 		for (Territory territory : allterritories) {
 			Card card = new Card(cardType.values()[(int) (Math.random() * cardType.values().length)]);
 			card.setTerritoryName(territory.getName());
+			stackOfCards.push(card);
 			MapUtil.appendTextToGameConsole(
 					territory.getName() + " has card of type " + card.getCardType().name() + " ! \n", textAres);
-		}			
+		}	
+		return stackOfCards;
 	}
 
 
