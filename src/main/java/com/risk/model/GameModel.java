@@ -191,7 +191,7 @@ public class GameModel {
 	 * @param textAres
 	 *            game console
 	 */
-	public Stack assignCardToTerritory(Map map, TextArea textAres) {
+	public Stack<Card> assignCardToTerritory(Map map, TextArea textAres) {
 		Stack<Card> stackOfCards= new Stack();
 		
 		List<Territory> allterritories = new ArrayList<>();
