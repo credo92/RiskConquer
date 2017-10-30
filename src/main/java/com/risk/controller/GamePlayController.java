@@ -1,5 +1,6 @@
 package com.risk.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
+import com.risk.entity.Dice;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
@@ -24,7 +26,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -33,6 +38,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * Game play controller to control all the
@@ -44,12 +50,12 @@ import javafx.scene.layout.VBox;
 public class GamePlayController implements Initializable {
 
 	/**
-	 * The @map refrence.
+	 * The @map reference.
 	 */
 	private Map map;
 
 	/**
-	 * The @gameModel refrence.
+	 * The @gameModel reference.
 	 */
 	private GameModel gameModel;
 
@@ -164,6 +170,7 @@ public class GamePlayController implements Initializable {
 	public GamePlayController(Map map) {
 		this.map = map;
 		this.gameModel = new GameModel();
+		
 	}
 
 	/**
@@ -266,12 +273,30 @@ public class GamePlayController implements Initializable {
 
 	/**
 	 * Attack Phase of the game play.
-	 * 
 	 * @param event
 	 *            event.
 	 */
 	@FXML
 	private void attack(ActionEvent event) {
+		final Stage newMapStage = new Stage();
+		newMapStage.setTitle("New Map");
+
+		DiceRollController diceController = new DiceRollController();
+
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("DiceLayout.fxml"));
+		loader.setController(diceController);
+
+		Parent root = null;
+		try {
+			root = (Parent) loader.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Scene scene = new Scene(root);
+		newMapStage.setScene(scene);
+		newMapStage.show();			
 	}
 
 	/**
@@ -455,7 +480,7 @@ public class GamePlayController implements Initializable {
 	}
 
 	/**
-	 * Calculate reinforcement armies based ont the game rules.
+	 * Calculate reinforcement armies based on the game rules.
 	 */
 	private void calculateReinforcementArmies() {
 		if (this.playerPlaying != null) {
@@ -490,16 +515,21 @@ public class GamePlayController implements Initializable {
 		calculateReinforcementArmies();
 	}
 
+	private void loadDiceView() {
+		
+	}
 	/**
 	 * Initialize attack phase of the game.
 	 */
+	
 	private void initializeAttack() {
 		MapUtil.disableControl(reinforcement, placeArmy);
 		MapUtil.enableControl(attack);
 		attack.requestFocus();
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("===Attack phase under developement! === \n", gameConsole);
-		initializeFortification();
+		
+		//initializeFortification();
 	}
 
 	/**
