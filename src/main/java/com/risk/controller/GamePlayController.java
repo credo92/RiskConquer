@@ -49,7 +49,7 @@ import javafx.stage.Stage;
 public class GamePlayController implements Initializable {
 
 	/**
-	 * The @map refrence.
+	 * The @map refrence.s
 	 */
 	private Map map;
 
@@ -166,6 +166,11 @@ public class GamePlayController implements Initializable {
 	 * The @stackOfCards.
 	 */
 	private Stack<Card> stackOfCards;
+	
+	/**
+	 * The @cardExchangeCounter.
+	 */
+	private int cardExchangeCounter;
 
 	/**
 	 * Constructor for GamePlayController
@@ -279,7 +284,6 @@ public class GamePlayController implements Initializable {
 
 	/**
 	 * Attack Phase of the game play.
-	 * Code needs to be moved towards cardExchange Button ( which is not created right now in gameplay fxml)
 	 * @param event
 	 *            event.
 	 */
@@ -289,18 +293,32 @@ public class GamePlayController implements Initializable {
 	}
 	
 	/**
-	 * Card Exchange Phase of the game play.
+	 * Card Window of the game play.
 	 * 
 	 * @param event
 	 *            event.
 	 */
 	@FXML
-	private void launchCardWindow(ActionEvent event) {
+	private void launchCardWindow(ActionEvent event)
+	{
+		
+		List<Territory> allterritories = new ArrayList<>();
+
+		if (map.getContinents() != null) {
+			for (Continent continent : map.getContinents()) {
+				if (continent != null && continent.getTerritories() != null) {
+					for (Territory territory : continent.getTerritories()) {
+						allterritories.add(territory);
+					}
+				}
+			}
+		}
+				
 		final Stage newMapStage = new Stage();
-		newMapStage.setTitle("Card");
+		newMapStage.setTitle("Card Window");
 
-		CardController cardController = new CardController();
-
+		CardController cardController = new CardController(allterritories);
+		
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("Cards.fxml"));
 		loader.setController(cardController);
 

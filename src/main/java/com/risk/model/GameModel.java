@@ -208,7 +208,7 @@ public class GameModel {
 		}
 		for (Territory territory : allterritories) {
 			Card card = new Card(CardType.values()[(int) (Math.random() * CardType.values().length)]);
-			card.setTerritoryName(territory.getName());
+			card.setTerritory(territory);
 			stackOfCards.push(card);
 			MapUtil.appendTextToGameConsole(
 					territory.getName() + " has card of type " + card.getCardType().name() + " ! \n", textArea);

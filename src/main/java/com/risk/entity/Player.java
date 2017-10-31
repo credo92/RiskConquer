@@ -18,7 +18,13 @@ public class Player {
 	private int armies;
 
 	private List<Territory> assignedTerritory;
-
+	
+	/**
+	 * The @cardTypeList. 
+	 * 		stores player's list of cards
+	 */
+	private List<Card> cardTypeList;
+	
 	public Player(int id, String name) {
 		this.id = id;
 		this.name = name;
@@ -103,5 +109,21 @@ public class Player {
 
 		Player player = (Player) obj;
 		return player.getName().equalsIgnoreCase(name);
+	}
+	
+	/**
+	 * The @getCardTypeList.
+	 * 		getter method 
+	 */
+	public List<Card> getCardTypeList() {
+		return cardTypeList;
+	}
+	
+	/**
+	 * The @setCardTypeList.
+	 * 		setter method 
+	 */
+	public void setCardTypeList(List<Card> cardTypeList) {
+		this.cardTypeList = cardTypeList;
 	}
 }
