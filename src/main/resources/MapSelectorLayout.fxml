@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -24,11 +25,20 @@
       <Label layoutX="435.0" layoutY="395.0" prefHeight="31.0" prefWidth="200.0" text="Adjacent Terriotry" />
       <Label fx:id="playerChosen" layoutX="367.0" prefHeight="31.0" prefWidth="297.0" text="Playing........" />
       <Button fx:id="placeArmy" layoutX="566.0" layoutY="2.0" mnemonicParsing="false" onAction="#placeArmy" text="Place Army" />
-      <ScrollPane layoutX="814.0" layoutY="13.0" prefHeight="796.0" prefViewportHeight="794.0" prefViewportWidth="540.0" prefWidth="496.0">
+      <TitledPane layoutX="800.0" layoutY="6.0" prefHeight="806.0" prefWidth="510.0" text="World Domination">
          <content>
-            <VBox fx:id="dataDisplay" layoutX="670.0" layoutY="14.0" prefHeight="787.0" prefWidth="491.0" />
+            <VBox>
+               <children>
+                  <PieChart fx:id="dominationChart" />
+                  <ScrollPane layoutX="814.0" layoutY="13.0" prefHeight="571.0" prefViewportHeight="794.0" prefViewportWidth="540.0" prefWidth="496.0">
+                     <content>
+                        <VBox fx:id="dataDisplay" layoutX="670.0" layoutY="14.0" prefHeight="535.0" prefWidth="491.0" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
          </content>
-      </ScrollPane>
+      </TitledPane>
       <Label fx:id="playerTime" layoutX="685.0" layoutY="4.0" prefHeight="31.0" prefWidth="94.0" text="00:00" />
     </children>
 </Pane>
