@@ -155,13 +155,11 @@ public class GamePlayController implements Initializable {
 	 * The @playerIterator.
 	 */
 	private Iterator<Player> playerIterator;
-	
+
 	/**
 	 * The @stackOfCards.
 	 */
 	private Stack<Card> stackOfCards;
-	
-	private DiceModel diceModel;
 
 	/**
 	 * Constructor for GamePlayController
@@ -169,18 +167,16 @@ public class GamePlayController implements Initializable {
 	 * @param map
 	 *            reference to the loaded map
 	 */
-	
+
 	public GamePlayController(Map map) {
 		this.map = map;
 		this.gameModel = new GameModel();	
-		this.diceModel = new DiceModel();
-		
 	}
-	
-	
+
+
 	public String nameOfPlayer; //adding for test
-	
-	
+
+
 	public String getNameOfPlayer() {
 		return nameOfPlayer;
 	} //adding for test
@@ -286,8 +282,8 @@ public class GamePlayController implements Initializable {
 			this.adjTerritoryList.getItems().add(adjTerr);
 		}
 	}
-	
-	
+
+
 	public void loadDiceView() {
 		final Stage newMapStage = new Stage();
 		newMapStage.setTitle("Attack Window");
@@ -310,16 +306,23 @@ public class GamePlayController implements Initializable {
 		newMapStage.setScene(scene);
 		newMapStage.show();		
 	}
-	
-	public boolean checkIfAttackIsValid() {
-		Territory attackingTerritory = selectedTerritoryList.getSelectionModel().getSelectedItem();
-		Territory defendingTerritory = adjTerritoryList.getSelectionModel().getSelectedItem();
-		if(attackingTerritory != null && defendingTerritory != null ) {
-			if(attackingTerritory.getPlayer().getName() != defendingTerritory.getPlayer().getName()) {
+
+	public boolean checkIfPlayerOwnTerritoriesHaveMoreThanOneArmy() {
+		for(int i=0; i <selectedTerritoryList.getItems().size(); i++ ) {
+			if(selectedTerritoryList.getItems().get(i).getArmies() > 1) {
 				return true;
 			}	
 		}
-		
+		MapUtil.appendTextToGameConsole("All of your Territories does not have enough army", gameConsole);
+		return false;	
+	}
+
+	public boolean checkIfPlayerSelectedTerritoryHaveMoreThanOneArmy() {
+		if(selectedTerritoryList.getSelectionModel().getSelectedItem().getArmies() > 1) 
+		{
+			return true;
+		}
+		MapUtil.appendTextToGameConsole("Selected territory does not have enough army", gameConsole);
 		return false;	
 	}
 
@@ -330,9 +333,18 @@ public class GamePlayController implements Initializable {
 	 */
 	@FXML
 	private void attack(ActionEvent event) {
-		if(checkIfAttackIsValid()) {
-			loadDiceView();
-		}else {
+		Territory attackingTerritory = selectedTerritoryList.getSelectionModel().getSelectedItem();
+		Territory defendingTerritory = adjTerritoryList.getSelectionModel().getSelectedItem();
+		DiceModel diceModel = new DiceModel(attackingTerritory, defendingTerritory);
+		if(diceModel.checkIfAttackIsValid()) {
+			if(checkIfPlayerOwnTerritoriesHaveMoreThanOneArmy() &&
+					checkIfPlayerSelectedTerritoryHaveMoreThanOneArmy()) {
+				loadDiceView();
+			}else{
+				MapUtil.infoBox("Please check game console for error message",  "Message", "");
+			}
+		}
+		else {
 			MapUtil.infoBox("Please choose valid territory",  "Message", "");
 		}
 	}
@@ -477,7 +489,7 @@ public class GamePlayController implements Initializable {
 			dataDisplay.getChildren().add(MapUtil.createNewTitledPane(continent));
 		}
 	}
-		
+
 	/**
 	 * Distribute all territory among the player.
 	 */
@@ -488,7 +500,7 @@ public class GamePlayController implements Initializable {
 		loadMapData();
 		start();
 	}
-	
+
 	/**
 	 * Assign card to each territories.
 	 */
@@ -555,14 +567,14 @@ public class GamePlayController implements Initializable {
 	/**
 	 * Initialize attack phase of the game.
 	 */
-	
+
 	private void initializeAttack() {
 		MapUtil.disableControl(reinforcement, placeArmy);
 		MapUtil.enableControl(attack);
 		attack.requestFocus();
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("===Attack phase under developement! === \n", gameConsole);
-		
+
 		//initializeFortification();
 	}
 
