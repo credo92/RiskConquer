@@ -13,11 +13,11 @@ import java.util.concurrent.TimeUnit;
 
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
-import com.risk.entity.Dice;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.map.util.MapUtil;
+import com.risk.model.DiceModel;
 import com.risk.model.GameModel;
 
 import javafx.application.Platform;
@@ -160,6 +160,8 @@ public class GamePlayController implements Initializable {
 	 * The @stackOfCards.
 	 */
 	private Stack<Card> stackOfCards;
+	
+	private DiceModel diceModel;
 
 	/**
 	 * Constructor for GamePlayController
@@ -167,11 +169,25 @@ public class GamePlayController implements Initializable {
 	 * @param map
 	 *            reference to the loaded map
 	 */
+	
 	public GamePlayController(Map map) {
 		this.map = map;
-		this.gameModel = new GameModel();
+		this.gameModel = new GameModel();	
+		this.diceModel = new DiceModel();
 		
 	}
+	
+	
+	public String nameOfPlayer; //adding for test
+	
+	
+	public String getNameOfPlayer() {
+		return nameOfPlayer;
+	} //adding for test
+
+	public void setNameOfPlayer(String nameOfPlayer) {
+		this.nameOfPlayer = nameOfPlayer;
+	} //adding for test
 
 	/**
 	 * Initialize the number of players.
@@ -270,18 +286,14 @@ public class GamePlayController implements Initializable {
 			this.adjTerritoryList.getItems().add(adjTerr);
 		}
 	}
-
-	/**
-	 * Attack Phase of the game play.
-	 * @param event
-	 *            event.
-	 */
-	@FXML
-	private void attack(ActionEvent event) {
+	
+	
+	public void loadDiceView() {
 		final Stage newMapStage = new Stage();
-		newMapStage.setTitle("New Map");
-
-		DiceRollController diceController = new DiceRollController();
+		newMapStage.setTitle("Attack Window");
+		Territory attackingTerritory = selectedTerritoryList.getSelectionModel().getSelectedItem();
+		Territory defendingTerritory = adjTerritoryList.getSelectionModel().getSelectedItem();
+		DiceRollController diceController = new DiceRollController(attackingTerritory, defendingTerritory);
 
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("DiceLayout.fxml"));
 		loader.setController(diceController);
@@ -296,7 +308,31 @@ public class GamePlayController implements Initializable {
 
 		Scene scene = new Scene(root);
 		newMapStage.setScene(scene);
-		newMapStage.show();			
+		newMapStage.show();		
+	}
+	
+	public boolean checkIfAttackIsValid() {
+		Territory attackingTerritory = selectedTerritoryList.getSelectionModel().getSelectedItem();
+		Territory defendingTerritory = adjTerritoryList.getSelectionModel().getSelectedItem();
+		if(attackingTerritory.getPlayer().getName() != defendingTerritory.getPlayer().getName()) {
+			return true;
+		}
+		return false;
+		
+	}
+
+	/**
+	 * Attack Phase of the game play.
+	 * @param event
+	 *            event.
+	 */
+	@FXML
+	private void attack(ActionEvent event) {
+		if(!checkIfAttackIsValid()) {
+			MapUtil.infoBox("You cannot select territory belongs to you",  "Message", "");
+		}
+		loadDiceView();
+		
 	}
 
 	/**
@@ -360,8 +396,7 @@ public class GamePlayController implements Initializable {
 		if (!executor.isShutdown()) {
 			executor.shutdown();
 		}
-		start();
-	}
+		start();	}
 
 	/**
 	 * Place armies on territory in round robin manner.
@@ -515,9 +550,6 @@ public class GamePlayController implements Initializable {
 		calculateReinforcementArmies();
 	}
 
-	private void loadDiceView() {
-		
-	}
 	/**
 	 * Initialize attack phase of the game.
 	 */

@@ -1,18 +1,34 @@
 package com.risk.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import com.risk.entity.Territory;
+import com.risk.map.util.MapUtil;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * @author Gurpreet Singh
  * DiceRollController controller to control all the
  * @version 1.0.1
  */
-public class DiceRollController {
+public class DiceRollController implements Initializable{
+	
 
+
+	
 	/**
 	 * The @roll button.
 	 */
@@ -156,6 +172,45 @@ public class DiceRollController {
 	 */
 	@FXML
 	private Label winnerName;
+	
+	private Territory attackingTerritory;
+	private Territory defendingTerritory;
+	
+	public DiceRollController(Territory attackingTerritory, Territory defendingTerritory) {
+		this.attackingTerritory = attackingTerritory;
+		this.defendingTerritory = defendingTerritory;
+		
+	}
+	
+	public void loadAttackerInfo() {
+		attackerPlayerName.setText(attackingTerritory.getPlayer().getName());
+		attackerTerritoryName.setText(attackingTerritory.getName());
+		attackerArmies.setText(String.valueOf(attackingTerritory.getArmies()));
+	}
+	
+	public void loadDefenderInfo() {
+		defenderPlayerName.setText(defendingTerritory.getPlayer().getName());
+		defenderTerritoryName.setText(defendingTerritory.getName());
+		defenderArmies.setText(String.valueOf(defendingTerritory.getArmies()));
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+		// TODO Auto-generated method stub
+		loadAttackerInfo();
+		loadDefenderInfo();
+		roll.setOnAction((event) -> {
+			roll();
+		});
+		//winnerName.setText("hello");
+
+	}
+	
+   public void roll() {
+	winnerName.setText("roll clicked");
+	attackingTerritory.setArmies(5);
+	}
 	
 	
 }
