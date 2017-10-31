@@ -135,7 +135,13 @@ public class GamePlayController implements Initializable {
 	 */
 	@FXML
 	private Button placeArmy;
-
+	
+	/**
+	 * The @cardWindow button.
+	 */
+	@FXML
+	private Button launchCardWindow;
+	
 	/**
 	 * The @numberOfPlayersSelected .
 	 */
@@ -279,6 +285,17 @@ public class GamePlayController implements Initializable {
 	 */
 	@FXML
 	private void attack(ActionEvent event) {
+			
+	}
+	
+	/**
+	 * Card Exchange Phase of the game play.
+	 * 
+	 * @param event
+	 *            event.
+	 */
+	@FXML
+	private void launchCardWindow(ActionEvent event) {
 		final Stage newMapStage = new Stage();
 		newMapStage.setTitle("Card");
 
@@ -297,17 +314,7 @@ public class GamePlayController implements Initializable {
 
 		Scene scene = new Scene(root);
 		newMapStage.setScene(scene);
-		newMapStage.show();	
-	}
-	
-	/**
-	 * Card Exchange Phase of the game play.
-	 * 
-	 * @param event
-	 *            event.
-	 */
-	@FXML
-	private void cardExchange(ActionEvent event) {
+		newMapStage.show();
 		
 	}
 
