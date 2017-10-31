@@ -2,8 +2,10 @@ package com.risk.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
@@ -16,13 +18,18 @@ import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
 import com.risk.model.GameModel;
 import com.risk.model.PlayerModel;
+import com.risk.model.PlayerWorldDomination;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -48,7 +55,12 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	private GameModel gameModel;
 
+	@FXML
+	private PieChart dominationChart;
+
 	private PlayerModel playerModel;
+
+	private PlayerWorldDomination worldDomination;
 
 	/**
 	 * The @numberOfPlayers count of players.
@@ -153,6 +165,8 @@ public class GamePlayController implements Initializable, Observer {
 		this.gameModel = new GameModel();
 		this.playerModel = new PlayerModel();
 		playerModel.addObserver(this);
+		worldDomination = new PlayerWorldDomination();
+		worldDomination.addObserver(this);
 	}
 
 	/**
@@ -293,7 +307,9 @@ public class GamePlayController implements Initializable, Observer {
 	/**
 	 * Game reinforcement phase. Assinging armies to the player and player assinging
 	 * armies to their territory.
-	 * @param event event
+	 * 
+	 * @param event
+	 *            event
 	 */
 	@FXML
 	private void reinforcement(ActionEvent event) {
@@ -324,6 +340,7 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.appendTextToGameConsole("===Territories assignation complete===\n", gameConsole);
 		loadMapData();
 		loadPlayingPlayer();
+		populateWorldDominationData();
 	}
 
 	/**
@@ -396,8 +413,15 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.appendTextToGameConsole("====Fortification phase started! ====== \n", gameConsole);
 	}
 
-	private void updateWorldDomination() {
-
+	private void populateWorldDominationData() {
+		HashMap<Player, Double> playerTerPercent = worldDomination.populateWorldDominationData(map);
+		ArrayList<Data> chartData = new ArrayList<>();
+		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+		for (Entry<Player, Double> entry : playerTerPercent.entrySet()) {
+			chartData.add(new PieChart.Data(entry.getKey().getName(), entry.getValue()));
+		}
+		pieChartData.addAll(chartData);
+		dominationChart.setData(pieChartData);
 	}
 
 	/**
@@ -410,7 +434,7 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	/**
-	 * check if there is a valid fortification phase. 
+	 * check if there is a valid fortification phase.
 	 */
 	private void isValidFortificationPhase() {
 		playerModel.isFortificationPhaseValid(map, playerPlaying);
@@ -441,7 +465,9 @@ public class GamePlayController implements Initializable, Observer {
 		this.numberOfPlayersSelected = numberOfPlayersSelected;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
 	 */
 	public void update(Observable o, Object arg) {
@@ -465,7 +491,7 @@ public class GamePlayController implements Initializable, Observer {
 			initializePlaceArmy();
 		}
 		if (view.equals("WorldDomination")) {
-			updateWorldDomination();
+			populateWorldDominationData();
 		}
 		if (view.equals("checkIfFortificationPhaseValid")) {
 			isValidFortificationPhase();
