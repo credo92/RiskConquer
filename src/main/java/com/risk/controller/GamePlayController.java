@@ -314,11 +314,13 @@ public class GamePlayController implements Initializable {
 	public boolean checkIfAttackIsValid() {
 		Territory attackingTerritory = selectedTerritoryList.getSelectionModel().getSelectedItem();
 		Territory defendingTerritory = adjTerritoryList.getSelectionModel().getSelectedItem();
-		if(attackingTerritory.getPlayer().getName() != defendingTerritory.getPlayer().getName()) {
-			return true;
+		if(attackingTerritory != null && defendingTerritory != null ) {
+			if(attackingTerritory.getPlayer().getName() != defendingTerritory.getPlayer().getName()) {
+				return true;
+			}	
 		}
-		return false;
 		
+		return false;	
 	}
 
 	/**
@@ -328,11 +330,11 @@ public class GamePlayController implements Initializable {
 	 */
 	@FXML
 	private void attack(ActionEvent event) {
-		if(!checkIfAttackIsValid()) {
-			MapUtil.infoBox("You cannot select territory belongs to you",  "Message", "");
+		if(checkIfAttackIsValid()) {
+			loadDiceView();
+		}else {
+			MapUtil.infoBox("Please choose valid territory",  "Message", "");
 		}
-		loadDiceView();
-		
 	}
 
 	/**
