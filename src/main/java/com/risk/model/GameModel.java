@@ -186,16 +186,17 @@ public class GameModel {
 	/**
 	 * Assign Card to Territory
 	 * 
-	 * @param Territory
-	 *            Territory list
-	 * @param textAres
+	 * @param map
+	 *            Takes Map object as a parameter 
+	 * @param textArea
 	 *            game console
+	 * @return stackOfCards
+	 * 			 return the total stack of cards          
 	 */
-	public Stack<Card> assignCardToTerritory(Map map, TextArea textAres) {
-		Stack<Card> stackOfCards= new Stack();
+	public Stack<Card> assignCardToTerritory(Map map, TextArea textArea) {
+		Stack<Card> stackOfCards= new Stack<Card>();
 		
 		List<Territory> allterritories = new ArrayList<>();
-		CardType cardType = null;
 		if (map.getContinents() != null) {
 			for (Continent continent : map.getContinents()) {
 				if (continent != null && continent.getTerritories() != null) {
@@ -206,11 +207,11 @@ public class GameModel {
 			}
 		}
 		for (Territory territory : allterritories) {
-			Card card = new Card(cardType.values()[(int) (Math.random() * cardType.values().length)]);
+			Card card = new Card(CardType.values()[(int) (Math.random() * CardType.values().length)]);
 			card.setTerritoryName(territory.getName());
 			stackOfCards.push(card);
 			MapUtil.appendTextToGameConsole(
-					territory.getName() + " has card of type " + card.getCardType().name() + " ! \n", textAres);
+					territory.getName() + " has card of type " + card.getCardType().name() + " ! \n", textArea);
 		}	
 		return stackOfCards;
 	}

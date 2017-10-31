@@ -1,5 +1,6 @@
 package com.risk.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,7 +25,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -33,6 +37,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * Game play controller to control all the
@@ -108,7 +113,8 @@ public class GamePlayController implements Initializable {
 	private Label playerTime;
 
 	/**
-	 * The @executor scheduler.
+	 * The @execut23
+	 * or scheduler.
 	 */
 	private ScheduledExecutorService executor;
 
@@ -192,7 +198,7 @@ public class GamePlayController implements Initializable {
 
 				gameModel.assignArmiesToPlayers(gamePlayerList, gameConsole);
 				assignTerritoryToPlayer();
-				assignCardToTerritory();
+				
 			}
 		});
 	}
@@ -209,6 +215,7 @@ public class GamePlayController implements Initializable {
 		initializeTotalPlayers();
 		selectionOfPlayersListener();
 		loadMapData();
+		assignCardToTerritory();
 		MapUtil.disableControl(reinforcement, fortify, attack);
 
 		selectedTerritoryList.setCellFactory(param -> new ListCell<Territory>() {
@@ -266,13 +273,44 @@ public class GamePlayController implements Initializable {
 
 	/**
 	 * Attack Phase of the game play.
-	 * 
+	 * Code needs to be moved towards cardExchange Button ( which is not created right now in gameplay fxml)
 	 * @param event
 	 *            event.
 	 */
 	@FXML
 	private void attack(ActionEvent event) {
+		final Stage newMapStage = new Stage();
+		newMapStage.setTitle("Card");
+
+		CardController cardController = new CardController();
+
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("Cards.fxml"));
+		loader.setController(cardController);
+
+		Parent root = null;
+		try {
+			root = (Parent) loader.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Scene scene = new Scene(root);
+		newMapStage.setScene(scene);
+		newMapStage.show();	
 	}
+	
+	/**
+	 * Card Exchange Phase of the game play.
+	 * 
+	 * @param event
+	 *            event.
+	 */
+	@FXML
+	private void cardExchange(ActionEvent event) {
+		
+	}
+
 
 	/**
 	 * Fortify phase of the game play.
