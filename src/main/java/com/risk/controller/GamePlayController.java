@@ -1,5 +1,6 @@
 package com.risk.controller;
 
+import java.awt.CheckboxGroup;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,20 +23,26 @@ import com.risk.model.GameModel;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -135,13 +142,13 @@ public class GamePlayController implements Initializable {
 	 */
 	@FXML
 	private Button placeArmy;
-	
+
 	/**
 	 * The @cardWindow button.
 	 */
 	@FXML
 	private Button launchCardWindow;
-	
+
 	/**
 	 * The @numberOfPlayersSelected .
 	 */
@@ -161,12 +168,12 @@ public class GamePlayController implements Initializable {
 	 * The @playerIterator.
 	 */
 	private Iterator<Player> playerIterator;
-	
+
 	/**
 	 * The @stackOfCards.
 	 */
 	private Stack<Card> stackOfCards;
-	
+
 	/**
 	 * The @cardExchangeCounter.
 	 */
@@ -209,7 +216,7 @@ public class GamePlayController implements Initializable {
 
 				gameModel.assignArmiesToPlayers(gamePlayerList, gameConsole);
 				assignTerritoryToPlayer();
-				
+
 			}
 		});
 	}
@@ -289,9 +296,9 @@ public class GamePlayController implements Initializable {
 	 */
 	@FXML
 	private void attack(ActionEvent event) {
-			
+
 	}
-	
+
 	/**
 	 * Card Window of the game play.
 	 * 
@@ -300,8 +307,7 @@ public class GamePlayController implements Initializable {
 	 */
 	@FXML
 	private void launchCardWindow(ActionEvent event)
-	{
-		
+	{	
 		List<Territory> allterritories = new ArrayList<>();
 
 		if (map.getContinents() != null) {
@@ -313,7 +319,7 @@ public class GamePlayController implements Initializable {
 				}
 			}
 		}
-				
+			
 		final Stage newMapStage = new Stage();
 		newMapStage.setTitle("Card Window");
 
@@ -333,7 +339,7 @@ public class GamePlayController implements Initializable {
 		Scene scene = new Scene(root);
 		newMapStage.setScene(scene);
 		newMapStage.show();
-		
+
 	}
 
 
@@ -478,7 +484,7 @@ public class GamePlayController implements Initializable {
 			dataDisplay.getChildren().add(MapUtil.createNewTitledPane(continent));
 		}
 	}
-		
+
 	/**
 	 * Distribute all territory among the player.
 	 */
@@ -489,7 +495,7 @@ public class GamePlayController implements Initializable {
 		loadMapData();
 		start();
 	}
-	
+
 	/**
 	 * Assign card to each territories.
 	 */

@@ -7,13 +7,9 @@
 
 <Pane id="useSelectedCardSetButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="388.0" prefWidth="368.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ListView fx:id="cardListView" layoutX="20.0" layoutY="109.0" prefHeight="200.0" prefWidth="213.0" />
-      <Label layoutX="83.0" layoutY="253.0" text="Card Type" />
-      <CheckBox layoutX="61.0" layoutY="285.0" mnemonicParsing="false" text="CheckBox" />
-      <Label fx:id="currentPlayerId" layoutX="29.0" layoutY="30.0" text="Current Player Id" />
-      <Label fx:id="currentPlayerArmies" layoutX="206.0" layoutY="30.0" text="Current Player Armies" />
-      <Label layoutX="72.0" layoutY="121.0" text="territoryName" />
-      <Button fx:id="tradeButton" layoutX="128.0" layoutY="334.0" mnemonicParsing="false" text="Trade" />
+      <Label fx:id="currentPlayerName" layoutX="103.0" layoutY="28.0" text=" Player Name" />
+      <Button fx:id="trade" layoutX="128.0" layoutY="334.0" mnemonicParsing="false" onAction="#trade" text="Trade" />
       <Label fx:id="addedArmies" layoutX="206.0" layoutY="339.0" text="addedArmies" />
+      <VBox fx:id="cardVbox" layoutX="37.0" layoutY="65.0" prefHeight="200.0" prefWidth="183.0" />
    </children>
 </Pane>
