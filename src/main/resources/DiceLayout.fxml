@@ -22,7 +22,7 @@
       <CheckBox fx:id="defenderDice1" layoutX="260.0" layoutY="123.0" mnemonicParsing="false" text="defenderDice1" />
       <CheckBox fx:id="defenderDice2" layoutX="262.0" layoutY="157.0" mnemonicParsing="false" text="defenderDice2" />
       <Button fx:id="cancel" layoutX="317.0" layoutY="270.0" mnemonicParsing="false" text="Cancel" />
-      <Pane layoutX="8.0" layoutY="306.0" prefHeight="61.0" prefWidth="459.0">
+      <Pane fx:id="childPane" layoutX="8.0" layoutY="306.0" prefHeight="61.0" prefWidth="459.0">
          <children>
             <Label fx:id="numberOfArmiesLabel" layoutX="14.0" layoutY="23.0" text="No. Of Armies to Move" />
             <TextField fx:id="numberOfArmiesInput" layoutX="171.0" layoutY="18.0" prefHeight="25.0" prefWidth="50.0" />

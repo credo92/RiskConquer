@@ -3,6 +3,11 @@ package com.risk.model;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 
+/**
+ * @author Gurpreet Singh
+ * DiceModel model to send data
+ * @version 1.0.1
+ */
 public class DiceModel {
 
 	private Territory attackingTerritory;
@@ -25,4 +30,13 @@ public class DiceModel {
 		
 		return false;	
 	}
+	
+	public int getArmyCountOnAttackingTerritory() {
+		return attackingTerritory.getArmies();
+	}
+	
+	public int getArmyCountOnDefendingTerritory() {
+		return defendingTerritory.getArmies();
+	}
+	
 }

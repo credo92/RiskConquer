@@ -342,10 +342,12 @@ public class GamePlayController implements Initializable {
 				loadDiceView();
 			}else{
 				MapUtil.infoBox("Please check game console for error message",  "Message", "");
+				return;
 			}
 		}
 		else {
 			MapUtil.infoBox("Please choose valid territory",  "Message", "");
+			return;
 		}
 	}
 

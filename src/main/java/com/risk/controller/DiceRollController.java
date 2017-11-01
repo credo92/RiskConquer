@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import com.risk.entity.Territory;
 import com.risk.map.util.MapUtil;
+import com.risk.model.DiceModel;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -25,9 +27,6 @@ import javafx.stage.Stage;
  * @version 1.0.1
  */
 public class DiceRollController implements Initializable{
-	
-
-
 	
 	/**
 	 * The @roll button.
@@ -114,6 +113,12 @@ public class DiceRollController implements Initializable{
 	private Button cancel;
 		
 	/**
+	 * The @childPane pane.
+	 */
+	@FXML
+	private Pane childPane;
+	
+	/**
 	 * The @numberOfArmiesLabel label.
 	 */
 	@FXML
@@ -173,38 +178,112 @@ public class DiceRollController implements Initializable{
 	@FXML
 	private Label winnerName;
 	
+	/**
+	 * The @attackingTerritory list of territories attacker owns.
+	 */
 	private Territory attackingTerritory;
+	
+	/**
+	 * The @defendingTerritory list of territories defender owns.
+	 */
 	private Territory defendingTerritory;
 	
+	/**
+	 * The @diceModel reference to class DiceModel.
+	 */
+	private DiceModel diceModel;
+	
+	
+	/**
+	 * Constructor for DiceRollController
+	 * 
+	 * @param attackingTerritory
+	 *            reference to get details about attacking territory
+	 *   
+	 * @param defendingTerritory
+	 *            reference to get details about defending territory           
+	 */
 	public DiceRollController(Territory attackingTerritory, Territory defendingTerritory) {
 		this.attackingTerritory = attackingTerritory;
 		this.defendingTerritory = defendingTerritory;
+		this.diceModel = new DiceModel(attackingTerritory, defendingTerritory);
 		
 	}
 	
+	/**
+	 * Load attacker player information.
+	 */
 	public void loadAttackerInfo() {
 		attackerPlayerName.setText(attackingTerritory.getPlayer().getName());
 		attackerTerritoryName.setText(attackingTerritory.getName());
 		attackerArmies.setText(String.valueOf(attackingTerritory.getArmies()));
 	}
 	
+	/**
+	 * Load defender player information.
+	 */
 	public void loadDefenderInfo() {
 		defenderPlayerName.setText(defendingTerritory.getPlayer().getName());
 		defenderTerritoryName.setText(defendingTerritory.getName());
 		defenderArmies.setText(String.valueOf(defendingTerritory.getArmies()));
 	}
 
+	/*
+	 * (non-Javadoc) Dice Roll controller initializer, loading player and territory data.
+	 * 
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL,
+	 * java.util.ResourceBundle)
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		// TODO Auto-generated method stub
 		loadAttackerInfo();
 		loadDefenderInfo();
+		showDice();
+		hideUneccessaryElementOnStartUp();
 		roll.setOnAction((event) -> {
 			roll();
 		});
 		//winnerName.setText("hello");
 
+	}
+	
+	public void hideUneccessaryElementOnStartUp() {
+		winnerName.setVisible(false);
+		attackerDice1Value.setVisible(false);
+		attackerDice2Value.setVisible(false);
+		attackerDice3Value.setVisible(false);
+		defenderDice1Value.setVisible(false);;
+		defenderDice2Value.setVisible(false);
+		childPane.setVisible(false);
+		
+	}
+	
+	/**
+	 * Show dices according to number of armies .
+	 */
+	public void showDice() {
+		if(diceModel.getArmyCountOnAttackingTerritory() >= 4 ) {
+			attackerDice1.setVisible(true);
+			attackerDice2.setVisible(true);
+			attackerDice3.setVisible(true);
+		}else if (diceModel.getArmyCountOnAttackingTerritory() >= 3) {
+			attackerDice1.setVisible(true);
+			attackerDice2.setVisible(true);
+			attackerDice3.setVisible(false);
+		}else if (diceModel.getArmyCountOnAttackingTerritory() >= 2) {
+			attackerDice1.setVisible(true);
+			attackerDice2.setVisible(false);
+			attackerDice3.setVisible(false);
+		}
+		if(diceModel.getArmyCountOnDefendingTerritory() > 2 ) {
+			defenderDice1.setVisible(true);
+			defenderDice2.setVisible(true);
+		}else if(diceModel.getArmyCountOnDefendingTerritory() >= 1) {
+			defenderDice1.setVisible(true);
+			defenderDice2.setVisible(false);	
+		}
 	}
 	
    public void roll() {
