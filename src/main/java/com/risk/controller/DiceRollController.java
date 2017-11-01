@@ -2,6 +2,9 @@ package com.risk.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.risk.entity.Territory;
@@ -243,7 +246,7 @@ public class DiceRollController implements Initializable{
 		loadAttackerInfo();
 		loadDefenderInfo();
 		showDice();
-		hideUneccessaryElementOnStartUp();
+		hideUnnecessaryElementOnStartUp();
 		roll.setOnAction((event) -> {
 			roll();
 		});
@@ -251,8 +254,10 @@ public class DiceRollController implements Initializable{
 
 	}
 
-
-	public void hideUneccessaryElementOnStartUp() {
+	/**
+	 * Hide unnecessary elements on startup .
+	 */
+	public void hideUnnecessaryElementOnStartUp() {
 		winnerName.setVisible(false);
 		attackerDice1Value.setVisible(false);
 		attackerDice2Value.setVisible(false);
@@ -289,7 +294,9 @@ public class DiceRollController implements Initializable{
 		}
 	}
 
-
+	/**
+	 * Set random values on each dice and set on label and make label visible .
+	 */
 	public void throwDice() {
 		if(!attackerDice1.isSelected() && !attackerDice2.isSelected() && !attackerDice3.isSelected()) {
 			MapUtil.infoBox("Please Select atleast one of the attacker dice", "Message", "");
@@ -319,11 +326,79 @@ public class DiceRollController implements Initializable{
 		}
 		
 	}
-
+	
+	/**
+	 * Returns list of attacker dice values in decreasing order.
+	 */
+	public List<Integer> getValuesFromAtatckerDice(){
+		List<Integer> bestAttackerValue = new ArrayList<>();
+		if(attackerDice1.isSelected() &&
+				attackerDice1Value.getText() != null && 
+				attackerDice1Value.getText().matches("\\d")) {
+			bestAttackerValue.add(Integer.valueOf(attackerDice1Value.getText()));
+		}
+		if(attackerDice2.isSelected() &&
+				attackerDice2Value.getText() != null && 
+				attackerDice2Value.getText().matches("\\d")) {
+			bestAttackerValue.add(Integer.valueOf(attackerDice2Value.getText()));
+		}
+		if(attackerDice3.isSelected() &&
+				attackerDice3Value.getText() != null && 
+				attackerDice3Value.getText().matches("\\d")) {
+			bestAttackerValue.add(Integer.valueOf(attackerDice3Value.getText()));
+		}
+		
+		//sorting the list into reverse order
+		Collections.sort(bestAttackerValue, Collections.reverseOrder());
+		
+		return bestAttackerValue;
+		
+	}
+	
+	/**
+	 * Returns list of defender dice values in decreasing order.
+	 */
+	public List<Integer> getValuesFromDefenderDice(){
+		List<Integer> bestDefenderValue = new ArrayList<>();
+		if(defenderDice1.isSelected() &&
+				defenderDice1Value.getText() != null && 
+						defenderDice1Value.getText().matches("\\d")) {
+			bestDefenderValue.add(Integer.valueOf(defenderDice1Value.getText()));
+		}
+		if(defenderDice2.isSelected() &&
+				defenderDice2Value.getText() != null && 
+						defenderDice2Value.getText().matches("\\d")) {
+			bestDefenderValue.add(Integer.valueOf(defenderDice2Value.getText()));
+		}
+	
+		//sorting the list into reverse order
+		Collections.sort(bestDefenderValue, Collections.reverseOrder());
+		return bestDefenderValue;
+		
+	}
+	
+	public void deductArmies(List<String> playResult) {
+		for(String check : playResult) {
+			if(check.equals("tie")) {
+				winnerName.setText("Deduct army from attacker as it is tie");
+				winnerName.setVisible(true);
+			}
+			if(check.equals("attacker")) {
+				winnerName.setText("Deduct army from defender as attacker wins");
+				winnerName.setVisible(true);
+			}else {
+				winnerName.setText("Deduct army from attacker as defender wins");
+				winnerName.setVisible(true);
+			}
+		}
+	}
+	
 	public void roll() {
 		throwDice();
-		winnerName.setText("roll clicked");
-		attackingTerritory.setArmies(5);
+		List<String> playResult = diceModel.getPlayResultAfterDiceThrown(getValuesFromAtatckerDice(), getValuesFromDefenderDice());
+		deductArmies(playResult);
+		/*winnerName.setText("roll clicked");
+		attackingTerritory.setArmies(5);*/
 	}
 
 
