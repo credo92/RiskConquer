@@ -2,13 +2,17 @@ package com.risk.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
+import com.risk.constant.CardType;
+import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.map.util.MapUtil;
 
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 
 /**
@@ -19,6 +23,37 @@ import javafx.scene.control.TextArea;
  *
  */
 public class GameModel {
+
+	/**
+	 * Assign Card to Territory
+	 * 
+	 * @param Territory
+	 *            Territory list
+	 * @param textAres
+	 *            game console
+	 */
+	public Stack<Card> assignCardToTerritory(Map map, TextArea textAres) {
+		Stack<Card> stackOfCards = new Stack<Card>();
+
+		List<Territory> allterritories = new ArrayList<>();
+		if (map.getContinents() != null) {
+			for (Continent continent : map.getContinents()) {
+				if (continent != null && continent.getTerritories() != null) {
+					for (Territory territory : continent.getTerritories()) {
+						allterritories.add(territory);
+					}
+				}
+			}
+		}
+		for (Territory territory : allterritories) {
+			Card card = new Card(CardType.values()[(int) (Math.random() * CardType.values().length)]);
+			card.setTerritoryName(territory.getName());
+			stackOfCards.push(card);
+			MapUtil.appendTextToGameConsole(
+					territory.getName() + " has card of type " + card.getCardType().name() + " ! \n", textAres);
+		}
+		return stackOfCards;
+	}
 
 	/**
 	 * Assign territory to player
@@ -62,5 +97,18 @@ public class GameModel {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * @param territories
+	 * @return
+	 */
+	public boolean hasAValidAttackMove(ListView<Territory> territories) {
+		for (Territory territory : territories.getItems()) {
+			if (territory.getArmies() > 1) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
