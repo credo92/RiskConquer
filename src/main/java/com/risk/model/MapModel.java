@@ -24,7 +24,7 @@ public class MapModel {
 	 *            name of the continent
 	 * @param controlValue
 	 *            control value of the continent
-	 * @return Continent created succefully
+	 * @return Continent created successfully
 	 * @throws InvalidMapException
 	 *             invalid map exception
 	 */
