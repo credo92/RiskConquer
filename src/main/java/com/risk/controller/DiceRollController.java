@@ -196,6 +196,9 @@ public class DiceRollController implements Initializable{
 	 */
 	private DiceModel diceModel;
 
+	
+	List<String> playResult = new ArrayList<>();
+
 
 
 
@@ -378,16 +381,20 @@ public class DiceRollController implements Initializable{
 	}
 	
 	public void deductArmies(List<String> playResult) {
+		System.out.println(playResult);
 		for(String check : playResult) {
 			if(check.equals("tie")) {
-				winnerName.setText("Deduct army from attacker as it is tie");
+				attackerArmies.setText(String.valueOf(diceModel.deductArmyFromAttacker(attackingTerritory.getArmies())));
+				winnerName.setText(String.valueOf(diceModel.deductArmyFromAttacker(attackingTerritory.getArmies())));
 				winnerName.setVisible(true);
 			}
 			if(check.equals("attacker")) {
-				winnerName.setText("Deduct army from defender as attacker wins");
+				defenderArmies.setText(String.valueOf(diceModel.deductArmyFromDefender(defendingTerritory.getArmies())));
+				winnerName.setText(String.valueOf(diceModel.deductArmyFromDefender(defendingTerritory.getArmies())));
 				winnerName.setVisible(true);
 			}else {
-				winnerName.setText("Deduct army from attacker as defender wins");
+				attackerArmies.setText(String.valueOf(diceModel.deductArmyFromAttacker(attackingTerritory.getArmies())));
+				winnerName.setText(String.valueOf(diceModel.deductArmyFromAttacker(attackingTerritory.getArmies())));
 				winnerName.setVisible(true);
 			}
 		}
@@ -395,7 +402,8 @@ public class DiceRollController implements Initializable{
 	
 	public void roll() {
 		throwDice();
-		List<String> playResult = diceModel.getPlayResultAfterDiceThrown(getValuesFromAtatckerDice(), getValuesFromDefenderDice());
+		playResult.clear();
+		playResult = diceModel.getPlayResultAfterDiceThrown(getValuesFromAtatckerDice(), getValuesFromDefenderDice());
 		deductArmies(playResult);
 		/*winnerName.setText("roll clicked");
 		attackingTerritory.setArmies(5);*/

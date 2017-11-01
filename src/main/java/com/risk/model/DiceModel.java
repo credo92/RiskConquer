@@ -17,6 +17,8 @@ public class DiceModel {
 	
 	private Territory defendingTerritory;
 	
+	List<String> playResult = new ArrayList<>();
+	
 	public DiceModel(Territory attackingTerritory, Territory defendingTerritory) {
 		this.attackingTerritory = attackingTerritory;
 		this.defendingTerritory = defendingTerritory;
@@ -64,8 +66,18 @@ public class DiceModel {
 		return playerWinCheck;
 	}
 	
+	public int deductArmyFromAttacker(int currentArmies) {
+		int newArmies = currentArmies - 1;
+		return newArmies;
+	}
+	
+	public int deductArmyFromDefender(int currentArmies) {
+		int newArmies = currentArmies - 1;
+		return newArmies;
+	}
+	
 	public List<String> getPlayResultAfterDiceThrown(List<Integer> bestAttackerValue,List<Integer> bestDefenderValue) {
-		List<String> playResult = new ArrayList<>();
+		playResult.clear();
 		if(!bestAttackerValue.isEmpty() && !bestDefenderValue.isEmpty()) {
 			if(bestAttackerValue.size() > 0 && bestAttackerValue.get(0) != null && bestDefenderValue.size() > 0 && bestDefenderValue.get(0) != null) {
 				int attackerValue = (int) bestAttackerValue.get(0);
@@ -80,6 +92,7 @@ public class DiceModel {
 		}
 		
 		return playResult;
-		
 	}
+	
+	
 }
