@@ -1,5 +1,6 @@
 package com.risk.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,13 +10,18 @@ import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
+import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
+import com.risk.exception.InvalidGameMoveException;
+import com.risk.main.DiceViewLoader;
 import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
+import com.risk.model.DiceModel;
 import com.risk.model.GameModel;
 import com.risk.model.PlayerModel;
 import com.risk.model.PlayerWorldDomination;
@@ -27,7 +33,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Button;
@@ -38,6 +47,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * Game play controller to control all the
@@ -153,6 +163,10 @@ public class GamePlayController implements Initializable, Observer {
 	 * The @playerIterator.
 	 */
 	private Iterator<Player> playerIterator;
+	/**
+	 * The @stackOfCards.
+	 */
+	private Stack<Card> cardStack;
 
 	/**
 	 * Constructor for GamePlayController
@@ -202,6 +216,7 @@ public class GamePlayController implements Initializable, Observer {
 		gamePlayerList = new ArrayList<>();
 		GameUtil.initializeTotalPlayers(numberOfPlayers);
 		playerSelectionListner();
+		assignCardToTerritory();
 		loadMapData();
 		MapUtil.disableControl(reinforcement, fortify, attack);
 
@@ -253,6 +268,15 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	/**
+	 * Assign card to each territories.
+	 */
+	private void assignCardToTerritory() {
+		MapUtil.appendTextToGameConsole("===Assigning Card to territories===\n", gameConsole);
+		cardStack = gameModel.assignCardToTerritory(map, gameConsole);
+		MapUtil.appendTextToGameConsole("===Card assignation complete===\n", gameConsole);
+	}
+
+	/**
 	 * Attack Phase of the game play.
 	 * 
 	 * @param event
@@ -260,6 +284,14 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private void attack(ActionEvent event) {
+		Territory attackingTerritory = selectedTerritoryList.getSelectionModel().getSelectedItem();
+		Territory defendingTerritory = adjTerritoryList.getSelectionModel().getSelectedItem();
+		try {
+			playerModel.attackPhase(attackingTerritory, defendingTerritory);
+		} catch (InvalidGameMoveException ex) {
+			MapUtil.infoBox(ex.getMessage(), "Message", "");
+			return;
+		}
 	}
 
 	/**
@@ -394,12 +426,16 @@ public class GamePlayController implements Initializable, Observer {
 	 * Initialize attack phase of the game.
 	 */
 	private void initializeAttack() {
-		MapUtil.disableControl(reinforcement, placeArmy);
-		MapUtil.enableControl(attack);
-		attack.requestFocus();
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
-		MapUtil.appendTextToGameConsole("===Attack phase under developement! === \n", gameConsole);
-		playerModel.attackPhase();
+		MapUtil.appendTextToGameConsole("===Attack phase started! === \n", gameConsole);
+		if (!gameModel.hasAValidAttackMove(selectedTerritoryList)) {
+			MapUtil.appendTextToGameConsole("No valid attack move avialble move to Fortification phase.", gameConsole);
+			initializeFortification();
+		} else {
+			MapUtil.disableControl(reinforcement, placeArmy);
+			MapUtil.enableControl(attack);
+			attack.requestFocus();
+		}
 	}
 
 	/**

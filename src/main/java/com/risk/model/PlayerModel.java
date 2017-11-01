@@ -1,18 +1,26 @@
 package com.risk.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
 import com.risk.constant.MapConstant;
+import com.risk.controller.DiceRollController;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
+import com.risk.exception.InvalidGameMoveException;
+import com.risk.main.DiceViewLoader;
 import com.risk.map.util.MapUtil;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 
 public class PlayerModel extends Observable {
 
@@ -158,11 +166,43 @@ public class PlayerModel extends Observable {
 	/**
 	 * Attack phase
 	 */
-	public void attackPhase() {
+	public void attackPhase(Territory attackingTerritory, Territory defendingTerritory)
+			throws InvalidGameMoveException {
+		if (attackingTerritory != null && defendingTerritory != null) {
+			isAValidAttackMove(attackingTerritory, defendingTerritory);
+			DiceModel diceModel = new DiceModel(attackingTerritory, defendingTerritory);
+			
+			final Stage newMapStage = new Stage();
+			newMapStage.setTitle("Attack Window");
 
+			DiceRollController diceController = new DiceRollController(diceModel);
+
+			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("DiceView.fxml"));
+			loader.setController(diceController);
+
+			Parent root = null;
+			try {
+				root = (Parent) loader.load();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			Scene scene = new Scene(root);
+			newMapStage.setScene(scene);
+			newMapStage.show();
+			
+			
+			
+			
+			
+			//new DiceViewLoader(diceModel);
+		} else {
+			throw new InvalidGameMoveException("Please choose both attacking and defending territory.");
+		}
 		// attack phase goes here. once done notify for fortification phase
-		setChanged();
-		notifyObservers("checkIfFortificationPhaseValid");
+		//setChanged();
+		//notifyObservers("checkIfFortificationPhaseValid");
 	}
 
 	/**
@@ -282,6 +322,26 @@ public class PlayerModel extends Observable {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * @param attacking
+	 * @param defending
+	 * @return
+	 * @throws InvalidGameMoveException
+	 */
+	public boolean isAValidAttackMove(Territory attacking, Territory defending) throws InvalidGameMoveException {
+		boolean isValidAttackMove = false;
+		if (defending.getPlayer() != attacking.getPlayer()) {
+			if (attacking.getArmies() > 1) {
+				isValidAttackMove = true;
+			} else {
+				throw new InvalidGameMoveException("Attacking territory should have more than one army to attack.");
+			}
+		} else {
+			throw new InvalidGameMoveException("You cannot attack on your own territory.");
+		}
+		return isValidAttackMove;
 	}
 
 	/**
