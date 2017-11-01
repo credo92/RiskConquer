@@ -12,7 +12,6 @@ import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
-import com.risk.main.DiceViewLoader;
 import com.risk.map.util.MapUtil;
 
 import javafx.fxml.FXMLLoader;
@@ -170,6 +169,7 @@ public class PlayerModel extends Observable {
 			throws InvalidGameMoveException {
 		if (attackingTerritory != null && defendingTerritory != null) {
 			isAValidAttackMove(attackingTerritory, defendingTerritory);
+			
 			DiceModel diceModel = new DiceModel(attackingTerritory, defendingTerritory);
 			
 			final Stage newMapStage = new Stage();
