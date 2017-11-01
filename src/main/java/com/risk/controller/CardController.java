@@ -4,33 +4,21 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.risk.entity.Card;
 import com.risk.entity.Player;
-import com.risk.entity.Territory;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 /**
  * @author Vipul Srivastav
@@ -53,50 +41,67 @@ public class CardController implements Initializable {
 	private Label currentPlayerName;
 
 	/**
-	 * The @currentPlayerArmies label.
-	 */
-	@FXML
-	private Label currentPlayerArmies;
-
-	/**
 	 * The @addedArmies label.
 	 */
 	@FXML
 	private Label addedArmies;
 
 	/**
-	 * The @cardListView list view.
-	 */
-	@FXML
-	private ListView<Territory> cardListView;
-
-	/**
-	 * The @cardListView list view.
+	 * The @cardVbox .
 	 */
 	@FXML
 	private VBox cardVbox;
 
-	private List<Territory> territory;
-	
+	private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
+
+	private ObservableSet<CheckBox> unselectedCheckBoxes = FXCollections.observableSet();
+
+	private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
+
 	private final int maxNumSelected =  3; 
-
-	CardController(List<Territory> allterritories){
-		this.territory = allterritories;
+	
+	private Player player;
+	
+	private List<Card> playerCardList;
+	
+	CardController(Player player){
+		this.player = player;
 	}
-
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		System.out.println(territory);
 
 		ObservableList<String> cardList = FXCollections.<String>observableArrayList("Infantry", "Cavalry", "Artillery","Infantry", "Cavalry", "Artillery");
-
+//		playerCardList = player.getPlayerCardList();
+		
+//		System.out.println(playerCardList);
+		
+		currentPlayerName.setText(player.getName());
+		
 		cardVbox.setPadding(new Insets(15,20, 10,10));
 		cardVbox.setSpacing(10);   
+		CheckBox[] cbs = new CheckBox[cardList.size()];
 
-		for(String string: cardList){
-			cardVbox.getChildren().add(new CheckBox(string));
+		for (int i = 0; i < cardList.size(); i++){
+//			CheckBox cb = cbs[i] = new CheckBox(playerCardList.get(i).getCardType().toString());
+			CheckBox cb = cbs[i] = new CheckBox(cardList.get(i));
+			
+			configureCheckBox(cb);
 		}
+
+		cardVbox.getChildren().addAll(cbs);
+
+		numCheckBoxesSelected.addListener((obs, oldSelectedCount, newSelectedCount) -> {
+			if (newSelectedCount.intValue() >= maxNumSelected) {
+				unselectedCheckBoxes.forEach(cb -> cb.setDisable(true));
+				trade.setDisable(false);
+			} else {
+				unselectedCheckBoxes.forEach(cb -> cb.setDisable(false));
+				trade.setDisable(true);
+			}
+		});
+
 	}
 
 	/**
@@ -106,8 +111,33 @@ public class CardController implements Initializable {
 	 */
 	@FXML
 	private void trade(ActionEvent event) {
-		
+
 	}
+	/**
+	 * configureCheckbox
+	 * @param checkBox
+	 *            adds checkboxes to Observable sets to make sure only 3 checkboxes can be selected
+	 */
+	private void configureCheckBox(CheckBox checkBox) {
+
+        if (checkBox.isSelected()) {
+            selectedCheckBoxes.add(checkBox);
+        } else {
+            unselectedCheckBoxes.add(checkBox);
+        }
+
+        checkBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            if (isNowSelected) {
+                unselectedCheckBoxes.remove(checkBox);
+                selectedCheckBoxes.add(checkBox);
+            } else {
+                selectedCheckBoxes.remove(checkBox);
+                unselectedCheckBoxes.add(checkBox);
+            }
+
+        });
+
+    }
 
 
 

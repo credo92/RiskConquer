@@ -235,7 +235,6 @@ public class GamePlayController implements Initializable {
 		loadMapData();
 		assignCardToTerritory();
 		MapUtil.disableControl(reinforcement, fortify, attack);
-
 		selectedTerritoryList.setCellFactory(param -> new ListCell<Territory>() {
 			@Override
 			protected void updateItem(Territory item, boolean empty) {
@@ -323,7 +322,7 @@ public class GamePlayController implements Initializable {
 		final Stage newMapStage = new Stage();
 		newMapStage.setTitle("Card Window");
 
-		CardController cardController = new CardController(allterritories);
+		CardController cardController = new CardController(playerPlaying);
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("Cards.fxml"));
 		loader.setController(cardController);

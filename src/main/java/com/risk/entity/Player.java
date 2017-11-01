@@ -23,7 +23,7 @@ public class Player {
 	 * The @cardTypeList. 
 	 * 		stores player's list of cards
 	 */
-	private List<Card> cardTypeList;
+	private List<Card> playerCardList;
 	
 	public Player(int id, String name) {
 		this.id = id;
@@ -115,15 +115,15 @@ public class Player {
 	 * The @getCardTypeList.
 	 * 		getter method 
 	 */
-	public List<Card> getCardTypeList() {
-		return cardTypeList;
+	public List<Card> getPlayerCardList() {
+		return playerCardList;
 	}
 	
 	/**
 	 * The @setCardTypeList.
 	 * 		setter method 
 	 */
-	public void setCardTypeList(List<Card> cardTypeList) {
-		this.cardTypeList = cardTypeList;
+	public void setPlayerCardList(List<Card> playerCardList) {
+		this.playerCardList = playerCardList;
 	}
 }
