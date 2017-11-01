@@ -186,7 +186,7 @@ public class DiceRollController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		moveArmiesView.setVisible(false);
 		loadAttackerInfo();
 		loadDefenderInfo();
 		showDice();
