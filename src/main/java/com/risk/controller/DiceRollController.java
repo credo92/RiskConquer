@@ -27,173 +27,175 @@ import javafx.stage.Stage;
  * @version 1.0.1
  */
 public class DiceRollController implements Initializable{
-	
+
 	/**
 	 * The @roll button.
 	 */
 	@FXML
 	private Button roll; 
-	
+
 	/**
 	 * The @attackerPlayerName label.
 	 */
 	@FXML
 	private Label attackerPlayerName;
-	
+
 	/**
 	 * The @defenderPlayerName label.
 	 */
 	@FXML
 	private Label defenderPlayerName;
-	
+
 	/**
 	 * The @attackerTerritoryName label.
 	 */
 	@FXML
 	private Label attackerTerritoryName;
-	
+
 	/**
 	 * The @attackerArmies label.
 	 */
 	@FXML
 	private Label attackerArmies;
-	
+
 	/**
 	 * The @defenderTerritoryName label.
 	 */
 	@FXML
 	private Label defenderTerritoryName;
-	
+
 	/**
 	 * The @defenderArmies label.
 	 */
 	@FXML
 	private Label defenderArmies;
-	
-	
+
+
 	/**
 	 * The @attackerDice1 checkbox.
 	 */
 	@FXML
 	private CheckBox attackerDice1;
 
-	
+
 	/**
 	 * The @attackerDice2 checkbox.
 	 */
 	@FXML
 	private CheckBox attackerDice2;
-	
-	
+
+
 	/**
 	 * The @attackerDice3 checkbox.
 	 */
 	@FXML
 	private CheckBox attackerDice3;
-	
-	
+
+
 	/**
 	 * The @defenderDice1 checkbox.
 	 */
 	@FXML
 	private CheckBox defenderDice1;
-	
-	
+
+
 	/**
 	 * The @defenderDice2 checkbox.
 	 */
 	@FXML
 	private CheckBox defenderDice2;
-	
-	
+
+
 	/**
 	 * The @cancel button.
 	 */
 	@FXML
 	private Button cancel;
-		
+
 	/**
 	 * The @childPane pane.
 	 */
 	@FXML
 	private Pane childPane;
-	
+
 	/**
 	 * The @numberOfArmiesLabel label.
 	 */
 	@FXML
 	private Label numberOfArmiesLabel;
-	
+
 	/**
 	 * The @numberOfArmiesInput textField.
 	 */
 	@FXML
 	private TextField numberOfArmiesInput;
-	
+
 	/**
 	 * The @numberOfArmiesMove button.
 	 */
 	@FXML
 	private Button numberOfArmiesMove;
-	
+
 	/**
 	 * The @numberOfArmiesCancel button.
 	 */
 	@FXML
 	private Button numberOfArmiesCancel;
-	
+
 	/**
 	 * The @attackerDice1Value label.
 	 */
 	@FXML
 	private Label attackerDice1Value;
-	
+
 	/**
 	 * The @attackerDice2Value label.
 	 */
 	@FXML
 	private Label attackerDice2Value;
-	
+
 	/**
 	 * The @attackerDice3Value label.
 	 */
 	@FXML
 	private Label attackerDice3Value;
-	
+
 	/**
 	 * The @defenderDice1Value label.
 	 */
 	@FXML
 	private Label defenderDice1Value;
-	
+
 	/**
 	 * The @adefenderDice2Value label.
 	 */
 	@FXML
 	private Label defenderDice2Value;
-	
+
 	/**
 	 * The @winnerName label.
 	 */
 	@FXML
 	private Label winnerName;
-	
+
 	/**
 	 * The @attackingTerritory list of territories attacker owns.
 	 */
 	private Territory attackingTerritory;
-	
+
 	/**
 	 * The @defendingTerritory list of territories defender owns.
 	 */
 	private Territory defendingTerritory;
-	
+
 	/**
 	 * The @diceModel reference to class DiceModel.
 	 */
 	private DiceModel diceModel;
-	
-	
+
+
+
+
 	/**
 	 * Constructor for DiceRollController
 	 * 
@@ -207,9 +209,9 @@ public class DiceRollController implements Initializable{
 		this.attackingTerritory = attackingTerritory;
 		this.defendingTerritory = defendingTerritory;
 		this.diceModel = new DiceModel(attackingTerritory, defendingTerritory);
-		
+
 	}
-	
+
 	/**
 	 * Load attacker player information.
 	 */
@@ -218,7 +220,7 @@ public class DiceRollController implements Initializable{
 		attackerTerritoryName.setText(attackingTerritory.getName());
 		attackerArmies.setText(String.valueOf(attackingTerritory.getArmies()));
 	}
-	
+
 	/**
 	 * Load defender player information.
 	 */
@@ -236,7 +238,7 @@ public class DiceRollController implements Initializable{
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		// TODO Auto-generated method stub
 		loadAttackerInfo();
 		loadDefenderInfo();
@@ -248,7 +250,8 @@ public class DiceRollController implements Initializable{
 		//winnerName.setText("hello");
 
 	}
-	
+
+
 	public void hideUneccessaryElementOnStartUp() {
 		winnerName.setVisible(false);
 		attackerDice1Value.setVisible(false);
@@ -257,9 +260,9 @@ public class DiceRollController implements Initializable{
 		defenderDice1Value.setVisible(false);;
 		defenderDice2Value.setVisible(false);
 		childPane.setVisible(false);
-		
+
 	}
-	
+
 	/**
 	 * Show dices according to number of armies .
 	 */
@@ -285,11 +288,43 @@ public class DiceRollController implements Initializable{
 			defenderDice2.setVisible(false);	
 		}
 	}
-	
-   public void roll() {
-	winnerName.setText("roll clicked");
-	attackingTerritory.setArmies(5);
+
+
+	public void throwDice() {
+		if(!attackerDice1.isSelected() && !attackerDice2.isSelected() && !attackerDice3.isSelected()) {
+			MapUtil.infoBox("Please Select atleast one of the attacker dice", "Message", "");
+		}else if(!defenderDice1.isSelected() && !defenderDice2.isSelected()){
+			MapUtil.infoBox("Please Select atleast one of the defender dice", "Message", "");
+			return;
+		}
+		if(attackerDice1.isSelected()) {
+			attackerDice1Value.setText(String.valueOf(diceModel.randomNumber()));
+			attackerDice1Value.setVisible(true);
+		}
+		if(attackerDice2.isSelected()) {
+			attackerDice2Value.setText(String.valueOf(diceModel.randomNumber()));
+			attackerDice2Value.setVisible(true);
+		}
+		if(attackerDice3.isSelected()) {
+			attackerDice3Value.setText(String.valueOf(diceModel.randomNumber()));
+			attackerDice3Value.setVisible(true);
+		}
+		if(defenderDice1.isSelected()) {
+			defenderDice1Value.setText(String.valueOf(diceModel.randomNumber()));
+			defenderDice1Value.setVisible(true);
+		}
+		if(defenderDice2.isSelected()) {
+			defenderDice2Value.setText(String.valueOf(diceModel.randomNumber()));
+			defenderDice2Value.setVisible(true);
+		}
+		
 	}
-	
-	
+
+	public void roll() {
+		throwDice();
+		winnerName.setText("roll clicked");
+		attackingTerritory.setArmies(5);
+	}
+
+
 }

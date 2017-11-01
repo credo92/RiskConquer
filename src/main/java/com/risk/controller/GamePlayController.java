@@ -173,18 +173,6 @@ public class GamePlayController implements Initializable {
 		this.gameModel = new GameModel();	
 	}
 
-
-	public String nameOfPlayer; //adding for test
-
-
-	public String getNameOfPlayer() {
-		return nameOfPlayer;
-	} //adding for test
-
-	public void setNameOfPlayer(String nameOfPlayer) {
-		this.nameOfPlayer = nameOfPlayer;
-	} //adding for test
-
 	/**
 	 * Initialize the number of players.
 	 */

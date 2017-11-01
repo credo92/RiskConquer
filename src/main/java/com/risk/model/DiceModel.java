@@ -39,4 +39,8 @@ public class DiceModel {
 		return defendingTerritory.getArmies();
 	}
 	
+	public int randomNumber() {
+		return (int) (Math.random() * 6) + 1;
+	}
+	
 }
