@@ -63,6 +63,15 @@ public class DiceModel {
 		}
 	}
 
+	public void reassignTerritory() {
+		List<Territory> defendersTerritories = defendingTerritory.getPlayer().getAssignedTerritory();
+		defendersTerritories.remove(defendingTerritory);
+
+		defendingTerritory.setPlayer(attackingTerritory.getPlayer());
+		attackingTerritory.getPlayer().getAssignedTerritory().add(defendingTerritory);
+
+	}
+
 	public int randomNumber() {
 		return (int) (Math.random() * 6) + 1;
 	}
