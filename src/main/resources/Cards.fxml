@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane id="useSelectedCardSetButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0" prefWidth="485.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="currentPlayerName" layoutX="182.0" layoutY="28.0" text=" Player Name" />
+      <Button fx:id="trade" layoutX="128.0" layoutY="334.0" mnemonicParsing="false" onAction="#trade" text="Trade" />
+      <Label fx:id="addedArmies" layoutX="206.0" layoutY="339.0" text="addedArmies" />
+      <VBox fx:id="cardVbox" layoutX="37.0" layoutY="65.0" prefHeight="200.0" prefWidth="400.0" />
+   </children>
+</Pane>
