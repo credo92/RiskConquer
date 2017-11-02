@@ -106,7 +106,7 @@ public class DiceRollController implements Initializable {
 	 * The @cancel button.
 	 */
 	@FXML
-	private Button cancel;
+	private Button cancelDiceRoll;
 
 	/**
 	 * The @childPane pane.
@@ -136,7 +136,7 @@ public class DiceRollController implements Initializable {
 	 * The @numberOfArmiesCancel button.
 	 */
 	@FXML
-	private Button numberOfArmiesCancel;
+	private Button skipMoveArmy;
 
 	/**
 	 * The @winnerName label.
@@ -199,14 +199,37 @@ public class DiceRollController implements Initializable {
 
 	@FXML
 	private void moveArmies(ActionEvent event) {
-
+		int armiesToMove = Integer.valueOf(numberOfArmiesInput.getText());
+		int currentArmies = diceModel.getAttackingTerritory().getArmies();
+		if (currentArmies <= armiesToMove) {
+			winnerName.setVisible(true);
+			winnerName.setText("You can move a miximum of " + (currentArmies - 1) + " armies");
+			return;
+		} else {
+			diceModel.getAttackingTerritory().setArmies(currentArmies - armiesToMove);
+			diceModel.getDefendingTerritory().setArmies(armiesToMove);
+		}
 	}
 
 	@FXML
 	private void moveAllArmies(ActionEvent event) {
-
+		int attckingArmies = diceModel.getAttackingTerritory().getArmies();
+		diceModel.getAttackingTerritory().setArmies(1);
+		diceModel.getDefendingTerritory().setArmies(attckingArmies - 1);
 	}
 
+	@FXML
+	private void skipMoveArmy() {
+		int attckingArmies = diceModel.getAttackingTerritory().getArmies();
+		diceModel.getAttackingTerritory().setArmies(attckingArmies - 1);
+		diceModel.getDefendingTerritory().setArmies(1);
+	}
+
+	@FXML
+	private void cancelDiceRoll() {
+		
+	}
+	
 	@FXML
 	private void continueDiceRoll(ActionEvent event) {
 		loadAttackScreen();
@@ -271,9 +294,10 @@ public class DiceRollController implements Initializable {
 		Territory attackingTerritory = diceModel.getAttackingTerritory();
 		Territory defendingTerritory = diceModel.getDefendingTerritory();
 		if (defendingTerritory.getArmies() <= 0) {
-			playResult.add(attackingTerritory.getPlayer().getName() + " won the territory: " + defendingTerritory.getName());
+			playResult.add(
+					attackingTerritory.getPlayer().getName() + " won the territory: " + defendingTerritory.getName());
 			GameUtil.enableViewPane(moveArmiesView);
-			GameUtil.hideControl(roll, continueRoll, cancel);
+			GameUtil.hideControl(roll, continueRoll, cancelDiceRoll);
 		} else if (attackingTerritory.getArmies() < 2) {
 			playResult.add(attackingTerritory.getPlayer().getName() + " lost the match");
 			GameUtil.disableControl(roll, continueRoll);
