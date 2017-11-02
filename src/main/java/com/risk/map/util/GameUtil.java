@@ -2,10 +2,12 @@ package com.risk.map.util;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 public class GameUtil {
 	/**
@@ -36,6 +38,11 @@ public class GameUtil {
 		}
 	}
 
+	public static void closeScreen(Button button) {
+		Stage stage = (Stage) button.getScene().getWindow();
+		stage.close();
+	}
+	
 	public static void clearCheckBox(CheckBox... checkBoxes) {
 		for (CheckBox checkBox: checkBoxes) {
 			checkBox.setText("");
