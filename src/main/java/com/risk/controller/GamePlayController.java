@@ -453,6 +453,14 @@ public class GamePlayController implements Initializable, Observer {
 		dominationChart.setData(pieChartData);
 	}
 
+	private void refreshView() {
+		selectedTerritoryList.refresh();
+		adjTerritoryList.refresh();
+		loadMapData();
+		populateWorldDominationData();
+		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");
+	}
+
 	/**
 	 * Initialize place army view.
 	 */
@@ -527,6 +535,9 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		if (view.equals("noFortificationMove")) {
 			noFortificationPhase();
+		}
+		if (view.equals("rollDiceComplete")) {
+			refreshView();
 		}
 	}
 }

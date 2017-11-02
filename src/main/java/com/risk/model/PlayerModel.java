@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
 import com.risk.constant.MapConstant;
 import com.risk.controller.DiceRollController;
@@ -21,7 +22,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
-public class PlayerModel extends Observable {
+public class PlayerModel extends Observable implements Observer {
 
 	Player playerPlaying;
 
@@ -171,7 +172,7 @@ public class PlayerModel extends Observable {
 			isAValidAttackMove(attackingTerritory, defendingTerritory);
 
 			DiceModel diceModel = new DiceModel(attackingTerritory, defendingTerritory);
-
+			diceModel.addObserver(this);
 			final Stage newMapStage = new Stage();
 			newMapStage.setTitle("Attack Window");
 
@@ -341,5 +342,14 @@ public class PlayerModel extends Observable {
 	 */
 	public void setPlayerPlaying(Player playerPlaying) {
 		this.playerPlaying = playerPlaying;
+	}
+
+	public void update(Observable o, Object arg) {
+		String view = (String)arg;
+		
+		if (view.equals("rollDiceComplete")) {
+			setChanged();
+			notifyObservers("rollDiceComplete");
+		}
 	}
 }
