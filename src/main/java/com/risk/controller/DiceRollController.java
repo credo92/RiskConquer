@@ -175,9 +175,6 @@ public class DiceRollController implements Initializable {
 
 		loadAttackScreen();
 		showDice();
-		roll.setOnAction((event) -> {
-			roll();
-		});
 	}
 
 	public void loadAttackScreen() {
@@ -190,13 +187,14 @@ public class DiceRollController implements Initializable {
 		// Load defender details
 		Territory defendingTerritory = diceModel.getDefendingTerritory();
 		defenderPlayerName.setText(defendingTerritory.getPlayer().getName());
-		defenderTerritoryName.setText(defendingTerritory.getName());
+		defenderTerritoryName.setText("Territory: " + defendingTerritory.getName());
 		defenderArmies.setText("Armies: " + String.valueOf(defendingTerritory.getArmies()));
 
+		// clear check boxes
+		GameUtil.clearCheckBox(attackerDice1, attackerDice2, attackerDice3, defenderDice1, defenderDice2);
 		// Hide output details
-		winnerName.setVisible(false);
-		moveArmiesView.setVisible(false);
-
+		GameUtil.disableControl(winnerName, continueRoll);
+		GameUtil.disableViewPane(moveArmiesView);
 	}
 
 	@FXML
@@ -211,7 +209,8 @@ public class DiceRollController implements Initializable {
 
 	@FXML
 	private void continueDiceRoll(ActionEvent event) {
-
+		loadAttackScreen();
+		showDice();
 	}
 
 	/**
@@ -235,21 +234,6 @@ public class DiceRollController implements Initializable {
 		}
 	}
 
-	/**
-	 * Set random values on each dice and set on label and make label visible .
-	 */
-	public void throwDice() {
-		if (!attackerDice1.isSelected() && !attackerDice2.isSelected() && !attackerDice3.isSelected()) {
-			MapUtil.infoBox("Please Select atleast one of the attacker dice", "Message", "");
-			return;
-		} else if (!defenderDice1.isSelected() && !defenderDice2.isSelected()) {
-			MapUtil.infoBox("Please Select atleast one of the defender dice", "Message", "");
-			return;
-		}
-		rollAttackerDice(attackerDice1, attackerDice2, attackerDice3);
-		rollDefenderDice(defenderDice1, defenderDice2);
-	}
-
 	public void rollAttackerDice(CheckBox... dices) {
 		for (CheckBox dice : dices) {
 			if (dice.isSelected()) {
@@ -270,12 +254,37 @@ public class DiceRollController implements Initializable {
 		}
 	}
 
-	public void roll() {
-		throwDice();
+	@FXML
+	public void rollDice(ActionEvent event) {
+		if (!attackerDice1.isSelected() && !attackerDice2.isSelected() && !attackerDice3.isSelected()) {
+			MapUtil.infoBox("Please Select atleast one of the attacker dice", "Message", "");
+			return;
+		} else if (!defenderDice1.isSelected() && !defenderDice2.isSelected()) {
+			MapUtil.infoBox("Please Select atleast one of the defender dice", "Message", "");
+			return;
+		}
+		rollAttackerDice(attackerDice1, attackerDice2, attackerDice3);
+		rollDefenderDice(defenderDice1, defenderDice2);
+
 		List<String> playResult = diceModel.getPlayResultAfterDiceThrown();
+
+		Territory attackingTerritory = diceModel.getAttackingTerritory();
+		Territory defendingTerritory = diceModel.getDefendingTerritory();
+		if (defendingTerritory.getArmies() <= 0) {
+			playResult.add(attackingTerritory.getPlayer().getName() + " won the territory: " + defendingTerritory.getName());
+			GameUtil.enableViewPane(moveArmiesView);
+			GameUtil.hideControl(roll, continueRoll, cancel);
+		} else if (attackingTerritory.getArmies() < 2) {
+			playResult.add(attackingTerritory.getPlayer().getName() + " lost the match");
+			GameUtil.disableControl(roll, continueRoll);
+		} else {
+			GameUtil.disableControl(roll);
+			GameUtil.enableControl(continueRoll);
+		}
+		defenderArmies.setText("Armies: " + String.valueOf(defendingTerritory.getArmies()));
+		attackerArmies.setText("Armies: " + String.valueOf(attackingTerritory.getArmies()));
 		winnerName.setText(playResult.toString());
 		winnerName.setVisible(true);
-		showDice();
 	}
 
 }

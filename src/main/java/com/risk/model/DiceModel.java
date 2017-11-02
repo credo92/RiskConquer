@@ -28,33 +28,17 @@ public class DiceModel {
 
 	}
 
-	public String compareTwoNumbers(int attackerValue, int defenderValue) {
-		String playerWinCheck;
-		if (attackerValue > defenderValue) {
-
-			playerWinCheck = "attacker";
-
-		} else if (attackerValue < defenderValue) {
-
-			playerWinCheck = "defender";
-
-		} else {
-
-			playerWinCheck = "tie";
-		}
-
-		return playerWinCheck;
-	}
-
 	public List<String> getPlayResultAfterDiceThrown() {
 		List<String> playResult = new ArrayList<>();
-		Collections.sort(attackerDiceValues);
-		Collections.sort(defenderDiceValues);
+		Collections.sort(attackerDiceValues, Collections.reverseOrder());
+		Collections.sort(defenderDiceValues, Collections.reverseOrder());
 
 		for (Integer defenderDiceValue : defenderDiceValues) {
 			for (Integer attackerDiceValue : attackerDiceValues) {
 				updateArmiesAfterAttack(defenderDiceValue, attackerDiceValue, playResult);
+				break;
 			}
+			attackerDiceValues.remove(1);
 		}
 		return playResult;
 
@@ -62,19 +46,33 @@ public class DiceModel {
 
 	public void updateArmiesAfterAttack(Integer defenderDiceValue, Integer attackerDiceValue, List<String> playResult) {
 		if (attackerDiceValue.compareTo(defenderDiceValue) == 0) {
-			playResult.add("Defending territory won!");
-			attackingTerritory.setArmies(attackingTerritory.getArmies() - 1);
+			playResult.add("Attacker lost 1 army.");
+			if (attackingTerritory.getArmies() > 1) {
+				attackingTerritory.setArmies(attackingTerritory.getArmies() - 1);
+			}
 		} else if (attackerDiceValue.compareTo(defenderDiceValue) > 0) {
-			playResult.add("Attacking territory won!");
-			defendingTerritory.setArmies(defendingTerritory.getArmies() - 1);
+			playResult.add("Defender lost 1 army");
+			if (defendingTerritory.getArmies() > 0) {
+				defendingTerritory.setArmies(defendingTerritory.getArmies() - 1);
+			}
 		} else {
-			playResult.add("Defending territory won!");
-			attackingTerritory.setArmies(attackingTerritory.getArmies() - 1);
+			playResult.add("Attacker lost 1 army.");
+			if (attackingTerritory.getArmies() > 1) {
+				attackingTerritory.setArmies(attackingTerritory.getArmies() - 1);
+			}
 		}
 	}
 
 	public int randomNumber() {
 		return (int) (Math.random() * 6) + 1;
+	}
+
+	public boolean moreDiceRollAvailable() {
+		boolean diceRollAvailable = true;
+		if (attackingTerritory.getArmies() < 2 || defendingTerritory.getArmies() <= 0) {
+			diceRollAvailable = false;
+		}
+		return diceRollAvailable;
 	}
 
 	/**

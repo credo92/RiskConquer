@@ -2,6 +2,7 @@ package com.risk.map.util;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
@@ -16,22 +17,29 @@ public class GameUtil {
 
 		return numberOfPlayers;
 	}
-	
+
 	public static void disableControl(Control... controls) {
 		for (Control control : controls) {
 			control.setDisable(true);
 		}
 	}
-	
+
 	public static void showControl(Control... controls) {
 		for (Control control : controls) {
 			control.setVisible(true);
 		}
 	}
-	
+
 	public static void hideControl(Control... controls) {
 		for (Control control : controls) {
 			control.setVisible(false);
+		}
+	}
+
+	public static void clearCheckBox(CheckBox... checkBoxes) {
+		for (CheckBox checkBox: checkBoxes) {
+			checkBox.setText("");
+			checkBox.setSelected(false);
 		}
 	}
 
@@ -46,7 +54,7 @@ public class GameUtil {
 			control.setDisable(false);
 		}
 	}
-	
+
 	/**
 	 * This method is used to set visible true of pane.
 	 * 
@@ -58,7 +66,7 @@ public class GameUtil {
 			pane.setVisible(true);
 		}
 	}
-	
+
 	/**
 	 * This method is used to set visible true of pane.
 	 * 
@@ -70,7 +78,7 @@ public class GameUtil {
 			pane.setVisible(false);
 		}
 	}
-	
+
 	/**
 	 * Info box to display message.
 	 * 
@@ -88,6 +96,5 @@ public class GameUtil {
 		alert.setContentText(infoMessage);
 		alert.showAndWait();
 	}
-
 
 }
