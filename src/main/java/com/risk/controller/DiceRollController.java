@@ -200,8 +200,6 @@ public class DiceRollController implements Initializable {
 		roll.setOnAction((event) -> {
 			roll();
 		});
-		// winnerName.setText("hello");
-
 	}
 		
 	public void unCheckAllCheckbox(CheckBox ...dices) {
@@ -209,7 +207,7 @@ public class DiceRollController implements Initializable {
 			dice.setText(null);
 		}
 	}
-
+	
 	/**
 	 * Show dices according to number of armies .
 	 */
@@ -254,6 +252,7 @@ public class DiceRollController implements Initializable {
 			MapUtil.infoBox("Please Select atleast one of the defender dice", "Message", "");
 			return;
 		}
+		
 		if (attackerDice1.isSelected()) {
 			attackerDice1.setText(String.valueOf(diceModel.randomNumber()));
 		}
@@ -262,7 +261,7 @@ public class DiceRollController implements Initializable {
 		}
 		if (attackerDice3.isSelected()) {
 			attackerDice3.setText(String.valueOf(diceModel.randomNumber()));
-		}
+		}	
 		if (defenderDice1.isSelected()) {
 			defenderDice1.setText(String.valueOf(diceModel.randomNumber()));
 		}
@@ -329,32 +328,15 @@ public class DiceRollController implements Initializable {
 
 	
 	public void deductArmies(List<String> playResult) {
-		System.out.println("from controller"+playResult);
 		if(!playResult.isEmpty()) {
 			for (String check : playResult) {
 				if (check.equals("tie")) {
-					if(diceModel.checkIfAttackerContinue()){
 					attackerArmies.setText(String.valueOf(diceModel.deductArmyFromAttacker()));
-					}
-					else{
-						//Need to show message in game console 
-						//MapUtil.infoBox("You must have at least two armies to continue attack", "Message", "");
-						GameUtil.disableControl(roll);
-						winnerName.setText("You have one army left. Please click on End Turn");
-					}
 				}
 				else if (check.equals("attacker")) {
-					if(diceModel.checkIfAttackerContinue()){
 						defenderArmies.setText(String.valueOf(diceModel.deductArmyFromDefender()));
-						}
-						else{
-							//Need to show message in game console 
-							//MapUtil.infoBox("You must have at least two armies to continue attack", "Message", "");
-							GameUtil.disableControl(roll);
-							winnerName.setText("You have one army left. Please click on End Turn");
-						}
-					
-				} else if (check.equals("defender")){
+						}	
+				 else if (check.equals("defender")){
 					if(diceModel.getArmyCountOnDefendingTerritory() > 0) {
 					attackerArmies.setText(String.valueOf(diceModel.deductArmyFromAttacker()));
 					}else {
@@ -364,6 +346,7 @@ public class DiceRollController implements Initializable {
 				}
 			}
 		}
+		
 	}
 
 	public void roll() {
@@ -374,6 +357,16 @@ public class DiceRollController implements Initializable {
 		playResult = diceModel.getPlayResultAfterDiceThrown(getValuesFromAtatckerDice(),
 				getValuesFromDefenderDice());
 		deductArmies(playResult);	
+		if(diceModel.getArmyCountOnAttackingTerritory() <= 1) {
+			//Need to show message in game console 
+			//MapUtil.infoBox("You must have at least two armies to continue attack", "Message", "");
+			GameUtil.disableControl(roll);
+			winnerName.setText("You have one army left. Please click on End Turn");
+		}
+		if(diceModel.getArmyCountOnDefendingTerritory() == 0) {
+			GameUtil.disableControl(roll);
+			GameUtil.enableViewPane(moveArmiesView);
+		}
 		//unCheckAllCheckbox(attackerDice1, attackerDice2, attackerDice3, defenderDice1, defenderDice2);
 		/*
 		 * winnerName.setText("roll clicked"); attackingTerritory.setArmies(5);
