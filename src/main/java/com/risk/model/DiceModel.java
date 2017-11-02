@@ -14,7 +14,7 @@ public class DiceModel {
 	private Territory attackingTerritory;
 
 	private Territory defendingTerritory;
-	
+
 	List<String> playResult = new ArrayList<>();
 
 
@@ -41,7 +41,7 @@ public class DiceModel {
 
 		return playerWinCheck;
 	}
-	
+
 	public boolean checkIfDiceHasSameValue(List<Integer> bestAttackerValue, List<Integer> bestDefenderValue, 
 			int sizeCheckForLoop) {
 		for(int i = 0 ; i < sizeCheckForLoop; i++) {
@@ -50,21 +50,22 @@ public class DiceModel {
 			}
 		}
 		return false;
-		
+
 	}
 
 	public List<String> getPlayResultAfterDiceThrown(List<Integer> bestAttackerValue, List<Integer> bestDefenderValue) {
 		playResult.clear();
-		int sizeCheckForLoop;
-		
-		if(bestAttackerValue.size() > bestDefenderValue.size()) {
-			sizeCheckForLoop = bestDefenderValue.size();
-		}else if(bestDefenderValue.size() > bestAttackerValue.size()) {
-			sizeCheckForLoop = bestAttackerValue.size();
-		}else {
-			sizeCheckForLoop = bestDefenderValue.size();
+		int sizeCheckForLoop = 0;
+		if(!bestAttackerValue.isEmpty() && !bestDefenderValue.isEmpty()) {
+			if(bestAttackerValue.size() > bestDefenderValue.size()) {
+				sizeCheckForLoop = bestDefenderValue.size();
+			}else if(bestDefenderValue.size() > bestAttackerValue.size()) {
+				sizeCheckForLoop = bestAttackerValue.size();
+			}else {
+				sizeCheckForLoop = bestDefenderValue.size();
+			}
 		}
-		
+
 		if(checkIfDiceHasSameValue(bestAttackerValue, bestDefenderValue, sizeCheckForLoop)) {
 			for(int i = 0 ; i < sizeCheckForLoop; i++) {
 				playResult.add(compareTwoNumbers((int) bestAttackerValue.get(i), (int) bestDefenderValue.get(i)));
@@ -72,7 +73,6 @@ public class DiceModel {
 		}else {
 			playResult.add(compareTwoNumbers((int) bestAttackerValue.get(0), (int) bestDefenderValue.get(0)));
 		}
-		
 		return playResult;
 
 	}
@@ -118,30 +118,31 @@ public class DiceModel {
 	public void setDefendingTerritory(Territory defendingTerritory) {
 		this.defendingTerritory = defendingTerritory;
 	}
-	
+
 	public int deductArmyFromAttacker() {
 		if(attackingTerritory.getArmies() >= 2) {
-		int newArmies = attackingTerritory.getArmies() - 1;
-		attackingTerritory.setArmies(newArmies);
+			int newArmies = attackingTerritory.getArmies() - 1;
+			attackingTerritory.setArmies(newArmies);
 		}
 		return attackingTerritory.getArmies();
 	}
-	
+
 	public int deductArmyFromDefender() {
-		if(defendingTerritory.getArmies() != 0) {
+		if(defendingTerritory.getArmies() > 0) {
 			int newArmies = defendingTerritory.getArmies() - 1;
 			defendingTerritory.setArmies(newArmies);
-			}
-			return defendingTerritory.getArmies();
+		}
+		System.out.println("armies on defend"+ defendingTerritory.getArmies());
+		return defendingTerritory.getArmies();
 	}
-	
+
 	public boolean checkIfAttackerContinue() {
-	if(attackingTerritory.getArmies() >= 2 && defendingTerritory.getArmies() > 0) {
-		return true;
-	}	
-	return false;
+		if(attackingTerritory.getArmies() >= 2 && defendingTerritory.getArmies() > 0) {
+			return true;
+		}	
+		return false;
 	}
-	
-	
+
+
 
 }

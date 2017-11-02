@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import com.risk.entity.Territory;
 import com.risk.map.util.GameUtil;
@@ -189,7 +192,8 @@ public class DiceRollController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		hideUneccessaryElementOnStartUp();
+		GameUtil.disableControl(winnerName);
+		GameUtil.disableViewPane(moveArmiesView);
 		loadAttackerInfo();
 		loadDefenderInfo();
 		showDice();
@@ -199,17 +203,18 @@ public class DiceRollController implements Initializable {
 		// winnerName.setText("hello");
 
 	}
-
-	public void hideUneccessaryElementOnStartUp() {
-		GameUtil.disableControl(winnerName);
-		GameUtil.disableViewPane(moveArmiesView);
+		
+	public void unCheckAllCheckbox(CheckBox ...dices) {
+		for (CheckBox dice : dices) {
+			dice.setText(null);
+		}
 	}
 
 	/**
 	 * Show dices according to number of armies .
 	 */
 	public void showDice() {
-		if (diceModel.getAttackingTerritory().getArmies() >= 4) {
+		if (diceModel.getArmyCountOnAttackingTerritory() >= 4) {
 			GameUtil.enableControl(attackerDice1, attackerDice2, attackerDice3);
 		} else if (diceModel.getAttackingTerritory().getArmies() >= 3) {
 			GameUtil.enableControl(attackerDice1, attackerDice2);
@@ -225,16 +230,28 @@ public class DiceRollController implements Initializable {
 			GameUtil.disableControl(defenderDice2);
 		}
 	}
+	
+	public void delay() {
+		try        
+		{
+		    Thread.sleep(1000);
+		} 
+		catch(InterruptedException ex) 
+		{
+		    Thread.currentThread().interrupt();
+		}
+
+	}
 
 	/**
 	 * Set random values on each dice and set on label and make label visible .
 	 */
 	public void throwDice() {
 		if (!attackerDice1.isSelected() && !attackerDice2.isSelected() && !attackerDice3.isSelected()) {
-			GameUtil.infoBox("Please Select atleast one of the attacker dice", "Message", "");
+			MapUtil.infoBox("Please Select atleast one of the attacker dice", "Message", "");
 			return;
 		} else if (!defenderDice1.isSelected() && !defenderDice2.isSelected()) {
-			GameUtil.infoBox("Please Select atleast one of the defender dice", "Message", "");
+			MapUtil.infoBox("Please Select atleast one of the defender dice", "Message", "");
 			return;
 		}
 		if (attackerDice1.isSelected()) {
@@ -252,7 +269,6 @@ public class DiceRollController implements Initializable {
 		if (defenderDice2.isSelected()) {
 			defenderDice2.setText(String.valueOf(diceModel.randomNumber()));
 		}
-
 	}
 
 	/**
@@ -313,6 +329,7 @@ public class DiceRollController implements Initializable {
 
 	
 	public void deductArmies(List<String> playResult) {
+		System.out.println("from controller"+playResult);
 		if(!playResult.isEmpty()) {
 			for (String check : playResult) {
 				if (check.equals("tie")) {
@@ -323,33 +340,41 @@ public class DiceRollController implements Initializable {
 						//Need to show message in game console 
 						//MapUtil.infoBox("You must have at least two armies to continue attack", "Message", "");
 						GameUtil.disableControl(roll);
-						GameUtil.enableViewPane(moveArmiesView);
+						winnerName.setText("You have one army left. Please click on End Turn");
 					}
 				}
 				else if (check.equals("attacker")) {
 					if(diceModel.checkIfAttackerContinue()){
-						attackerArmies.setText(String.valueOf(diceModel.deductArmyFromAttacker()));
+						defenderArmies.setText(String.valueOf(diceModel.deductArmyFromDefender()));
 						}
 						else{
 							//Need to show message in game console 
 							//MapUtil.infoBox("You must have at least two armies to continue attack", "Message", "");
 							GameUtil.disableControl(roll);
-							GameUtil.enableViewPane(moveArmiesView);
+							winnerName.setText("You have one army left. Please click on End Turn");
 						}
 					
 				} else if (check.equals("defender")){
-					attackerArmies.setText(String.valueOf(diceModel.deductArmyFromAttacker()));	
+					if(diceModel.getArmyCountOnDefendingTerritory() > 0) {
+					attackerArmies.setText(String.valueOf(diceModel.deductArmyFromAttacker()));
+					}else {
+						attackerArmies.setText(String.valueOf(0));
+						GameUtil.enableViewPane(moveArmiesView);
+					}
 				}
 			}
 		}
 	}
 
 	public void roll() {
+		showDice();
 		throwDice();
+		delay();
 		playResult.clear();
 		playResult = diceModel.getPlayResultAfterDiceThrown(getValuesFromAtatckerDice(),
 				getValuesFromDefenderDice());
-		deductArmies(playResult);
+		deductArmies(playResult);	
+		//unCheckAllCheckbox(attackerDice1, attackerDice2, attackerDice3, defenderDice1, defenderDice2);
 		/*
 		 * winnerName.setText("roll clicked"); attackingTerritory.setArmies(5);
 		 */
