@@ -1,6 +1,5 @@
 package com.risk.controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,10 +17,8 @@ import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
-import com.risk.main.DiceViewLoader;
 import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
-import com.risk.model.DiceModel;
 import com.risk.model.GameModel;
 import com.risk.model.PlayerModel;
 import com.risk.model.PlayerWorldDomination;
@@ -33,10 +30,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Button;
@@ -47,7 +41,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 /**
  * Game play controller to control all the
