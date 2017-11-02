@@ -14,6 +14,9 @@ public class DiceModel {
 	private Territory attackingTerritory;
 
 	private Territory defendingTerritory;
+	
+	List<String> playResult = new ArrayList<>();
+
 
 	public DiceModel(Territory attackingTerritory, Territory defendingTerritory) {
 		this.attackingTerritory = attackingTerritory;
@@ -38,24 +41,38 @@ public class DiceModel {
 
 		return playerWinCheck;
 	}
-
-	public List<String> getPlayResultAfterDiceThrown(List<Integer> bestAttackerValue, List<Integer> bestDefenderValue) {
-		List<String> playResult = new ArrayList<>();
-		if (!bestAttackerValue.isEmpty() && !bestDefenderValue.isEmpty()) {
-			if (bestAttackerValue.size() > 0 && bestAttackerValue.get(0) != null && bestDefenderValue.size() > 0
-					&& bestDefenderValue.get(0) != null) {
-				int attackerValue = (int) bestAttackerValue.get(0);
-				int defenderValue = (int) bestDefenderValue.get(0);
-				playResult.add(compareTwoNumbers(attackerValue, defenderValue));
-			}
-			if (bestAttackerValue.size() > 1 && bestAttackerValue.get(1) != null && bestDefenderValue.size() > 1
-					&& bestDefenderValue.get(1) != null) {
-				int attackerValue = (int) bestAttackerValue.get(1);
-				int defenderValue = (int) bestDefenderValue.get(1);
-				playResult.add(compareTwoNumbers(attackerValue, defenderValue));
+	
+	public boolean checkIfDiceHasSameValue(List<Integer> bestAttackerValue, List<Integer> bestDefenderValue, 
+			int sizeCheckForLoop) {
+		for(int i = 0 ; i < sizeCheckForLoop; i++) {
+			if(bestAttackerValue.get(i) == bestDefenderValue.get(i)) {
+				return true;
 			}
 		}
+		return false;
+		
+	}
 
+	public List<String> getPlayResultAfterDiceThrown(List<Integer> bestAttackerValue, List<Integer> bestDefenderValue) {
+		playResult.clear();
+		int sizeCheckForLoop;
+		
+		if(bestAttackerValue.size() > bestDefenderValue.size()) {
+			sizeCheckForLoop = bestDefenderValue.size();
+		}else if(bestDefenderValue.size() > bestAttackerValue.size()) {
+			sizeCheckForLoop = bestAttackerValue.size();
+		}else {
+			sizeCheckForLoop = bestDefenderValue.size();
+		}
+		
+		if(checkIfDiceHasSameValue(bestAttackerValue, bestDefenderValue, sizeCheckForLoop)) {
+			for(int i = 0 ; i < sizeCheckForLoop; i++) {
+				playResult.add(compareTwoNumbers((int) bestAttackerValue.get(i), (int) bestDefenderValue.get(i)));
+			}	
+		}else {
+			playResult.add(compareTwoNumbers((int) bestAttackerValue.get(0), (int) bestDefenderValue.get(0)));
+		}
+		
 		return playResult;
 
 	}
@@ -101,5 +118,30 @@ public class DiceModel {
 	public void setDefendingTerritory(Territory defendingTerritory) {
 		this.defendingTerritory = defendingTerritory;
 	}
+	
+	public int deductArmyFromAttacker() {
+		if(attackingTerritory.getArmies() >= 2) {
+		int newArmies = attackingTerritory.getArmies() - 1;
+		attackingTerritory.setArmies(newArmies);
+		}
+		return attackingTerritory.getArmies();
+	}
+	
+	public int deductArmyFromDefender() {
+		if(defendingTerritory.getArmies() != 0) {
+			int newArmies = defendingTerritory.getArmies() - 1;
+			defendingTerritory.setArmies(newArmies);
+			}
+			return defendingTerritory.getArmies();
+	}
+	
+	public boolean checkIfAttackerContinue() {
+	if(attackingTerritory.getArmies() >= 2 && defendingTerritory.getArmies() > 0) {
+		return true;
+	}	
+	return false;
+	}
+	
+	
 
 }

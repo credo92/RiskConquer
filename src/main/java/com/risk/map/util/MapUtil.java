@@ -23,6 +23,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
@@ -64,6 +65,30 @@ public class MapUtil {
 	public static void enableControl(Control... controls) {
 		for (Control control : controls) {
 			control.setDisable(false);
+		}
+	}
+	
+	/**
+	 * This method is used to set visible true of pane.
+	 * 
+	 * @param panes
+	 *            panes
+	 */
+	public static void enableViewPane(Pane... panes) {
+		for (Pane pane : panes) {
+			pane.setVisible(true);
+		}
+	}
+	
+	/**
+	 * This method is used to set visible true of pane.
+	 * 
+	 * @param panes
+	 *            panes
+	 */
+	public static void disableViewPane(Pane... panes) {
+		for (Pane pane : panes) {
+			pane.setVisible(false);
 		}
 	}
 
