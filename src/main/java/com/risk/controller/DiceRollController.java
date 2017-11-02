@@ -200,36 +200,28 @@ public class DiceRollController implements Initializable {
 	@FXML
 	private void moveArmies(ActionEvent event) {
 		int armiesToMove = Integer.valueOf(numberOfArmiesInput.getText());
-		int currentArmies = diceModel.getAttackingTerritory().getArmies();
-		if (currentArmies <= armiesToMove) {
-			winnerName.setVisible(true);
-			winnerName.setText("You can move a miximum of " + (currentArmies - 1) + " armies");
-			return;
-		} else {
-			diceModel.getAttackingTerritory().setArmies(currentArmies - armiesToMove);
-			diceModel.getDefendingTerritory().setArmies(armiesToMove);
-		}
+		diceModel.moveArmies(armiesToMove, winnerName);
+		GameUtil.closeScreen(moveArmies);
 	}
 
 	@FXML
 	private void moveAllArmies(ActionEvent event) {
-		int attckingArmies = diceModel.getAttackingTerritory().getArmies();
-		diceModel.getAttackingTerritory().setArmies(1);
-		diceModel.getDefendingTerritory().setArmies(attckingArmies - 1);
+		diceModel.moveAllArmies();
+		GameUtil.closeScreen(moveAllArmies);
 	}
 
 	@FXML
-	private void skipMoveArmy() {
-		int attckingArmies = diceModel.getAttackingTerritory().getArmies();
-		diceModel.getAttackingTerritory().setArmies(attckingArmies - 1);
-		diceModel.getDefendingTerritory().setArmies(1);
+	private void skipMoveArmy(ActionEvent event) {
+		diceModel.skipMoveArmy();
+		GameUtil.closeScreen(skipMoveArmy);
 	}
 
 	@FXML
 	private void cancelDiceRoll() {
-		
+		diceModel.cancelDiceRoll();
+		GameUtil.closeScreen(cancelDiceRoll);
 	}
-	
+
 	@FXML
 	private void continueDiceRoll(ActionEvent event) {
 		loadAttackScreen();

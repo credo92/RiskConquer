@@ -3,14 +3,17 @@ package com.risk.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
 
 import com.risk.entity.Territory;
+
+import javafx.scene.control.Label;
 
 /**
  * @author Gurpreet Singh DiceModel model to send data
  * @version 1.0.1
  */
-public class DiceModel {
+public class DiceModel extends Observable {
 
 	private Territory attackingTerritory;
 
@@ -60,6 +63,43 @@ public class DiceModel {
 			if (attackingTerritory.getArmies() > 1) {
 				attackingTerritory.setArmies(attackingTerritory.getArmies() - 1);
 			}
+		}
+	}
+
+	public void cancelDiceRoll() {
+		setChanged();
+		notifyObservers("rollDiceComplete");
+	}
+
+	public void moveAllArmies() {
+		int attckingArmies = getAttackingTerritory().getArmies();
+		getAttackingTerritory().setArmies(1);
+		getDefendingTerritory().setArmies(attckingArmies - 1);
+		reassignTerritory();
+		setChanged();
+		notifyObservers("rollDiceComplete");
+	}
+
+	public void skipMoveArmy() {
+		int attckingArmies = getAttackingTerritory().getArmies();
+		getAttackingTerritory().setArmies(attckingArmies - 1);
+		getDefendingTerritory().setArmies(1);
+		setChanged();
+		notifyObservers("rollDiceComplete");
+	}
+
+	public void moveArmies(int armiesToMove, Label message) {
+		int currentArmies = getAttackingTerritory().getArmies();
+		if (currentArmies <= armiesToMove) {
+			message.setVisible(true);
+			message.setText("You can move a miximum of " + (currentArmies - 1) + " armies");
+			return;
+		} else {
+			getAttackingTerritory().setArmies(currentArmies - armiesToMove);
+			getDefendingTerritory().setArmies(armiesToMove);
+			reassignTerritory();
+			setChanged();
+			notifyObservers("rollDiceComplete");
 		}
 	}
 
