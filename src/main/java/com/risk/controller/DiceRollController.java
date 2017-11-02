@@ -1,15 +1,15 @@
 package com.risk.controller;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import com.risk.entity.Territory;
+import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
 import com.risk.model.DiceModel;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -41,6 +41,12 @@ public class DiceRollController implements Initializable {
 	 */
 	@FXML
 	private Label defenderPlayerName;
+
+	@FXML
+	private Button continueRoll;
+
+	@FXML
+	private Button moveAllArmies;
 
 	/**
 	 * The @attackerTerritoryName label.
@@ -157,26 +163,6 @@ public class DiceRollController implements Initializable {
 
 	}
 
-	/**
-	 * Load attacker player information.
-	 */
-	public void loadAttackerInfo() {
-		Territory attackingTerritory = diceModel.getAttackingTerritory();
-		attackerPlayerName.setText(attackingTerritory.getPlayer().getName());
-		attackerTerritoryName.setText(attackingTerritory.getName());
-		attackerArmies.setText("Armies: " + String.valueOf(attackingTerritory.getArmies()));
-	}
-
-	/**
-	 * Load defender player information.
-	 */
-	public void loadDefenderInfo() {
-		Territory defendingTerritory = diceModel.getDefendingTerritory();
-		defenderPlayerName.setText(defendingTerritory.getPlayer().getName());
-		defenderTerritoryName.setText(defendingTerritory.getName());
-		defenderArmies.setText("Armies: " + String.valueOf(defendingTerritory.getArmies()));
-	}
-
 	/*
 	 * (non-Javadoc) Dice Roll controller initializer, loading player and territory
 	 * data.
@@ -187,20 +173,44 @@ public class DiceRollController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		loadAttackerInfo();
-		loadDefenderInfo();
+		loadAttackScreen();
 		showDice();
-		hideUneccessaryElementOnStartUp();
 		roll.setOnAction((event) -> {
 			roll();
 		});
-		// winnerName.setText("hello");
+	}
+
+	public void loadAttackScreen() {
+		// Load attacker details
+		Territory attackingTerritory = diceModel.getAttackingTerritory();
+		attackerPlayerName.setText(attackingTerritory.getPlayer().getName());
+		attackerTerritoryName.setText("Territory: " + attackingTerritory.getName());
+		attackerArmies.setText("Armies: " + String.valueOf(attackingTerritory.getArmies()));
+
+		// Load defender details
+		Territory defendingTerritory = diceModel.getDefendingTerritory();
+		defenderPlayerName.setText(defendingTerritory.getPlayer().getName());
+		defenderTerritoryName.setText(defendingTerritory.getName());
+		defenderArmies.setText("Armies: " + String.valueOf(defendingTerritory.getArmies()));
+
+		// Hide output details
+		winnerName.setVisible(false);
+		moveArmiesView.setVisible(false);
 
 	}
 
-	public void hideUneccessaryElementOnStartUp() {
-		winnerName.setVisible(false);
-		//moveArmiesView.setVisible(false);
+	@FXML
+	private void moveArmies(ActionEvent event) {
+
+	}
+
+	@FXML
+	private void moveAllArmies(ActionEvent event) {
+
+	}
+
+	@FXML
+	private void continueDiceRoll(ActionEvent event) {
 
 	}
 
@@ -209,19 +219,19 @@ public class DiceRollController implements Initializable {
 	 */
 	public void showDice() {
 		if (diceModel.getAttackingTerritory().getArmies() >= 4) {
-			MapUtil.enableControl(attackerDice1, attackerDice2, attackerDice3);
+			GameUtil.showControl(attackerDice1, attackerDice2, attackerDice3);
 		} else if (diceModel.getAttackingTerritory().getArmies() >= 3) {
-			MapUtil.enableControl(attackerDice1, attackerDice2);
-			MapUtil.disableControl(attackerDice3);
-		} else if (diceModel.getArmyCountOnAttackingTerritory() >= 2) {
-			MapUtil.enableControl(attackerDice1);
-			MapUtil.disableControl(attackerDice2, attackerDice3);
+			GameUtil.showControl(attackerDice1, attackerDice2);
+			GameUtil.hideControl(attackerDice3);
+		} else if (diceModel.getAttackingTerritory().getArmies() >= 2) {
+			GameUtil.showControl(attackerDice1);
+			GameUtil.hideControl(attackerDice2, attackerDice3);
 		}
-		if (diceModel.getArmyCountOnDefendingTerritory() > 2) {
-			MapUtil.enableControl(defenderDice1, defenderDice2);
-		} else if (diceModel.getArmyCountOnDefendingTerritory() >= 1) {
-			MapUtil.enableControl(defenderDice1);
-			MapUtil.disableControl(defenderDice2);
+		if (diceModel.getDefendingTerritory().getArmies() > 2) {
+			GameUtil.showControl(defenderDice1, defenderDice2);
+		} else if (diceModel.getDefendingTerritory().getArmies() >= 1) {
+			GameUtil.showControl(defenderDice1);
+			GameUtil.hideControl(defenderDice2);
 		}
 	}
 
@@ -236,88 +246,36 @@ public class DiceRollController implements Initializable {
 			MapUtil.infoBox("Please Select atleast one of the defender dice", "Message", "");
 			return;
 		}
-		if (attackerDice1.isSelected()) {
-			attackerDice1.setText(String.valueOf(diceModel.randomNumber()));
-		}
-		if (attackerDice2.isSelected()) {
-			attackerDice2.setText(String.valueOf(diceModel.randomNumber()));
-		}
-		if (attackerDice3.isSelected()) {
-			attackerDice3.setText(String.valueOf(diceModel.randomNumber()));
-		}
-		if (defenderDice1.isSelected()) {
-			defenderDice1.setText(String.valueOf(diceModel.randomNumber()));
-		}
-		if (defenderDice2.isSelected()) {
-			defenderDice2.setText(String.valueOf(diceModel.randomNumber()));
-		}
-
+		rollAttackerDice(attackerDice1, attackerDice2, attackerDice3);
+		rollDefenderDice(defenderDice1, defenderDice2);
 	}
 
-	/**
-	 * Returns list of attacker dice values in decreasing order.
-	 */
-	public List<Integer> getValuesFromAtatckerDice() {
-		List<Integer> bestAttackerValue = new ArrayList<>();
-		if (attackerDice1.isSelected()) {
-			bestAttackerValue.add(Integer.valueOf(attackerDice1.getText()));
-		}
-		if (attackerDice2.isSelected()) {
-			bestAttackerValue.add(Integer.valueOf(attackerDice2.getText()));
-		}
-		if (attackerDice3.isSelected()) {
-			bestAttackerValue.add(Integer.valueOf(attackerDice3.getText()));
-		}
-
-		// sorting the list into reverse order
-		Collections.sort(bestAttackerValue, Collections.reverseOrder());
-
-		return bestAttackerValue;
-
-	}
-
-	/**
-	 * Returns list of defender dice values in decreasing order.
-	 */
-	public List<Integer> getValuesFromDefenderDice() {
-		List<Integer> bestDefenderValue = new ArrayList<>();
-		if (defenderDice1.isSelected()) {
-			bestDefenderValue.add(Integer.valueOf(defenderDice1.getText()));
-		}
-		if (defenderDice2.isSelected()) {
-			bestDefenderValue.add(Integer.valueOf(defenderDice2.getText()));
-		}
-
-		// sorting the list into reverse order
-		Collections.sort(bestDefenderValue, Collections.reverseOrder());
-		return bestDefenderValue;
-
-	}
-
-	public void deductArmies(List<String> playResult) {
-		for (String check : playResult) {
-			if (check.equals("tie")) {
-				winnerName.setText("Deduct army from attacker as it is tie");
-				winnerName.setVisible(true);
+	public void rollAttackerDice(CheckBox... dices) {
+		for (CheckBox dice : dices) {
+			if (dice.isSelected()) {
+				int value = diceModel.randomNumber();
+				dice.setText(String.valueOf(value));
+				diceModel.getAttackerDiceValues().add(value);
 			}
-			if (check.equals("attacker")) {
-				winnerName.setText("Deduct army from defender as attacker wins");
-				winnerName.setVisible(true);
-			} else {
-				winnerName.setText("Deduct army from attacker as defender wins");
-				winnerName.setVisible(true);
+		}
+	}
+
+	public void rollDefenderDice(CheckBox... dices) {
+		for (CheckBox dice : dices) {
+			if (dice.isSelected()) {
+				int value = diceModel.randomNumber();
+				dice.setText(String.valueOf(value));
+				diceModel.getDefenderDiceValues().add(value);
 			}
 		}
 	}
 
 	public void roll() {
 		throwDice();
-		List<String> playResult = diceModel.getPlayResultAfterDiceThrown(getValuesFromAtatckerDice(),
-				getValuesFromDefenderDice());
-		deductArmies(playResult);
-		/*
-		 * winnerName.setText("roll clicked"); attackingTerritory.setArmies(5);
-		 */
+		List<String> playResult = diceModel.getPlayResultAfterDiceThrown();
+		winnerName.setText(playResult.toString());
+		winnerName.setVisible(true);
+		showDice();
 	}
 
 }

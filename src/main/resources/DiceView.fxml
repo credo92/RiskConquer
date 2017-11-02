@@ -13,39 +13,41 @@
          <children>
             <HBox alignment="TOP_CENTER" prefHeight="26.0" prefWidth="470.0">
                <children>
-                  <Label fx:id="attackerPlayerName" contentDisplay="CENTER" prefHeight="21.0" prefWidth="216.0" text="attackerPlayerName" />
-                  <Label fx:id="defenderPlayerName" contentDisplay="CENTER" text="defenderPlayerName" />
+                  <Label fx:id="attackerPlayerName" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="181.0" text="attackerPlayerName" />
+                  <Label fx:id="defenderPlayerName" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="181.0" text="defenderPlayerName" />
                </children>
             </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="32.0" prefWidth="470.0">
                <children>
-                  <Label fx:id="attackerTerritoryName" contentDisplay="CENTER" prefHeight="21.0" prefWidth="231.0" text="attackerTerritoryName" />
-                  <Label fx:id="defenderTerritoryName" contentDisplay="CENTER" text="defenderTerritoryName" />
+                  <Label fx:id="attackerTerritoryName" alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="196.0" text="attackerTerritoryName" wrapText="true" />
+                  <Label fx:id="defenderTerritoryName" alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="199.0" text="defenderTerritoryName" wrapText="true" />
                </children>
             </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="31.0" prefWidth="470.0">
                <children>
-                  <Label fx:id="attackerArmies" contentDisplay="CENTER" prefHeight="21.0" prefWidth="182.0" text="attackerArmies" />
-                  <Label fx:id="defenderArmies" contentDisplay="CENTER" text="defenderArmies" />
+                  <Label fx:id="attackerArmies" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="156.0" text="attackerArmies" />
+                  <Label fx:id="defenderArmies" alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="146.0" text="defenderArmies" />
                </children>
             </HBox>
          </children>
       </VBox>
-      <Button fx:id="roll" layoutX="91.0" layoutY="272.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="67.0" text="Roll" />
+      <Button fx:id="roll" layoutX="84.0" layoutY="271.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="64.0" text="Roll" />
       <CheckBox fx:id="attackerDice1" layoutX="130.0" layoutY="123.0" mnemonicParsing="false" />
       <CheckBox fx:id="attackerDice2" layoutX="130.0" layoutY="156.0" mnemonicParsing="false" />
       <CheckBox fx:id="attackerDice3" layoutX="130.0" layoutY="192.0" mnemonicParsing="false" />
       <CheckBox fx:id="defenderDice1" layoutX="303.0" layoutY="123.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="133.0" />
       <CheckBox fx:id="defenderDice2" layoutX="303.0" layoutY="157.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="133.0" />
-      <Button fx:id="cancel" layoutX="304.0" layoutY="270.0" mnemonicParsing="false" text="Cancel" />
+      <Button fx:id="cancel" layoutX="314.0" layoutY="270.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="64.0" text="Cancel" />
       <Pane fx:id="moveArmiesView" layoutX="8.0" layoutY="306.0" prefHeight="61.0" prefWidth="459.0">
          <children>
             <Label fx:id="numberOfArmiesLabel" layoutX="14.0" layoutY="23.0" text="No. Of Armies to Move" />
             <TextField fx:id="numberOfArmiesInput" layoutX="171.0" layoutY="18.0" prefHeight="25.0" prefWidth="50.0" />
-            <Button fx:id="numberOfArmiesMove" layoutX="241.0" layoutY="18.0" mnemonicParsing="false" text="Move" />
-            <Button fx:id="numberOfArmiesCancel" layoutX="337.0" layoutY="18.0" mnemonicParsing="false" text="Cancel" />
+            <Button fx:id="numberOfArmiesMove" layoutX="230.0" layoutY="18.0" mnemonicParsing="false" onAction="#moveArmies" text="Move" />
+            <Button fx:id="numberOfArmiesCancel" layoutX="382.0" layoutY="18.0" mnemonicParsing="false" text="Cancel" />
+            <Button fx:id="moveAllArmies" layoutX="294.0" layoutY="18.0" mnemonicParsing="false" onAction="#moveAllArmies" text="Move all" />
          </children>
       </Pane>
-      <Label fx:id="winnerName" contentDisplay="CENTER" layoutX="187.0" layoutY="240.0" text="Winner Name" wrapText="true" />
+      <Label fx:id="winnerName" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="240.0" prefHeight="21.0" prefWidth="443.0" text="Winner Name" wrapText="true" />
+      <Button fx:id="continueRoll" layoutX="184.0" layoutY="268.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="98.0" text="Continue" wrapText="true" />
    </children>
 </Pane>
