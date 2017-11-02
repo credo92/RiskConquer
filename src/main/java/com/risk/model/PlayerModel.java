@@ -169,9 +169,9 @@ public class PlayerModel extends Observable {
 			throws InvalidGameMoveException {
 		if (attackingTerritory != null && defendingTerritory != null) {
 			isAValidAttackMove(attackingTerritory, defendingTerritory);
-			
+
 			DiceModel diceModel = new DiceModel(attackingTerritory, defendingTerritory);
-			
+
 			final Stage newMapStage = new Stage();
 			newMapStage.setTitle("Attack Window");
 
@@ -191,18 +191,9 @@ public class PlayerModel extends Observable {
 			Scene scene = new Scene(root);
 			newMapStage.setScene(scene);
 			newMapStage.show();
-			
-			
-			
-			
-			
-			//new DiceViewLoader(diceModel);
 		} else {
 			throw new InvalidGameMoveException("Please choose both attacking and defending territory.");
 		}
-		// attack phase goes here. once done notify for fortification phase
-		//setChanged();
-		//notifyObservers("checkIfFortificationPhaseValid");
 	}
 
 	/**
