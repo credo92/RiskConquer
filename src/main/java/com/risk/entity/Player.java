@@ -18,6 +18,8 @@ public class Player {
 	private int armies;
 
 	private List<Territory> assignedTerritory;
+	
+	private List<Card> playerCardList;
 
 	public Player(int id, String name) {
 		this.id = id;
@@ -83,6 +85,22 @@ public class Player {
 	 */
 	public void setAssignedTerritory(List<Territory> assignedTerritory) {
 		this.assignedTerritory = assignedTerritory;
+	}
+	
+	
+
+	/**
+	 * @return the playerCardList
+	 */
+	public List<Card> getPlayerCardList() {
+		return playerCardList;
+	}
+
+	/**
+	 * @param playerCardList the playerCardList to set
+	 */
+	public void setPlayerCardList(List<Card> playerCardList) {
+		this.playerCardList = playerCardList;
 	}
 
 	/*
