@@ -1,6 +1,5 @@
 package com.risk.controller;
 
-import java.awt.CheckboxGroup;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,26 +22,20 @@ import com.risk.model.GameModel;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -295,7 +288,7 @@ public class GamePlayController implements Initializable {
 	 */
 	@FXML
 	private void attack(ActionEvent event) {
-
+		
 	}
 
 	/**
@@ -307,21 +300,22 @@ public class GamePlayController implements Initializable {
 	@FXML
 	private void launchCardWindow(ActionEvent event)
 	{	
-		List<Territory> allterritories = new ArrayList<>();
 
-		if (map.getContinents() != null) {
-			for (Continent continent : map.getContinents()) {
-				if (continent != null && continent.getTerritories() != null) {
-					for (Territory territory : continent.getTerritories()) {
-						allterritories.add(territory);
-					}
-				}
-			}
-		}
-			
+		//Test start
+		List<Card> cardList = new ArrayList<Card>();
+		cardList.add(stackOfCards.pop());
+		cardList.add(stackOfCards.pop());
+		cardList.add(stackOfCards.pop());
+		cardList.add(stackOfCards.pop());
+		cardList.add(stackOfCards.pop());
+		cardList.add(stackOfCards.pop());
+		
+		playerPlaying.setPlayerCardList(cardList);
+		//Test end	
+		
 		final Stage newMapStage = new Stage();
 		newMapStage.setTitle("Card Window");
-
+	    
 		CardController cardController = new CardController(playerPlaying);
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("Cards.fxml"));

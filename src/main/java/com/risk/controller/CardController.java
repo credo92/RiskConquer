@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.risk.constant.CardType;
 import com.risk.entity.Card;
 import com.risk.entity.Player;
 import javafx.beans.binding.Bindings;
@@ -26,7 +27,6 @@ import javafx.scene.layout.VBox;
  * @version 1.0.1
  */
 public class CardController implements Initializable {
-
 
 	/**
 	 * The @tradeButton button.
@@ -62,8 +62,6 @@ public class CardController implements Initializable {
 	
 	private Player player;
 	
-	private List<Card> playerCardList;
-	
 	CardController(Player player){
 		this.player = player;
 	}
@@ -72,21 +70,17 @@ public class CardController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 
-		ObservableList<String> cardList = FXCollections.<String>observableArrayList("Infantry", "Cavalry", "Artillery","Infantry", "Cavalry", "Artillery");
-//		playerCardList = player.getPlayerCardList();
-		
-//		System.out.println(playerCardList);
-		
+//		ObservableList<String> cardList = FXCollections.<String>observableArrayList("Infantry", "Cavalry", "Artillery","Infantry", "Cavalry", "Artillery");
+	
 		currentPlayerName.setText(player.getName());
 		
 		cardVbox.setPadding(new Insets(15,20, 10,10));
 		cardVbox.setSpacing(10);   
-		CheckBox[] cbs = new CheckBox[cardList.size()];
+		CheckBox[] cbs = new CheckBox[player.getPlayerCardList().size()];
 
-		for (int i = 0; i < cardList.size(); i++){
-//			CheckBox cb = cbs[i] = new CheckBox(playerCardList.get(i).getCardType().toString());
-			CheckBox cb = cbs[i] = new CheckBox(cardList.get(i));
-			
+		for (int i = 0; i < player.getPlayerCardList().size(); i++){
+//			CheckBox cb = cbs[i] = new CheckBox(player.getPlayerCardList().get(i).getCardType().name()+"->"+player.getPlayerCardList().get(i).getTerritory().getName().toString()+" with "+player.getPlayerCardList().get(i).getTerritory().getArmies()+" armies");
+			CheckBox cb = cbs[i] = new CheckBox(player.getPlayerCardList().get(i).getCardType().name()+"->"+player.getPlayerCardList().get(i).getTerritory().getName().toString());
 			configureCheckBox(cb);
 		}
 
@@ -111,7 +105,7 @@ public class CardController implements Initializable {
 	 */
 	@FXML
 	private void trade(ActionEvent event) {
-
+		
 	}
 	/**
 	 * configureCheckbox
