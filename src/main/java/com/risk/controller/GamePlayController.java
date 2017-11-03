@@ -168,10 +168,13 @@ public class GamePlayController implements Initializable, Observer {
 	private Stack<Card> cardStack;
 	
 	/**
-	 * The @stackOfCards.
+	 * Constructor for CardModel
+	 * 
+	 * @param map
+	 *            reference to the loaded map
 	 */
-	private CardModel cardModel; ;
-
+	CardModel cardModel = new CardModel(playerPlaying, cardStack);
+	
 	/**
 	 * Constructor for GamePlayController
 	 * 
@@ -426,6 +429,7 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.appendTextToGameConsole("======Start Reinforcement! =========== \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "\n", gameConsole);
 		//CardModel -> card methods
+		cardModel.cardWindow();
 		calculateReinforcementArmies();
 	}
 
