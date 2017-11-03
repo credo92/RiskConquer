@@ -271,13 +271,13 @@ public class GamePlayController implements Initializable, Observer {
 
 	@FXML
 	private void noMoreAttack(ActionEvent event) {
-		adjTerritoryList.setOnMouseClicked(e-> System.out.print(""));
-		if(playerModel.getTerritoryWon()>0) {
+		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
+		if (playerModel.getTerritoryWon() > 0) {
 			assignCardToPlayer();
 		}
 		initializeFortification();
 	}
-	
+
 	private void assignCardToPlayer() {
 		playerPlaying.getPlayerCardList().add(cardStack.pop());
 	}
@@ -471,16 +471,35 @@ public class GamePlayController implements Initializable, Observer {
 		dominationChart.setData(pieChartData);
 	}
 
+	private void checkIfAnyPlayerLostTheGame() {
+		List<Player> playerLost = playerModel.checkIfAnyPlayerLostTheGame(gamePlayerList);
+		if (!playerLost.isEmpty()) {
+			for (Player player : playerLost) {
+				gamePlayerList.remove(player);
+				MapUtil.infoBox("Player: " + player.getName() + " lost all his territory and is out of the game",
+						"Info", "");
+			}
+		}
+	}
+
+	private void checkIfPlayerWonTheGame() {
+		if (gamePlayerList.size() == 1) {
+			MapUtil.infoBox("Player: " + gamePlayerList.get(0).getName() + " won the game!", "Info", "");
+		}
+	}
+
 	private void refreshView() {
+		checkIfAnyPlayerLostTheGame();
 		selectedTerritoryList.getItems().clear();
 		adjTerritoryList.getItems().clear();
-		loadMapData();
 		for (Territory territory : playerPlaying.getAssignedTerritory()) {
 			selectedTerritoryList.getItems().add(territory);
 		}
+		checkIfAnyPlayerLostTheGame();
 		loadMapData();
 		populateWorldDominationData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");
+		checkIfPlayerWonTheGame();
 	}
 
 	/**
