@@ -193,6 +193,7 @@ public class DiceRollController implements Initializable {
 		// clear check boxes
 		GameUtil.clearCheckBox(attackerDice1, attackerDice2, attackerDice3, defenderDice1, defenderDice2);
 		// Hide output details
+		GameUtil.enableControl(roll);
 		GameUtil.disableControl(winnerName, continueRoll);
 		GameUtil.disableViewPane(moveArmiesView);
 	}
@@ -200,8 +201,7 @@ public class DiceRollController implements Initializable {
 	@FXML
 	private void moveArmies(ActionEvent event) {
 		int armiesToMove = Integer.valueOf(numberOfArmiesInput.getText());
-		diceModel.moveArmies(armiesToMove, winnerName);
-		GameUtil.closeScreen(moveArmies);
+		diceModel.moveArmies(armiesToMove, winnerName, moveArmies);
 	}
 
 	@FXML
