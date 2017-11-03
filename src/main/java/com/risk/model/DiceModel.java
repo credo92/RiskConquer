@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Observable;
 
 import com.risk.entity.Territory;
+import com.risk.map.util.GameUtil;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 /**
@@ -41,7 +43,7 @@ public class DiceModel extends Observable {
 				updateArmiesAfterAttack(defenderDiceValue, attackerDiceValue, playResult);
 				break;
 			}
-			attackerDiceValues.remove(1);
+			attackerDiceValues.remove(0);
 		}
 		return playResult;
 
@@ -88,7 +90,7 @@ public class DiceModel extends Observable {
 		notifyObservers("rollDiceComplete");
 	}
 
-	public void moveArmies(int armiesToMove, Label message) {
+	public void moveArmies(int armiesToMove, Label message, Button moveArmies) {
 		int currentArmies = getAttackingTerritory().getArmies();
 		if (currentArmies <= armiesToMove) {
 			message.setVisible(true);
@@ -98,6 +100,7 @@ public class DiceModel extends Observable {
 			getAttackingTerritory().setArmies(currentArmies - armiesToMove);
 			getDefendingTerritory().setArmies(armiesToMove);
 			reassignTerritory();
+			GameUtil.closeScreen(moveArmies);
 			setChanged();
 			notifyObservers("rollDiceComplete");
 		}

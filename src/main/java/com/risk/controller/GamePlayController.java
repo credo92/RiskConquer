@@ -454,8 +454,12 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	private void refreshView() {
-		selectedTerritoryList.refresh();
-		adjTerritoryList.refresh();
+		selectedTerritoryList.getItems().clear();
+		adjTerritoryList.getItems().clear();
+		loadMapData();
+		for (Territory territory : playerPlaying.getAssignedTerritory()) {
+			selectedTerritoryList.getItems().add(territory);
+		}
 		loadMapData();
 		populateWorldDominationData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");

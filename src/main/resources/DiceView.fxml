@@ -42,7 +42,7 @@
          <children>
             <Label fx:id="numberOfArmiesLabel" layoutX="14.0" layoutY="23.0" text="No. Of Armies to Move:" />
             <TextField fx:id="numberOfArmiesInput" layoutX="183.0" layoutY="18.0" prefHeight="31.0" prefWidth="52.0" />
-            <Button fx:id="numberOfArmiesMove" layoutX="251.0" layoutY="18.0" mnemonicParsing="false" onAction="#moveArmies" prefHeight="31.0" prefWidth="64.0" text="Move" />
+            <Button fx:id="moveArmies" layoutX="251.0" layoutY="18.0" mnemonicParsing="false" onAction="#moveArmies" prefHeight="31.0" prefWidth="64.0" text="Move" />
             <Button fx:id="skipMoveArmy" layoutX="439.0" layoutY="18.0" mnemonicParsing="false" onAction="#skipMoveArmy" prefHeight="31.0" prefWidth="70.0" text="Skip" />
             <Button fx:id="moveAllArmies" layoutX="332.0" layoutY="18.0" mnemonicParsing="false" onAction="#moveAllArmies" prefHeight="31.0" prefWidth="85.0" text="Move all" />
          </children>
