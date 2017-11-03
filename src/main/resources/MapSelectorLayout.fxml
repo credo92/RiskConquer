@@ -15,7 +15,7 @@
          </children>
       </HBox>
       <TextArea fx:id="gameConsole" editable="false" layoutX="12.0" layoutY="56.0" prefHeight="749.0" prefWidth="379.0" style="-fx-background-color: #fff; -fx-border-color: #000;" />
-      <Button fx:id="attack" layoutX="434.0" layoutY="696.0" mnemonicParsing="false" onAction="#attack" prefHeight="31.0" prefWidth="228.0" text="Attack" />
+      <Button fx:id="attack" layoutX="434.0" layoutY="696.0" mnemonicParsing="false" onAction="#noMoreAttack" prefHeight="31.0" prefWidth="228.0" text="No More Attack" />
       <Button fx:id="fortify" layoutX="434.0" layoutY="730.0" mnemonicParsing="false" onAction="#fortify" prefHeight="31.0" prefWidth="228.0" text="Fortify" />
       <Button fx:id="endTurn" layoutX="434.0" layoutY="765.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="31.0" prefWidth="228.0" text="End Turn" />
       <Button fx:id="reinforcement" layoutX="434.0" layoutY="357.0" mnemonicParsing="false" onAction="#reinforcement" prefHeight="31.0" prefWidth="228.0" text="Reinforcements" />

@@ -269,14 +269,19 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.appendTextToGameConsole("===Card assignation complete===\n", gameConsole);
 	}
 
+	@FXML
+	private void noMoreAttack(ActionEvent event) {
+		adjTerritoryList.setOnMouseClicked(e-> System.out.print(""));
+		initializeFortification();
+	}
+
 	/**
 	 * Attack Phase of the game play.
 	 * 
 	 * @param event
 	 *            event.
 	 */
-	@FXML
-	private void attack(ActionEvent event) {
+	private void attack() {
 		Territory attackingTerritory = selectedTerritoryList.getSelectionModel().getSelectedItem();
 		Territory defendingTerritory = adjTerritoryList.getSelectionModel().getSelectedItem();
 		try {
@@ -415,6 +420,10 @@ public class GamePlayController implements Initializable, Observer {
 		calculateReinforcementArmies();
 	}
 
+	private void setLaunchAttackEvent() {
+		adjTerritoryList.setOnMouseClicked(e -> attack());
+	}
+
 	/**
 	 * Initialize attack phase of the game.
 	 */
@@ -428,6 +437,7 @@ public class GamePlayController implements Initializable, Observer {
 			MapUtil.disableControl(reinforcement, placeArmy);
 			MapUtil.enableControl(attack);
 			attack.requestFocus();
+			setLaunchAttackEvent();
 		}
 	}
 
