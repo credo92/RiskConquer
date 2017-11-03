@@ -61,10 +61,10 @@ public class CardController implements Initializable {
 
 	private final int maxNumSelected =  3; 
 	
-	private Player player;
+	private Player playerPlaying;
 	
-	CardController(Player player){
-		this.player = player;
+	public CardController(Player playerPlaying){
+		this.playerPlaying = playerPlaying;
 	}
 	
 	@Override
@@ -73,17 +73,17 @@ public class CardController implements Initializable {
 
 //		ObservableList<String> cardList = FXCollections.<String>observableArrayList("Infantry", "Cavalry", "Artillery","Infantry", "Cavalry", "Artillery");
 	
-		currentPlayerName.setText(player.getName());
+		currentPlayerName.setText(playerPlaying.getName());
 		
 		cardVbox.setPadding(new Insets(15,20, 10,10));
 		cardVbox.setSpacing(10);   
-		CheckBox[] cbs = new CheckBox[player.getPlayerCardList().size()];
+		
+		CheckBox[] cbs = new CheckBox[playerPlaying.getPlayerCardList().size()];
 
-		for (int i = 0; i < player.getPlayerCardList().size(); i++){
+		for (int i = 0; i < playerPlaying.getPlayerCardList().size(); i++){
 //			CheckBox cb = cbs[i] = new CheckBox(player.getPlayerCardList().get(i).getCardType().name()+"->"+player.getPlayerCardList().get(i).getTerritory().getName().toString()+" with "+player.getPlayerCardList().get(i).getTerritory().getArmies()+" armies");
-			CheckBox cb = cbs[i] = new CheckBox(player.getPlayerCardList().get(i).getCardType().name()+"->"+player.getPlayerCardList().get(i).getTerritory().getName().toString());
-			CardModel cardModel = new CardModel();
-			cardModel.configureCheckBox(cb);
+			CheckBox cb = cbs[i] = new CheckBox(playerPlaying.getPlayerCardList().get(i).getCardType().name()+"->"+playerPlaying.getPlayerCardList().get(i).getTerritory().getName().toString());
+			configureCheckBox(cb);
 		}
 
 		cardVbox.getChildren().addAll(cbs);
@@ -99,7 +99,33 @@ public class CardController implements Initializable {
 		});
 
 	}
+	
+	/**
+	 * configureCheckbox
+	 * @param checkBox
+	 *            adds checkboxes to Observable sets to make sure only 3 checkboxes can be selected
+	 */
+	public void configureCheckBox(CheckBox checkBox) {
 
+        if (checkBox.isSelected()) {
+            selectedCheckBoxes.add(checkBox);
+        } else {
+            unselectedCheckBoxes.add(checkBox);
+        }
+
+        checkBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            if (isNowSelected) {
+                unselectedCheckBoxes.remove(checkBox);
+                selectedCheckBoxes.add(checkBox);
+            } else {
+                selectedCheckBoxes.remove(checkBox);
+                unselectedCheckBoxes.add(checkBox);
+            }
+
+        });
+
+    }
+	
 	/**
 	 * trade
 	 * @param event
