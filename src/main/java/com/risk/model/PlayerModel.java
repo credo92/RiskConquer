@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 public class PlayerModel extends Observable implements Observer {
 
 	Player playerPlaying;
-	
+
 	private int territoryWon;
 
 	/**
@@ -339,13 +339,28 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
+	 * @param playersPlaying
+	 * @return
+	 */
+	public List<Player> checkIfAnyPlayerLostTheGame(List<Player> playersPlaying) {
+		List<Player> players = new ArrayList<>(playersPlaying);
+		List<Player> playerLost = new ArrayList<>();
+		for (Player player : players) {
+			if (player.getAssignedTerritory().isEmpty()) {
+				playerLost.add(player);
+			}
+		}
+		return playerLost;
+	}
+
+	/**
 	 * @param playerPlaying
 	 *            the playerPlaying to set
 	 */
 	public void setPlayerPlaying(Player playerPlaying) {
 		this.playerPlaying = playerPlaying;
 	}
-	
+
 	/**
 	 * @return the territoryWon
 	 */
@@ -354,17 +369,18 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
-	 * @param territoryWon the territoryWon to set
+	 * @param territoryWon
+	 *            the territoryWon to set
 	 */
 	public void setTerritoryWon(int territoryWon) {
 		this.territoryWon = territoryWon;
 	}
 
 	public void update(Observable o, Object arg) {
-		String view = (String)arg;
-		
+		String view = (String) arg;
+
 		if (view.equals("rollDiceComplete")) {
-			DiceModel diceModel = (DiceModel)o;
+			DiceModel diceModel = (DiceModel) o;
 			setTerritoryWon(diceModel.getNumOfTerritoriesWon());
 			setChanged();
 			notifyObservers("rollDiceComplete");

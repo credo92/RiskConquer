@@ -89,6 +89,7 @@ public class DiceModel extends Observable {
 		int attckingArmies = getAttackingTerritory().getArmies();
 		getAttackingTerritory().setArmies(attckingArmies - 1);
 		getDefendingTerritory().setArmies(1);
+		reassignTerritory();
 		setChanged();
 		notifyObservers("rollDiceComplete");
 	}
