@@ -1,17 +1,11 @@
 package com.risk.controller;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import com.risk.constant.CardType;
-import com.risk.entity.Card;
 import com.risk.entity.Player;
-import com.risk.model.CardModel;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -70,9 +64,7 @@ public class CardController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-
-//		ObservableList<String> cardList = FXCollections.<String>observableArrayList("Infantry", "Cavalry", "Artillery","Infantry", "Cavalry", "Artillery");
-	
+		
 		currentPlayerName.setText(playerPlaying.getName());
 		
 		cardVbox.setPadding(new Insets(15,20, 10,10));

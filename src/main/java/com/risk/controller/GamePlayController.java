@@ -19,6 +19,7 @@ import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
 import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
+import com.risk.model.CardModel;
 import com.risk.model.GameModel;
 import com.risk.model.PlayerModel;
 import com.risk.model.PlayerWorldDomination;
@@ -57,6 +58,11 @@ public class GamePlayController implements Initializable, Observer {
 	 * The @gameModel refrence.
 	 */
 	private GameModel gameModel;
+	
+	/**
+	 * The @cardModel refrence.
+	 */
+	private CardModel cardModel;
 
 	@FXML
 	private PieChart dominationChart;
@@ -355,6 +361,9 @@ public class GamePlayController implements Initializable, Observer {
 		selectedTerritoryList.refresh();
 		loadMapData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
+		//To avoid NullPointerException
+		this.cardModel = new CardModel(playerPlaying,cardStack);
+		cardModel.cardWindow();
 	}
 
 	/**
@@ -425,6 +434,7 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("======Start Reinforcement! =========== \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "\n", gameConsole);
+//		cardModel.cardWindow();
 		calculateReinforcementArmies();
 	}
 
