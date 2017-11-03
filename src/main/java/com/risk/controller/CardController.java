@@ -82,6 +82,10 @@ public class CardController implements Initializable {
 			CheckBox cb = cbs[i] = new CheckBox(player.getPlayerCardList().get(i).getCardType().name()+"->"+player.getPlayerCardList().get(i).getTerritory().getName().toString());
 			configureCheckBox(cb);
 		}
+		
+		for(int i=0;i<cbs.length;i++){
+			
+		}
 
 		cardVbox.getChildren().addAll(cbs);
 

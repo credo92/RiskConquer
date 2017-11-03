@@ -1,5 +1,6 @@
 package com.risk.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +31,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Button;
@@ -41,6 +45,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * Game play controller to control all the
@@ -343,6 +348,43 @@ public class GamePlayController implements Initializable, Observer {
 		selectedTerritoryList.refresh();
 		loadMapData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
+		
+		//Test start
+		List<Card> cardList = new ArrayList<Card>();
+		cardList.add(cardStack.pop());
+		cardList.add(cardStack.pop());
+		cardList.add(cardStack.pop());
+		cardList.add(cardStack.pop());
+		cardList.add(cardStack.pop());
+		cardList.add(cardStack.pop());
+		
+		playerPlaying.setPlayerCardList(cardList);
+		//Test end
+		
+		if (playerPlaying.getPlayerCardList().size() > 1) 
+		{
+			final Stage newMapStage = new Stage();
+			newMapStage.setTitle("Card Window");
+
+			CardController cardController = new CardController(playerPlaying);
+
+			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("Cards.fxml"));
+			loader.setController(cardController);
+
+			Parent root = null;
+			try {
+				root = (Parent) loader.load();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			Scene scene = new Scene(root);
+			newMapStage.setScene(scene);
+			newMapStage.show();
+
+
+		}
 	}
 
 	/**
