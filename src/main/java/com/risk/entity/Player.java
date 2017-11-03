@@ -25,6 +25,7 @@ public class Player {
 		this.id = id;
 		this.name = name;
 		this.assignedTerritory = new ArrayList<>();
+		this.playerCardList = new ArrayList<>();
 	}
 
 	/**

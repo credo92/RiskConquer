@@ -272,7 +272,14 @@ public class GamePlayController implements Initializable, Observer {
 	@FXML
 	private void noMoreAttack(ActionEvent event) {
 		adjTerritoryList.setOnMouseClicked(e-> System.out.print(""));
+		if(playerModel.getTerritoryWon()>0) {
+			assignCardToPlayer();
+		}
 		initializeFortification();
+	}
+	
+	private void assignCardToPlayer() {
+		playerPlaying.getPlayerCardList().add(cardStack.pop());
 	}
 
 	/**
@@ -382,6 +389,7 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		playerPlaying = playerIterator.next();
 		playerModel.setPlayerPlaying(playerPlaying);
+		playerModel.setTerritoryWon(0);
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "!....started playing.\n", gameConsole);
 		selectedTerritoryList.getItems().clear();
