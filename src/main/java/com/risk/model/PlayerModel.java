@@ -25,6 +25,8 @@ import javafx.stage.Stage;
 public class PlayerModel extends Observable implements Observer {
 
 	Player playerPlaying;
+	
+	private int territoryWon;
 
 	/**
 	 * This method is used to assign armies to players and display data in the
@@ -343,11 +345,27 @@ public class PlayerModel extends Observable implements Observer {
 	public void setPlayerPlaying(Player playerPlaying) {
 		this.playerPlaying = playerPlaying;
 	}
+	
+	/**
+	 * @return the territoryWon
+	 */
+	public int getTerritoryWon() {
+		return territoryWon;
+	}
+
+	/**
+	 * @param territoryWon the territoryWon to set
+	 */
+	public void setTerritoryWon(int territoryWon) {
+		this.territoryWon = territoryWon;
+	}
 
 	public void update(Observable o, Object arg) {
 		String view = (String)arg;
 		
 		if (view.equals("rollDiceComplete")) {
+			DiceModel diceModel = (DiceModel)o;
+			setTerritoryWon(diceModel.getNumOfTerritoriesWon());
 			setChanged();
 			notifyObservers("rollDiceComplete");
 		}

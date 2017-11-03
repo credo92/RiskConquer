@@ -24,12 +24,15 @@ public class DiceModel extends Observable {
 	private List<Integer> attackerDiceValues;
 
 	private List<Integer> defenderDiceValues;
+	
+	private int numOfTerritoriesWon;
 
 	public DiceModel(Territory attackingTerritory, Territory defendingTerritory) {
 		this.attackingTerritory = attackingTerritory;
 		this.defendingTerritory = defendingTerritory;
 		attackerDiceValues = new ArrayList<>();
 		defenderDiceValues = new ArrayList<>();
+		numOfTerritoriesWon = 0;
 
 	}
 
@@ -187,4 +190,18 @@ public class DiceModel extends Observable {
 		this.defenderDiceValues = defenderDiceValues;
 	}
 
+	/**
+	 * @return the numOfTerritoriesWon
+	 */
+	public int getNumOfTerritoriesWon() {
+		return numOfTerritoriesWon;
+	}
+
+	/**
+	 * @param numOfTerritoriesWon the numOfTerritoriesWon to set
+	 */
+	public void setNumOfTerritoriesWon(int numOfTerritoriesWon) {
+		this.numOfTerritoriesWon = numOfTerritoriesWon;
+	}
+	
 }

@@ -1,6 +1,7 @@
 package com.risk.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -224,6 +225,8 @@ public class DiceRollController implements Initializable {
 
 	@FXML
 	private void continueDiceRoll(ActionEvent event) {
+		diceModel.setAttackerDiceValues(new ArrayList<>());
+		diceModel.setDefenderDiceValues(new ArrayList<>());
 		loadAttackScreen();
 		showDice();
 	}
@@ -288,6 +291,7 @@ public class DiceRollController implements Initializable {
 		if (defendingTerritory.getArmies() <= 0) {
 			playResult.add(
 					attackingTerritory.getPlayer().getName() + " won the territory: " + defendingTerritory.getName());
+			diceModel.setNumOfTerritoriesWon(diceModel.getNumOfTerritoriesWon() + 1);
 			GameUtil.enableViewPane(moveArmiesView);
 			GameUtil.hideControl(roll, continueRoll, cancelDiceRoll);
 		} else if (attackingTerritory.getArmies() < 2) {
