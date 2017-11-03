@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 import com.risk.constant.CardType;
 import com.risk.entity.Card;
 import com.risk.entity.Player;
+import com.risk.model.CardModel;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
@@ -80,7 +82,8 @@ public class CardController implements Initializable {
 		for (int i = 0; i < player.getPlayerCardList().size(); i++){
 //			CheckBox cb = cbs[i] = new CheckBox(player.getPlayerCardList().get(i).getCardType().name()+"->"+player.getPlayerCardList().get(i).getTerritory().getName().toString()+" with "+player.getPlayerCardList().get(i).getTerritory().getArmies()+" armies");
 			CheckBox cb = cbs[i] = new CheckBox(player.getPlayerCardList().get(i).getCardType().name()+"->"+player.getPlayerCardList().get(i).getTerritory().getName().toString());
-			configureCheckBox(cb);
+			CardModel cardModel = new CardModel();
+			cardModel.configureCheckBox(cb);
 		}
 
 		cardVbox.getChildren().addAll(cbs);
@@ -106,31 +109,7 @@ public class CardController implements Initializable {
 	private void trade(ActionEvent event) {
 		
 	}
-	/**
-	 * configureCheckbox
-	 * @param checkBox
-	 *            adds checkboxes to Observable sets to make sure only 3 checkboxes can be selected
-	 */
-	private void configureCheckBox(CheckBox checkBox) {
-
-        if (checkBox.isSelected()) {
-            selectedCheckBoxes.add(checkBox);
-        } else {
-            unselectedCheckBoxes.add(checkBox);
-        }
-
-        checkBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-            if (isNowSelected) {
-                unselectedCheckBoxes.remove(checkBox);
-                selectedCheckBoxes.add(checkBox);
-            } else {
-                selectedCheckBoxes.remove(checkBox);
-                unselectedCheckBoxes.add(checkBox);
-            }
-
-        });
-
-    }
+	
 
 
 
