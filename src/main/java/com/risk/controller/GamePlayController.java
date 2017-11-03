@@ -1,6 +1,5 @@
 package com.risk.controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +19,6 @@ import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
 import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
-import com.risk.model.CardModel;
 import com.risk.model.GameModel;
 import com.risk.model.PlayerModel;
 import com.risk.model.PlayerWorldDomination;
@@ -32,10 +30,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Button;
@@ -46,7 +41,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 /**
  * Game play controller to control all the
@@ -166,15 +160,7 @@ public class GamePlayController implements Initializable, Observer {
 	 * The @stackOfCards.
 	 */
 	private Stack<Card> cardStack;
-	
-	/**
-	 * Constructor for CardModel
-	 * 
-	 * @param map
-	 *            reference to the loaded map
-	 */
-	CardModel cardModel = new CardModel(playerPlaying, cardStack);
-	
+
 	/**
 	 * Constructor for GamePlayController
 	 * 
@@ -283,14 +269,26 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.appendTextToGameConsole("===Card assignation complete===\n", gameConsole);
 	}
 
+	@FXML
+	private void noMoreAttack(ActionEvent event) {
+		adjTerritoryList.setOnMouseClicked(e-> System.out.print(""));
+		if(playerModel.getTerritoryWon()>0) {
+			assignCardToPlayer();
+		}
+		initializeFortification();
+	}
+	
+	private void assignCardToPlayer() {
+		playerPlaying.getPlayerCardList().add(cardStack.pop());
+	}
+
 	/**
 	 * Attack Phase of the game play.
 	 * 
 	 * @param event
 	 *            event.
 	 */
-	@FXML
-	private void attack(ActionEvent event) {
+	private void attack() {
 		Territory attackingTerritory = selectedTerritoryList.getSelectionModel().getSelectedItem();
 		Territory defendingTerritory = adjTerritoryList.getSelectionModel().getSelectedItem();
 		try {
@@ -357,8 +355,6 @@ public class GamePlayController implements Initializable, Observer {
 		selectedTerritoryList.refresh();
 		loadMapData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
-		
-		
 	}
 
 	/**
@@ -371,7 +367,7 @@ public class GamePlayController implements Initializable, Observer {
 			dataDisplay.getChildren().add(MapUtil.createNewTitledPane(continent));
 		}
 	}
-	
+
 	/**
 	 * Distribute all territory among the player.
 	 */
@@ -393,6 +389,7 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		playerPlaying = playerIterator.next();
 		playerModel.setPlayerPlaying(playerPlaying);
+		playerModel.setTerritoryWon(0);
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "!....started playing.\n", gameConsole);
 		selectedTerritoryList.getItems().clear();
@@ -428,9 +425,11 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("======Start Reinforcement! =========== \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "\n", gameConsole);
-		//CardModel -> card methods
-		cardModel.cardWindow();
 		calculateReinforcementArmies();
+	}
+
+	private void setLaunchAttackEvent() {
+		adjTerritoryList.setOnMouseClicked(e -> attack());
 	}
 
 	/**
@@ -446,6 +445,7 @@ public class GamePlayController implements Initializable, Observer {
 			MapUtil.disableControl(reinforcement, placeArmy);
 			MapUtil.enableControl(attack);
 			attack.requestFocus();
+			setLaunchAttackEvent();
 		}
 	}
 
@@ -472,8 +472,12 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	private void refreshView() {
-		selectedTerritoryList.refresh();
-		adjTerritoryList.refresh();
+		selectedTerritoryList.getItems().clear();
+		adjTerritoryList.getItems().clear();
+		loadMapData();
+		for (Territory territory : playerPlaying.getAssignedTerritory()) {
+			selectedTerritoryList.getItems().add(territory);
+		}
 		loadMapData();
 		populateWorldDominationData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");
