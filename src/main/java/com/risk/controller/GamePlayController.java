@@ -362,8 +362,12 @@ public class GamePlayController implements Initializable, Observer {
 		loadMapData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
 		//To avoid NullPointerException
-		this.cardModel = new CardModel(playerPlaying,cardStack);
-		cardModel.cardWindow();
+		//if(playerPlaying.getPlayerCardList().size() > 0 ) 
+		//{
+			this.cardModel = new CardModel(playerPlaying,cardStack);
+			cardModel.cardWindow();
+		//}
+		
 	}
 
 	/**
