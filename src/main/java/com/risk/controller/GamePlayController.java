@@ -2,6 +2,7 @@ package com.risk.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -60,10 +61,10 @@ public class GamePlayController implements Initializable, Observer {
 	private GameModel gameModel;
 	
 	/**
-	* The @cardModel refrence.
-	*/
+	 * The @gameModel reference.
+	 */
 	private CardModel cardModel;
-	
+
 	@FXML
 	private PieChart dominationChart;
 
@@ -166,6 +167,8 @@ public class GamePlayController implements Initializable, Observer {
 	 * The @stackOfCards.
 	 */
 	private Stack<Card> cardStack;
+	
+	private int numberOfCardSetExchanged;
 
 	/**
 	 * Constructor for GamePlayController
@@ -177,9 +180,12 @@ public class GamePlayController implements Initializable, Observer {
 		this.map = map;
 		this.gameModel = new GameModel();
 		this.playerModel = new PlayerModel();
+		this.cardModel = new CardModel();
 		playerModel.addObserver(this);
+		cardModel.addObserver(this);
 		worldDomination = new PlayerWorldDomination();
 		worldDomination.addObserver(this);
+		this.setNumberOfCardSetExchanged(0);
 	}
 
 	/**
@@ -361,9 +367,6 @@ public class GamePlayController implements Initializable, Observer {
 		selectedTerritoryList.refresh();
 		loadMapData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
-		//To avoid NullPointerException
-		this.cardModel = new CardModel(playerPlaying,cardStack);
-		cardModel.cardWindow();
 	}
 
 	/**
@@ -421,6 +424,10 @@ public class GamePlayController implements Initializable, Observer {
 			MapUtil.appendTextToGameConsole("Error!. No player playing.", gameConsole);
 		}
 	}
+	
+	public void initCardWindow() {
+		cardModel.openCardWindow(playerPlaying, cardModel);		
+	}
 
 	/**
 	 * Initialize reinforcement phase of the game.
@@ -434,7 +441,7 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("======Start Reinforcement! =========== \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "\n", gameConsole);
-//		cardModel.cardWindow();
+		initCardWindow();
 		calculateReinforcementArmies();
 	}
 
@@ -552,6 +559,21 @@ public class GamePlayController implements Initializable, Observer {
 	public void setNumberOfPlayersSelected(int numberOfPlayersSelected) {
 		this.numberOfPlayersSelected = numberOfPlayersSelected;
 	}
+	
+	public void tradeCardsForArmy(CardModel cm) {
+		List<Card> tradedCards = cm.getCardsToBeExchange();
+		setNumberOfCardSetExchanged(getNumberOfCardSetExchanged()+1);
+		playerModel.tradeCardsForArmy(tradedCards, getNumberOfCardSetExchanged(), gameConsole);
+		for (Card card : tradedCards) {
+			cardStack.push(card);
+		}
+		Collections.shuffle(cardStack);
+		selectedTerritoryList.refresh();
+		adjTerritoryList.refresh();
+		loadMapData();
+		populateWorldDominationData();
+		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -590,5 +612,17 @@ public class GamePlayController implements Initializable, Observer {
 		if (view.equals("rollDiceComplete")) {
 			refreshView();
 		}
+		if(view.equals("cardsTrade")) {
+			CardModel cm = (CardModel) o;
+			tradeCardsForArmy(cm);
+		}
+	}
+
+	public int getNumberOfCardSetExchanged() {
+		return numberOfCardSetExchanged;
+	}
+
+	public void setNumberOfCardSetExchanged(int numberOfCardSetExchanged) {
+		this.numberOfCardSetExchanged = numberOfCardSetExchanged;
 	}
 }
