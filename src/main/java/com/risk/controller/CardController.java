@@ -1,11 +1,14 @@
 package com.risk.controller;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.risk.constant.CardType;
 import com.risk.entity.Card;
 import com.risk.entity.Player;
+import com.risk.map.util.GameUtil;
 import com.risk.model.CardModel;
 
 import javafx.beans.binding.Bindings;
@@ -45,86 +48,40 @@ public class CardController implements Initializable {
 	 * The @addedArmies label.
 	 */
 	@FXML
-	private Label addedArmies;
+	private Label textToShow;
 
 	/**
 	 * The @cardVbox .
 	 */
 	@FXML
 	private VBox cardVbox;
-
-	private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
-
-	private ObservableSet<CheckBox> unselectedCheckBoxes = FXCollections.observableSet();
-
-	private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
-
-	private final int maxNumSelected =  3; 
 	
-	private Player playerPlaying;
+	private Player playerPlaying;	
+	private List<Card> playerCards;	
+	private CheckBox[] cbs;
+	
+	private CardModel cardModel;
 	
 	public CardController(Player playerPlaying){
 		this.playerPlaying = playerPlaying;
+		this.cardModel = new CardModel();
 	}
 	
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-
-//		ObservableList<String> cardList = FXCollections.<String>observableArrayList("Infantry", "Cavalry", "Artillery","Infantry", "Cavalry", "Artillery");
-	
-		currentPlayerName.setText(playerPlaying.getName());
-		
-		cardVbox.setPadding(new Insets(15,20, 10,10));
-		cardVbox.setSpacing(10);   
-		
-		CheckBox[] cbs = new CheckBox[playerPlaying.getPlayerCardList().size()];
-
-		for (int i = 0; i < playerPlaying.getPlayerCardList().size(); i++){
-//			CheckBox cb = cbs[i] = new CheckBox(player.getPlayerCardList().get(i).getCardType().name()+"->"+player.getPlayerCardList().get(i).getTerritory().getName().toString()+" with "+player.getPlayerCardList().get(i).getTerritory().getArmies()+" armies");
-			CheckBox cb = cbs[i] = new CheckBox(playerPlaying.getPlayerCardList().get(i).getCardType().name()+"->"+playerPlaying.getPlayerCardList().get(i).getTerritory().getName().toString());
-			configureCheckBox(cb);
-		}
-
-		cardVbox.getChildren().addAll(cbs);
-
-		numCheckBoxesSelected.addListener((obs, oldSelectedCount, newSelectedCount) -> {
-			if (newSelectedCount.intValue() >= maxNumSelected) {
-				unselectedCheckBoxes.forEach(cb -> cb.setDisable(true));
-				trade.setDisable(false);
-			} else {
-				unselectedCheckBoxes.forEach(cb -> cb.setDisable(false));
-				trade.setDisable(true);
-			}
-		});
-
+	public void initialize(URL location, ResourceBundle resources) {		
+		currentPlayerName.setText("Cards of " + playerPlaying.getName());		
+		playerCards = playerPlaying.getPlayerCardList();
+		loadAllCards();		
 	}
 	
-	/**
-	 * configureCheckbox
-	 * @param checkBox
-	 *            adds checkboxes to Observable sets to make sure only 3 checkboxes can be selected
-	 */
-	public void configureCheckBox(CheckBox checkBox) {
-
-        if (checkBox.isSelected()) {
-            selectedCheckBoxes.add(checkBox);
-        } else {
-            unselectedCheckBoxes.add(checkBox);
-        }
-
-        checkBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-            if (isNowSelected) {
-                unselectedCheckBoxes.remove(checkBox);
-                selectedCheckBoxes.add(checkBox);
-            } else {
-                selectedCheckBoxes.remove(checkBox);
-                unselectedCheckBoxes.add(checkBox);
-            }
-
-        });
-
-    }
+	public void loadAllCards() {
+		int numberOfCards = playerCards.size();		
+		cbs = new CheckBox[numberOfCards];				
+		for (int i = 0; i < numberOfCards; i++){
+			cbs[i] = new CheckBox(playerCards.get(i).getCardType().toString() + " -> " + playerCards.get(i).getTerritory().getName());
+		}
+		cardVbox.getChildren().addAll(cbs);
+	}	
 	
 	/**
 	 * trade
@@ -132,11 +89,25 @@ public class CardController implements Initializable {
 	 *            event.
 	 */
 	@FXML
-	private void trade(ActionEvent event) {
+	private void checkTrade(ActionEvent event) {		
+		trade.setDisable(false);
+		textToShow.setText(null);
+		List<Card> selectedCards = cardModel.retrieveSelectedCardsFromCheckbox(playerCards, cbs);
 		
+		if(selectedCards.size()==3) {
+			boolean flag = cardModel.checkTradePossible(selectedCards);
+			
+			if(flag) {
+				cardModel.tradeCardsForArmy(playerPlaying, selectedCards);
+				textToShow.setText("Valid combination. So, player has been assigned one army.");
+				trade.setDisable(true);		
+				return;
+			}
+			else {			
+				textToShow.setText("Invalid Combination.");
+				trade.setDisable(false);
+				return;
+			}	
+		}		
 	}
-	
-
-
-
 }
