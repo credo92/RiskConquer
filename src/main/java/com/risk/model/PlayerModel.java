@@ -8,6 +8,7 @@ import java.util.Observer;
 
 import com.risk.constant.MapConstant;
 import com.risk.controller.DiceRollController;
+import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
@@ -351,6 +352,26 @@ public class PlayerModel extends Observable implements Observer {
 			}
 		}
 		return playerLost;
+	}
+	
+	/**
+	 * This method is used to trade armies for valid combination of cards.
+	 * @param cards list of cards selected by currently playing player for exchange.
+	 * @param numberOfCardSetExchanged counter of number of times cards get changed.
+	 * @param gameConsole Console of the game.
+	 */
+	public void tradeCardsForArmy(List<Card> selectedCards, int numberOfCardSetExchanged, TextArea gameConsole) {		
+		playerPlaying.setArmies(playerPlaying.getArmies()+(5*numberOfCardSetExchanged));
+		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " successfully exchanged 3 cards for 1 army! \n", gameConsole);
+		for (Territory t : playerPlaying.getAssignedTerritory()) {
+			for (Card card : selectedCards) {
+				if(t.equals(card.getTerritory())) {
+					t.setArmies(t.getArmies()+2);
+					MapUtil.appendTextToGameConsole(playerPlaying.getName() + " got extra 2 armies on " +t.getName()+ "\n", gameConsole);
+					break;
+				}
+			}
+		}
 	}
 
 	/**
