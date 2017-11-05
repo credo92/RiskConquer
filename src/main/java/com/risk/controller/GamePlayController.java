@@ -338,7 +338,9 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private void endTurn(ActionEvent event) {
-		loadPlayingPlayer();
+		if (playerModel.getTerritoryWon() > 0) {
+			assignCardToPlayer();
+		}
 		initializeReinforcement();
 	}
 
@@ -489,13 +491,13 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	private void checkIfAnyPlayerLostTheGame() {
-		List<Player> playerLost = playerModel.checkIfAnyPlayerLostTheGame(gamePlayerList);
-		if (!playerLost.isEmpty()) {
-			for (Player player : playerLost) {
-				gamePlayerList.remove(player);
-				MapUtil.infoBox("Player: " + player.getName() + " lost all his territory and is out of the game",
-						"Info", "");
-			}
+		Player playerLost = playerModel.checkIfAnyPlayerLostTheGame(gamePlayerList);
+		if (playerLost != null) {
+			gamePlayerList.remove(playerLost);
+			playerIterator = gamePlayerList.iterator();
+			
+			MapUtil.infoBox("Player: " + playerLost.getName() + " lost all his territory and is out of the game",
+					"Info", "");
 		}
 	}
 
