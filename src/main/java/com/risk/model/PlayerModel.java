@@ -343,12 +343,11 @@ public class PlayerModel extends Observable implements Observer {
 	 * @param playersPlaying
 	 * @return
 	 */
-	public List<Player> checkIfAnyPlayerLostTheGame(List<Player> playersPlaying) {
-		List<Player> players = new ArrayList<>(playersPlaying);
-		List<Player> playerLost = new ArrayList<>();
-		for (Player player : players) {
+	public Player checkIfAnyPlayerLostTheGame(List<Player> playersPlaying) {
+		Player playerLost = null;
+		for (Player player : playersPlaying) {
 			if (player.getAssignedTerritory().isEmpty()) {
-				playerLost.add(player);
+				playerLost = player;
 			}
 		}
 		return playerLost;
