@@ -41,7 +41,9 @@ public class DiceModel extends Observable {
 				updateArmiesAfterAttack(defenderDiceValue, attackerDiceValue, playResult);
 				break;
 			}
+			if(attackerDiceValues.size() > 1) {
 			attackerDiceValues.remove(1);
+			}
 		}
 		return playResult;
 

@@ -25,6 +25,12 @@ import javafx.scene.layout.Pane;
 public class DiceRollController implements Initializable {
 
 	/**
+	 * The @parentPane pane.
+	 */
+	@FXML
+	private Pane attackView;
+	
+	/**
 	 * The @roll button.
 	 */
 	@FXML
@@ -201,7 +207,7 @@ public class DiceRollController implements Initializable {
 	private void moveArmies(ActionEvent event) {
 		int armiesToMove = Integer.valueOf(numberOfArmiesInput.getText());
 		diceModel.moveArmies(armiesToMove, winnerName);
-		GameUtil.closeScreen(moveArmies);
+		GameUtil.closeScreen(roll);
 	}
 
 	@FXML
@@ -226,6 +232,9 @@ public class DiceRollController implements Initializable {
 	private void continueDiceRoll(ActionEvent event) {
 		loadAttackScreen();
 		showDice();
+		if(diceModel.moreDiceRollAvailable()) {
+			GameUtil.enableControl(roll);
+		}
 	}
 
 	/**
