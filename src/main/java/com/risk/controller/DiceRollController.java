@@ -213,7 +213,7 @@ public class DiceRollController implements Initializable {
 	@FXML
 	private void moveAllArmies(ActionEvent event) {
 		diceModel.moveAllArmies();
-		GameUtil.closeScreen(moveAllArmies);
+		GameUtil.closeScreen(roll);
 	}
 
 	@FXML

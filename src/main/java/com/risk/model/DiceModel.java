@@ -42,9 +42,11 @@ public class DiceModel extends Observable {
 				break;
 			}
 			if(attackerDiceValues.size() > 1) {
-			attackerDiceValues.remove(1);
+			attackerDiceValues.remove(0);
+			
 			}
 		}
+		
 		return playResult;
 
 	}
