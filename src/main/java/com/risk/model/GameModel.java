@@ -49,8 +49,6 @@ public class GameModel {
 			Card card = new Card(CardType.values()[(int) (Math.random() * CardType.values().length)]);
 			card.setTerritory(territory);
 			stackOfCards.push(card);
-			MapUtil.appendTextToGameConsole(
-					territory.getName() + " has card of type " + card.getCardType().name() + " ! \n", textAres);
 		}
 		return stackOfCards;
 	}

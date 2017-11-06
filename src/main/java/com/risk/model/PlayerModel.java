@@ -161,6 +161,7 @@ public class PlayerModel extends Observable implements Observer {
 		}
 		// start attack phase
 		if (playerPlaying.getArmies() <= 0) {
+			MapUtil.appendTextToGameConsole("===Reinforcement phase Ended! ===\n", gameConsole);
 			setChanged();
 			notifyObservers("Attack");
 		}
@@ -276,7 +277,7 @@ public class PlayerModel extends Observable implements Observer {
 	 * @param gamePlayerList
 	 */
 	public void placeArmy(Player playerPlaying, ListView<Territory> selectedTerritoryList,
-			List<Player> gamePlayerList) {
+			List<Player> gamePlayerList, TextArea gameConsole) {
 		int playerArmies = playerPlaying.getArmies();
 		if (playerArmies > 0) {
 			Territory territory = selectedTerritoryList.getSelectionModel().getSelectedItem();
@@ -289,6 +290,7 @@ public class PlayerModel extends Observable implements Observer {
 
 		boolean armiesExhausted = checkIfPlayersArmiesExhausted(gamePlayerList);
 		if (armiesExhausted) {
+			MapUtil.appendTextToGameConsole("===Setup Phase Completed!===\n", gameConsole);
 			setChanged();
 			notifyObservers("FirstAttack");
 		} else {
