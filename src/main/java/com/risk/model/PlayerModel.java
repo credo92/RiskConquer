@@ -138,7 +138,6 @@ public class PlayerModel extends Observable implements Observer {
 				}
 			}
 			if (continentBelongToPlayer) {
-				System.out.println("Player: " + playerPlaying.getName() + " own continent: " + continent.getName());
 				continents.add(continent);
 			}
 		}

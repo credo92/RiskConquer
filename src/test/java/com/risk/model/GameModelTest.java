@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.risk.controller.GamePlayController;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
@@ -72,88 +73,5 @@ public class GameModelTest {
 		
 		listOfTerritories.add(territory1);
 		player.setAssignedTerritory(listOfTerritories);
-	}
-	
-	/**
-	 * This method tests number of armies for 100 initial armies and 1 territory during each reinforcement phase.
-	 */
-	@Test
-	public void calculateReinforcementArmiesCaseOne() {		
-	/*	Player returnedPlayer = gameModel.calculateReinforcementArmies(map, player);
-		Assert.assertEquals(returnedPlayer.getArmies(), 110);
-	*/}
-	
-	/**
-	 * This method tests number of armies for 2 continents during each reinforcement phase.
-	 */
-	@Test
-	public void calculateReinforcementArmiesCaseTwo() {	
-		Continent newContinent = new Continent();
-		newContinent.setName("Africa");
-		newContinent.setValue("5");
-		listOfContinents.add(newContinent);
-		map.setContinents(listOfContinents);
-	/*	Player returnedPlayer = gameModel.calculateReinforcementArmies(map, player);
-		Assert.assertEquals(returnedPlayer.getArmies(), 115);
-	*/}
-	
-	/**
-	 * This method tests number of armies for 100 initial armies and 10 territory during each reinforcement phase.
-	 */
-	@Test
-	public void calculateReinforcementArmiesCaseThree() {		
-		Territory terr = new Territory();
-		terr.setName("Russia");
-		terr.setBelongToContinent(continent);
-		listOfTerritories.add(terr);
-		
-		terr.setName("Canada");
-		terr.setBelongToContinent(continent);
-		listOfTerritories.add(terr);
-		
-		terr.setName("Japan");
-		terr.setBelongToContinent(continent);
-		listOfTerritories.add(terr);
-		
-		terr.setName("UAE");
-		terr.setBelongToContinent(continent);
-		listOfTerritories.add(terr);
-		
-		terr.setName("UK");
-		terr.setBelongToContinent(continent);
-		listOfTerritories.add(terr);
-		
-		terr.setName("USA");
-		terr.setBelongToContinent(continent);
-		listOfTerritories.add(terr);
-		
-		terr.setName("Mexico");
-		terr.setBelongToContinent(continent);
-		listOfTerritories.add(terr);
-		
-		terr.setName("Pakistan");
-		terr.setBelongToContinent(continent);
-		listOfTerritories.add(terr);
-		
-		terr.setName("Afghanistan");
-		terr.setBelongToContinent(continent);
-		listOfTerritories.add(terr);
-		
-		terr.setName("Malaysia");
-		terr.setBelongToContinent(continent);
-		listOfTerritories.add(terr);
-		
-		terr.setName("Thailand");
-		terr.setBelongToContinent(continent);
-		listOfTerritories.add(terr);
-		
-		terr.setName("New Zealand");
-		terr.setBelongToContinent(continent);
-		listOfTerritories.add(terr);
-		
-		player.setAssignedTerritory(listOfTerritories);
-		
-		/*Player returnedPlayer = gameModel.calculateReinforcementArmies(map, player);
-		Assert.assertEquals(returnedPlayer.getArmies(), 111);*/
 	}
 }
