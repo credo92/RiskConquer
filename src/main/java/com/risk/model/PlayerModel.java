@@ -24,9 +24,15 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 public class PlayerModel extends Observable implements Observer {
-
+	
+	/**
+	 * the @playerPlaying reference
+	 */
 	Player playerPlaying;
-
+	
+	/**
+	 * the @territoryWon
+	 */
 	private int territoryWon;
 
 	/**
@@ -140,9 +146,13 @@ public class PlayerModel extends Observable implements Observer {
 		return continents;
 	}
 
-	/**
+	/** 
+	 * Reinforcement Phase
+	 * 
 	 * @param territory
+	 * 				   territory Object
 	 * @param gameConsole
+	 * 				   the Game Console
 	 */
 	public void reinforcementPhase(Territory territory, TextArea gameConsole) {
 		if (playerPlaying.getArmies() > 0) {
@@ -169,8 +179,13 @@ public class PlayerModel extends Observable implements Observer {
 		}
 	}
 
-	/**
-	 * Attack phase
+	/** 
+	 * Attack Phase
+	 * 
+	 * @param attackingTerritory
+	 * 						    attacking territory object
+	 * @param defendingTerritory
+	 * 						   defending territory object
 	 */
 	public void attackPhase(Territory attackingTerritory, Territory defendingTerritory)
 			throws InvalidGameMoveException {
@@ -204,8 +219,12 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
+	 * Fortification Phase
+	 * 
 	 * @param selectedTerritory
+	 * 						  selected Territory object
 	 * @param adjTerritory
+	 * 				         adj Territory object
 	 */
 	public void fortificationPhase(Territory selectedTerritory, Territory adjTerritory) {
 		if (selectedTerritory == null) {
@@ -275,9 +294,14 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
+	 * Place Armies
+	 * 
 	 * @param playerPlaying
+	 * 						get current PlayerPlaying object
 	 * @param selectedTerritoryList
+	 * 						get Selected Territory List for List View
 	 * @param gamePlayerList
+	 * 						gamePlayer List
 	 */
 	public void placeArmy(Player playerPlaying, ListView<Territory> selectedTerritoryList, List<Player> gamePlayerList,
 			TextArea gameConsole) {
@@ -325,9 +349,15 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
+	 * Check if Attack Move is Valid
+	 * 
 	 * @param attacking
+	 * 					attacking Territory
 	 * @param defending
-	 * @return
+	 * 					defending Territory
+	 * 
+	 * @return isValidAttackMove if the attack move is valid
+	 * 
 	 * @throws InvalidGameMoveException
 	 */
 	public boolean isAValidAttackMove(Territory attacking, Territory defending) throws InvalidGameMoveException {
@@ -345,8 +375,14 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
+	 * Check if player has valid attack move
+	 * 
 	 * @param territories
-	 * @return
+	 * 					territories List View
+	 * @param gameConsole
+	 * 					gameConsole text area
+	 * 
+	 * @return true if player has valid move else false
 	 */
 	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
 		boolean hasAValidMove = false;
@@ -366,8 +402,12 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
+	 * Check if any Player Lost the Game
+	 * 
 	 * @param playersPlaying
-	 * @return
+	 * 					playerPlaying List 
+	 * 
+	 * @return Player Object who lost the game
 	 */
 	public Player checkIfAnyPlayerLostTheGame(List<Player> playersPlaying) {
 		Player playerLost = null;
@@ -428,7 +468,15 @@ public class PlayerModel extends Observable implements Observer {
 	public void setTerritoryWon(int territoryWon) {
 		this.territoryWon = territoryWon;
 	}
-
+	
+	/**
+	 * Update
+	 * 
+	 * @param Observable
+	 *            Observabel object        
+	 * @param args 
+	 * 			  Object arg           
+	 */
 	public void update(Observable o, Object arg) {
 		String view = (String) arg;
 

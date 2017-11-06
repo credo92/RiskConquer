@@ -10,9 +10,23 @@ import com.risk.constant.CardType;
  */
 
 public class Card {
+	
+	/**
+	 * The @cardType .
+	 */
 	CardType cardType;
+	
+	/**
+	 * The @territory .
+	 */
 	private Territory territory;
 	
+	/**
+	 * Constructor for Card
+	 * 
+	 * @param cardType
+	 *            reference to get cardType enum
+	 */
 	public Card(CardType cardType){
 		this.cardType = cardType;
 	}

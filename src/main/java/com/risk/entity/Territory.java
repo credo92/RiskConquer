@@ -10,17 +10,55 @@ import java.util.List;
  * 
  */
 public class Territory {
+	
+	/**
+	 * The @name.
+	 */
 	private String name;
+	
+	/**
+	 * The @xCoordinate.
+	 */
 	private int xCoordinate;
+	
+	/**
+	 * The @yCoordinate.
+	 */
 	private int yCoordinate;
+	
+	/**
+	 * The @belongToContinent.
+	 */
 	private Continent belongToContinent;
+	
+	/**
+	 * The @adjTerritories.
+	 */
 	private List<String> adjTerritories;
+	
+	/**
+	 * The @adjacentTerritories
+	 */
 	private List<Territory> adjacentTerritories;
+	
+	/**
+	 * The @isProcessed
+	 */
 	private boolean isProcessed;
 	
+	/**
+	 * The @player
+	 */
 	private Player player;
+	
+	/**
+	 * The @armies
+	 */
 	private int armies;
-
+	
+	/**
+	 * Constructor for Territory
+	 */
 	public Territory() {
 		adjTerritories = new ArrayList<>();
 		adjacentTerritories = new ArrayList<>();

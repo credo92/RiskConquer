@@ -14,7 +14,14 @@ import com.risk.entity.Territory;
  * @version 1.0.0
  */
 public class PlayerWorldDomination extends Observable {
-
+	
+	/**
+	 * Populate World Domination Data according to playerTerritoryCount
+	 * 
+	 * @param map
+	 *            map object
+	 * @return playerTerPercent.
+	 */
 	public HashMap<Player, Double> populateWorldDominationData(Map map) {
 
 		HashMap<Player, Double> playerTerritoryCount = new HashMap<>();

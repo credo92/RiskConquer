@@ -10,17 +10,41 @@ import java.util.List;
  *
  */
 public class Player {
-
+	
+	/**
+	 * The @id.
+	 */
 	private int id;
-
+	
+	/**
+	 * The @name
+	 */
 	private String name;
-
+	
+	/**
+	 * The @armies
+	 */
 	private int armies;
-
+	
+	/**
+	 * The @assignedTerritory
+	 */
 	private List<Territory> assignedTerritory;
 	
+	/**
+	 * The @playerCardList
+	 */
 	private List<Card> playerCardList;
-
+	
+	/**
+	 * Constructor for Player
+	 * 
+	 * @param id
+	 *            for player id
+	 * 
+	 * @param name
+	 *            for player name 
+	 */
 	public Player(int id, String name) {
 		this.id = id;
 		this.name = name;

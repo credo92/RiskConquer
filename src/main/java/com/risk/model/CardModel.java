@@ -22,14 +22,26 @@ import javafx.stage.Stage;
  */
 public class CardModel extends Observable{
 	
+	/**
+	 * The @playerPlaying .
+	 */
 	private Player playerPlaying;	
 	
-	private List<Card> cardsToBeExchange;	
-
+	/**
+	 * The @cardsToBeExchange .
+	 */
+	private List<Card> cardsToBeExchange;
+	
+	/**
+	 * Get cards to be Exchanged .
+	 */
 	public List<Card> getCardsToBeExchange() {
 		return cardsToBeExchange;
 	}
-
+	
+	/**
+	 * Set cards to be Exchanged .
+	 */
 	public void setCardsToBeExchange(List<Card> cardsToBeExchange) {
 		this.cardsToBeExchange = cardsToBeExchange;
 	}
@@ -101,6 +113,10 @@ public class CardModel extends Observable{
 		return returnFlag;
 	}
 	
+	/**
+	 * This method is used to set the Cards Exchangable by passing selectedCards to setCardsToBeExchange
+	 * @param selectedCards.
+	 */
 	public void setCardsExchangable(List<Card> selectedCards) {
 		setCardsToBeExchange(selectedCards);
 		setChanged();

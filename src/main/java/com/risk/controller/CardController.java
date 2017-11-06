@@ -47,17 +47,47 @@ public class CardController implements Initializable {
 	@FXML
 	private VBox cardVbox;
 	
-	private Player playerPlaying;	
+	/**
+	 * The @playerPlaying .
+	 */
+	private Player playerPlaying;
+	
+	/**
+	 * The @playerCards .
+	 */
 	private List<Card> playerCards;	
+	
+	/**
+	 * The @cbs .
+	 */
 	private CheckBox[] cbs;
 	
+	/**
+	 * The @cardModel.
+	 */
 	private CardModel cardModel;
 	
+	/**
+	 * Constructor for CardController
+	 * 
+	 * @param playerPlaying
+	 *            reference to get details about current player playing
+	 * 
+	 * @param cardModel
+	 *            reference to get details about card model 
+	 */
 	public CardController(Player playerPlaying, CardModel cardModel){
 		this.playerPlaying = playerPlaying;
 		this.cardModel = cardModel;
 	}
 	
+	/*
+	 * (non-Javadoc) Card controller initializer, loading currentPlayer and current
+	 * playerPlaying cardList data.
+	 * 
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL,
+	 * java.util.ResourceBundle)
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {		
 		currentPlayerName.setText("Cards of " + playerPlaying.getName());		
@@ -65,6 +95,9 @@ public class CardController implements Initializable {
 		loadAllCards();		
 	}
 	
+	/**
+	 * Load All cards of a player.
+	 */
 	public void loadAllCards() {
 		int numberOfCards = playerCards.size();		
 		cbs = new CheckBox[numberOfCards];				

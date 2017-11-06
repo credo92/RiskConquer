@@ -17,11 +17,17 @@ import javafx.stage.Stage;
  *
  */
 public class DiceViewLoader implements EventHandler<ActionEvent> {
-
-	private DiceModel diceModel;
+	
 	/**
-	 * @param attack
-	 * @param defend
+	 * The @diceModel reference .
+	 */
+	private DiceModel diceModel;
+	
+	/**
+	 * Constructor for DiceViewLoader
+	 * 
+	 * @param diceModel
+	 *            reference to get details about diceModel
 	 */
 	public DiceViewLoader(DiceModel diceModel) {
 		this.diceModel = diceModel;

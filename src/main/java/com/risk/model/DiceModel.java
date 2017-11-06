@@ -16,17 +16,41 @@ import javafx.scene.control.Label;
  * @version 1.0.1
  */
 public class DiceModel extends Observable {
-
+	
+	/**
+	 * The @attackingTerritory .
+	 */
 	private Territory attackingTerritory;
-
+	
+	/**
+	 * The @defendingTerritory .
+	 */
 	private Territory defendingTerritory;
-
+	
+	/**
+	 * The @attackerDiceValues .
+	 */
 	private List<Integer> attackerDiceValues;
-
+	
+	/**
+	 * The @defenderDiceValues .
+	 */
 	private List<Integer> defenderDiceValues;
 	
+	/**
+	 * The @numOfTerritoriesWon .
+	 */
 	private int numOfTerritoriesWon;
-
+	
+	/**
+	 * Constructor for DiceModel
+	 * 
+	 * @param attackingTerritory
+	 *            reference to get details about attacking territory
+	 * 
+	 * @param defendingTerritory
+	 *            reference to get details about defending territory 
+	 */
 	public DiceModel(Territory attackingTerritory, Territory defendingTerritory) {
 		this.attackingTerritory = attackingTerritory;
 		this.defendingTerritory = defendingTerritory;
@@ -35,7 +59,10 @@ public class DiceModel extends Observable {
 		numOfTerritoriesWon = 0;
 
 	}
-
+	
+	/**
+	 * Get Play Result after the dice is thrown
+	 */
 	public List<String> getPlayResultAfterDiceThrown() {
 		List<String> playResult = new ArrayList<>();
 		Collections.sort(attackerDiceValues, Collections.reverseOrder());
@@ -51,7 +78,17 @@ public class DiceModel extends Observable {
 		return playResult;
 
 	}
-
+	
+	/**
+	 * Update Armies After attack
+	 * 
+	 * @param defenderDiceValue
+	 *            Integer defenderDiceValue
+	 * @param attackerDiceValue
+	 * 			  Integer attackerDiceValue     
+	 * @param playResult
+	 * 			  List<String> playResult
+	 */
 	public void updateArmiesAfterAttack(Integer defenderDiceValue, Integer attackerDiceValue, List<String> playResult) {
 		if (attackerDiceValue.compareTo(defenderDiceValue) == 0) {
 			playResult.add("Attacker lost 1 army.");
@@ -70,12 +107,18 @@ public class DiceModel extends Observable {
 			}
 		}
 	}
-
+	
+	/**
+	 * Cancel Dice Roll
+	 */
 	public void cancelDiceRoll() {
 		setChanged();
 		notifyObservers("rollDiceComplete");
 	}
-
+	
+	/**
+	 * Move All Armies
+	 */
 	public void moveAllArmies() {
 		int attckingArmies = getAttackingTerritory().getArmies();
 		getAttackingTerritory().setArmies(1);
@@ -84,7 +127,10 @@ public class DiceModel extends Observable {
 		setChanged();
 		notifyObservers("rollDiceComplete");
 	}
-
+	
+	/**
+	 * Skip Move Army
+	 */
 	public void skipMoveArmy() {
 		int attckingArmies = getAttackingTerritory().getArmies();
 		getAttackingTerritory().setArmies(attckingArmies - 1);
@@ -93,7 +139,10 @@ public class DiceModel extends Observable {
 		setChanged();
 		notifyObservers("rollDiceComplete");
 	}
-
+	
+	/**
+	 * Move Armies
+	 */
 	public void moveArmies(int armiesToMove, Label message, Button moveArmies) {
 		int currentArmies = getAttackingTerritory().getArmies();
 		if (currentArmies <= armiesToMove) {
@@ -109,7 +158,10 @@ public class DiceModel extends Observable {
 			notifyObservers("rollDiceComplete");
 		}
 	}
-
+	
+	/**
+	 * Reassign Territory
+	 */
 	public void reassignTerritory() {
 		List<Territory> defendersTerritories = defendingTerritory.getPlayer().getAssignedTerritory();
 		defendersTerritories.remove(defendingTerritory);
@@ -118,11 +170,17 @@ public class DiceModel extends Observable {
 		attackingTerritory.getPlayer().getAssignedTerritory().add(defendingTerritory);
 
 	}
-
+	
+	/**
+	 * @return Int randomNumber
+	 */
 	public int randomNumber() {
 		return (int) (Math.random() * 6) + 1;
 	}
-
+	
+	/**
+	 * @return the diceRollAvailable
+	 */
 	public boolean moreDiceRollAvailable() {
 		boolean diceRollAvailable = true;
 		if (attackingTerritory.getArmies() < 2 || defendingTerritory.getArmies() <= 0) {

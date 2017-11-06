@@ -11,11 +11,30 @@ import java.util.List;
  *
  */
 public class Continent {
+	
+	/**
+	 * The @name .
+	 */
 	private String name;
+	
+	/**
+	 * The @value .
+	 */
 	private String value;
+	
+	/**
+	 * The @territoryMap.
+	 */
 	private HashMap<String, Territory> territoryMap;
+	
+	/**
+	 * The @territories.
+	 */
 	private List<Territory> territories;
-
+	
+	/**
+	 * Constructor for Continent 
+	 */
 	public Continent() {
 		territoryMap = new HashMap<>();
 		territories = new ArrayList<>();

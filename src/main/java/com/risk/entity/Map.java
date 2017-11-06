@@ -11,10 +11,25 @@ import java.util.List;
  *
  */
 public class Map {
+	
+	/**
+	 * The @mapData.
+	 */
 	private HashMap<String, String> mapData;
+	
+	/**
+	 * The @continents.
+	 */
 	private List<Continent> continents;
+	
+	/**
+	 * The @continentMap.
+	 */
 	private HashMap<String, Continent> continentMap;
-
+	
+	/**
+	 * Constructor for Map 
+	 */
 	public Map() {
 		mapData = new HashMap<>();
 		continents = new ArrayList<>();
