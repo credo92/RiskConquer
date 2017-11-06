@@ -22,9 +22,15 @@ import com.risk.validate.MapValidator;
  *
  */
 public class MapFileParser {
-
+	
+	/**
+	 * @map reference
+	 */
 	private Map map;
-
+	
+	/**
+	 * the @territoryContinentCount
+	 */
 	private HashMap<String, Integer> territoryContinentCount = new HashMap<>();
 
 	/**

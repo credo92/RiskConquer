@@ -42,10 +42,16 @@ public class DiceRollController implements Initializable {
 	 */
 	@FXML
 	private Label defenderPlayerName;
-
+	
+	/**
+	 * The @continueRoll button.
+	 */
 	@FXML
 	private Button continueRoll;
 
+	/**
+	 * The @moveAllArmies button.
+	 */
 	@FXML
 	private Button moveAllArmies;
 
@@ -177,7 +183,10 @@ public class DiceRollController implements Initializable {
 		loadAttackScreen();
 		showDice();
 	}
-
+	
+	/**
+	 * Load attack Screen for attacker and defender.
+	 */
 	public void loadAttackScreen() {
 		// Load attacker details
 		Territory attackingTerritory = diceModel.getAttackingTerritory();
@@ -199,30 +208,57 @@ public class DiceRollController implements Initializable {
 		GameUtil.disableViewPane(moveArmiesView);
 	}
 
+	/**
+	 * Move armies
+	 * 
+	 * @param event
+	 *            action event
+	 */
 	@FXML
 	private void moveArmies(ActionEvent event) {
 		int armiesToMove = Integer.valueOf(numberOfArmiesInput.getText());
 		diceModel.moveArmies(armiesToMove, winnerName, moveArmies);
 	}
-
+	
+	/**
+	 * Move all armies
+	 * 
+	 * @param event
+	 *            action event
+	 */
 	@FXML
 	private void moveAllArmies(ActionEvent event) {
 		diceModel.moveAllArmies();
 		GameUtil.closeScreen(moveAllArmies);
 	}
-
+	
+	/**
+	 * Skip Move army
+	 * 
+	 * @param event
+	 *            action event
+	 */
 	@FXML
 	private void skipMoveArmy(ActionEvent event) {
 		diceModel.skipMoveArmy();
 		GameUtil.closeScreen(skipMoveArmy);
 	}
-
+	
+	/**
+	 * Cancel Dice Roll
+	 */
 	@FXML
 	private void cancelDiceRoll() {
 		diceModel.cancelDiceRoll();
 		GameUtil.closeScreen(cancelDiceRoll);
 	}
 
+	/**
+	 * Continue Dice Roll
+	 * 
+	 * @param event
+	 *            action event
+	 */
 	@FXML
 	private void continueDiceRoll(ActionEvent event) {
 		diceModel.setAttackerDiceValues(new ArrayList<>());
@@ -251,7 +287,13 @@ public class DiceRollController implements Initializable {
 			GameUtil.hideControl(defenderDice2);
 		}
 	}
-
+	
+	/**
+	 * Roll Attacker Dice
+	 * 
+	 * @param dices
+	 *            checkBox... dices
+	 */
 	public void rollAttackerDice(CheckBox... dices) {
 		for (CheckBox dice : dices) {
 			if (dice.isSelected()) {
@@ -261,7 +303,13 @@ public class DiceRollController implements Initializable {
 			}
 		}
 	}
-
+	
+	/**
+	 * Roll Defender Dice
+	 * 
+	 * @param dices
+	 *            checkBox... dices
+	 */
 	public void rollDefenderDice(CheckBox... dices) {
 		for (CheckBox dice : dices) {
 			if (dice.isSelected()) {
@@ -271,7 +319,13 @@ public class DiceRollController implements Initializable {
 			}
 		}
 	}
-
+	
+	/**
+	 * Roll Dice 
+	 * 
+	 * @param event
+	 *            action event
+	 */
 	@FXML
 	public void rollDice(ActionEvent event) {
 		if (!attackerDice1.isSelected() && !attackerDice2.isSelected() && !attackerDice3.isSelected()) {

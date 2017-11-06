@@ -52,7 +52,10 @@ import javafx.scene.layout.VBox;
  *
  */
 public class GamePlayController implements Initializable, Observer {
-
+	
+	/**
+	 * The @map refrence.
+	 */
 	private Map map;
 
 	/**
@@ -446,7 +449,10 @@ public class GamePlayController implements Initializable, Observer {
 			MapUtil.appendTextToGameConsole("Error!. No player playing.", gameConsole);
 		}
 	}
-
+	
+	/**
+	 * Initialize Card Window for current Player playing.
+	 */
 	public void initCardWindow() {
 		cardModel.openCardWindow(playerPlaying, cardModel);
 	}
@@ -467,7 +473,10 @@ public class GamePlayController implements Initializable, Observer {
 		initCardWindow();
 		calculateReinforcementArmies();
 	}
-
+	
+	/**
+	 * Set Launch Attack Event when a adjacent territory is selected from adjTerritory List.
+	 */
 	private void setLaunchAttackEvent() {
 		adjTerritoryList.setOnMouseClicked(e -> attack());
 	}
@@ -498,7 +507,10 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("====Fortification phase started! ====== \n", gameConsole);
 	}
-
+	
+	/**
+	 * Populate World Domination Data.
+	 */
 	private void populateWorldDominationData() {
 		HashMap<Player, Double> playerTerPercent = worldDomination.populateWorldDominationData(map);
 		ArrayList<Data> chartData = new ArrayList<>();
@@ -509,7 +521,10 @@ public class GamePlayController implements Initializable, Observer {
 		pieChartData.addAll(chartData);
 		dominationChart.setData(pieChartData);
 	}
-
+	
+	/**
+	 * Check If Any Player Lost the game.
+	 */
 	private void checkIfAnyPlayerLostTheGame() {
 		Player playerLost = playerModel.checkIfAnyPlayerLostTheGame(gamePlayerList);
 		if (playerLost != null) {
@@ -519,7 +534,10 @@ public class GamePlayController implements Initializable, Observer {
 					"Info", "");
 		}
 	}
-
+	
+	/**
+	 * Check If Any Player Won the game.
+	 */
 	private boolean checkIfPlayerWonTheGame() {
 		boolean playerWon = false;
 		if (gamePlayerList.size() == 1) {
@@ -529,7 +547,10 @@ public class GamePlayController implements Initializable, Observer {
 
 		return playerWon;
 	}
-
+	
+	/**
+	 * Refresh View 
+	 */
 	private void refreshView() {
 		checkIfAnyPlayerLostTheGame();
 		selectedTerritoryList.getItems().clear();
@@ -586,7 +607,13 @@ public class GamePlayController implements Initializable, Observer {
 	public void setNumberOfPlayersSelected(int numberOfPlayersSelected) {
 		this.numberOfPlayersSelected = numberOfPlayersSelected;
 	}
-
+	
+	/**
+	 * Trade Cards for Armies
+	 * 
+	 * @param cm
+	 *            cardModel cm
+	 */
 	public void tradeCardsForArmy(CardModel cm) {
 		List<Card> tradedCards = cm.getCardsToBeExchange();
 		setNumberOfCardSetExchanged(getNumberOfCardSetExchanged() + 1);
@@ -644,11 +671,17 @@ public class GamePlayController implements Initializable, Observer {
 			tradeCardsForArmy(cm);
 		}
 	}
-
+	
+	/**
+	 * Get Number of Card Sets Exhanged
+	 */
 	public int getNumberOfCardSetExchanged() {
 		return numberOfCardSetExchanged;
 	}
-
+	
+	/**
+	 * Set Number of Card Sets Exhanged
+	 */
 	public void setNumberOfCardSetExchanged(int numberOfCardSetExchanged) {
 		this.numberOfCardSetExchanged = numberOfCardSetExchanged;
 	}

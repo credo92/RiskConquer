@@ -19,30 +19,60 @@ public class GameUtil {
 
 		return numberOfPlayers;
 	}
-
+	
+	/**
+	 * This method is used to disable control.
+	 * 
+	 * @param controls
+	 *            controls
+	 */
 	public static void disableControl(Control... controls) {
 		for (Control control : controls) {
 			control.setDisable(true);
 		}
 	}
-
+	
+	/**
+	 * This method is used to show control.
+	 * 
+	 * @param controls
+	 *            controls
+	 */
 	public static void showControl(Control... controls) {
 		for (Control control : controls) {
 			control.setVisible(true);
 		}
 	}
-
+	
+	/**
+	 * This method is used to hide control.
+	 * 
+	 * @param controls
+	 *            controls
+	 */
 	public static void hideControl(Control... controls) {
 		for (Control control : controls) {
 			control.setVisible(false);
 		}
 	}
-
+	
+	/**
+	 * This method is used to close screen.
+	 * 
+	 * @param button
+	 *            button
+	 */
 	public static void closeScreen(Button button) {
 		Stage stage = (Stage) button.getScene().getWindow();
 		stage.close();
 	}
 	
+	/**
+	 * This method is used to clear checkbox.
+	 * 
+	 * @param checkBoxes
+	 *            checkBoxes
+	 */
 	public static void clearCheckBox(CheckBox... checkBoxes) {
 		for (CheckBox checkBox: checkBoxes) {
 			checkBox.setText("");

@@ -7,7 +7,10 @@ package com.risk.exception;
  *
  */
 public class InvalidMapException extends Exception {
-
+	
+	/**
+	 * The @serialVersionUID.
+	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
