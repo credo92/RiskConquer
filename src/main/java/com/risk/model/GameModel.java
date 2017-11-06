@@ -12,7 +12,6 @@ import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.map.util.MapUtil;
 
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 
 /**
@@ -63,7 +62,7 @@ public class GameModel {
 	 * @param textAres
 	 *            game console
 	 */
-	public void assignTerritoryToPlayer(Map map, List<Player> players, TextArea textAres) {
+	public List<Player> assignTerritoryToPlayer(Map map, List<Player> players, TextArea textAres) {
 
 		List<Territory> allterritories = new ArrayList<>();
 
@@ -95,18 +94,6 @@ public class GameModel {
 				}
 			}
 		}
-	}
-	
-	/**
-	 * @param territories
-	 * @return
-	 */
-	public boolean hasAValidAttackMove(ListView<Territory> territories) {
-		for (Territory territory : territories.getItems()) {
-			if (territory.getArmies() > 1) {
-				return true;
-			}
-		}
-		return false;
+		return players;
 	}
 }
