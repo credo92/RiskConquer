@@ -6,12 +6,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane layoutX="5.0" prefHeight="814.0" prefWidth="1312.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+<Pane prefHeight="814.0" prefWidth="1312.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-      <HBox layoutX="14.0" prefHeight="48.0" prefWidth="335.0">
+      <HBox layoutX="14.0" layoutY="8.0" prefHeight="40.0" prefWidth="379.0">
          <children>
-             <Label prefHeight="31.0" prefWidth="177.0" text="Select number of players: " />
-            <ChoiceBox fx:id="numberOfPlayers" prefWidth="150.0" />
+            <Label fx:id="gamePhase" prefHeight="31.0" prefWidth="130.0" text="Phase" textFill="#dd0606" underline="true" />
+             <Label prefHeight="36.0" prefWidth="140.0" text="Number of players: " />
+            <ChoiceBox fx:id="numberOfPlayers" prefHeight="31.0" prefWidth="95.0" />
          </children>
       </HBox>
       <TextArea fx:id="gameConsole" editable="false" layoutX="12.0" layoutY="56.0" prefHeight="749.0" prefWidth="379.0" style="-fx-background-color: #fff; -fx-border-color: #000;" />
@@ -23,11 +25,11 @@
       <ListView fx:id="adjTerritoryList" layoutX="434.0" layoutY="424.0" prefHeight="251.0" prefWidth="228.0" />
       <Label layoutX="435.0" layoutY="44.0" prefHeight="31.0" prefWidth="200.0" text="Selected Terriotry" />
       <Label layoutX="435.0" layoutY="395.0" prefHeight="31.0" prefWidth="200.0" text="Adjacent Terriotry" />
-      <Label fx:id="playerChosen" layoutX="367.0" prefHeight="31.0" prefWidth="297.0" text="Playing........" />
+      <Label fx:id="playerChosen" layoutX="440.0" layoutY="4.0" prefHeight="31.0" prefWidth="120.0" text="Playing........" />
       <Button fx:id="placeArmy" layoutX="566.0" layoutY="2.0" mnemonicParsing="false" onAction="#placeArmy" text="Place Army" />
       <TitledPane layoutX="800.0" layoutY="6.0" prefHeight="806.0" prefWidth="510.0" text="World Domination">
          <content>
-            <VBox>
+            <VBox prefHeight="765.0" prefWidth="498.0">
                <children>
                   <PieChart fx:id="dominationChart" />
                   <ScrollPane layoutX="814.0" layoutY="13.0" prefHeight="571.0" prefViewportHeight="794.0" prefViewportWidth="540.0" prefWidth="496.0">
