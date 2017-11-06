@@ -123,9 +123,7 @@ public class CardController implements Initializable {
 			
 			if(flag) {
 				cardModel.setCardsExchangable(selectedCards);
-				GameUtil.closeScreen(trade);				
-				//cardModel.tradeCardsForArmy(playerPlaying, selectedCards);
-				//textToShow.setText("Valid combination. So, player has been assigned one army.");
+				GameUtil.closeScreen(trade);
 			}
 			else {			
 				textToShow.setText("Invalid Combination.");
