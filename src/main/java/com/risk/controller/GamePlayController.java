@@ -441,7 +441,7 @@ public class GamePlayController implements Initializable, Observer {
 	/**
 	 * Calculate reinforcement armies based ont the game rules.
 	 */
-	private void calculateReinforcementArmies() {
+	public void calculateReinforcementArmies() {
 		if (this.playerPlaying != null) {
 			playerPlaying = playerModel.calculateReinforcementArmies(map, playerPlaying);
 			playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
