@@ -618,9 +618,8 @@ public class GamePlayController implements Initializable, Observer {
 		List<Card> tradedCards = cm.getCardsToBeExchange();
 		setNumberOfCardSetExchanged(getNumberOfCardSetExchanged() + 1);
 		playerModel.tradeCardsForArmy(tradedCards, getNumberOfCardSetExchanged(), gameConsole);
-		for (Card card : tradedCards) {
-			cardStack.push(card);
-		}
+		playerPlaying.getPlayerCardList().removeAll(tradedCards);
+		cardStack.addAll(tradedCards);
 		Collections.shuffle(cardStack);
 		selectedTerritoryList.refresh();
 		adjTerritoryList.refresh();
