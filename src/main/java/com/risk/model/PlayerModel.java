@@ -38,9 +38,9 @@ public class PlayerModel extends Observable implements Observer {
 	 * @param textArea
 	 *            to show up data on UI.
 	 */
-	public void assignArmiesToPlayers(List<Player> players, TextArea textArea) {
+	public boolean assignArmiesToPlayers(List<Player> players, TextArea textArea) {
 		MapUtil.appendTextToGameConsole("===Assigning armies to players.===\n", textArea);
-
+		boolean  isAssignationSuccess = false;
 		int armySizePerPlayer = 0;
 		int noOfPlayers = players.size();
 
@@ -56,7 +56,9 @@ public class PlayerModel extends Observable implements Observer {
 		for (Player player : players) {
 			player.setArmies(armySizePerPlayer);
 			MapUtil.appendTextToGameConsole(player.getName() + " assigned: " + armySizePerPlayer + "\n", textArea);
+			isAssignationSuccess = true;
 		}
+		return isAssignationSuccess;
 	}
 
 	/**
@@ -246,7 +248,7 @@ public class PlayerModel extends Observable implements Observer {
 	 *            current player playing
 	 * @return boolean is fortifcation of armies available.
 	 */
-	public void isFortificationPhaseValid(Map map, Player playerPlaying) {
+	public boolean isFortificationPhaseValid(Map map, Player playerPlaying) {
 		boolean isFortificationAvaialble = false;
 		outer: for (Continent continent : map.getContinents()) {
 			for (Territory territory : continent.getTerritories()) {
@@ -269,6 +271,7 @@ public class PlayerModel extends Observable implements Observer {
 			setChanged();
 			notifyObservers("noFortificationMove");
 		}
+		return isFortificationAvaialble;
 	}
 
 	/**
@@ -276,8 +279,8 @@ public class PlayerModel extends Observable implements Observer {
 	 * @param selectedTerritoryList
 	 * @param gamePlayerList
 	 */
-	public void placeArmy(Player playerPlaying, ListView<Territory> selectedTerritoryList,
-			List<Player> gamePlayerList, TextArea gameConsole) {
+	public void placeArmy(Player playerPlaying, ListView<Territory> selectedTerritoryList, List<Player> gamePlayerList,
+			TextArea gameConsole) {
 		int playerArmies = playerPlaying.getArmies();
 		if (playerArmies > 0) {
 			Territory territory = selectedTerritoryList.getSelectionModel().getSelectedItem();
@@ -342,6 +345,27 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
+	 * @param territories
+	 * @return
+	 */
+	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
+		boolean hasAValidMove = false;
+		for (Territory territory : territories.getItems()) {
+			if (territory.getArmies() > 1) {
+				hasAValidMove = true;
+			}
+		}
+		if (!hasAValidMove) {
+			MapUtil.appendTextToGameConsole("No valid attack move avialble move to Fortification phase.", gameConsole);
+			MapUtil.appendTextToGameConsole("===Attack phase ended! === \n", gameConsole);
+			setChanged();
+			notifyObservers("Fortification");
+			return hasAValidMove;
+		}
+		return hasAValidMove;
+	}
+
+	/**
 	 * @param playersPlaying
 	 * @return
 	 */
@@ -354,25 +378,32 @@ public class PlayerModel extends Observable implements Observer {
 		}
 		return playerLost;
 	}
-	
+
 	/**
 	 * This method is used to trade armies for valid combination of cards.
-	 * @param cards list of cards selected by currently playing player for exchange.
-	 * @param numberOfCardSetExchanged counter of number of times cards get changed.
-	 * @param gameConsole Console of the game.
+	 * 
+	 * @param cards
+	 *            list of cards selected by currently playing player for exchange.
+	 * @param numberOfCardSetExchanged
+	 *            counter of number of times cards get changed.
+	 * @param gameConsole
+	 *            Console of the game.
 	 */
-	public void tradeCardsForArmy(List<Card> selectedCards, int numberOfCardSetExchanged, TextArea gameConsole) {		
-		playerPlaying.setArmies(playerPlaying.getArmies()+(5*numberOfCardSetExchanged));
-		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " successfully exchanged 3 cards for 1 army! \n", gameConsole);
+	public Player tradeCardsForArmy(List<Card> selectedCards, int numberOfCardSetExchanged, TextArea gameConsole) {
+		playerPlaying.setArmies(playerPlaying.getArmies() + (5 * numberOfCardSetExchanged));
+		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " successfully exchanged 3 cards for 1 army! \n",
+				gameConsole);
 		for (Territory t : playerPlaying.getAssignedTerritory()) {
 			for (Card card : selectedCards) {
-				if(t.equals(card.getTerritory())) {
-					t.setArmies(t.getArmies()+2);
-					MapUtil.appendTextToGameConsole(playerPlaying.getName() + " got extra 2 armies on " +t.getName()+ "\n", gameConsole);
+				if (t.equals(card.getTerritory())) {
+					t.setArmies(t.getArmies() + 2);
+					MapUtil.appendTextToGameConsole(
+							playerPlaying.getName() + " got extra 2 armies on " + t.getName() + "\n", gameConsole);
 					break;
 				}
 			}
 		}
+		return playerPlaying;
 	}
 
 	/**
