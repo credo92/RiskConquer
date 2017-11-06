@@ -140,7 +140,7 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private Label playerChosen;
-	
+
 	@FXML
 	private Label gamePhase;
 
@@ -456,7 +456,7 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	private void initializeReinforcement() {
 		loadPlayingPlayer();
-		
+
 		gamePhase.setText("Phase: Reinforcement");
 		MapUtil.disableControl(placeArmy, fortify, attack);
 		MapUtil.enableControl(reinforcement);
@@ -478,11 +478,8 @@ public class GamePlayController implements Initializable, Observer {
 	private void initializeAttack() {
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("===Attack phase started! === \n", gameConsole);
-		gamePhase.setText("Phase: Attack");
-		if (!gameModel.hasAValidAttackMove(selectedTerritoryList)) {
-			MapUtil.appendTextToGameConsole("No valid attack move avialble move to Fortification phase.", gameConsole);
-			initializeFortification();
-		} else {
+		if (playerModel.playerHasAValidAttackMove(selectedTerritoryList, gameConsole)) {
+			gamePhase.setText("Phase: Attack");
 			MapUtil.disableControl(reinforcement, placeArmy);
 			MapUtil.enableControl(attack);
 			attack.requestFocus();
@@ -518,16 +515,19 @@ public class GamePlayController implements Initializable, Observer {
 		if (playerLost != null) {
 			gamePlayerList.remove(playerLost);
 			playerIterator = gamePlayerList.iterator();
-
 			MapUtil.infoBox("Player: " + playerLost.getName() + " lost all his territory and is out of the game",
 					"Info", "");
 		}
 	}
 
-	private void checkIfPlayerWonTheGame() {
+	private boolean checkIfPlayerWonTheGame() {
+		boolean playerWon = false;
 		if (gamePlayerList.size() == 1) {
 			MapUtil.infoBox("Player: " + gamePlayerList.get(0).getName() + " won the game!", "Info", "");
+			playerWon = true;
 		}
+
+		return playerWon;
 	}
 
 	private void refreshView() {
@@ -541,7 +541,9 @@ public class GamePlayController implements Initializable, Observer {
 		loadMapData();
 		populateWorldDominationData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");
-		checkIfPlayerWonTheGame();
+		if (!checkIfPlayerWonTheGame()) {
+			playerModel.playerHasAValidAttackMove(selectedTerritoryList, gameConsole);
+		}
 	}
 
 	/**

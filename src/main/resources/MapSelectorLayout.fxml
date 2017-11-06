@@ -16,7 +16,7 @@
             <ChoiceBox fx:id="numberOfPlayers" prefHeight="31.0" prefWidth="95.0" />
          </children>
       </HBox>
-      <TextArea fx:id="gameConsole" editable="false" layoutX="12.0" layoutY="56.0" prefHeight="749.0" prefWidth="379.0" style="-fx-background-color: #fff; -fx-border-color: #000;" />
+      <TextArea fx:id="gameConsole" editable="false" layoutX="12.0" layoutY="56.0" prefHeight="749.0" prefWidth="379.0" style="-fx-background-color: #fff; -fx-border-color: #000;" wrapText="true" />
       <Button fx:id="attack" layoutX="434.0" layoutY="696.0" mnemonicParsing="false" onAction="#noMoreAttack" prefHeight="31.0" prefWidth="228.0" text="No More Attack" />
       <Button fx:id="fortify" layoutX="434.0" layoutY="730.0" mnemonicParsing="false" onAction="#fortify" prefHeight="31.0" prefWidth="228.0" text="Fortify" />
       <Button fx:id="endTurn" layoutX="434.0" layoutY="765.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="31.0" prefWidth="228.0" text="End Turn" />
