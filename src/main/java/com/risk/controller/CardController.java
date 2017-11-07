@@ -92,6 +92,12 @@ public class CardController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {		
 		currentPlayerName.setText("Cards of " + playerPlaying.getName());		
 		playerCards = playerPlaying.getPlayerCardList();
+		if (playerCards.size()<3) {
+			trade.setDisable(true);
+		}
+		else {
+			trade.setDisable(false);
+		}
 		loadAllCards();		
 	}
 	
@@ -131,5 +137,9 @@ public class CardController implements Initializable {
 				return;
 			}	
 		}		
+		else {
+			textToShow.setText("Select only 3 cards");
+			return;
+		}
 	}
 }

@@ -113,6 +113,12 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private Button reinforcement;
+	
+	/**
+	 * The @cards button.
+	 */
+	@FXML
+	private Button cards;
 
 	/**
 	 * The @dataDisplay display container.
@@ -226,6 +232,7 @@ public class GamePlayController implements Initializable, Observer {
 				loadMapData();
 				loadPlayingPlayer();
 				populateWorldDominationData();
+				MapUtil.enableControl(cards);
 			}
 		});
 	}
@@ -244,7 +251,7 @@ public class GamePlayController implements Initializable, Observer {
 		loadGameCard();
 		loadMapData();
 		gamePhase.setText("Phase: Start Up!");
-		MapUtil.disableControl(reinforcement, fortify, attack);
+		MapUtil.disableControl(reinforcement, fortify, attack, cards);
 
 		selectedTerritoryList.setCellFactory(param -> new ListCell<Territory>() {
 			@Override
@@ -318,6 +325,11 @@ public class GamePlayController implements Initializable, Observer {
 	 * Assign card to player
 	 */
 	private void assignCardToPlayer() {
+		playerPlaying.getPlayerCardList().add(cardStack.pop());
+		playerPlaying.getPlayerCardList().add(cardStack.pop());
+		playerPlaying.getPlayerCardList().add(cardStack.pop());
+		playerPlaying.getPlayerCardList().add(cardStack.pop());
+		playerPlaying.getPlayerCardList().add(cardStack.pop());
 		playerPlaying.getPlayerCardList().add(cardStack.pop());
 	}
 
@@ -453,6 +465,7 @@ public class GamePlayController implements Initializable, Observer {
 	/**
 	 * Initialize Card Window for current Player playing.
 	 */
+	@FXML
 	public void initCardWindow() {
 		cardModel.openCardWindow(playerPlaying, cardModel);
 	}
