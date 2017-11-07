@@ -24,12 +24,12 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 public class PlayerModel extends Observable implements Observer {
-	
+
 	/**
 	 * the @playerPlaying reference
 	 */
 	Player playerPlaying;
-	
+
 	public Player getPlayerPlaying() {
 		return playerPlaying;
 	}
@@ -50,7 +50,7 @@ public class PlayerModel extends Observable implements Observer {
 	 */
 	public boolean assignArmiesToPlayers(List<Player> players, TextArea textArea) {
 		MapUtil.appendTextToGameConsole("===Assigning armies to players.===\n", textArea);
-		boolean  isAssignationSuccess = false;
+		boolean isAssignationSuccess = false;
 		int armySizePerPlayer = 0;
 		int noOfPlayers = players.size();
 
@@ -149,13 +149,13 @@ public class PlayerModel extends Observable implements Observer {
 		return continents;
 	}
 
-	/** 
+	/**
 	 * Reinforcement Phase
 	 * 
 	 * @param territory
-	 * 				   territory Object
+	 *            territory Object
 	 * @param gameConsole
-	 * 				   the Game Console
+	 *            the Game Console
 	 */
 	public void reinforcementPhase(Territory territory, TextArea gameConsole) {
 		if (playerPlaying.getArmies() > 0) {
@@ -182,13 +182,13 @@ public class PlayerModel extends Observable implements Observer {
 		}
 	}
 
-	/** 
+	/**
 	 * Attack Phase
 	 * 
 	 * @param attackingTerritory
-	 * 						    attacking territory object
+	 *            attacking territory object
 	 * @param defendingTerritory
-	 * 						   defending territory object
+	 *            defending territory object
 	 */
 	public void attackPhase(Territory attackingTerritory, Territory defendingTerritory)
 			throws InvalidGameMoveException {
@@ -225,11 +225,11 @@ public class PlayerModel extends Observable implements Observer {
 	 * Fortification Phase
 	 * 
 	 * @param selectedTerritory
-	 * 						  selected Territory object
+	 *            selected Territory object
 	 * @param adjTerritory
-	 * 				         adj Territory object
+	 *            adj Territory object
 	 */
-	public void fortificationPhase(Territory selectedTerritory, Territory adjTerritory) {
+	public void fortificationPhase(Territory selectedTerritory, Territory adjTerritory, TextArea gameConsole) {
 		if (selectedTerritory == null) {
 			MapUtil.infoBox("Please choose Selected Territory as source.", "Message", "");
 			return;
@@ -252,6 +252,9 @@ public class PlayerModel extends Observable implements Observer {
 			} else {
 				selectedTerritory.setArmies(selectedTerritory.getArmies() - armies);
 				adjTerritory.setArmies(adjTerritory.getArmies() + armies);
+				MapUtil.appendTextToGameConsole(
+						armies + " armies fortified on territory: " + adjTerritory.getName() + "\n", gameConsole);
+				MapUtil.appendTextToGameConsole("=======Fortification ended=======\n", gameConsole);
 				setChanged();
 				notifyObservers("Reinforcement");
 			}
@@ -300,11 +303,11 @@ public class PlayerModel extends Observable implements Observer {
 	 * Place Armies
 	 * 
 	 * @param playerPlaying
-	 * 						get current PlayerPlaying object
+	 *            get current PlayerPlaying object
 	 * @param selectedTerritoryList
-	 * 						get Selected Territory List for List View
+	 *            get Selected Territory List for List View
 	 * @param gamePlayerList
-	 * 						gamePlayer List
+	 *            gamePlayer List
 	 */
 	public void placeArmy(Player playerPlaying, ListView<Territory> selectedTerritoryList, List<Player> gamePlayerList,
 			TextArea gameConsole) {
@@ -355,9 +358,9 @@ public class PlayerModel extends Observable implements Observer {
 	 * Check if Attack Move is Valid
 	 * 
 	 * @param attacking
-	 * 					attacking Territory
+	 *            attacking Territory
 	 * @param defending
-	 * 					defending Territory
+	 *            defending Territory
 	 * 
 	 * @return isValidAttackMove if the attack move is valid
 	 * 
@@ -381,9 +384,9 @@ public class PlayerModel extends Observable implements Observer {
 	 * Check if player has valid attack move
 	 * 
 	 * @param territories
-	 * 					territories List View
+	 *            territories List View
 	 * @param gameConsole
-	 * 					gameConsole text area
+	 *            gameConsole text area
 	 * 
 	 * @return true if player has valid move else false
 	 */
@@ -408,7 +411,7 @@ public class PlayerModel extends Observable implements Observer {
 	 * Check if any Player Lost the Game
 	 * 
 	 * @param playersPlaying
-	 * 					playerPlaying List 
+	 *            playerPlaying List
 	 * 
 	 * @return Player Object who lost the game
 	 */
@@ -471,14 +474,14 @@ public class PlayerModel extends Observable implements Observer {
 	public void setTerritoryWon(int territoryWon) {
 		this.territoryWon = territoryWon;
 	}
-	
+
 	/**
 	 * Update
 	 * 
 	 * @param Observable
-	 *            Observabel object        
-	 * @param args 
-	 * 			  Object arg           
+	 *            Observabel object
+	 * @param args
+	 *            Object arg
 	 */
 	public void update(Observable o, Object arg) {
 		String view = (String) arg;

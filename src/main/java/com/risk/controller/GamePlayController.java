@@ -52,7 +52,7 @@ import javafx.scene.layout.VBox;
  *
  */
 public class GamePlayController implements Initializable, Observer {
-	
+
 	/**
 	 * The @map refrence.
 	 */
@@ -113,7 +113,7 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private Button reinforcement;
-	
+
 	/**
 	 * The @cards button.
 	 */
@@ -326,11 +326,6 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	private void assignCardToPlayer() {
 		playerPlaying.getPlayerCardList().add(cardStack.pop());
-		playerPlaying.getPlayerCardList().add(cardStack.pop());
-		playerPlaying.getPlayerCardList().add(cardStack.pop());
-		playerPlaying.getPlayerCardList().add(cardStack.pop());
-		playerPlaying.getPlayerCardList().add(cardStack.pop());
-		playerPlaying.getPlayerCardList().add(cardStack.pop());
 	}
 
 	/**
@@ -361,12 +356,10 @@ public class GamePlayController implements Initializable, Observer {
 		Territory selectedTerritory = this.selectedTerritoryList.getSelectionModel().getSelectedItem();
 		Territory adjTerritory = this.adjTerritoryList.getSelectionModel().getSelectedItem();
 
-		playerModel.fortificationPhase(selectedTerritory, adjTerritory);
+		playerModel.fortificationPhase(selectedTerritory, adjTerritory, gameConsole);
 		selectedTerritoryList.refresh();
 		adjTerritoryList.refresh();
 		loadMapData();
-
-		MapUtil.appendTextToGameConsole("=======Fortification ended=======\n", gameConsole);
 	}
 
 	/**
@@ -461,12 +454,12 @@ public class GamePlayController implements Initializable, Observer {
 			MapUtil.appendTextToGameConsole("Error!. No player playing.", gameConsole);
 		}
 	}
-	
+
 	/**
 	 * Initialize Card Window for current Player playing.
 	 */
 	@FXML
-	public void initCardWindow() {
+	public void initCardWindow(ActionEvent event) {
 		cardModel.openCardWindow(playerPlaying, cardModel);
 	}
 
@@ -482,13 +475,12 @@ public class GamePlayController implements Initializable, Observer {
 		reinforcement.requestFocus();
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("======Reinforcement phase started! =========== \n", gameConsole);
-		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "\n", gameConsole);
-		initCardWindow();
 		calculateReinforcementArmies();
 	}
-	
+
 	/**
-	 * Set Launch Attack Event when a adjacent territory is selected from adjTerritory List.
+	 * Set Launch Attack Event when a adjacent territory is selected from
+	 * adjTerritory List.
 	 */
 	private void setLaunchAttackEvent() {
 		adjTerritoryList.setOnMouseClicked(e -> attack());
@@ -520,7 +512,7 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("====Fortification phase started! ====== \n", gameConsole);
 	}
-	
+
 	/**
 	 * Populate World Domination Data.
 	 */
@@ -534,7 +526,7 @@ public class GamePlayController implements Initializable, Observer {
 		pieChartData.addAll(chartData);
 		dominationChart.setData(pieChartData);
 	}
-	
+
 	/**
 	 * Check If Any Player Lost the game.
 	 */
@@ -545,9 +537,13 @@ public class GamePlayController implements Initializable, Observer {
 			playerIterator = gamePlayerList.iterator();
 			MapUtil.infoBox("Player: " + playerLost.getName() + " lost all his territory and is out of the game",
 					"Info", "");
+			MapUtil.appendTextToGameConsole(playerLost.getName() + " lost all territories and lost the game.\n",
+					gameConsole);
+			MapUtil.appendTextToGameConsole("==============================================================\n",
+					gameConsole);
 		}
 	}
-	
+
 	/**
 	 * Check If Any Player Won the game.
 	 */
@@ -560,9 +556,9 @@ public class GamePlayController implements Initializable, Observer {
 
 		return playerWon;
 	}
-	
+
 	/**
-	 * Refresh View 
+	 * Refresh View
 	 */
 	private void refreshView() {
 		checkIfAnyPlayerLostTheGame();
@@ -620,7 +616,7 @@ public class GamePlayController implements Initializable, Observer {
 	public void setNumberOfPlayersSelected(int numberOfPlayersSelected) {
 		this.numberOfPlayersSelected = numberOfPlayersSelected;
 	}
-	
+
 	/**
 	 * Trade Cards for Armies
 	 * 
@@ -658,6 +654,7 @@ public class GamePlayController implements Initializable, Observer {
 			initializeAttack();
 		}
 		if (view.equals("Reinforcement")) {
+			cardModel.openCardWindow(playerPlaying, cardModel);
 			initializeReinforcement();
 		}
 		if (view.equals("Fortification")) {
@@ -683,14 +680,14 @@ public class GamePlayController implements Initializable, Observer {
 			tradeCardsForArmy(cm);
 		}
 	}
-	
+
 	/**
 	 * Get Number of Card Sets Exhanged
 	 */
 	public int getNumberOfCardSetExchanged() {
 		return numberOfCardSetExchanged;
 	}
-	
+
 	/**
 	 * Set Number of Card Sets Exhanged
 	 */

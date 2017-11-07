@@ -68,6 +68,12 @@ public class CardController implements Initializable {
 	private CardModel cardModel;
 	
 	/**
+	 * The @cancelCardView.
+	 */
+	@FXML
+	private Button cancelCardView;
+	
+	/**
 	 * Constructor for CardController
 	 * 
 	 * @param playerPlaying
@@ -112,6 +118,14 @@ public class CardController implements Initializable {
 		}
 		cardVbox.getChildren().addAll(cbs);
 	}	
+	
+	/**
+	 * 
+	 */
+	@FXML
+	private void cancelCardView(ActionEvent event) {
+		GameUtil.closeScreen(cancelCardView);
+	}
 	
 	/**
 	 * trade
