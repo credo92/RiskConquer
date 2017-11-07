@@ -171,6 +171,38 @@ public class PlayerModelTest {
 	}
 	
 	/**
+	 * This method tests whether Fortification phase is valid by setting territories armies to 2  
+	 */
+	@Test
+	public void isFortificationPhaseValidTrue()
+	{  
+	 map.getContinents().get(0).setTerritories(listOfTerritories);
+	 map.getContinents().get(0).getTerritories().get(0).setPlayer(player);
+	 map.getContinents().get(0).getTerritories().get(0).setArmies(2);
+	 map.getContinents().get(0).getTerritories().get(0).getAdjacentTerritories().get(0).setPlayer(player);
+	 
+	 boolean isFortificationPhaseValid = playerModel.isFortificationPhaseValid(map, player);
+	 
+	 Assert.assertEquals(true, isFortificationPhaseValid);
+	}
+	
+	/**
+	 * This method tests whether Fortification phase is valid by setting territories armies to 0  
+	 */
+	@Test
+	public void isFortificationPhaseValidFalse()
+	{  	 
+	 map.getContinents().get(0).setTerritories(listOfTerritories);
+	 map.getContinents().get(0).getTerritories().get(0).setPlayer(player);
+	 map.getContinents().get(0).getTerritories().get(0).setArmies(0);
+	 map.getContinents().get(0).getTerritories().get(0).getAdjacentTerritories().get(0).setPlayer(player);
+
+	 boolean isFortificationPhaseValid = playerModel.isFortificationPhaseValid(map, player);
+
+	 Assert.assertEquals(false, isFortificationPhaseValid);
+	}
+	
+	/**
 	 * This method whether same number of armies have been traded in return of valid combination of cards or not.
 	 */
 	@Test
