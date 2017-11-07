@@ -49,8 +49,6 @@ public class DiceModelTest {
 		attackerDiceValues = new ArrayList<Integer>();
 		defenderDiceValues = new ArrayList<Integer>();
 		diceModel = new DiceModel(attackingTerritory, defendingTerritory);
-		
-		attackingTerritory.setPlayer(0);
 	}	
 
 	/**
