@@ -654,8 +654,8 @@ public class GamePlayController implements Initializable, Observer {
 			initializeAttack();
 		}
 		if (view.equals("Reinforcement")) {
-			cardModel.openCardWindow(playerPlaying, cardModel);
 			initializeReinforcement();
+			cardModel.openCardWindow(playerPlaying, cardModel);
 		}
 		if (view.equals("Fortification")) {
 			initializeFortification();

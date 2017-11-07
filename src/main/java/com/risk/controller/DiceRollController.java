@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.risk.entity.Territory;
 import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
@@ -42,7 +44,7 @@ public class DiceRollController implements Initializable {
 	 */
 	@FXML
 	private Label defenderPlayerName;
-	
+
 	/**
 	 * The @continueRoll button.
 	 */
@@ -183,7 +185,7 @@ public class DiceRollController implements Initializable {
 		loadAttackScreen();
 		showDice();
 	}
-	
+
 	/**
 	 * Load attack Screen for attacker and defender.
 	 */
@@ -199,7 +201,7 @@ public class DiceRollController implements Initializable {
 		defenderPlayerName.setText(defendingTerritory.getPlayer().getName());
 		defenderTerritoryName.setText("Territory: " + defendingTerritory.getName());
 		defenderArmies.setText("Armies: " + String.valueOf(defendingTerritory.getArmies()));
-
+		winnerName.setText(StringUtils.EMPTY);
 		// clear check boxes
 		GameUtil.clearCheckBox(attackerDice1, attackerDice2, attackerDice3, defenderDice1, defenderDice2);
 		// Hide output details
@@ -216,10 +218,15 @@ public class DiceRollController implements Initializable {
 	 */
 	@FXML
 	private void moveArmies(ActionEvent event) {
-		int armiesToMove = Integer.valueOf(numberOfArmiesInput.getText());
+		String value = numberOfArmiesInput.getText();
+		if (StringUtils.isEmpty(value)) {
+			MapUtil.infoBox("Please enter a number of armies to move", "Info", "");
+			return;
+		}
+		int armiesToMove = Integer.valueOf(value);
 		diceModel.moveArmies(armiesToMove, winnerName, moveArmies);
 	}
-	
+
 	/**
 	 * Move all armies
 	 * 
@@ -231,7 +238,7 @@ public class DiceRollController implements Initializable {
 		diceModel.moveAllArmies();
 		GameUtil.closeScreen(moveAllArmies);
 	}
-	
+
 	/**
 	 * Skip Move army
 	 * 
@@ -243,7 +250,7 @@ public class DiceRollController implements Initializable {
 		diceModel.skipMoveArmy();
 		GameUtil.closeScreen(skipMoveArmy);
 	}
-	
+
 	/**
 	 * Cancel Dice Roll
 	 */
@@ -287,7 +294,7 @@ public class DiceRollController implements Initializable {
 			GameUtil.hideControl(defenderDice2);
 		}
 	}
-	
+
 	/**
 	 * Roll Attacker Dice
 	 * 
@@ -303,7 +310,7 @@ public class DiceRollController implements Initializable {
 			}
 		}
 	}
-	
+
 	/**
 	 * Roll Defender Dice
 	 * 
@@ -319,9 +326,9 @@ public class DiceRollController implements Initializable {
 			}
 		}
 	}
-	
+
 	/**
-	 * Roll Dice 
+	 * Roll Dice
 	 * 
 	 * @param event
 	 *            action event
