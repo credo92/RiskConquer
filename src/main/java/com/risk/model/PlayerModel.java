@@ -30,6 +30,10 @@ public class PlayerModel extends Observable implements Observer {
 	 */
 	Player playerPlaying;
 	
+	public Player getPlayerPlaying() {
+		return playerPlaying;
+	}
+
 	/**
 	 * the @territoryWon
 	 */
