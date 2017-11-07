@@ -100,6 +100,5 @@ public class DiceModelTest {
 		diceModel.updateArmiesAfterAttack(defenderDiceValue, attackerDiceValue, playResult);
 		assertTrue(playResult.get(0).equals("Defender lost 1 army") ||
 				playResult.get(0).equals("Attacker lost 1 army."));
-	}
-		
+	}	
 }
