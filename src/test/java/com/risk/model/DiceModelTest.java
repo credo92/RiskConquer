@@ -35,11 +35,12 @@ public class DiceModelTest {
 	 * The @defenderDiceValues .
 	 */
 	static List<Integer> defenderDiceValues;
+	
+	static int defenderDiceValue, attackerDiceValue;
 
 	/**
 	 * This method is invoked at the start of the test class.
 	 */
-	static int defenderDiceValue, attackerDiceValue;
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -48,6 +49,8 @@ public class DiceModelTest {
 		attackerDiceValues = new ArrayList<Integer>();
 		defenderDiceValues = new ArrayList<Integer>();
 		diceModel = new DiceModel(attackingTerritory, defendingTerritory);
+		
+		attackingTerritory.setPlayer(0);
 	}	
 
 	/**
@@ -80,9 +83,14 @@ public class DiceModelTest {
 	}
 
 	@Test
-	public void updateArmiesAfterAttack() {
+	public void updateArmiesAfterAttackArmiesTest() {
 		List<String> playResult = new ArrayList<>();
+		int checkAttackerArmies = attackingTerritory.getArmies() - 1;
+		int checkDefenderArmies = defendingTerritory.getArmies() - 1;	
 		diceModel.updateArmiesAfterAttack(defenderDiceValue, attackerDiceValue, playResult);
+		assertTrue(attackingTerritory.getArmies() ==  checkAttackerArmies||
+				 defendingTerritory.getArmies() == checkDefenderArmies);
+		
 		assertTrue(playResult.get(0).equals("Defender lost 1 army") ||
 				playResult.get(0).equals("Attacker lost 1 army."));
 	}
@@ -91,7 +99,17 @@ public class DiceModelTest {
 	public void getPlayResultAfterDiceThrown() {
 		List<String> playResult = new ArrayList<>();
 		diceModel.updateArmiesAfterAttack(defenderDiceValue, attackerDiceValue, playResult);
-		System.out.println(diceModel.getPlayResultAfterDiceThrown());
-		//assertTrue(diceModel.getPlayResultAfterDiceThrown().size() > 0);	
+		assertTrue(playResult.get(0).equals("Defender lost 1 army") ||
+				playResult.get(0).equals("Attacker lost 1 army."));
 	}
+	
+	@Test
+	public void reassignTerritory() {
+		/*List<Territory> defendersTerritories = defendingTerritory.getPlayer().getAssignedTerritory();
+		diceModel.reassignTerritory();
+		defendersTerritories.remove(defendingTerritory);
+		defendingTerritory.setPlayer(attackingTerritory.getPlayer());
+		attackingTerritory.getPlayer().getAssignedTerritory().add(defendingTerritory);*/
+	}
+	
 }
