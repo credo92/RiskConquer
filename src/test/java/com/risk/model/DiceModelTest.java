@@ -8,6 +8,8 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
+
+import com.risk.entity.Player;
 import com.risk.entity.Territory;
 
 public class DiceModelTest {
@@ -35,6 +37,8 @@ public class DiceModelTest {
 	 * The @defenderDiceValues .
 	 */
 	static List<Integer> defenderDiceValues;
+	
+	static Player player;
 	
 	static int defenderDiceValue, attackerDiceValue;
 
@@ -88,9 +92,6 @@ public class DiceModelTest {
 		diceModel.updateArmiesAfterAttack(defenderDiceValue, attackerDiceValue, playResult);
 		assertTrue(attackingTerritory.getArmies() ==  checkAttackerArmies||
 				 defendingTerritory.getArmies() == checkDefenderArmies);
-		
-		assertTrue(playResult.get(0).equals("Defender lost 1 army") ||
-				playResult.get(0).equals("Attacker lost 1 army."));
 	}
 	
 	@Test
@@ -100,14 +101,5 @@ public class DiceModelTest {
 		assertTrue(playResult.get(0).equals("Defender lost 1 army") ||
 				playResult.get(0).equals("Attacker lost 1 army."));
 	}
-	
-	@Test
-	public void reassignTerritory() {
-		/*List<Territory> defendersTerritories = defendingTerritory.getPlayer().getAssignedTerritory();
-		diceModel.reassignTerritory();
-		defendersTerritories.remove(defendingTerritory);
-		defendingTerritory.setPlayer(attackingTerritory.getPlayer());
-		attackingTerritory.getPlayer().getAssignedTerritory().add(defendingTerritory);*/
-	}
-	
+		
 }

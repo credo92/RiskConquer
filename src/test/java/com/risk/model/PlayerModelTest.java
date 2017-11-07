@@ -9,14 +9,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.risk.constant.CardType;
+import com.risk.constant.MapConstant;
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
+import com.risk.map.util.MapUtil;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 
 public class PlayerModelTest {
@@ -39,6 +42,8 @@ public class PlayerModelTest {
 	static List<Continent> listOfContinents;	
 	static List<Territory> listOfTerritories;
 	static List<Card> listOfCards;
+	static List<Player> players;
+
 	
 	static JFXPanel fxPanel;
 	
@@ -54,7 +59,7 @@ public class PlayerModelTest {
 		territory1 = new Territory();
 		territory2 = new Territory();
 		map = new Map();
-		player = new Player(1, "Sonu");
+		player = new Player(1, "Sonu");	
 		textArea = new TextArea();
 		listOfContinents = new ArrayList<>();
 		listOfTerritories = new ArrayList<>();
@@ -73,9 +78,11 @@ public class PlayerModelTest {
 		territory1.setBelongToContinent(continent);
 		territory2.setName(territoryName2);
 		territory2.setBelongToContinent(continent);		
-		territory2.getAdjacentTerritories().add(territory2);
-		territory1.setAdjacentTerritories(territory2.getAdjacentTerritories());		
+		
 		territory1.getAdjacentTerritories().add(territory1);
+		territory1.setAdjacentTerritories(territory2.getAdjacentTerritories());		
+
+		territory2.getAdjacentTerritories().add(territory2);
 		territory2.setAdjacentTerritories(territory1.getAdjacentTerritories());
 		
 		listOfContinents.add(continent);
@@ -108,6 +115,28 @@ public class PlayerModelTest {
 		map.setContinents(listOfContinents);
 		Player returnedPlayer = playerModel.calculateReinforcementArmies(map, player);
 		Assert.assertEquals(returnedPlayer.getArmies(), 122);
+	}
+	
+
+	@Test
+	public void getContinentsOwnedByPlayer() {
+		List<Continent> continents = new ArrayList<>();
+		map.getContinents().get(0).setTerritories(listOfTerritories);
+		map.getContinents().get(0).getTerritories().get(0).setPlayer(player);
+		continents = playerModel.getContinentsOwnedByPlayer(map, player);
+		Assert.assertEquals("Asia", continents.get(0).getName());
+	}
+	
+	
+	@Test
+	public void createPlayer() {
+		List<Player> playerTest = new ArrayList<>();
+		players = new ArrayList<>();
+		players.add(new Player(0, "Player0"));
+		players.add(new Player(1, "Player1"));
+		players.add(new Player(2, "Player2"));
+		playerModel.createPlayer(players.size(), playerTest, textArea);
+		Assert.assertEquals(3, playerTest.size());   
 	}
 	
 	/**
@@ -167,7 +196,7 @@ public class PlayerModelTest {
 		player.setAssignedTerritory(listOfTerritories);
 		
 		Player returnedPlayer = playerModel.calculateReinforcementArmies(map, player);
-		Assert.assertEquals(returnedPlayer.getArmies(), 138);
+		Assert.assertEquals(returnedPlayer.getArmies(), 145);
 	}
 	
 	/**
@@ -181,6 +210,48 @@ public class PlayerModelTest {
 		playerModel.setPlayerPlaying(player);
 		Player returnedPlayer = playerModel.tradeCardsForArmy(listOfCards, 1, textArea);
 		Assert.assertEquals(105, returnedPlayer.getArmies());
-	}	
+	}
+	
+	
+	@Test
+	public void assignArmiesToPlayers() {
+		players = new ArrayList<>();
+		players.add(new Player(1, "sonu"));
+		players.add(new Player(2, "Monu"));
+		players.add(new Player(3, "Nonu"));
+		boolean resultPlayerThree = playerModel.assignArmiesToPlayers(players, textArea);
+		Assert.assertTrue(resultPlayerThree);
+		Assert.assertEquals(15, players.get(0).getArmies());
+		
+		players = new ArrayList<>();
+		players.add(new Player(1, "sonu"));
+		players.add(new Player(2, "Monu"));
+		players.add(new Player(3, "Nonu"));
+		players.add(new Player(4, "Sam"));
+		boolean resultPlayerFour = playerModel.assignArmiesToPlayers(players, textArea);
+		Assert.assertTrue(resultPlayerFour);
+		Assert.assertEquals(30, players.get(0).getArmies());
+		
+		players = new ArrayList<>();
+		players.add(new Player(1, "sonu"));
+		players.add(new Player(2, "Monu"));
+		players.add(new Player(3, "Nonu"));
+		players.add(new Player(4, "Sam"));
+		players.add(new Player(5, "John"));
+		boolean resultPlayerFive = playerModel.assignArmiesToPlayers(players, textArea);
+		Assert.assertTrue(resultPlayerFive);
+		Assert.assertEquals(25, players.get(0).getArmies());
+		
+		players = new ArrayList<>();
+		players.add(new Player(1, "sonu"));
+		players.add(new Player(2, "Monu"));
+		players.add(new Player(3, "Nonu"));
+		players.add(new Player(4, "Sam"));
+		players.add(new Player(5, "John"));
+		players.add(new Player(6, "Harry"));
+		boolean resultPlayerSix = playerModel.assignArmiesToPlayers(players, textArea);
+		Assert.assertTrue(resultPlayerSix);
+		Assert.assertEquals(20, players.get(0).getArmies());
+	}
 	
 }
