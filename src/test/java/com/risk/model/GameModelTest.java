@@ -27,23 +27,80 @@ import javafx.scene.control.TextArea;
  */
 public class GameModelTest {
 	
+	/**
+	 * The @gameModel reference
+	 */
 	static GameModel gameModel;
+	
+	/**
+	 * The @continent reference
+	 */
 	static Continent continent;
+	
+	/**
+	 * The @territory1
+	 */
 	static Territory territory1;
+	
+	/**
+	 * The @territory2
+	 */
 	static Territory territory2;
+	
+	/**
+	 * The @map reference
+	 */
 	static Map map;
+	
+	/**
+	 * The @playerreference
+	 */
 	static Player player;
+	
+	/**
+	 * The @textArea
+	 */
 	@FXML
 	static TextArea textArea;
+	
+	/**
+	 * The @fxPanel
+	 */
 	static JFXPanel fxPanel;
 	
+	/**
+	 * The @continentName
+	 */
 	String continentName = "Asia";
-	String controlValue = "7";	
+	
+	/**
+	 * The @controlValue
+	 */
+	String controlValue = "7";
+	
+	/**
+	 * The @territoryName1
+	 */
 	String territoryName1 = "India";
+	
+	/**
+	 * The @territoryName2
+	 */
 	String territoryName2 = "China";	
 	
+	/**
+	 * The @listOfContinents
+	 */
 	static List<Continent> listOfContinents;
+	
+	/**
+	 * The @listOfTerritories
+	 */
 	static List<Territory> listOfTerritories;
+	
+	/**
+	 * The @listOfPlayers
+	 */
 	static List<Player> listOfPlayers;
 	
 	/**

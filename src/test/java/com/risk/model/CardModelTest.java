@@ -20,9 +20,24 @@ import com.risk.entity.Territory;
  */
 public class CardModelTest {
 	
+	/**
+	 * The @cardModel reference
+	 */
 	static CardModel cardModel;	
+	
+	/**
+	 * The @listOfCards
+	 */
 	static List<Card> listOfCards;
+	
+	/**
+	 * The @listOfContinents
+	 */
 	static List<Continent> listOfContinents;
+	
+	/**
+	 * The @listOfTerr
+	 */
 	static List<Territory> listOfTerr;
 	
 	/**

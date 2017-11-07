@@ -47,6 +47,7 @@ public class PlayerModel extends Observable implements Observer {
 	 *            number of players input by user.
 	 * @param textArea
 	 *            to show up data on UI.
+	 * @return isAssignationSuccess      
 	 */
 	public boolean assignArmiesToPlayers(List<Player> players, TextArea textArea) {
 		MapUtil.appendTextToGameConsole("===Assigning armies to players.===\n", textArea);
@@ -189,6 +190,8 @@ public class PlayerModel extends Observable implements Observer {
 	 * 						    attacking territory object
 	 * @param defendingTerritory
 	 * 						   defending territory object
+	 * @throws InvalidGameMoveException
+	 * 						   exception for invalid game move
 	 */
 	public void attackPhase(Territory attackingTerritory, Territory defendingTerritory)
 			throws InvalidGameMoveException {
@@ -305,6 +308,7 @@ public class PlayerModel extends Observable implements Observer {
 	 * 						get Selected Territory List for List View
 	 * @param gamePlayerList
 	 * 						gamePlayer List
+	 * @param gameConsole game console 
 	 */
 	public void placeArmy(Player playerPlaying, ListView<Territory> selectedTerritoryList, List<Player> gamePlayerList,
 			TextArea gameConsole) {
@@ -361,7 +365,7 @@ public class PlayerModel extends Observable implements Observer {
 	 * 
 	 * @return isValidAttackMove if the attack move is valid
 	 * 
-	 * @throws InvalidGameMoveException
+	 * @throws InvalidGameMoveException exception that checks whether game move is invalid or not
 	 */
 	public boolean isAValidAttackMove(Territory attacking, Territory defending) throws InvalidGameMoveException {
 		boolean isValidAttackMove = false;
@@ -410,7 +414,7 @@ public class PlayerModel extends Observable implements Observer {
 	 * @param playersPlaying
 	 * 					playerPlaying List 
 	 * 
-	 * @return Player Object who lost the game
+	 * @return playerLost player who lost the game
 	 */
 	public Player checkIfAnyPlayerLostTheGame(List<Player> playersPlaying) {
 		Player playerLost = null;
@@ -425,12 +429,13 @@ public class PlayerModel extends Observable implements Observer {
 	/**
 	 * This method is used to trade armies for valid combination of cards.
 	 * 
-	 * @param cards
+	 * @param selectedCards
 	 *            list of cards selected by currently playing player for exchange.
 	 * @param numberOfCardSetExchanged
 	 *            counter of number of times cards get changed.
 	 * @param gameConsole
 	 *            Console of the game.
+	 * @return playerPlaying           
 	 */
 	public Player tradeCardsForArmy(List<Card> selectedCards, int numberOfCardSetExchanged, TextArea gameConsole) {
 		playerPlaying.setArmies(playerPlaying.getArmies() + (5 * numberOfCardSetExchanged));
@@ -475,9 +480,9 @@ public class PlayerModel extends Observable implements Observer {
 	/**
 	 * Update
 	 * 
-	 * @param Observable
-	 *            Observabel object        
-	 * @param args 
+	 * @param o
+	 *            Observable object        
+	 * @param arg 
 	 * 			  Object arg           
 	 */
 	public void update(Observable o, Object arg) {

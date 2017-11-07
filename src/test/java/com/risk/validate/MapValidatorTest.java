@@ -22,22 +22,69 @@ import com.risk.exception.InvalidMapException;
  */
 public class MapValidatorTest {
 	
+	/**
+	 * The @mapValidator map validator object
+	 */
 	static MapValidator mapValidator;
 	
+	/**
+	 * The @continent reference to continent
+	 */
 	static Continent continent;
+	
+	/**
+	 * The @territory reference to territory
+	 */
 	static Territory territory;
+	
+	/**
+	 * The @map reference to map
+	 */
 	static Map map;
 	
+	/**
+	 * The @mapAuthor
+	 */
 	String mapAuthor = "Robert";
+	
+	/**
+	 * The @mapImage
+	 */
 	String mapImage = "world.map";
+	
+	/**
+	 * The @mapWrap
+	 */
 	String mapWrap = "no";
+	
+	/**
+	 * The @mapScroll
+	 */
 	String mapScroll = "horizontal";
+	
+	/**
+	 * The @mapWarn
+	 */
 	String mapWarn = "yes";
 	
+	/**
+	 * The @continentName
+	 */
 	String continentName = "Asia";
+	
+	/**
+	 * The @controlValue
+	 */
 	String controlValue = "7";
 	
+	/**
+	 * The @mapData
+	 */
 	static HashMap<String, String> mapData;
+	
+	/**
+	 * The @listOfContinents
+	 */
 	List<Continent> listOfContinents;
 	
 	/**
@@ -109,8 +156,7 @@ public class MapValidatorTest {
 	} 
 	
 	/**
-	 * This method is used to test if a continent is a sub-graph or not.
-	 * @throws InvalidMapException invalid map exception.
+	 * This method is used to test if a continent is a sub-graph or not..
 	 */
 	@Test
 	public void validateContinentForSubGraph(){		

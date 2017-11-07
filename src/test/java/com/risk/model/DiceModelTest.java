@@ -38,8 +38,14 @@ public class DiceModelTest {
 	 */
 	static List<Integer> defenderDiceValues;
 	
+	/**
+	 * The @player reference
+	 */
 	static Player player;
 	
+	/**
+	 * The @defenderDiceValue @attackerDiceValue 
+	 */
 	static int defenderDiceValue, attackerDiceValue;
 
 	/**
@@ -67,7 +73,10 @@ public class DiceModelTest {
 		attackerDiceValue = attackerDiceValues.get(0);
 		defenderDiceValue = defenderDiceValues.get(0);
 	}
-
+	
+	/**
+	 * This method tests whether more dice rolls are available.
+	 */
 	@Test
 	public void moreDiceRollAvailable() {
 		assertTrue(attackingTerritory.getArmies() > 2);
@@ -75,6 +84,9 @@ public class DiceModelTest {
 		assertEquals(true, diceModel.moreDiceRollAvailable());
 	}
 	
+	/**
+	 * This method tests whether more dice rolls are available in the case when they are false.
+	 */
 	@Test
 	public void moreDiceRollAvailablePassWrongValues() {
 		attackingTerritory.setArmies(1);
@@ -83,7 +95,10 @@ public class DiceModelTest {
 		assertFalse(defendingTerritory.getArmies() > 0);
 		assertEquals(false, diceModel.moreDiceRollAvailable());
 	}
-
+	
+	/**
+	 * This method tests whether armies for attacker defender are updated after attack
+	 */
 	@Test
 	public void updateArmiesAfterAttackArmiesTest() {
 		List<String> playResult = new ArrayList<>();
@@ -94,6 +109,9 @@ public class DiceModelTest {
 				 defendingTerritory.getArmies() == checkDefenderArmies);
 	}
 	
+	/**
+	 * This method tests the play result after dice is thrown
+	 */
 	@Test
 	public void getPlayResultAfterDiceThrown() {
 		List<String> playResult = new ArrayList<>();

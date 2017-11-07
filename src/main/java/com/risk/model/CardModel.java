@@ -34,6 +34,9 @@ public class CardModel extends Observable{
 	
 	/**
 	 * Get cards to be Exchanged .
+	 * 
+	 * @return cardsToBeExchange
+	 * 							returns the cards to be exchanged
 	 */
 	public List<Card> getCardsToBeExchange() {
 		return cardsToBeExchange;
@@ -41,6 +44,8 @@ public class CardModel extends Observable{
 	
 	/**
 	 * Set cards to be Exchanged .
+	 * 
+	 * @param cardsToBeExchange set cards to be exchanged
 	 */
 	public void setCardsToBeExchange(List<Card> cardsToBeExchange) {
 		this.cardsToBeExchange = cardsToBeExchange;
@@ -48,7 +53,10 @@ public class CardModel extends Observable{
 
 	/**
 	 * This method is used to open up the Card pop-up for particular player playing in the game.
-	 * @param player currently player playing.
+	 * @param player 
+	 * 				currently player playing.
+	 * @param cardModel
+	 * 			    get reference to card model
 	 */
 	public void openCardWindow(Player player, CardModel cardModel) {
 		this.playerPlaying = player;
@@ -70,9 +78,12 @@ public class CardModel extends Observable{
 	
 	/**
 	 * This method is used to return selected cards on the basis of checkboxes selected.
-	 * @param cards list of cards held by currently playing player.
-	 * @param checkboxes array of checkboxes depicting each card.
-	 * @return list of selected cards which is subset of main list.
+	 * @param cards 
+	 * 				   list of cards held by currently playing player.
+	 * @param checkboxes 
+	 * 					array of checkboxes depicting each card.
+	 * @return selectedCards 
+	 * 					list of selected cards which is subset of main list.
 	 */
 	public List<Card> retrieveSelectedCardsFromCheckbox(List<Card> cards, CheckBox[] checkboxes) {
 		int counter=0;
@@ -88,8 +99,10 @@ public class CardModel extends Observable{
 	
 	/**
 	 * This method is used to check whether selected 3 cards form a valid combination or not.
-	 * @param cards list of cards selected by currently playing player.
-	 * @return true for valid card combination and false for invalid combination. 
+	 * @param selectedCards 
+	 * 						list of cards selected by currently playing player.
+	 * @return returnFlag
+	 * 						 true for valid card combination and false for invalid combination. 
 	 */
 	public boolean checkTradePossible(List<Card> selectedCards) {
 		boolean returnFlag = false;

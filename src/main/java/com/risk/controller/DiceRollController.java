@@ -159,11 +159,8 @@ public class DiceRollController implements Initializable {
 	/**
 	 * Constructor for DiceRollController
 	 * 
-	 * @param attackingTerritory
-	 *            reference to get details about attacking territory
-	 * 
-	 * @param defendingTerritory
-	 *            reference to get details about defending territory
+	 * @param diceModel
+	 *            reference to get details about diceModel
 	 */
 	public DiceRollController(DiceModel diceModel) {
 		this.diceModel = diceModel;

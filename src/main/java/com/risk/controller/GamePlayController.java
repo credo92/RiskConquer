@@ -178,6 +178,7 @@ public class GamePlayController implements Initializable, Observer {
 	 * The @playerIterator.
 	 */
 	private Iterator<Player> playerIterator;
+	
 	/**
 	 * The @stackOfCards.
 	 */
@@ -673,6 +674,9 @@ public class GamePlayController implements Initializable, Observer {
 	
 	/**
 	 * Get Number of Card Sets Exhanged
+	 * 
+	 * @return numberOfCardSetExchanged 
+	 * 									returns the number of card set exchanged
 	 */
 	public int getNumberOfCardSetExchanged() {
 		return numberOfCardSetExchanged;
@@ -680,6 +684,8 @@ public class GamePlayController implements Initializable, Observer {
 	
 	/**
 	 * Set Number of Card Sets Exhanged
+	 * 
+	 * @param numberOfCardSetExchanged number of card set exchanged to set 
 	 */
 	public void setNumberOfCardSetExchanged(int numberOfCardSetExchanged) {
 		this.numberOfCardSetExchanged = numberOfCardSetExchanged;
