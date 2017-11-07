@@ -36,10 +36,6 @@ public class DiceModelTest {
 	 */
 	static List<Integer> defenderDiceValues;
 
-	@Rule public ErrorCollector collector = new ErrorCollector();
-
-	
-
 	/**
 	 * This method is invoked at the start of the test class.
 	 */
