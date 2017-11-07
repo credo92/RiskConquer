@@ -149,36 +149,20 @@ public class PlayerModelTest {
 	}
 	
 	
-/*	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
-		boolean hasAValidMove = false;
-		for (Territory territory : territories.getItems()) {
-			if (territory.getArmies() > 1) {
-				hasAValidMove = true;
-			}
-		}
-		if (!hasAValidMove) {
-			MapUtil.appendTextToGameConsole("No valid attack move avialble move to Fortification phase.", gameConsole);
-			MapUtil.appendTextToGameConsole("===Attack phase ended! === \n", gameConsole);
-			setChanged();
-			notifyObservers("Fortification");
-			return hasAValidMove;
-		}
-		return hasAValidMove;
-	}*/
-	
 	@Test
 	public void playerHasAValidAttackMoveFalseCase() {
-		//System.out.println(listOfTerritories.get(0).getName());
-		List<Territory> test = new ArrayList<>();
 		territoryListView = new ListView<>();
 		territoryListView.getItems().add(listOfTerritories);
-		String arr[] = new String[1];
-
-		test.add((Territory) territoryListView.getItems().get(0));
-		System.out.println(test);
-
+		//not able to pass good type of list
 		//boolean result = playerModel.playerHasAValidAttackMove(territoryListView, textArea);
-		//System.out.println(result);
+	}
+	
+	@Test
+	public void playerHasAValidAttackMove() {
+		territoryListView = new ListView<>();
+		territoryListView.getItems().add(listOfTerritories);
+		//not able to pass good type of list
+		//boolean result = playerModel.playerHasAValidAttackMove(territoryListView, textArea);
 	}
 	
 	@Test
