@@ -20,18 +20,20 @@ import com.risk.entity.Territory;
  */
 public class CardModelTest {
 	
-	static CardModel cardModel;
-	
-	List<Card> listOfCards = new ArrayList<>();
-	List<Continent> listOfContinents = new ArrayList<>();	
-	List<Territory> listOfTerr = new ArrayList<>();
+	static CardModel cardModel;	
+	static List<Card> listOfCards;
+	static List<Continent> listOfContinents;
+	static List<Territory> listOfTerr;
 	
 	/**
 	 * This method is invoked at the start of the test class.
 	 */
 	@BeforeClass
-	public static void beforeClass() {
+	public static void beforeClass() {		
 		cardModel = new CardModel();
+		listOfCards = new ArrayList<>();
+		listOfContinents = new ArrayList<>();
+		listOfTerr = new ArrayList<>();
 	}
 	
 	/**

@@ -8,10 +8,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.risk.constant.CardType;
+import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
+
+import javafx.embed.swing.JFXPanel;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 
 public class PlayerModelTest {
 	
@@ -22,20 +28,26 @@ public class PlayerModelTest {
 	static Territory territory2;
 	static Map map;
 	static Player player;
+	@FXML
+	static TextArea textArea;
 	
 	String continentName = "Asia";
 	String controlValue = "7";	
 	String territoryName1 = "India";
 	String territoryName2 = "China";	
 	
-	List<Continent> listOfContinents = new ArrayList<>();	
-	List<Territory> listOfTerritories = new ArrayList<>();
+	static List<Continent> listOfContinents;	
+	static List<Territory> listOfTerritories;
+	static List<Card> listOfCards;
+	
+	static JFXPanel fxPanel;
 	
 	/**
 	 * This method is invoked at the start of the test class.
 	 */
 	@BeforeClass
 	public static void beforeClass() {
+		fxPanel = new JFXPanel();
 		gameModel = new GameModel();
 		playerModel = new PlayerModel();
 		continent = new Continent();
@@ -43,6 +55,10 @@ public class PlayerModelTest {
 		territory2 = new Territory();
 		map = new Map();
 		player = new Player(1, "Sonu");
+		textArea = new TextArea();
+		listOfContinents = new ArrayList<>();
+		listOfTerritories = new ArrayList<>();
+		listOfCards = new ArrayList<>();
 	}	
 	
 	/**
@@ -91,7 +107,7 @@ public class PlayerModelTest {
 		listOfContinents.add(newContinent);
 		map.setContinents(listOfContinents);
 		Player returnedPlayer = playerModel.calculateReinforcementArmies(map, player);
-		Assert.assertEquals(returnedPlayer.getArmies(), 115);
+		Assert.assertEquals(returnedPlayer.getArmies(), 122);
 	}
 	
 	/**
@@ -151,7 +167,20 @@ public class PlayerModelTest {
 		player.setAssignedTerritory(listOfTerritories);
 		
 		Player returnedPlayer = playerModel.calculateReinforcementArmies(map, player);
-		Assert.assertEquals(returnedPlayer.getArmies(), 111);
+		Assert.assertEquals(returnedPlayer.getArmies(), 138);
 	}
-
+	
+	/**
+	 * This method whether same number of armies have been traded in return of valid combination of cards or not.
+	 */
+	@Test
+	public void tradeCardsForArmy() {
+		listOfCards.add(new Card(CardType.ARTILLERY));
+		listOfCards.add(new Card(CardType.CAVALRY));
+		listOfCards.add(new Card(CardType.INFANTRY));
+		playerModel.setPlayerPlaying(player);
+		Player returnedPlayer = playerModel.tradeCardsForArmy(listOfCards, 1, textArea);
+		Assert.assertEquals(105, returnedPlayer.getArmies());
+	}	
+	
 }
