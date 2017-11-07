@@ -39,6 +39,8 @@ public class DiceModelTest {
 	/**
 	 * This method is invoked at the start of the test class.
 	 */
+	static int defenderDiceValue, attackerDiceValue;
+	
 	@BeforeClass
 	public static void beforeClass() {
 		attackingTerritory = new Territory();
@@ -46,18 +48,7 @@ public class DiceModelTest {
 		attackerDiceValues = new ArrayList<Integer>();
 		defenderDiceValues = new ArrayList<Integer>();
 		diceModel = new DiceModel(attackingTerritory, defendingTerritory);
-		
-
 	}	
-
-	public void setRandomArmies() {
-		for(int i =0; i <3; i++) {
-			attackerDiceValues.add(diceModel.randomNumber());
-		}
-		for(int i =0; i <2; i++) {
-			defenderDiceValues.add(diceModel.randomNumber());
-		}
-	}
 
 	/**
 	 * This method is invoked at the start of all the test methods.
@@ -66,6 +57,10 @@ public class DiceModelTest {
 	public void beforeTest() {
 		attackingTerritory.setArmies(3);
 		defendingTerritory.setArmies(3);
+		attackerDiceValues.add(diceModel.randomNumber());
+		defenderDiceValues.add(diceModel.randomNumber());
+		attackerDiceValue = attackerDiceValues.get(0);
+		defenderDiceValue = defenderDiceValues.get(0);
 	}
 
 	@Test
@@ -74,23 +69,29 @@ public class DiceModelTest {
 		assertTrue(defendingTerritory.getArmies() > 0);
 		assertEquals(true, diceModel.moreDiceRollAvailable());
 	}
+	
+	@Test
+	public void moreDiceRollAvailablePassWrongValues() {
+		attackingTerritory.setArmies(1);
+		defendingTerritory.setArmies(0);
+		assertFalse(attackingTerritory.getArmies() > 2);
+		assertFalse(defendingTerritory.getArmies() > 0);
+		assertEquals(false, diceModel.moreDiceRollAvailable());
+	}
 
+	@Test
+	public void updateArmiesAfterAttack() {
+		List<String> playResult = new ArrayList<>();
+		diceModel.updateArmiesAfterAttack(defenderDiceValue, attackerDiceValue, playResult);
+		assertTrue(playResult.get(0).equals("Defender lost 1 army") ||
+				playResult.get(0).equals("Attacker lost 1 army."));
+	}
 	
 	@Test
 	public void getPlayResultAfterDiceThrown() {
-		setRandomArmies();
 		List<String> playResult = new ArrayList<>();
-		for (Integer defenderDiceValue : defenderDiceValues) {
-			for (Integer attackerDiceValue : attackerDiceValues) {
-				diceModel.updateArmiesAfterAttack(defenderDiceValue, attackerDiceValue, playResult);
-				break;
-			}
-			attackerDiceValues.remove(0);
-		}
-		
-		assertTrue(playResult.get(0).equals("Defender lost 1 army") ||
-				playResult.get(0).equals("Attacker lost 1 army."));
-		
+		diceModel.updateArmiesAfterAttack(defenderDiceValue, attackerDiceValue, playResult);
+		System.out.println(diceModel.getPlayResultAfterDiceThrown());
+		//assertTrue(diceModel.getPlayResultAfterDiceThrown().size() > 0);	
 	}
-
 }
