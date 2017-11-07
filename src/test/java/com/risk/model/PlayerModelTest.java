@@ -1,5 +1,6 @@
 package com.risk.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,15 +10,21 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.risk.constant.CardType;
+import com.risk.controller.DiceRollController;
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
+import com.risk.exception.InvalidGameMoveException;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 
 public class PlayerModelTest {
 	
@@ -200,6 +207,21 @@ public class PlayerModelTest {
 	 boolean isFortificationPhaseValid = playerModel.isFortificationPhaseValid(map, player);
 
 	 Assert.assertEquals(false, isFortificationPhaseValid);
+	}
+	
+	/**
+	 * This method checks whether attack move is valid or not by creating a new player
+	 */
+	@Test
+	public void isAValidAttackMoveTrue() throws InvalidGameMoveException
+	{   
+		Player player2 = new Player(2, "Monu");
+		territory1.setPlayer(player);
+		territory2.setPlayer(player2);
+		territory1.setArmies(3);
+		
+		Assert.assertEquals(true,playerModel.isAValidAttackMove(territory1, territory2));
+		
 	}
 	
 	/**
