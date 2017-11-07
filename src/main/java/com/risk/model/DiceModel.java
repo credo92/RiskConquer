@@ -62,6 +62,7 @@ public class DiceModel extends Observable {
 	
 	/**
 	 * Get Play Result after the dice is thrown
+	 * @return playResult 
 	 */
 	public List<String> getPlayResultAfterDiceThrown() {
 		List<String> playResult = new ArrayList<>();
@@ -87,7 +88,7 @@ public class DiceModel extends Observable {
 	 * @param attackerDiceValue
 	 * 			  Integer attackerDiceValue     
 	 * @param playResult
-	 * 			  List<String> playResult
+	 * 			   playResult
 	 */
 	public void updateArmiesAfterAttack(Integer defenderDiceValue, Integer attackerDiceValue, List<String> playResult) {
 		if (attackerDiceValue.compareTo(defenderDiceValue) == 0) {
@@ -142,6 +143,12 @@ public class DiceModel extends Observable {
 	
 	/**
 	 * Move Armies
+	 * @param armiesToMove
+	 *          		   Integer armies to move 
+	 * @param message
+	 * 					   Label message
+	 * @param moveArmies
+	 * 					   button move armies
 	 */
 	public void moveArmies(int armiesToMove, Label message, Button moveArmies) {
 		int currentArmies = getAttackingTerritory().getArmies();

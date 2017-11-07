@@ -673,6 +673,9 @@ public class GamePlayController implements Initializable, Observer {
 	
 	/**
 	 * Get Number of Card Sets Exhanged
+	 * 
+	 * @return numberOfCardSetExchanged 
+	 * 					 			get Number of cards set exchanged in the game
 	 */
 	public int getNumberOfCardSetExchanged() {
 		return numberOfCardSetExchanged;
@@ -680,6 +683,9 @@ public class GamePlayController implements Initializable, Observer {
 	
 	/**
 	 * Set Number of Card Sets Exhanged
+	 * 
+	 * @param numberOfCardSetExchanged
+	 * 								set number of card set exchanged
 	 */
 	public void setNumberOfCardSetExchanged(int numberOfCardSetExchanged) {
 		this.numberOfCardSetExchanged = numberOfCardSetExchanged;

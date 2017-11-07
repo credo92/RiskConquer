@@ -26,10 +26,11 @@ public class GameModel {
 	/**
 	 * Assign Card to Territory
 	 * 
-	 * @param Territory
-	 *            Territory list
+	 * @param map
+	 *            Reference to map object 
 	 * @param textAres
-	 *            game console
+	 *            textarea textares
+	 * @return stackOfCards         
 	 */
 	public Stack<Card> assignCardToTerritory(Map map, TextArea textAres) {
 		Stack<Card> stackOfCards = new Stack<Card>();
@@ -61,6 +62,7 @@ public class GameModel {
 	 *            players list
 	 * @param textAres
 	 *            game console
+	 * @return players
 	 */
 	public List<Player> assignTerritoryToPlayer(Map map, List<Player> players, TextArea textAres) {
 

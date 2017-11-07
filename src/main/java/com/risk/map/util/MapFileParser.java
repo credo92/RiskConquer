@@ -45,7 +45,7 @@ public class MapFileParser {
 	 * This further validates map object.
 	 * @param file of type {@link File}
 	 * @return map object of type {@link Map}
-	 * @throws InvalidMapException
+	 * @throws InvalidMapException checks whether the map is invalid
 	 */
 	public Map parseAndReadMapFile(File file) throws InvalidMapException {
 		this.map = convertMapFileToMapObject(file);
