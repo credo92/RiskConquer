@@ -10,7 +10,7 @@
     <children>
       <HBox layoutX="14.0" layoutY="8.0" prefHeight="40.0" prefWidth="379.0">
          <children>
-            <Label fx:id="gamePhase" prefHeight="31.0" prefWidth="130.0" text="Phase" textFill="#dd0606" underline="true" />
+            <Label fx:id="gamePhase" prefHeight="31.0" prefWidth="147.0" text="Phase" textFill="#dd0606" underline="true" />
              <Label prefHeight="36.0" prefWidth="140.0" text="Number of players: " />
             <ChoiceBox fx:id="numberOfPlayers" prefHeight="31.0" prefWidth="95.0" />
          </children>
