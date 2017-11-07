@@ -474,7 +474,7 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.enableControl(reinforcement);
 		reinforcement.requestFocus();
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
-		MapUtil.appendTextToGameConsole("======Reinforcement phase started! =========== \n", gameConsole);
+		MapUtil.appendTextToGameConsole("===Reinforcement phase started! ===\n", gameConsole);
 		calculateReinforcementArmies();
 	}
 
@@ -597,8 +597,8 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	private void noFortificationPhase() {
 		MapUtil.appendTextToGameConsole("====Fortification phase started! ====== \n", gameConsole);
-		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " has no armies to be fortified.", gameConsole);
-		loadPlayingPlayer();
+		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " has no armies to be fortified.\n", gameConsole);
+		MapUtil.appendTextToGameConsole("====Fortification phase ended! ====== \n", gameConsole);
 		initializeReinforcement();
 	}
 

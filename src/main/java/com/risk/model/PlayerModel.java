@@ -398,10 +398,10 @@ public class PlayerModel extends Observable implements Observer {
 			}
 		}
 		if (!hasAValidMove) {
-			MapUtil.appendTextToGameConsole("No valid attack move avialble move to Fortification phase.", gameConsole);
+			MapUtil.appendTextToGameConsole("No valid attack move avialble move to Fortification phase.\n", gameConsole);
 			MapUtil.appendTextToGameConsole("===Attack phase ended! === \n", gameConsole);
 			setChanged();
-			notifyObservers("Fortification");
+			notifyObservers("checkIfFortificationPhaseValid");
 			return hasAValidMove;
 		}
 		return hasAValidMove;
