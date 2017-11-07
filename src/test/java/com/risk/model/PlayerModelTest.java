@@ -33,28 +33,96 @@ import javafx.stage.Stage;
 
 public class PlayerModelTest {
 	
+	/**
+	 * The @gameModel reference.
+	 */
 	static GameModel gameModel;
+	
+	/**
+	 * The @playerModel reference.
+	 */
 	static PlayerModel playerModel;
+	
+	/**
+	 * The @continent reference.
+	 */
 	static Continent continent;
+	
+	/**
+	 * The @territory1 
+	 */
 	static Territory territory1;
+	
+	/**
+	 * The @territory2 
+	 */
 	static Territory territory2;
+	
+	/**
+	 * The @map reference.
+	 */
 	static Map map;
+	
+
+	/**
+	 * The @player reference.
+	 */
 	static Player player;
+	
+	/**
+	 * The @textArea.
+	 */
 	@FXML
 	static TextArea textArea;
+	
+	/**
+	 * The @territoryListView
+	 */
 	static ListView territoryListView;
 	
+	/**
+	 * The @continentName
+	 */
 	String continentName = "Asia";
+	
+	/**
+	 * The @controlValue
+	 */
 	String controlValue = "7";	
+	
+	/**
+	 * The @territoryName1
+	 */
 	String territoryName1 = "India";
+	
+	/**
+	 * The @territoryName2
+	 */
 	String territoryName2 = "China";	
 	
+	/**
+	 * The @listOfContinents
+	 */
 	static List<Continent> listOfContinents;	
-	static List<Territory> listOfTerritories;
-	static List<Card> listOfCards;
-	static List<Player> players;
-
 	
+	/**
+	 * The @listOfTerritories
+	 */
+	static List<Territory> listOfTerritories;
+	
+	/**
+	 * The @listOfCards
+	 */
+	static List<Card> listOfCards;
+	
+	/**
+	 * The @players
+	 */
+	static List<Player> players;
+	
+	/**
+	 * The @fxPanel
+	 */
 	static JFXPanel fxPanel;
 	
 	/**
@@ -127,7 +195,9 @@ public class PlayerModelTest {
 		Assert.assertEquals(returnedPlayer.getArmies(), 122);
 	}
 	
-
+	/**
+	 * This method tests number for number of continents owned by a player.
+	 */
 	@Test
 	public void getContinentsOwnedByPlayer() {
 		List<Continent> continents = new ArrayList<>();
@@ -137,7 +207,9 @@ public class PlayerModelTest {
 		Assert.assertEquals("Asia", continents.get(0).getName());
 	}
 	
-
+	/**
+	 * This method tests number if a player armies has exhausted.
+	 */
 	@Test
 	public void checkIfPlayersArmiesExhausted() {
 		players = new ArrayList<>();
@@ -146,6 +218,9 @@ public class PlayerModelTest {
 		Assert.assertTrue(playerModel.checkIfPlayersArmiesExhausted(players));
 	}
 	
+	/**
+	 * This method tests the case when number of armies for a player armies is not zero.
+	 */
 	@Test
 	public void checkIfPlayersArmiesExhaustedFalseCase() {
 		players = new ArrayList<>();
@@ -154,7 +229,9 @@ public class PlayerModelTest {
 		Assert.assertFalse(playerModel.checkIfPlayersArmiesExhausted(players));
 	}
 	
-	
+	/**
+	 * This method tests whether the player has a Invalid attack move .
+	 */
 	@Test
 	public void playerHasAValidAttackMoveFalseCase() {
 		territoryListView = new ListView<>();
@@ -163,6 +240,9 @@ public class PlayerModelTest {
 		//boolean result = playerModel.playerHasAValidAttackMove(territoryListView, textArea);
 	}
 	
+	/**
+	 * This method tests whether the player has a valid attack move .
+	 */
 	@Test
 	public void playerHasAValidAttackMove() {
 		territoryListView = new ListView<>();
@@ -171,6 +251,9 @@ public class PlayerModelTest {
 		//boolean result = playerModel.playerHasAValidAttackMove(territoryListView, textArea);
 	}
 	
+	/**
+	 * This method tests whether any player has lost the game 
+	 */
 	@Test
 	public void checkIfAnyPlayerLostTheGame() {
 		Player playerLost;
@@ -182,6 +265,9 @@ public class PlayerModelTest {
 		Assert.assertEquals("Player0", players.get(0).getName());
 	}
 	
+	/**
+	 * This method tests create Player functionality 
+	 */
 	@Test
 	public void createPlayer() {
 		List<Player> playerTest = new ArrayList<>();
@@ -286,7 +372,9 @@ public class PlayerModelTest {
 	}
 	
 	/**
-	 * This method checks whether attack move is valid or not by creating a new player
+	 * This method tests whether attack move is valid or not by creating a new player
+	 * @throws InvalidGameMoveException 
+	 * 									Exception to check whether the game move is invalid
 	 */
 	@Test
 	public void isAValidAttackMoveTrue() throws InvalidGameMoveException
@@ -301,7 +389,7 @@ public class PlayerModelTest {
 	}
 	
 	/**
-	 * This method whether same number of armies have been traded in return of valid combination of cards or not.
+	 * This method tests whether same number of armies have been traded in return of valid combination of cards or not.
 	 */
 	@Test
 	public void tradeCardsForArmy() {
@@ -313,7 +401,9 @@ public class PlayerModelTest {
 		Assert.assertEquals(105, returnedPlayer.getArmies());
 	}
 	
-	
+	/**
+	 * This method whether tests the assign armies to player functionality
+	 */
 	@Test
 	public void assignArmiesToPlayers() {
 		players = new ArrayList<>();
