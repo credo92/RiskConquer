@@ -39,54 +39,69 @@ public class CardModelTest {
 	 */
 	@Before
 	public void beforeTest() {
-				
+		listOfCards.clear();		
 	}
 	
 	/**
 	 * This method is used to check different combinations of cards and if trade is possible or not.
 	 */
 	@Test
-	public void checkTradePossible() {
+	public void checkTradePossibleForDiffCards() {
 		listOfCards.add(new Card(CardType.ARTILLERY));
 		listOfCards.add(new Card(CardType.CAVALRY));
 		listOfCards.add(new Card(CardType.INFANTRY));	
-		boolean expectedResult = cardModel.checkTradePossible(listOfCards);
-		Assert.assertEquals(expectedResult, true);
-		listOfCards.clear();
+		boolean actualResult = cardModel.checkTradePossible(listOfCards);
+		Assert.assertEquals(true, actualResult);		
+	}
+	
+	/**
+	 * This method is used to check similar combinations of cards (CAVALRY/INFANTRY/ARTILLERY) and if trade is possible or not.
+	 */
+	@Test
+	public void checkTradePossibleForSimilarCards() {		
+		listOfCards.add(new Card(CardType.CAVALRY));
+		listOfCards.add(new Card(CardType.CAVALRY));
+		listOfCards.add(new Card(CardType.CAVALRY));
+		boolean actualResult = cardModel.checkTradePossible(listOfCards);
+		Assert.assertEquals(true, actualResult);
+		listOfCards.clear();	
+		listOfCards.add(new Card(CardType.INFANTRY));
+		listOfCards.add(new Card(CardType.INFANTRY));
+		listOfCards.add(new Card(CardType.INFANTRY));
+		boolean actualResult1 = cardModel.checkTradePossible(listOfCards);
+		Assert.assertEquals(true, actualResult1);	
+		listOfCards.clear();	
 		listOfCards.add(new Card(CardType.ARTILLERY));
 		listOfCards.add(new Card(CardType.ARTILLERY));
 		listOfCards.add(new Card(CardType.ARTILLERY));
-		expectedResult = cardModel.checkTradePossible(listOfCards);
-		Assert.assertEquals(expectedResult, true);
-		listOfCards.clear();
-		listOfCards.add(new Card(CardType.CAVALRY));
-		listOfCards.add(new Card(CardType.CAVALRY));
-		listOfCards.add(new Card(CardType.CAVALRY));
-		expectedResult = cardModel.checkTradePossible(listOfCards);
-		Assert.assertEquals(expectedResult, true);
-		listOfCards.clear();
-		listOfCards.add(new Card(CardType.INFANTRY));
-		listOfCards.add(new Card(CardType.INFANTRY));
-		listOfCards.add(new Card(CardType.INFANTRY));
-		expectedResult = cardModel.checkTradePossible(listOfCards);
-		Assert.assertEquals(expectedResult, true);
-		listOfCards.clear();
+		boolean actualResult2 = cardModel.checkTradePossible(listOfCards);
+		Assert.assertEquals(true, actualResult2);
+	}
+	
+	/**
+	 * This method is used to check number of cards are not 3 and if trade is possible or not.
+	 */
+	@Test
+	public void checkTradePossibleForNNumberOfCardsFailure() {
 		listOfCards.add(new Card(CardType.CAVALRY));
 		listOfCards.add(new Card(CardType.INFANTRY));
-		listOfCards.add(new Card(CardType.INFANTRY));
-		expectedResult = cardModel.checkTradePossible(listOfCards);
-		Assert.assertEquals(expectedResult, false);
-		listOfCards.clear();
-		listOfCards.add(new Card(CardType.CAVALRY));
-		listOfCards.add(new Card(CardType.CAVALRY));
-		listOfCards.add(new Card(CardType.INFANTRY));
-		expectedResult = cardModel.checkTradePossible(listOfCards);
-		Assert.assertEquals(expectedResult, false);
-		listOfCards.clear();
 		listOfCards.add(new Card(CardType.ARTILLERY));
-		listOfCards.add(new Card(CardType.ARTILLERY));
+		listOfCards.add(listOfCards.get(0));
+		listOfCards.add(listOfCards.get(1));
+		listOfCards.add(listOfCards.get(2));
+		boolean actualResult = cardModel.checkTradePossible(listOfCards);
+		Assert.assertEquals(false, actualResult);
+	}
+	
+	/**
+	 * This method is used to check number of cards are 3 and if trade is possible or not.
+	 */
+	@Test
+	public void checkTradePossibleForNNumberOfCardsSuccess() {
+		listOfCards.add(new Card(CardType.CAVALRY));
 		listOfCards.add(new Card(CardType.INFANTRY));
-		expectedResult = cardModel.checkTradePossible(listOfCards);
-		Assert.assertEquals(expectedResult, false);
+		listOfCards.add(new Card(CardType.ARTILLERY));
+		boolean actualResult = cardModel.checkTradePossible(listOfCards);
+		Assert.assertEquals(true, actualResult);
 	}
 }
