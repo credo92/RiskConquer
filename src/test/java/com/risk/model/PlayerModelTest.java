@@ -27,14 +27,10 @@ import javafx.scene.control.TextArea;
 * @version 1.0.0
 */
 public class PlayerModelTest {
-<<<<<<< HEAD
 
-=======
-	
 	/**
 	 * The @gameModel.
 	 */
->>>>>>> java docs added
 	static GameModel gameModel;
 	
 	/**
@@ -72,20 +68,7 @@ public class PlayerModelTest {
 	 */
 	@FXML
 	static TextArea textArea;
-<<<<<<< HEAD
 
-	@FXML
-	static ListView<Territory> territoryListView;
-
-	String continentName = "Asia";
-	String controlValue = "7";
-	String territoryName1 = "India";
-	String territoryName2 = "China";
-
-	static List<Player> players;
-
-=======
-	
 	/**
 	 * The @territoryListView
 	 */
@@ -120,7 +103,6 @@ public class PlayerModelTest {
 	/**
 	 * The @fxPanel
 	 */
->>>>>>> java docs added
 	static JFXPanel fxPanel;
 
 	/**
