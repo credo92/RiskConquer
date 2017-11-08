@@ -304,7 +304,9 @@ public class GamePlayController implements Initializable, Observer {
 
 	/**
 	 * No more attack, move to fortification.
-	 * @param event action event
+	 * 
+	 * @param event
+	 *            action event
 	 */
 	@FXML
 	private void noMoreAttack(ActionEvent event) {
@@ -324,7 +326,7 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	/**
-	 * Attack on the defending territory. 
+	 * Attack on the defending territory.
 	 */
 	private void attack() {
 		Territory attackingTerritory = selectedTerritoryList.getSelectionModel().getSelectedItem();
@@ -450,7 +452,9 @@ public class GamePlayController implements Initializable, Observer {
 
 	/**
 	 * Initialize Card Window for current Player playing.
-	 * @param event event
+	 * 
+	 * @param event
+	 *            event
 	 */
 	@FXML
 	public void initCardWindow(ActionEvent event) {
@@ -539,6 +543,20 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	/**
+	 * Disbale game panel after player won.
+	 */
+	private void disableGamePanel() {
+		GameUtil.disableControl(selectedTerritoryList, adjTerritoryList, reinforcement, attack, fortify, cards,
+				endTurn);
+		gamePhase.setText("GAME OVER");
+		playerChosen.setText(playerPlaying.getName().toUpperCase() + " WON THE GAME");
+		MapUtil.appendTextToGameConsole("=====================================================\n", gameConsole);
+		MapUtil.appendTextToGameConsole(playerPlaying.getName().toUpperCase() + " WON THE GAME\n", gameConsole);
+		MapUtil.appendTextToGameConsole("=====================================================\n", gameConsole);
+
+	}
+
+	/**
 	 * Check If Any Player Won the game.
 	 */
 	private boolean checkIfPlayerWonTheGame() {
@@ -546,6 +564,7 @@ public class GamePlayController implements Initializable, Observer {
 		if (gamePlayerList.size() == 1) {
 			MapUtil.infoBox("Player: " + gamePlayerList.get(0).getName() + " won the game!", "Info", "");
 			playerWon = true;
+			disableGamePanel();
 		}
 
 		return playerWon;
@@ -561,7 +580,6 @@ public class GamePlayController implements Initializable, Observer {
 		for (Territory territory : playerPlaying.getAssignedTerritory()) {
 			selectedTerritoryList.getItems().add(territory);
 		}
-		checkIfAnyPlayerLostTheGame();
 		loadMapData();
 		populateWorldDominationData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");
@@ -605,6 +623,7 @@ public class GamePlayController implements Initializable, Observer {
 
 	/**
 	 * Set the number of players selected
+	 * 
 	 * @param numberOfPlayersSelected
 	 *            number of player selected
 	 */
@@ -679,6 +698,7 @@ public class GamePlayController implements Initializable, Observer {
 
 	/**
 	 * Get Number of Card Sets Exhanged
+	 * 
 	 * @return int number of card set exchanged.
 	 */
 	public int getNumberOfCardSetExchanged() {
@@ -687,7 +707,9 @@ public class GamePlayController implements Initializable, Observer {
 
 	/**
 	 * Set Number of Card Sets Exhanged
-	 * @param numberOfCardSetExchanged numberOfCardSetExchanged
+	 * 
+	 * @param numberOfCardSetExchanged
+	 *            numberOfCardSetExchanged
 	 */
 	public void setNumberOfCardSetExchanged(int numberOfCardSetExchanged) {
 		this.numberOfCardSetExchanged = numberOfCardSetExchanged;
