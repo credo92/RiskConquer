@@ -434,7 +434,13 @@ public class GamePlayController implements Initializable, Observer {
 		if (!playerIterator.hasNext()) {
 			playerIterator = gamePlayerList.iterator();
 		}
-		playerPlaying = playerIterator.next();
+		Player newPLayer =  playerIterator.next();
+		if (newPLayer.equals(playerPlaying)) {
+			if(playerIterator.hasNext()) {
+				newPLayer = playerIterator.next();
+			}
+		} 
+		playerPlaying = newPLayer;
 		playerModel.setPlayerPlaying(playerPlaying);
 		playerModel.setTerritoryWon(0);
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
