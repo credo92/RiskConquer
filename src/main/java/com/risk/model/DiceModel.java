@@ -191,12 +191,7 @@ public class DiceModel extends Observable {
 
 	/**
 	 * Check if more dice role available
-<<<<<<< HEAD
 	 * @return diceRollAvailable
-=======
-	 * 
-	 * @return the diceRollAvailable
->>>>>>> ec64737ba7f788623bafd85a4f7e97ab8d6dc5ff
 	 */
 	public boolean moreDiceRollAvailable() {
 		boolean diceRollAvailable = true;
@@ -283,13 +278,8 @@ public class DiceModel extends Observable {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Set Number Of Territories Won
 	 * @param numOfTerritoriesWon the numOfTerritoriesWon to set
-=======
-	 * @param numOfTerritoriesWon
-	 *            the numOfTerritoriesWon to set
->>>>>>> ec64737ba7f788623bafd85a4f7e97ab8d6dc5ff
 	 */
 	public void setNumOfTerritoriesWon(int numOfTerritoriesWon) {
 		this.numOfTerritoriesWon = numOfTerritoriesWon;
