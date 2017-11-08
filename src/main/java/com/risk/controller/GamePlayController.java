@@ -313,7 +313,7 @@ public class GamePlayController implements Initializable, Observer {
 			assignCardToPlayer();
 		}
 		MapUtil.appendTextToGameConsole("===Attack phase ended!===\n", gameConsole);
-		initializeFortification();
+		isValidFortificationPhase();
 	}
 
 	/**
@@ -362,6 +362,7 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private void endTurn(ActionEvent event) {
+		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " ended his turn.\n", gameConsole);
 		if (playerModel.getTerritoryWon() > 0) {
 			assignCardToPlayer();
 		}
