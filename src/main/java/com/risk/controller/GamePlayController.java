@@ -376,6 +376,7 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private void endTurn(ActionEvent event) {
+		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " ended his turn.\n", gameConsole);
 		if (playerModel.getTerritoryWon() > 0) {
 			assignCardToPlayer();
