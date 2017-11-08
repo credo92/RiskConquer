@@ -17,26 +17,26 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 /**
- * @author Vipul Srivastav
  * CardController controller for Card Exchange
- * @version 1.0.1
+ * @author Vipul Srivastav
+ * @version 1.0.0
  */
 public class CardController implements Initializable {
 
 	/**
-	 * The @tradeButton button.
+	 * The @trade button.
 	 */
 	@FXML
 	private Button trade; 
 
 	/**
-	 * The @currentPlayerId label.
+	 * The @currentPlayerName label.
 	 */
 	@FXML
 	private Label currentPlayerName;
 
 	/**
-	 * The @addedArmies label.
+	 * The @textToShow label.
 	 */
 	@FXML
 	private Label textToShow;

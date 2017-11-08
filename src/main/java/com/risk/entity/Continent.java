@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @author rahul
  * This is an entity class for Continent with name, value, territoryMap and territories as its member variables.
+ * @author rahul
  * @version 1.0.0
- *
  */
 public class Continent {
 	
@@ -41,6 +40,8 @@ public class Continent {
 	}
 
 	/**
+	 * Get Territory Map
+	 * 
 	 * @return the territoryMap
 	 */
 	public HashMap<String, Territory> getTerritoryMap() {
@@ -48,6 +49,8 @@ public class Continent {
 	}
 
 	/**
+	 * Set territory Map
+	 * 
 	 * @param territoryMap
 	 *            the territoryMap to set
 	 */
@@ -56,13 +59,17 @@ public class Continent {
 	}
 
 	/**
-	 * @return the name
+	 * Get name
+	 * 
+	 * @return name 
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
+	 * Set Name
+	 * 
 	 * @param name
 	 *            the name to set
 	 */
@@ -71,13 +78,17 @@ public class Continent {
 	}
 
 	/**
-	 * @return the value
+	 * Get Value
+	 * 
+	 * @return value 
 	 */
 	public String getValue() {
 		return value;
 	}
 
 	/**
+	 * Set Value
+	 * 
 	 * @param value
 	 *            the value to set
 	 */
@@ -86,13 +97,17 @@ public class Continent {
 	}
 
 	/**
-	 * @return the territories
+	 * Get Territories
+	 * 
+	 * @return territories 
 	 */
 	public List<Territory> getTerritories() {
 		return territories;
 	}
 
 	/**
+	 * Set territories
+	 * 
 	 * @param territories
 	 *            the territories to set
 	 */

@@ -12,10 +12,15 @@ import org.junit.rules.ErrorCollector;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 
+/**
+ * Dice Model Test class
+ * @author Gurpreet Singh
+ * @version 1.0.0
+ */
 public class DiceModelTest {
 
 	/**
-	 * The @diceModel .
+	 * The @diceModel.
 	 */
 	static DiceModel diceModel;
 	/**
@@ -38,14 +43,19 @@ public class DiceModelTest {
 	 */
 	static List<Integer> defenderDiceValues;
 	
+	/**
+	 * The @player reference
+	 */
 	static Player player;
 	
+	/**
+	 * The @defenderDiceValue @attackerDiceValue 
+	 */
 	static int defenderDiceValue, attackerDiceValue;
 
 	/**
 	 * This method is invoked at the start of the test class.
 	 */
-	
 	@BeforeClass
 	public static void beforeClass() {
 		attackingTerritory = new Territory();
@@ -67,7 +77,10 @@ public class DiceModelTest {
 		attackerDiceValue = attackerDiceValues.get(0);
 		defenderDiceValue = defenderDiceValues.get(0);
 	}
-
+	
+	/**
+	 * This method is used to check whether more dice rolls are available.
+	 */
 	@Test
 	public void moreDiceRollAvailable() {
 		assertTrue(attackingTerritory.getArmies() > 2);
@@ -75,6 +88,9 @@ public class DiceModelTest {
 		assertEquals(true, diceModel.moreDiceRollAvailable());
 	}
 	
+	/**
+	 * This method is used to check whether more dice rolls are available in the case when they are false.
+	 */
 	@Test
 	public void moreDiceRollAvailablePassWrongValues() {
 		attackingTerritory.setArmies(1);
@@ -84,6 +100,9 @@ public class DiceModelTest {
 		assertEquals(false, diceModel.moreDiceRollAvailable());
 	}
 
+	/**
+	 * This method is used to check whether armies for attacker defender are updated after attack
+	 */
 	@Test
 	public void updateArmiesAfterAttackArmiesTest() {
 		List<String> playResult = new ArrayList<>();
@@ -94,6 +113,9 @@ public class DiceModelTest {
 				 defendingTerritory.getArmies() == checkDefenderArmies);
 	}
 	
+	/**
+	 * This method is used to check whether we get the play result after dice is thrown
+	 */
 	@Test
 	public void getPlayResultAfterDiceThrown() {
 		List<String> playResult = new ArrayList<>();

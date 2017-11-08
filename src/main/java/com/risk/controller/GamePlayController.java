@@ -54,12 +54,12 @@ import javafx.scene.layout.VBox;
 public class GamePlayController implements Initializable, Observer {
 
 	/**
-	 * The @map refrence.
+	 * The @map reference.
 	 */
 	private Map map;
 
 	/**
-	 * The @gameModel refrence.
+	 * The @gameModel reference.
 	 */
 	private GameModel gameModel;
 
@@ -143,7 +143,10 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private Label playerChosen;
-
+	
+	/**
+	 * The @gamePhase display current phase .
+	 */
 	@FXML
 	private Label gamePhase;
 
@@ -178,11 +181,15 @@ public class GamePlayController implements Initializable, Observer {
 	 * The @playerIterator.
 	 */
 	private Iterator<Player> playerIterator;
+	
 	/**
-	 * The @stackOfCards.
+	 * The @cardStack.
 	 */
 	private Stack<Card> cardStack;
-
+	
+	/**
+	 * The @numberOfCardSetExchanged. 
+	 */
 	private int numberOfCardSetExchanged;
 
 	/**
@@ -440,7 +447,7 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	/**
-	 * Calculate reinforcement armies based ont the game rules.
+	 * Calculate reinforcement armies based on the game rules.
 	 */
 	public void calculateReinforcementArmies() {
 		if (this.playerPlaying != null) {
@@ -544,7 +551,7 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	/**
-	 * Disbale game panel after player won.
+	 * Disable game panel after player won.
 	 */
 	private void disableGamePanel() {
 		GameUtil.disableControl(selectedTerritoryList, adjTerritoryList, reinforcement, attack, fortify, cards,
@@ -616,7 +623,9 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	/**
-	 * @return int number of layer selected
+	 * Get number of players selected
+	 * 
+	 * @return numberOfPlayersSelected
 	 */
 	public int getNumberOfPlayersSelected() {
 		return numberOfPlayersSelected;
@@ -700,7 +709,7 @@ public class GamePlayController implements Initializable, Observer {
 	/**
 	 * Get Number of Card Sets Exhanged
 	 * 
-	 * @return int number of card set exchanged.
+	 * @return numberOfCardSetExchanged
 	 */
 	public int getNumberOfCardSetExchanged() {
 		return numberOfCardSetExchanged;

@@ -16,13 +16,28 @@ import com.risk.entity.Territory;
 /**
  * Card Model Test class
  * @author Garvpreet Singh
- * @version 1.0.1
+ * @version 1.0.0
  */
 public class CardModelTest {
 	
+	/**
+	 * The @cardModel reference
+	 */
 	static CardModel cardModel;	
+	
+	/**
+	 * The @listOfCards
+	 */
 	static List<Card> listOfCards;
+	
+	/**
+	 * The @listOfContinents
+	 */
 	static List<Continent> listOfContinents;
+	
+	/**
+	 * The @listOfTerr
+	 */
 	static List<Territory> listOfTerr;
 	
 	/**

@@ -17,8 +17,9 @@ import javafx.scene.control.CheckBox;
 import javafx.stage.Stage;
 
 /**
- * @author Vipul Srivastav Card model to send data
- * @version 1.0.1
+ * Card model to send data
+ * @author Vipul Srivastav 
+ * @version 1.0.0
  */
 public class CardModel extends Observable{
 	
@@ -33,6 +34,8 @@ public class CardModel extends Observable{
 	private List<Card> cardsToBeExchange;
 	
 	/**
+	 * Get cards to be exchanged
+	 * 
 	 * @return list of card to exchange
 	 */
 	public List<Card> getCardsToBeExchange() {
@@ -41,6 +44,7 @@ public class CardModel extends Observable{
 	
 	/**
 	 * Set cards to be exchanged.
+	 * 
 	 * @param cardsToBeExchange cards exchanged
 	 */
 	public void setCardsToBeExchange(List<Card> cardsToBeExchange) {
@@ -74,7 +78,7 @@ public class CardModel extends Observable{
 	 * This method is used to return selected cards on the basis of checkboxes selected.
 	 * @param cards list of cards held by currently playing player.
 	 * @param checkboxes array of checkboxes depicting each card.
-	 * @return list of selected cards which is subset of main list.
+	 * @return selectedCards list of selected cards which is subset of main list.
 	 */
 	public List<Card> retrieveSelectedCardsFromCheckbox(List<Card> cards, CheckBox[] checkboxes) {
 		int counter=0;
@@ -91,7 +95,7 @@ public class CardModel extends Observable{
 	/**
 	 * This method is used to check whether selected 3 cards form a valid combination or not.
 	 * @param selectedCards cards list of cards selected by currently playing player.
-	 * @return true for valid card combination and false for invalid combination. 
+	 * @return returnFlag true for valid card combination and false for invalid combination. 
 	 */
 	public boolean checkTradePossible(List<Card> selectedCards) {
 		boolean returnFlag = false;

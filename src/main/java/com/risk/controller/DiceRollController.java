@@ -22,8 +22,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 /**
- * @author Gurpreet Singh DiceRollController controller to control all the
- * @version 1.0.1
+ * DiceRollController controller to control all the 
+ * @author Gurpreet Singh 
+ * @version 1.0.0
  */
 public class DiceRollController implements Initializable {
 
@@ -112,19 +113,19 @@ public class DiceRollController implements Initializable {
 	private CheckBox defenderDice2;
 
 	/**
-	 * The @cancel button.
+	 * The @cancelDiceRoll button.
 	 */
 	@FXML
 	private Button cancelDiceRoll;
 
 	/**
-	 * The @childPane pane.
+	 * The @moveArmiesView pane.
 	 */
 	@FXML
 	private Pane moveArmiesView;
 
 	/**
-	 * The @numberOfArmiesLabel label.
+	 * The @numberOfArmies label.
 	 */
 	@FXML
 	private Label numberOfArmies;
@@ -136,13 +137,13 @@ public class DiceRollController implements Initializable {
 	private TextField numberOfArmiesInput;
 
 	/**
-	 * The @numberOfArmiesMove button.
+	 * The @moveArmies button.
 	 */
 	@FXML
 	private Button moveArmies;
 
 	/**
-	 * The @numberOfArmiesCancel button.
+	 * The @skipMoveArmy button.
 	 */
 	@FXML
 	private Button skipMoveArmy;

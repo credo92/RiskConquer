@@ -10,8 +10,8 @@ import com.risk.entity.Map;
 import com.risk.entity.Territory;
 
 /**
- * @author Garvpreet Singh
  * This class is used to handle writing map objects into map file.
+ * @author Garvpreet Singh
  * @version 1.0.0
  *
  */

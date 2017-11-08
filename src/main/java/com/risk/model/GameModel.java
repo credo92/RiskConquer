@@ -16,10 +16,8 @@ import javafx.scene.control.TextArea;
 
 /**
  * This class is used to represent modeling of Game.
- * 
  * @author rahul
  * @version 1.0.0.
- *
  */
 public class GameModel {
 
@@ -27,7 +25,7 @@ public class GameModel {
 	 * Load card.
 	 * @param map map
 	 * @param textAres textArea
-	 * @return Stack stack of cards
+	 * @return stackOfCards stack of cards
 	 */
 	public Stack<Card> assignCardToTerritory(Map map, TextArea textAres) {
 		Stack<Card> stackOfCards = new Stack<Card>();
@@ -55,7 +53,7 @@ public class GameModel {
 	 * @param map map
 	 * @param players players
 	 * @param textAres textArea
-	 * @return List player list
+	 * @return players player list
 	 */
 	public List<Player> assignTerritoryToPlayer(Map map, List<Player> players, TextArea textAres) {
 
