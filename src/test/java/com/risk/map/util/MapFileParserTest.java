@@ -38,6 +38,7 @@ public class MapFileParserTest {
 	
 	/**
 	 * This method is invoked at the start of the every test method.
+	 * @throws IOException IOException
 	 */
 	@Before
 	public void beforeTest() throws IOException {		
@@ -46,7 +47,7 @@ public class MapFileParserTest {
 	
 	/** 
 	 * This method is used to test the size of continent.
-	 * @throws InvalidMapException
+	 * @throws InvalidMapException InvalidMapException
 	 */
 	@Test
 	public void checkValidNumberOfContinents() throws InvalidMapException {
@@ -57,7 +58,7 @@ public class MapFileParserTest {
 	
 	/**
 	 * This method is used to test if a continent has a territory in it.
-	 * @throws InvalidMapException
+	 * @throws InvalidMapException InvalidMapException
 	 */
 	@Test (expected=InvalidMapException.class)
 	public void checkInvalidMapForContinentWithoutTerritory() throws InvalidMapException {
@@ -68,7 +69,7 @@ public class MapFileParserTest {
 	
 	/**
 	 * This method is used to test if a territory belongs to any continent or not.
-	 * @throws InvalidMapException
+	 * @throws InvalidMapException InvalidMapException
 	 */
 	@Test (expected=InvalidMapException.class)
 	public void checkInvalidMapForAbandonedTerritory() throws InvalidMapException {
@@ -79,7 +80,7 @@ public class MapFileParserTest {
 	
 	/**
 	 * This method is used to test if a set of territories are connected or not.
-	 * @throws InvalidMapException
+	 * @throws InvalidMapException InvalidMapException
 	 */
 	@Test (expected=InvalidMapException.class)
 	public void checkInvalidMapForTerritorySubgraph() throws InvalidMapException {
@@ -90,7 +91,7 @@ public class MapFileParserTest {
 	
 	/**
 	 * This method is used to test if a set of continent are connected or not.
-	 * @throws InvalidMapException
+	 * @throws InvalidMapException InvalidMapException
 	 */
 	@Test (expected=InvalidMapException.class)
 	public void checkInvalidMapForContinentSubgraph() throws InvalidMapException {
@@ -101,7 +102,7 @@ public class MapFileParserTest {
 	
 	/**
 	 * This method is used to test if a territory exists in multiple continents.
-	 * @throws InvalidMapException
+	 * @throws InvalidMapException InvalidMapException
 	 */
 	@Test (expected=InvalidMapException.class)
 	public void checkInvalidMapForTerritoryDuplication() throws InvalidMapException {

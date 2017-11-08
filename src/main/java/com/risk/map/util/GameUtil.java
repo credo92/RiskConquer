@@ -11,7 +11,9 @@ import javafx.stage.Stage;
 
 public class GameUtil {
 	/**
-	 * Initialize the number of players.
+	 * Initialize number of players
+	 * @param numberOfPlayers numberOfPlayers
+	 * @return ChoiceBox ChoiceBox
 	 */
 	public static ChoiceBox<Integer> initializeTotalPlayers(ChoiceBox<Integer> numberOfPlayers) {
 		numberOfPlayers.getItems().removeAll(numberOfPlayers.getItems());

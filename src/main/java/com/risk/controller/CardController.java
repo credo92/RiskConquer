@@ -120,7 +120,8 @@ public class CardController implements Initializable {
 	}	
 	
 	/**
-	 * 
+	 * Close view card screen.
+	 * @param event action event
 	 */
 	@FXML
 	private void cancelCardView(ActionEvent event) {
@@ -128,7 +129,7 @@ public class CardController implements Initializable {
 	}
 	
 	/**
-	 * trade
+	 * Trade checked cards.
 	 * @param event
 	 *            event.
 	 */

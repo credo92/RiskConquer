@@ -24,12 +24,10 @@ import javafx.scene.control.TextArea;
 public class GameModel {
 
 	/**
-	 * Assign Card to Territory
-	 * 
-	 * @param Territory
-	 *            Territory list
-	 * @param textAres
-	 *            game console
+	 * Load card.
+	 * @param map map
+	 * @param textAres textArea
+	 * @return Stack stack of cards
 	 */
 	public Stack<Card> assignCardToTerritory(Map map, TextArea textAres) {
 		Stack<Card> stackOfCards = new Stack<Card>();
@@ -53,14 +51,11 @@ public class GameModel {
 	}
 
 	/**
-	 * Assign territory to player
-	 * 
-	 * @param map
-	 *            map object
-	 * @param players
-	 *            players list
-	 * @param textAres
-	 *            game console
+	 * Assign territory to players
+	 * @param map map
+	 * @param players players
+	 * @param textAres textArea
+	 * @return List player list
 	 */
 	public List<Player> assignTerritoryToPlayer(Map map, List<Player> players, TextArea textAres) {
 

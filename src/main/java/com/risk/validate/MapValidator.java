@@ -98,13 +98,16 @@ public class MapValidator {
 		return isASubGraph;
 	}
 
-	
 	/**
 	 * Check if the territory is a valid territory. It has atleast one adjacent
 	 * territory.
-	 * @param territory territory object
-	 * @param map map object
-	 * @throws InvalidMapException invalid map exception
+	 * 
+	 * @param territory
+	 *            territory object
+	 * @param map
+	 *            map object
+	 * @throws InvalidMapException
+	 *             invalid map exception
 	 */
 	public static void validateTerritory(Territory territory, Map map) throws InvalidMapException {
 
@@ -126,10 +129,11 @@ public class MapValidator {
 		}
 	}
 
-	
 	/**
 	 * Check if a territory forms a connected graph or not.
-	 * @param territory territory object
+	 * 
+	 * @param territory
+	 *            territory object
 	 * @return boolean isTerritory a connected graph
 	 */
 	public static boolean isTerritoryAConnectedGraph(Territory territory) {

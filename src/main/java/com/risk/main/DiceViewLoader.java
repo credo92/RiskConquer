@@ -13,7 +13,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
+ * Dice view screen loader
  * @author rahul
+ * @version 1.0.0
  *
  */
 public class DiceViewLoader implements EventHandler<ActionEvent> {

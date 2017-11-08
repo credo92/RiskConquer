@@ -33,14 +33,15 @@ public class CardModel extends Observable{
 	private List<Card> cardsToBeExchange;
 	
 	/**
-	 * Get cards to be Exchanged .
+	 * @return list of card to exchange
 	 */
 	public List<Card> getCardsToBeExchange() {
 		return cardsToBeExchange;
 	}
 	
 	/**
-	 * Set cards to be Exchanged .
+	 * Set cards to be exchanged.
+	 * @param cardsToBeExchange cards exchanged
 	 */
 	public void setCardsToBeExchange(List<Card> cardsToBeExchange) {
 		this.cardsToBeExchange = cardsToBeExchange;
@@ -48,7 +49,8 @@ public class CardModel extends Observable{
 
 	/**
 	 * This method is used to open up the Card pop-up for particular player playing in the game.
-	 * @param player currently player playing.
+	 * @param player player playing
+	 * @param cardModel card model
 	 */
 	public void openCardWindow(Player player, CardModel cardModel) {
 		this.playerPlaying = player;
@@ -88,7 +90,7 @@ public class CardModel extends Observable{
 	
 	/**
 	 * This method is used to check whether selected 3 cards form a valid combination or not.
-	 * @param cards list of cards selected by currently playing player.
+	 * @param selectedCards cards list of cards selected by currently playing player.
 	 * @return true for valid card combination and false for invalid combination. 
 	 */
 	public boolean checkTradePossible(List<Card> selectedCards) {
