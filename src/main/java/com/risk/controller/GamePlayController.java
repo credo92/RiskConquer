@@ -331,7 +331,10 @@ public class GamePlayController implements Initializable, Observer {
 	 * Assign card to player
 	 */
 	private void assignCardToPlayer() {
-		playerPlaying.getPlayerCardList().add(cardStack.pop());
+		Card cardToBeAdded = cardStack.pop();
+		playerPlaying.getPlayerCardList().add(cardToBeAdded);
+		playerModel.setTerritoryWon(0);
+		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " has been assigned a card with type "+ cardToBeAdded.getCardType().toString() + " and territory " + cardToBeAdded.getTerritory().getName() + "\n", gameConsole);
 	}
 
 	/**
