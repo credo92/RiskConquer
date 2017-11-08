@@ -16,32 +16,32 @@ import javafx.scene.control.Label;
  * @version 1.0.1
  */
 public class DiceModel extends Observable {
-	
+
 	/**
 	 * The @attackingTerritory .
 	 */
 	private Territory attackingTerritory;
-	
+
 	/**
 	 * The @defendingTerritory .
 	 */
 	private Territory defendingTerritory;
-	
+
 	/**
 	 * The @attackerDiceValues .
 	 */
 	private List<Integer> attackerDiceValues;
-	
+
 	/**
 	 * The @defenderDiceValues .
 	 */
 	private List<Integer> defenderDiceValues;
-	
+
 	/**
 	 * The @numOfTerritoriesWon .
 	 */
 	private int numOfTerritoriesWon;
-	
+
 	/**
 	 * Constructor for DiceModel
 	 * 
@@ -49,7 +49,7 @@ public class DiceModel extends Observable {
 	 *            reference to get details about attacking territory
 	 * 
 	 * @param defendingTerritory
-	 *            reference to get details about defending territory 
+	 *            reference to get details about defending territory
 	 */
 	public DiceModel(Territory attackingTerritory, Territory defendingTerritory) {
 		this.attackingTerritory = attackingTerritory;
@@ -59,10 +59,10 @@ public class DiceModel extends Observable {
 		numOfTerritoriesWon = 0;
 
 	}
-	
 
 	/**
 	 * Get Play Result after the dice is thrown
+	 * 
 	 * @return List list of players.
 	 */
 	public List<String> getPlayResultAfterDiceThrown() {
@@ -75,20 +75,22 @@ public class DiceModel extends Observable {
 				updateArmiesAfterAttack(defenderDiceValue, attackerDiceValue, playResult);
 				break;
 			}
-			attackerDiceValues.remove(0);
+			if (attackerDiceValues.size() >= 1) {
+				attackerDiceValues.remove(0);
+			}
 		}
 		return playResult;
 	}
-	
+
 	/**
 	 * Update Armies After attack
 	 * 
 	 * @param defenderDiceValue
 	 *            Integer defenderDiceValue
 	 * @param attackerDiceValue
-	 * 			  Integer attackerDiceValue     
+	 *            Integer attackerDiceValue
 	 * @param playResult
-	 * 			  List playResult
+	 *            List playResult
 	 */
 	public void updateArmiesAfterAttack(Integer defenderDiceValue, Integer attackerDiceValue, List<String> playResult) {
 		if (attackerDiceValue.compareTo(defenderDiceValue) == 0) {
@@ -108,7 +110,7 @@ public class DiceModel extends Observable {
 			}
 		}
 	}
-	
+
 	/**
 	 * Cancel Dice Roll
 	 */
@@ -116,7 +118,7 @@ public class DiceModel extends Observable {
 		setChanged();
 		notifyObservers("rollDiceComplete");
 	}
-	
+
 	/**
 	 * Move All Armies
 	 */
@@ -128,7 +130,7 @@ public class DiceModel extends Observable {
 		setChanged();
 		notifyObservers("rollDiceComplete");
 	}
-	
+
 	/**
 	 * Skip Move Army
 	 */
@@ -140,12 +142,16 @@ public class DiceModel extends Observable {
 		setChanged();
 		notifyObservers("rollDiceComplete");
 	}
-	
+
 	/**
 	 * Move the desired number of armies.
-	 * @param armiesToMove armies to move
-	 * @param message message
-	 * @param moveArmies movearmies button refrence
+	 * 
+	 * @param armiesToMove
+	 *            armies to move
+	 * @param message
+	 *            message
+	 * @param moveArmies
+	 *            movearmies button refrence
 	 */
 	public void moveArmies(int armiesToMove, Label message, Button moveArmies) {
 		int currentArmies = getAttackingTerritory().getArmies();
@@ -162,7 +168,7 @@ public class DiceModel extends Observable {
 			notifyObservers("rollDiceComplete");
 		}
 	}
-	
+
 	/**
 	 * Reassign Territory
 	 */
@@ -174,16 +180,17 @@ public class DiceModel extends Observable {
 		attackingTerritory.getPlayer().getAssignedTerritory().add(defendingTerritory);
 
 	}
-	
+
 	/**
 	 * @return Int randomNumber
 	 */
 	public int randomNumber() {
 		return (int) (Math.random() * 6) + 1;
 	}
-	
+
 	/**
 	 * Check if more dice role available
+	 * 
 	 * @return the diceRollAvailable
 	 */
 	public boolean moreDiceRollAvailable() {
@@ -263,10 +270,11 @@ public class DiceModel extends Observable {
 	}
 
 	/**
-	 * @param numOfTerritoriesWon the numOfTerritoriesWon to set
+	 * @param numOfTerritoriesWon
+	 *            the numOfTerritoriesWon to set
 	 */
 	public void setNumOfTerritoriesWon(int numOfTerritoriesWon) {
 		this.numOfTerritoriesWon = numOfTerritoriesWon;
 	}
-	
+
 }
