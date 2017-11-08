@@ -143,7 +143,7 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private Label playerChosen;
-	
+
 	/**
 	 * The @gamePhase display current phase .
 	 */
@@ -181,14 +181,14 @@ public class GamePlayController implements Initializable, Observer {
 	 * The @playerIterator.
 	 */
 	private Iterator<Player> playerIterator;
-	
+
 	/**
 	 * The @cardStack.
 	 */
 	private Stack<Card> cardStack;
-	
+
 	/**
-	 * The @numberOfCardSetExchanged. 
+	 * The @numberOfCardSetExchanged.
 	 */
 	private int numberOfCardSetExchanged;
 
@@ -296,8 +296,10 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	private void populateAdjTerritory(Territory territory) {
 		this.adjTerritoryList.getItems().clear();
-		for (Territory adjTerr : territory.getAdjacentTerritories()) {
-			this.adjTerritoryList.getItems().add(adjTerr);
+		if (territory != null) {
+			for (Territory adjTerr : territory.getAdjacentTerritories()) {
+				this.adjTerritoryList.getItems().add(adjTerr);
+			}
 		}
 	}
 
