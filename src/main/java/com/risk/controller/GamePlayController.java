@@ -402,6 +402,10 @@ public class GamePlayController implements Initializable, Observer {
 	@FXML
 	private void reinforcement(ActionEvent event) {
 		Territory territory = selectedTerritoryList.getSelectionModel().getSelectedItem();
+		if (playerPlaying.getPlayerCardList().size() >= 5) {
+			MapUtil.infoBox("You have five or more Risk Card, please exchange these cards for army.", "Info", "");
+			return;
+		}
 		playerModel.reinforcementPhase(territory, gameConsole);
 		selectedTerritoryList.refresh();
 		loadMapData();
@@ -434,12 +438,12 @@ public class GamePlayController implements Initializable, Observer {
 		if (!playerIterator.hasNext()) {
 			playerIterator = gamePlayerList.iterator();
 		}
-		Player newPLayer =  playerIterator.next();
+		Player newPLayer = playerIterator.next();
 		if (newPLayer.equals(playerPlaying)) {
-			if(playerIterator.hasNext()) {
+			if (playerIterator.hasNext()) {
 				newPLayer = playerIterator.next();
 			}
-		} 
+		}
 		playerPlaying = newPLayer;
 		playerModel.setPlayerPlaying(playerPlaying);
 		playerModel.setTerritoryWon(0);

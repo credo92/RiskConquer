@@ -431,6 +431,7 @@ public class PlayerModel extends Observable implements Observer {
 		for (Player player : playersPlaying) {
 			if (player.getAssignedTerritory().isEmpty()) {
 				playerLost = player;
+				playerPlaying.getPlayerCardList().addAll(playerLost.getPlayerCardList());
 			}
 		}
 		return playerLost;
