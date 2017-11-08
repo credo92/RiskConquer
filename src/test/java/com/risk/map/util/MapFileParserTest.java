@@ -14,18 +14,53 @@ import com.risk.exception.InvalidMapException;
 /**
  * Test class for {@link MapFileParser}
  * @author Garvpreet Singh
- * @version 0.0.1
+ * @version 1.0.0
  */
 public class MapFileParserTest {
 	
+	/**
+	 * The @file.
+	 */
 	File file;
+	
+	/**
+	 * The @mfp map file parser
+	 */
 	static MapFileParser mfp;
+	
+	/**
+	 * The @classLoader class loader
+	 */
 	ClassLoader classLoader;
+	
+	/**
+	 * The @validFile
+	 */
 	String validFile = "World.map";
+	
+	/**
+	 * The @invalidFileContinent
+	 */
 	String invalidFileContinent = "World_Invalid_Continent.map";
+	
+	/**
+	 * The @invalidFileTerritoryAbandoned
+	 */
 	String invalidFileTerritoryAbandoned = "World_Invalid_Territory_Abandoned.map";
+	
+	/**
+	 * The @invalidFileTerritorySubgraph
+	 */
 	String invalidFileTerritorySubgraph = "World_Invalid_Territory_Subgraph.map";
+	
+	/**
+	 * The @invalidFileContinentSubgraph
+	 */
 	String invalidFileContinentSubgraph = "World_Invalid_Continent_Subgraph.map";
+	
+	/**
+	 * The @invalidFileTerritoryDuplication
+	 */
 	String invalidFileTerritoryDuplication = "World_Invalid_Territory_Duplication.map";
 	
 	/**

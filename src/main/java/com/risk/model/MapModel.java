@@ -24,7 +24,7 @@ public class MapModel {
 	 *            name of the continent
 	 * @param controlValue
 	 *            control value of the continent
-	 * @return Continent created succefully
+	 * @return continent created successfully
 	 * @throws InvalidMapException
 	 *             invalid map exception
 	 */
@@ -63,9 +63,9 @@ public class MapModel {
 	 * @param territory
 	 *            territory to be updated
 	 * @param xAxis
-	 *            y axis
-	 * @param yAxis
 	 *            x axis
+	 * @param yAxis
+	 *            y axis
 	 * @param adjTerritory
 	 *            list of adj territory
 	 * @return territory updated territory
@@ -95,7 +95,7 @@ public class MapModel {
 	 * @param yAxis y axis of the territory
 	 * @param adjTerritory adj territory list
 	 * @param continent continent
-	 * @return Territory new object
+	 * @return territory new object
 	 * @throws InvalidMapException invalid map exception
 	 */
 	public Territory addTerritory(Map map, String name, String xAxis, String yAxis, Territory adjTerritory,

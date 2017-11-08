@@ -3,10 +3,9 @@ package com.risk.entity;
 import com.risk.constant.CardType;
 
 /**
- * @author vipul
  * This is an entity class for Card with cardType object and territoryName as its member variable
- * @version 1.0.1
- * 
+ * @author Vipul Srivastav
+ * @version 1.0.0
  */
 
 public class Card {

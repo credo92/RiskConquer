@@ -21,17 +21,58 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 
+/**
+* Player Model Test class.
+* @author Garvpreet Singh
+* @version 1.0.0
+*/
 public class PlayerModelTest {
+<<<<<<< HEAD
 
+=======
+	
+	/**
+	 * The @gameModel.
+	 */
+>>>>>>> java docs added
 	static GameModel gameModel;
+	
+	/**
+	 * The @playerModel.
+	 */
 	static PlayerModel playerModel;
+	
+	/**
+	 * The @continent
+	 */
 	static Continent continent;
+	
+	/**
+	 * The @territory1
+	 */
 	static Territory territory1;
+	
+	/**
+	 * The @territory2
+	 */
 	static Territory territory2;
+	
+	/**
+	 * The @map
+	 */
 	static Map map;
+	
+	/**
+	 * The @player
+	 */
 	static Player player;
+	
+	/**
+	 * The @textArea
+	 */
 	@FXML
 	static TextArea textArea;
+<<<<<<< HEAD
 
 	@FXML
 	static ListView<Territory> territoryListView;
@@ -43,6 +84,43 @@ public class PlayerModelTest {
 
 	static List<Player> players;
 
+=======
+	
+	/**
+	 * The @territoryListView
+	 */
+	@FXML
+	static ListView<Territory> territoryListView;
+	
+	/**
+	 * The @continentName
+	 */
+	String continentName = "Asia";
+	
+	/**
+	 * The @controlValue
+	 */
+	String controlValue = "7";	
+	
+	/**
+	 * The @territoryName1
+	 */
+	String territoryName1 = "India";
+	
+	/**
+	 * The @territoryName2
+	 */
+	String territoryName2 = "China";	
+	
+	/**
+	 * The @players list
+	 */
+	static List<Player> players;
+	
+	/**
+	 * The @fxPanel
+	 */
+>>>>>>> java docs added
 	static JFXPanel fxPanel;
 
 	/**
@@ -281,7 +359,7 @@ public class PlayerModelTest {
 	}
 
 	/**
-	 * This method tests assignation of armies to a player.
+	 * This method tests assign of armies to a player.
 	 */
 	@Test
 	public void assignArmiesToPlayers() {

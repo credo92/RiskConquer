@@ -27,7 +27,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 /**
- * @author rahul This class is used to handle utilities for maps.
+ * This class is used to handle utilities for maps.
+ * @author rahul 
  * @version 1.0.0
  *
  */
@@ -178,11 +179,11 @@ public class MapUtil {
 	}
 
 	/**
-	 * Create new titled pain.
+	 * Create new titled pane.
 	 * 
 	 * @param continent
 	 *            continent object
-	 * @return TitledPane Titled pane
+	 * @return pane Titled pane
 	 */
 	public static TitledPane createNewTitledPane(Continent continent) {
 		VBox hbox = new VBox();
@@ -220,7 +221,7 @@ public class MapUtil {
 	 *            image to show up.
 	 * @param classLoader
 	 *            to load up the image.
-	 * @return ImageView imageView to .
+	 * @return imageView ImageView to .
 	 */
 	public static ImageView loadImageView(ImageView imageView, ClassLoader classLoader) {
 		InputStream inputStream = null;

@@ -19,25 +19,100 @@ import com.risk.exception.InvalidMapException;
  * @version 1.0.0
  */
 public class MapModelTest {
+	
+	/**
+	 * The @map reference.
+	 */
 	static Map map;
+	
+	/**
+	 * The @continent reference.
+	 */
 	static Continent continent;
+	
+	/**
+	 * The @territory 
+	 */
 	static Territory territory;
+	
+	/**
+	 * The @adjTerritory
+	 */
 	static Territory adjTerritory;
+	
+	/**
+	 * The @mapModel reference
+	 */
 	static MapModel mapModel;
+	
+	/**
+	 * The @continentName
+	 */
 	String continentName = "Asia";
+	
+	/**
+	 * The @controlValue1
+	 */
 	String controlValue1 = "7";
+	
+	/**
+	 * The @controlValue2
+	 */
 	String controlValue2 = "2";
+	
+	/**
+	 * The @territoryName
+	 */
 	String territoryName = "India";
+	
+	/**
+	 * The @xAxis1
+	 */
 	String xAxis1 = "1";
+	
+	/**
+	 * The @xAxis2
+	 */
 	String xAxis2 = "2";
+	
+	/**
+	 * The @yAxis1
+	 */
 	String yAxis1 = "1";
+	
+	/**
+	 * The @yAxis2
+	 */
 	String yAxis2 = "2";
+	
+	/**
+	 * The @mapAuthor
+	 */
 	String mapAuthor = "Robert";
+	
+	/**
+	 * The @mapImage
+	 */
 	String mapImage = "world.map";
+	
+	/**
+	 * The @mapWrap
+	 */
 	String mapWrap = "no";
+	
+	/**
+	 * The @mapScroll
+	 */
 	String mapScroll = "horizontal";
+	
+	/**
+	 * The @mapWarn
+	 */
 	String mapWarn = "yes";
 	
+	/**
+	 * The @mapData
+	 */
 	static HashMap<String, String> mapData;
 	
 	/**

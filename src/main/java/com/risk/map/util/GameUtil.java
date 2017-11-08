@@ -9,11 +9,19 @@ import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * This class is used to provide game utility Initialize number of players disable enable hide
+ * show control clear Checkboxes close screen enable disable View Pane and InfoBox to display message
+ * @author rahul 
+ * @version 1.0.0
+ */
 public class GameUtil {
+	
 	/**
 	 * Initialize number of players
 	 * @param numberOfPlayers numberOfPlayers
-	 * @return ChoiceBox ChoiceBox
+	 * @return numberOfPlayers
+	 * 						number of players ChoiceBox
 	 */
 	public static ChoiceBox<Integer> initializeTotalPlayers(ChoiceBox<Integer> numberOfPlayers) {
 		numberOfPlayers.getItems().removeAll(numberOfPlayers.getItems());

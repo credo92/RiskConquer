@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @author rahul
  * This is an entity class for Map with mapData, continents, continentMap and territories as its member variables.
+ * @author rahul
  * @version 1.0.0
- *
  */
 public class Map {
 	
@@ -37,13 +36,17 @@ public class Map {
 	}
 
 	/**
-	 * @return the continentMap
+	 * Get Continent Map
+	 * 
+	 * @return continentMap
 	 */
 	public HashMap<String, Continent> getContinentMap() {
 		return continentMap;
 	}
 
 	/**
+	 * Set Continent Map
+	 * 
 	 * @param continentMap
 	 *            the continentMap to set
 	 */
@@ -52,13 +55,17 @@ public class Map {
 	}
 
 	/**
-	 * @return the mapData
+	 * Get Map Data
+	 * 
+	 * @return mapData
 	 */
 	public HashMap<String, String> getMapData() {
 		return mapData;
 	}
 
 	/**
+	 * Set Map Data
+	 * 
 	 * @param mapData
 	 *            the mapData to set
 	 */
@@ -67,13 +74,17 @@ public class Map {
 	}
 
 	/**
-	 * @return the continents
+	 * Get continents
+	 * 
+	 * @return continents
 	 */
 	public List<Continent> getContinents() {
 		return continents;
 	}
 
 	/**
+	 * Set Continents
+	 * 
 	 * @param continents
 	 *            the continents to set
 	 */

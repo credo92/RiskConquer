@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This is an entity class for Territory with name, xCoordinate, yCoordinate, continent to which it belongs and adjacent Territories as its member variables. 
  * @author rahul
- * This is an entity class for Territory with name, xCoordinate, yCoordinate, continent to which it belongs and adjacent Territories as its member variables.
  * @version 1.0.0
  * 
  */
@@ -65,41 +65,55 @@ public class Territory {
 	}
 	
 	/**
-	 * @return the armies
+	 * Get Armies
+	 * 
+	 * @return armies
 	 */
 	public int getArmies() {
 		return armies;
 	}
 	
 	/**
-	 * @return the isProcessed
+	 *  Is Processed
+	 *  
+	 * @return isProcessed
 	 */
 	public boolean isProcessed() {
 		return isProcessed;
 	}
 
 	/**
-	 * @param isProcessed the isProcessed to set
+	 * Set Is Processed
+	 * 
+	 * @param isProcessed 
+	 * 					the isProcessed to set
 	 */
 	public void setProcessed(boolean isProcessed) {
 		this.isProcessed = isProcessed;
 	}
 
 	/**
-	 * @param armies the armies to set
+	 * Set Armies
+	 * 
+	 * @param armies 
+	 * 				the armies to set
 	 */
 	public void setArmies(int armies) {
 		this.armies = armies;
 	}
 
 	/**
-	 * @return the adjTerritories
+	 * Get Adjacent Territories
+	 * 
+	 * @return adjTerritories
 	 */
 	public List<String> getAdjTerritories() {
 		return adjTerritories;
 	}
 
 	/**
+	 * Set Adjacent Territories
+	 * 
 	 * @param adjTerritories
 	 *            the adjTerritories to set
 	 */
@@ -108,13 +122,17 @@ public class Territory {
 	}
 
 	/**
-	 * @return the name
+	 * Get Name
+	 * 
+	 * @return name
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
+	 * Set Name
+	 * 
 	 * @param name
 	 *            the name to set
 	 */
@@ -123,13 +141,17 @@ public class Territory {
 	}
 
 	/**
-	 * @return the xCoordinate
+	 * Get X Coordinate
+	 * 
+	 * @return xCoordinate
 	 */
 	public int getxCoordinate() {
 		return xCoordinate;
 	}
 
 	/**
+	 * Set xCoordinate
+	 * 
 	 * @param xCoordinate
 	 *            the xCoordinate to set
 	 */
@@ -138,13 +160,17 @@ public class Territory {
 	}
 
 	/**
-	 * @return the yCoordinate
+	 * Get yCoordinate
+	 * 
+	 * @return yCoordinate
 	 */
 	public int getyCoordinate() {
 		return yCoordinate;
 	}
 
 	/**
+	 * Set yCoordinate
+	 * 
 	 * @param yCoordinate
 	 *            the yCoordinate to set
 	 */
@@ -153,13 +179,17 @@ public class Territory {
 	}
 
 	/**
-	 * @return the adjacentTerritories
+	 * Get Adjacent Territories
+	 * 
+	 * @return adjacentTerritories
 	 */
 	public List<Territory> getAdjacentTerritories() {
 		return adjacentTerritories;
 	}
 
 	/**
+	 * Set Adjacent Territories
+	 * 
 	 * @param adjacentTerritories
 	 *            the adjacentTerritories to set
 	 */
@@ -168,13 +198,17 @@ public class Territory {
 	}
 
 	/**
-	 * @return the belongToContinent
+	 * Get Belong to Continent
+	 * 
+	 * @return belongToContinent
 	 */
 	public Continent getBelongToContinent() {
 		return belongToContinent;
 	}
 
 	/**
+	 * Set Belong to continent 
+	 * 
 	 * @param belongToContinent
 	 *            the belongToContinent to set
 	 */
@@ -183,14 +217,19 @@ public class Territory {
 	}
 	
 	/**
-	 * @return the player
+	 * Get Player
+	 * 
+	 * @return player
 	 */
 	public Player getPlayer() {
 		return player;
 	}
 
 	/**
-	 * @param player the player to set
+	 * Set Player
+	 * 
+	 * @param player 
+	 * 			    the player to set
 	 */
 	public void setPlayer(Player player) {
 		this.player = player;

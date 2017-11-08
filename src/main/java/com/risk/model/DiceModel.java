@@ -12,8 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 /**
- * @author Gurpreet Singh DiceModel model to send data
- * @version 1.0.1
+ * DiceModel model to send data
+ * @author Gurpreet Singh 
+ * @version 1.0.0
  */
 public class DiceModel extends Observable {
 	
@@ -184,7 +185,7 @@ public class DiceModel extends Observable {
 	
 	/**
 	 * Check if more dice role available
-	 * @return the diceRollAvailable
+	 * @return diceRollAvailable
 	 */
 	public boolean moreDiceRollAvailable() {
 		boolean diceRollAvailable = true;
@@ -195,7 +196,7 @@ public class DiceModel extends Observable {
 	}
 
 	/**
-	 * 
+	 * Get Attacking Territory
 	 * @return Territory attacking territory
 	 */
 	public Territory getAttackingTerritory() {
@@ -203,6 +204,7 @@ public class DiceModel extends Observable {
 	}
 
 	/**
+	 * Set Attacking Territory
 	 * @param attackingTerritory
 	 *            the attackingTerritory to set
 	 */
@@ -211,6 +213,7 @@ public class DiceModel extends Observable {
 	}
 
 	/**
+	 * Get Defending Territory
 	 * @return the defendingTerritory
 	 */
 	public Territory getDefendingTerritory() {
@@ -218,6 +221,7 @@ public class DiceModel extends Observable {
 	}
 
 	/**
+	 * Set Defending Territory
 	 * @param defendingTerritory
 	 *            the defendingTerritory to set
 	 */
@@ -226,6 +230,7 @@ public class DiceModel extends Observable {
 	}
 
 	/**
+	 * Get Attacker Dice Values
 	 * @return the attackerDiceValues
 	 */
 	public List<Integer> getAttackerDiceValues() {
@@ -233,6 +238,7 @@ public class DiceModel extends Observable {
 	}
 
 	/**
+	 * Set Attacker Dice Values
 	 * @param attackerDiceValues
 	 *            the attackerDiceValues to set
 	 */
@@ -241,13 +247,15 @@ public class DiceModel extends Observable {
 	}
 
 	/**
-	 * @return the defenderDiceValues
+	 * Get Defender Dice Values
+	 * @return defenderDiceValues
 	 */
 	public List<Integer> getDefenderDiceValues() {
 		return defenderDiceValues;
 	}
 
 	/**
+	 * Set Defender Dice Values
 	 * @param defenderDiceValues
 	 *            the defenderDiceValues to set
 	 */
@@ -256,6 +264,7 @@ public class DiceModel extends Observable {
 	}
 
 	/**
+	 * Get Number Of Territories Won
 	 * @return the numOfTerritoriesWon
 	 */
 	public int getNumOfTerritoriesWon() {
@@ -263,6 +272,7 @@ public class DiceModel extends Observable {
 	}
 
 	/**
+	 * Set Number Of Territories Won
 	 * @param numOfTerritoriesWon the numOfTerritoriesWon to set
 	 */
 	public void setNumOfTerritoriesWon(int numOfTerritoriesWon) {

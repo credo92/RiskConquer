@@ -1,8 +1,8 @@
 package com.risk.exception;
 
 /**
- * @author rahul
  * This class is used to handle Invalid Game Move exceptions.
+ * @author rahul
  * @version 1.0.0
  *
  */

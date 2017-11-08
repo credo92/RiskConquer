@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author rahul
  * This is an entity class for Player with id, name, armies and assignedTerritories as its member variables.
+ * @author rahul
  * @version 1.0.0
- *
  */
 public class Player {
 	
@@ -53,13 +52,17 @@ public class Player {
 	}
 
 	/**
-	 * @return the id
+	 * Get Id 
+	 * 
+	 * @return id
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
+	 * Set Id
+	 * 
 	 * @param id
 	 *            the id to set
 	 */
@@ -68,13 +71,17 @@ public class Player {
 	}
 
 	/**
-	 * @return the name
+	 * Get Name
+	 * 
+	 * @return name
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
+	 * Set Name
+	 * 
 	 * @param name
 	 *            the name to set
 	 */
@@ -83,13 +90,17 @@ public class Player {
 	}
 
 	/**
-	 * @return the armies
+	 * Get Armies
+	 * 
+	 * @return armies
 	 */
 	public int getArmies() {
 		return armies;
 	}
 
 	/**
+	 * Set Armies
+	 * 
 	 * @param armies
 	 *            the armies to set
 	 */
@@ -98,13 +109,17 @@ public class Player {
 	}
 
 	/**
-	 * @return the assignedTerritory
+	 * Get Assigned Territory
+	 * 
+	 * @return assignedTerritory
 	 */
 	public List<Territory> getAssignedTerritory() {
 		return assignedTerritory;
 	}
 
 	/**
+	 * Set Assigned Territory
+	 * 
 	 * @param assignedTerritory
 	 *            the assignedTerritory to set
 	 */
@@ -112,17 +127,20 @@ public class Player {
 		this.assignedTerritory = assignedTerritory;
 	}
 	
-	
-
 	/**
-	 * @return the playerCardList
+	 * Get Player Card List
+	 * 
+	 * @return playerCardList
 	 */
 	public List<Card> getPlayerCardList() {
 		return playerCardList;
 	}
 
 	/**
-	 * @param playerCardList the playerCardList to set
+	 * Set PlayerCardList
+	 * 
+	 * @param playerCardList 
+	 * 						the playerCardList to set
 	 */
 	public void setPlayerCardList(List<Card> playerCardList) {
 		this.playerCardList = playerCardList;

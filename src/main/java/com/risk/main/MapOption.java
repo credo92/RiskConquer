@@ -11,8 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * @author Garvpreet Singh
  * This class is used to provide view to user to choose map options in the game.
+ * @author Garvpreet Singh
  * @version 1.0.0
  */
 public class MapOption implements EventHandler<ActionEvent> {

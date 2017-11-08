@@ -9,7 +9,7 @@ import com.risk.validate.ValidateTestSuite;
 /**
  * This is a master test suite of the project.
  * @author Garvpreet Singh
- * @version 1.0.1
+ * @version 1.0.0
  */
 @RunWith(Suite.class)
 @SuiteClasses({UtilTestSuite.class, ModelTestSuite.class, ValidateTestSuite.class})

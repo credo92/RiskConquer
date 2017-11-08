@@ -18,8 +18,8 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 /**
- * @author Garvpreet Singh
  * This class is used to initiate Game play screen from MapSelectorLayout.fxml
+ * @author Garvpreet Singh
  * @version 1.0.0
  */
 public class GamePlay implements EventHandler<ActionEvent> {

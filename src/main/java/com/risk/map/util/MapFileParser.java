@@ -16,8 +16,8 @@ import com.risk.exception.InvalidMapException;
 import com.risk.validate.MapValidator;
 
 /**
- * @author rahul
  * This class is used to handle parsing of map files.
+ * @author rahul
  * @version 1.0.0
  *
  */
@@ -34,7 +34,9 @@ public class MapFileParser {
 	private HashMap<String, Integer> territoryContinentCount = new HashMap<>();
 
 	/**
-	 * @return the map
+	 * Get Map
+	 * 
+	 * @return map
 	 */
 	public Map getMap() {
 		return map;

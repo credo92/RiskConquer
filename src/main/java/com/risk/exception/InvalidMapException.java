@@ -1,8 +1,8 @@
 package com.risk.exception;
 
 /**
- * @author rahul
  * This class is used to handle Invalid map exceptions.
+ * @author rahul
  * @version 1.0.0
  *
  */

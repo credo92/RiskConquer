@@ -23,6 +23,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
+/**
+* Model class for the Player 
+* @author rahul
+* @version 1.0.0
+*/
 public class PlayerModel extends Observable implements Observer {
 
 	/**
@@ -47,7 +52,7 @@ public class PlayerModel extends Observable implements Observer {
 	 * textarea in UI.
 	 * @param players players list
 	 * @param textArea textarea
-	 * @return boolean true if armies assign.
+	 * @return isAssignationSuccess boolean true if armies assign.
 	 */
 	public boolean assignArmiesToPlayers(List<Player> players, TextArea textArea) {
 		MapUtil.appendTextToGameConsole("===Assigning armies to players.===\n", textArea);
@@ -81,7 +86,8 @@ public class PlayerModel extends Observable implements Observer {
 	 *            objects of class {@link Player}
 	 * @param textArea
 	 *            to show up data on UI.
-	 * @return list of players.
+	 * @return players 
+	 * 			  list of players.
 	 */
 	public List<Player> createPlayer(int noOfPlayer, List<Player> players, TextArea textArea) {
 		for (int i = 0; i < noOfPlayer; i++) {
@@ -100,7 +106,8 @@ public class PlayerModel extends Observable implements Observer {
 	 *            map object
 	 * @param playerPlaying
 	 *            current player playing
-	 * @return Player player updated
+	 * @return playerPlaying 
+	 * 			  player updated
 	 */
 	public Player calculateReinforcementArmies(Map map, Player playerPlaying) {
 		int currentArmies = playerPlaying.getArmies();
@@ -123,13 +130,14 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
-	 * Get the list of continents owened by the player.
+	 * Get the list of continents owned by the player.
 	 * 
 	 * @param map
 	 *            map object
 	 * @param playerPlaying
 	 *            the player currently playing
-	 * @return List continents owened by player.
+	 * @return continents
+	 * 			  continents owned by player.
 	 */
 	public List<Continent> getContinentsOwnedByPlayer(Map map, Player playerPlaying) {
 		List<Continent> continents = new ArrayList<>();
@@ -272,7 +280,8 @@ public class PlayerModel extends Observable implements Observer {
 	 *            map object
 	 * @param playerPlaying
 	 *            current player playing
-	 * @return boolean is fortifcation of armies available.
+	 * @return isFortificationAvaialble
+	 * 			  is fortification of armies available.
 	 */
 	public boolean isFortificationPhaseValid(Map map, Player playerPlaying) {
 		boolean isFortificationAvaialble = false;
@@ -390,7 +399,7 @@ public class PlayerModel extends Observable implements Observer {
 	 * @param gameConsole
 	 *            gameConsole text area
 	 * 
-	 * @return true if player has valid move else false
+	 * @return hasAValidMove true if player has valid move else false
 	 */
 	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
 		boolean hasAValidMove = false;
@@ -415,7 +424,7 @@ public class PlayerModel extends Observable implements Observer {
 	 * @param playersPlaying
 	 *            playerPlaying List
 	 * 
-	 * @return Player Object who lost the game
+	 * @return playerLost Player Object who lost the game
 	 */
 	public Player checkIfAnyPlayerLostTheGame(List<Player> playersPlaying) {
 		Player playerLost = null;
@@ -436,7 +445,7 @@ public class PlayerModel extends Observable implements Observer {
 	 *            counter of number of times cards get changed.
 	 * @param gameConsole
 	 *            Console of the game.
-	 * @return Player player object           
+	 * @return playerPlaying player object           
 	 */
 	public Player tradeCardsForArmy(List<Card> selectedCards, int numberOfCardSetExchanged, TextArea gameConsole) {
 		playerPlaying.setArmies(playerPlaying.getArmies() + (5 * numberOfCardSetExchanged));
@@ -456,6 +465,8 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
+	 * Set Player Playing
+	 * 
 	 * @param playerPlaying
 	 *            the playerPlaying to set
 	 */
@@ -464,13 +475,17 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
-	 * @return the territoryWon
+	 * Get Territory Won
+	 * 
+	 * @return territoryWon
 	 */
 	public int getTerritoryWon() {
 		return territoryWon;
 	}
 
 	/**
+	 * Set territory Won
+	 * 
 	 * @param territoryWon
 	 *            the territoryWon to set
 	 */
@@ -482,7 +497,7 @@ public class PlayerModel extends Observable implements Observer {
 	 * Update
 	 * 
 	 * @param o
-	 *            Observabel object
+	 *            Observable object
 	 * @param arg
 	 *            Object arg
 	 */

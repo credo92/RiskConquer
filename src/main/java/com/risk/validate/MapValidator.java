@@ -12,7 +12,6 @@ import com.risk.exception.InvalidMapException;
 
 /**
  * Map validator.
- * 
  * @author rahul
  * @version 1.0.0
  */
@@ -44,7 +43,7 @@ public class MapValidator {
 	}
 
 	/**
-	 * Validate continet. It should have atleast one territory.
+	 * Validate continent. It should have at least one territory.
 	 * 
 	 * @param continent
 	 *            continent object
@@ -76,7 +75,8 @@ public class MapValidator {
 	 *            continent object
 	 * @param map
 	 *            map object
-	 * @return boolean true or false
+	 * @return isASubGraph 
+	 * 			 boolean true or false
 	 */
 	public static boolean continentIsASubGraph(Continent continent, Map map) {
 		boolean isASubGraph = false;
