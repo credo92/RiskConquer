@@ -15,7 +15,7 @@ public class MapConstant {
 	/**
 	 * The @ARMIES_THREE_PLAYER.
 	 */
-	public static final Integer ARMIES_THREE_PLAYER = 35;
+	public static final Integer ARMIES_THREE_PLAYER = 10;
 	
 	/**
 	 * The @ARMIES_FOUR_PLAYER.
