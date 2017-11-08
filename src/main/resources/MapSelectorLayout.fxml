@@ -25,8 +25,8 @@
       <ListView fx:id="adjTerritoryList" layoutX="434.0" layoutY="424.0" prefHeight="251.0" prefWidth="228.0" />
       <Label layoutX="435.0" layoutY="44.0" prefHeight="31.0" prefWidth="200.0" text="Selected Terriotry" />
       <Label layoutX="435.0" layoutY="395.0" prefHeight="31.0" prefWidth="200.0" text="Adjacent Terriotry" />
-      <Label fx:id="playerChosen" layoutX="434.0" layoutY="4.0" prefHeight="31.0" prefWidth="140.0" text="Playing........" />
-      <Button fx:id="placeArmy" layoutX="580.0" layoutY="5.0" mnemonicParsing="false" onAction="#placeArmy" text="Place Army" />
+      <Label fx:id="playerChosen" layoutX="434.0" layoutY="4.0" prefHeight="31.0" prefWidth="182.0" text="Playing........" />
+      <Button fx:id="placeArmy" layoutX="643.0" layoutY="5.0" mnemonicParsing="false" onAction="#placeArmy" prefHeight="31.0" prefWidth="94.0" text="Place Army" />
       <TitledPane layoutX="800.0" layoutY="6.0" prefHeight="806.0" prefWidth="510.0" text="World Domination">
          <content>
             <VBox prefHeight="765.0" prefWidth="498.0">
@@ -40,7 +40,6 @@
                </children>
             </VBox>
          </content>
-      </TitledPane>
-      <Label fx:id="playerTime" layoutX="685.0" layoutY="4.0" prefHeight="31.0" prefWidth="94.0" text="00:00" />      
+      </TitledPane>      
     </children>
 </Pane>
