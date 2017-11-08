@@ -139,12 +139,6 @@ public class GamePlayController implements Initializable, Observer {
 	private ListView<Territory> adjTerritoryList;
 
 	/**
-	 * The @playerTime time remaining for the player.
-	 */
-	@FXML
-	private Label playerTime;
-
-	/**
 	 * The @playerChosen current player playing.
 	 */
 	@FXML
@@ -671,6 +665,7 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		if (view.equals("noFortificationMove")) {
 			noFortificationPhase();
+			cardModel.openCardWindow(playerPlaying, cardModel);
 		}
 		if (view.equals("rollDiceComplete")) {
 			refreshView();
