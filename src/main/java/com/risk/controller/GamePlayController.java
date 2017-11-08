@@ -369,6 +369,7 @@ public class GamePlayController implements Initializable, Observer {
 			assignCardToPlayer();
 		}
 		initializeReinforcement();
+		cardModel.openCardWindow(playerPlaying, cardModel);
 	}
 
 	/**
