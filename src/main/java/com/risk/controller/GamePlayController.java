@@ -309,7 +309,8 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	/**
-	 * @param event
+	 * No more attack, move to fortification.
+	 * @param event action event
 	 */
 	@FXML
 	private void noMoreAttack(ActionEvent event) {
@@ -329,10 +330,7 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	/**
-	 * Attack Phase of the game play.
-	 * 
-	 * @param event
-	 *            event.
+	 * Attack on the defending territory. 
 	 */
 	private void attack() {
 		Territory attackingTerritory = selectedTerritoryList.getSelectionModel().getSelectedItem();
@@ -457,6 +455,7 @@ public class GamePlayController implements Initializable, Observer {
 
 	/**
 	 * Initialize Card Window for current Player playing.
+	 * @param event event
 	 */
 	@FXML
 	public void initCardWindow(ActionEvent event) {
@@ -610,6 +609,7 @@ public class GamePlayController implements Initializable, Observer {
 	}
 
 	/**
+	 * Set the number of players selected
 	 * @param numberOfPlayersSelected
 	 *            number of player selected
 	 */
@@ -683,6 +683,7 @@ public class GamePlayController implements Initializable, Observer {
 
 	/**
 	 * Get Number of Card Sets Exhanged
+	 * @return int number of card set exchanged.
 	 */
 	public int getNumberOfCardSetExchanged() {
 		return numberOfCardSetExchanged;
@@ -690,6 +691,7 @@ public class GamePlayController implements Initializable, Observer {
 
 	/**
 	 * Set Number of Card Sets Exhanged
+	 * @param numberOfCardSetExchanged numberOfCardSetExchanged
 	 */
 	public void setNumberOfCardSetExchanged(int numberOfCardSetExchanged) {
 		this.numberOfCardSetExchanged = numberOfCardSetExchanged;

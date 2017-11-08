@@ -30,6 +30,9 @@ public class PlayerModel extends Observable implements Observer {
 	 */
 	Player playerPlaying;
 
+	/**
+	 * @return player playing
+	 */
 	public Player getPlayerPlaying() {
 		return playerPlaying;
 	}
@@ -42,11 +45,9 @@ public class PlayerModel extends Observable implements Observer {
 	/**
 	 * This method is used to assign armies to players and display data in the
 	 * textarea in UI.
-	 * 
-	 * @param players
-	 *            number of players input by user.
-	 * @param textArea
-	 *            to show up data on UI.
+	 * @param players players list
+	 * @param textArea textarea
+	 * @return boolean true if armies assign.
 	 */
 	public boolean assignArmiesToPlayers(List<Player> players, TextArea textArea) {
 		MapUtil.appendTextToGameConsole("===Assigning armies to players.===\n", textArea);
@@ -183,12 +184,10 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
-	 * Attack Phase
-	 * 
-	 * @param attackingTerritory
-	 *            attacking territory object
-	 * @param defendingTerritory
-	 *            defending territory object
+	 * Attack phase
+	 * @param attackingTerritory attacking territory
+	 * @param defendingTerritory defending territory
+	 * @throws InvalidGameMoveException invalid game exception
 	 */
 	public void attackPhase(Territory attackingTerritory, Territory defendingTerritory)
 			throws InvalidGameMoveException {
@@ -228,6 +227,8 @@ public class PlayerModel extends Observable implements Observer {
 	 *            selected Territory object
 	 * @param adjTerritory
 	 *            adj Territory object
+	 * @param gameConsole
+	 *            gameConsole
 	 */
 	public void fortificationPhase(Territory selectedTerritory, Territory adjTerritory, TextArea gameConsole) {
 		if (selectedTerritory == null) {
@@ -308,6 +309,7 @@ public class PlayerModel extends Observable implements Observer {
 	 *            get Selected Territory List for List View
 	 * @param gamePlayerList
 	 *            gamePlayer List
+	 * @param gameConsole gameConsole
 	 */
 	public void placeArmy(Player playerPlaying, ListView<Territory> selectedTerritoryList, List<Player> gamePlayerList,
 			TextArea gameConsole) {
@@ -364,7 +366,7 @@ public class PlayerModel extends Observable implements Observer {
 	 * 
 	 * @return isValidAttackMove if the attack move is valid
 	 * 
-	 * @throws InvalidGameMoveException
+	 * @throws InvalidGameMoveException invalid game exception
 	 */
 	public boolean isAValidAttackMove(Territory attacking, Territory defending) throws InvalidGameMoveException {
 		boolean isValidAttackMove = false;
@@ -428,12 +430,13 @@ public class PlayerModel extends Observable implements Observer {
 	/**
 	 * This method is used to trade armies for valid combination of cards.
 	 * 
-	 * @param cards
+	 * @param selectedCards
 	 *            list of cards selected by currently playing player for exchange.
 	 * @param numberOfCardSetExchanged
 	 *            counter of number of times cards get changed.
 	 * @param gameConsole
 	 *            Console of the game.
+	 * @return Player player object           
 	 */
 	public Player tradeCardsForArmy(List<Card> selectedCards, int numberOfCardSetExchanged, TextArea gameConsole) {
 		playerPlaying.setArmies(playerPlaying.getArmies() + (5 * numberOfCardSetExchanged));
@@ -478,9 +481,9 @@ public class PlayerModel extends Observable implements Observer {
 	/**
 	 * Update
 	 * 
-	 * @param Observable
+	 * @param o
 	 *            Observabel object
-	 * @param args
+	 * @param arg
 	 *            Object arg
 	 */
 	public void update(Observable o, Object arg) {

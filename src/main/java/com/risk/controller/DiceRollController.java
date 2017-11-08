@@ -159,17 +159,11 @@ public class DiceRollController implements Initializable {
 	private DiceModel diceModel;
 
 	/**
-	 * Constructor for DiceRollController
-	 * 
-	 * @param attackingTerritory
-	 *            reference to get details about attacking territory
-	 * 
-	 * @param defendingTerritory
-	 *            reference to get details about defending territory
+	 * Constructor for dice roll controller.
+	 * @param diceModel dice model object
 	 */
 	public DiceRollController(DiceModel diceModel) {
 		this.diceModel = diceModel;
-
 	}
 
 	/*
@@ -328,7 +322,7 @@ public class DiceRollController implements Initializable {
 	}
 
 	/**
-	 * Roll Dice
+	 * Roll Dice to battle among the territories
 	 * 
 	 * @param event
 	 *            action event
@@ -367,5 +361,4 @@ public class DiceRollController implements Initializable {
 		winnerName.setText(playResult.toString());
 		winnerName.setVisible(true);
 	}
-
 }

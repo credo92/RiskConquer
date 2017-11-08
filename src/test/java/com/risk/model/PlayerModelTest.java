@@ -247,6 +247,7 @@ public class PlayerModelTest {
 	
 	/**
 	 * This method checks whether attack move is valid or not by creating a new player
+	 * @throws InvalidGameMoveException invalid game exception
 	 */
 	@Test
 	public void isAValidAttackMoveTrue() throws InvalidGameMoveException{   

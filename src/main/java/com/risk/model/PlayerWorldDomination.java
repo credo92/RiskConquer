@@ -43,8 +43,6 @@ public class PlayerWorldDomination extends Observable {
 			playerTerPercent.put(entry.getKey(), (entry.getValue()/territoryCount * 100));
 		}
 		return playerTerPercent;
-	/*	setChanged();
-		notifyObservers("WorldDomination");*/
 	}
 
 }
