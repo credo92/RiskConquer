@@ -246,8 +246,10 @@ public class GamePlayController implements Initializable, Observer {
 	
 	public void loadPlayerSelectionWindow() {
 		final Stage newMapStage = new Stage();
-		newMapStage.setTitle("Player Selection Window");	    	
+		newMapStage.setTitle("Player Selection Window");	 
+		PlayerSelectionController playerSelectionController = new PlayerSelectionController();	
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("PlayerSelection.fxml"));
+		loader.setController(playerSelectionController);
 		Parent root = null;
 		try {
 			root = (Parent) loader.load();
