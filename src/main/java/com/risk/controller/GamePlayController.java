@@ -24,6 +24,7 @@ import com.risk.model.CardModel;
 import com.risk.model.GameModel;
 import com.risk.model.PlayerModel;
 import com.risk.model.PlayerWorldDomination;
+import com.risk.strategy.HumanStrategy;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -450,6 +451,7 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		playerPlaying = newPLayer;
 		playerModel.setPlayerPlaying(playerPlaying);
+		playerModel.setStartegy(new HumanStrategy());
 		playerModel.setTerritoryWon(0);
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "!....started playing.\n", gameConsole);
