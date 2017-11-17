@@ -1,6 +1,5 @@
 package com.risk.model;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -15,25 +14,25 @@ import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
 import com.risk.map.util.MapUtil;
+import com.risk.strategy.PlayerBehaviorStrategy;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
 
 /**
-* Model class for the Player 
-* @author rahul
-* @version 1.0.0
-*/
+ * Model class for the Player
+ * 
+ * @author rahul
+ * @version 1.0.0
+ */
 public class PlayerModel extends Observable implements Observer {
 
 	/**
 	 * the @playerPlaying reference
 	 */
 	Player playerPlaying;
+
+	PlayerBehaviorStrategy behaviorStrategy;
 
 	/**
 	 * @return player playing
@@ -50,8 +49,11 @@ public class PlayerModel extends Observable implements Observer {
 	/**
 	 * This method is used to assign armies to players and display data in the
 	 * textarea in UI.
-	 * @param players players list
-	 * @param textArea textarea
+	 * 
+	 * @param players
+	 *            players list
+	 * @param textArea
+	 *            textarea
 	 * @return isAssignationSuccess boolean true if armies assign.
 	 */
 	public boolean assignArmiesToPlayers(List<Player> players, TextArea textArea) {
@@ -86,8 +88,7 @@ public class PlayerModel extends Observable implements Observer {
 	 *            objects of class {@link Player}
 	 * @param textArea
 	 *            to show up data on UI.
-	 * @return players 
-	 * 			  list of players.
+	 * @return players list of players.
 	 */
 	public List<Player> createPlayer(int noOfPlayer, List<Player> players, TextArea textArea) {
 		for (int i = 0; i < noOfPlayer; i++) {
@@ -106,8 +107,7 @@ public class PlayerModel extends Observable implements Observer {
 	 *            map object
 	 * @param playerPlaying
 	 *            current player playing
-	 * @return playerPlaying 
-	 * 			  player updated
+	 * @return playerPlaying player updated
 	 */
 	public Player calculateReinforcementArmies(Map map, Player playerPlaying) {
 		int currentArmies = playerPlaying.getArmies();
@@ -136,8 +136,7 @@ public class PlayerModel extends Observable implements Observer {
 	 *            map object
 	 * @param playerPlaying
 	 *            the player currently playing
-	 * @return continents
-	 * 			  continents owned by player.
+	 * @return continents continents owned by player.
 	 */
 	public List<Continent> getContinentsOwnedByPlayer(Map map, Player playerPlaying) {
 		List<Continent> continents = new ArrayList<>();
@@ -167,22 +166,7 @@ public class PlayerModel extends Observable implements Observer {
 	 *            the Game Console
 	 */
 	public void reinforcementPhase(Territory territory, TextArea gameConsole) {
-		if (playerPlaying.getArmies() > 0) {
-			if (territory == null) {
-				MapUtil.infoBox("Select a territory to place army on.", "Message", "");
-				return;
-			}
-
-			Integer armies = Integer.valueOf(MapUtil.inputDailougeBox());
-			if (playerPlaying.getArmies() < armies) {
-				MapUtil.infoBox("You do not have sufficent armies.", "Message", "");
-				return;
-			}
-			territory.setArmies(territory.getArmies() + armies);
-			playerPlaying.setArmies(playerPlaying.getArmies() - armies);
-			MapUtil.appendTextToGameConsole(armies + ": assigned to territory " + territory.getName() + "\n",
-					gameConsole);
-		}
+		behaviorStrategy.reinforcementPhase(territory, gameConsole, playerPlaying);
 		// start attack phase
 		if (playerPlaying.getArmies() <= 0) {
 			MapUtil.appendTextToGameConsole("===Reinforcement phase Ended! ===\n", gameConsole);
@@ -193,39 +177,23 @@ public class PlayerModel extends Observable implements Observer {
 
 	/**
 	 * Attack phase
-	 * @param attackingTerritory attacking territory
-	 * @param defendingTerritory defending territory
-	 * @throws InvalidGameMoveException invalid game exception
+	 * 
+	 * @param attackingTerritory
+	 *            attacking territory
+	 * @param defendingTerritory
+	 *            defending territory
+	 * @throws InvalidGameMoveException
+	 *             invalid game exception
 	 */
 	public void attackPhase(Territory attackingTerritory, Territory defendingTerritory)
 			throws InvalidGameMoveException {
-		if (attackingTerritory != null && defendingTerritory != null) {
-			isAValidAttackMove(attackingTerritory, defendingTerritory);
-
-			DiceModel diceModel = new DiceModel(attackingTerritory, defendingTerritory);
-			diceModel.addObserver(this);
-			final Stage newMapStage = new Stage();
-			newMapStage.setTitle("Attack Window");
-
-			DiceRollController diceController = new DiceRollController(diceModel);
-
-			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("DiceView.fxml"));
-			loader.setController(diceController);
-
-			Parent root = null;
-			try {
-				root = (Parent) loader.load();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			Scene scene = new Scene(root);
-			newMapStage.setScene(scene);
-			newMapStage.show();
-		} else {
-			throw new InvalidGameMoveException("Please choose both attacking and defending territory.");
-		}
+		
+		DiceModel diceModel = new DiceModel(attackingTerritory, defendingTerritory);
+		diceModel.addObserver(this);
+		
+		DiceRollController diceController = new DiceRollController(diceModel);
+		
+		behaviorStrategy.attackPhase(attackingTerritory, defendingTerritory, diceController);
 	}
 
 	/**
@@ -239,38 +207,14 @@ public class PlayerModel extends Observable implements Observer {
 	 *            gameConsole
 	 */
 	public void fortificationPhase(Territory selectedTerritory, Territory adjTerritory, TextArea gameConsole) {
-		if (selectedTerritory == null) {
-			MapUtil.infoBox("Please choose Selected Territory as source.", "Message", "");
-			return;
-		} else if (adjTerritory == null) {
-			MapUtil.infoBox("Please choose Adjacent Territory as destination.", "Message", "");
-			return;
-		} else if (!(adjTerritory.getPlayer().equals(playerPlaying))) {
-			MapUtil.infoBox("Adjacent Territory does not belong to you.", "Message", "");
-			return;
+		boolean isFortificationDone = behaviorStrategy.fortificationPhase(selectedTerritory, adjTerritory, gameConsole,
+				playerPlaying);
+
+		if (isFortificationDone) {
+			setChanged();
+			notifyObservers("Reinforcement");
 		}
 
-		Integer armies = Integer.valueOf(MapUtil.inputDialogueBoxForArmiesFortification());
-		if (armies > 0) {
-			if (selectedTerritory.getArmies() == armies) {
-				MapUtil.infoBox("You cannot move all the armies.", "Message", "");
-				return;
-			} else if (selectedTerritory.getArmies() < armies) {
-				MapUtil.infoBox("You don't have " + armies + " armies.", "Message", "");
-				return;
-			} else {
-				selectedTerritory.setArmies(selectedTerritory.getArmies() - armies);
-				adjTerritory.setArmies(adjTerritory.getArmies() + armies);
-				MapUtil.appendTextToGameConsole(
-						armies + " armies fortified on territory: " + adjTerritory.getName() + "\n", gameConsole);
-				MapUtil.appendTextToGameConsole("=======Fortification ended=======\n", gameConsole);
-				setChanged();
-				notifyObservers("Reinforcement");
-			}
-		} else {
-			MapUtil.infoBox("Invalid entry", "Message", "");
-			return;
-		}
 	}
 
 	/**
@@ -280,8 +224,7 @@ public class PlayerModel extends Observable implements Observer {
 	 *            map object
 	 * @param playerPlaying
 	 *            current player playing
-	 * @return isFortificationAvaialble
-	 * 			  is fortification of armies available.
+	 * @return isFortificationAvaialble is fortification of armies available.
 	 */
 	public boolean isFortificationPhaseValid(Map map, Player playerPlaying) {
 		boolean isFortificationAvaialble = false;
@@ -318,7 +261,8 @@ public class PlayerModel extends Observable implements Observer {
 	 *            get Selected Territory List for List View
 	 * @param gamePlayerList
 	 *            gamePlayer List
-	 * @param gameConsole gameConsole
+	 * @param gameConsole
+	 *            gameConsole
 	 */
 	public void placeArmy(Player playerPlaying, ListView<Territory> selectedTerritoryList, List<Player> gamePlayerList,
 			TextArea gameConsole) {
@@ -366,32 +310,6 @@ public class PlayerModel extends Observable implements Observer {
 	}
 
 	/**
-	 * Check if Attack Move is Valid
-	 * 
-	 * @param attacking
-	 *            attacking Territory
-	 * @param defending
-	 *            defending Territory
-	 * 
-	 * @return isValidAttackMove if the attack move is valid
-	 * 
-	 * @throws InvalidGameMoveException invalid game exception
-	 */
-	public boolean isAValidAttackMove(Territory attacking, Territory defending) throws InvalidGameMoveException {
-		boolean isValidAttackMove = false;
-		if (defending.getPlayer() != attacking.getPlayer()) {
-			if (attacking.getArmies() > 1) {
-				isValidAttackMove = true;
-			} else {
-				throw new InvalidGameMoveException("Attacking territory should have more than one army to attack.");
-			}
-		} else {
-			throw new InvalidGameMoveException("You cannot attack on your own territory.");
-		}
-		return isValidAttackMove;
-	}
-
-	/**
 	 * Check if player has valid attack move
 	 * 
 	 * @param territories
@@ -402,20 +320,13 @@ public class PlayerModel extends Observable implements Observer {
 	 * @return hasAValidMove true if player has valid move else false
 	 */
 	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
-		boolean hasAValidMove = false;
-		for (Territory territory : territories.getItems()) {
-			if (territory.getArmies() > 1) {
-				hasAValidMove = true;
-			}
-		}
-		if (!hasAValidMove) {
-			MapUtil.appendTextToGameConsole("No valid attack move avialble move to Fortification phase.\n", gameConsole);
-			MapUtil.appendTextToGameConsole("===Attack phase ended! === \n", gameConsole);
+		boolean hasValidAttackMove = behaviorStrategy.playerHasAValidAttackMove(territories, gameConsole);
+		if (!hasValidAttackMove) {
 			setChanged();
 			notifyObservers("checkIfFortificationPhaseValid");
-			return hasAValidMove;
 		}
-		return hasAValidMove;
+
+		return hasValidAttackMove;
 	}
 
 	/**
@@ -446,7 +357,7 @@ public class PlayerModel extends Observable implements Observer {
 	 *            counter of number of times cards get changed.
 	 * @param gameConsole
 	 *            Console of the game.
-	 * @return playerPlaying player object           
+	 * @return playerPlaying player object
 	 */
 	public Player tradeCardsForArmy(List<Card> selectedCards, int numberOfCardSetExchanged, TextArea gameConsole) {
 		playerPlaying.setArmies(playerPlaying.getArmies() + (5 * numberOfCardSetExchanged));
@@ -511,5 +422,20 @@ public class PlayerModel extends Observable implements Observer {
 			setChanged();
 			notifyObservers("rollDiceComplete");
 		}
+	}
+
+	/**
+	 * @return the startegy
+	 */
+	public PlayerBehaviorStrategy getStartegy() {
+		return behaviorStrategy;
+	}
+
+	/**
+	 * @param startegy
+	 *            the startegy to set
+	 */
+	public void setStartegy(PlayerBehaviorStrategy startegy) {
+		this.behaviorStrategy = startegy;
 	}
 }
