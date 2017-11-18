@@ -62,6 +62,11 @@ public class PlayerSelectionController {
 		this.playerList = playerList;
 	}
 	
+	private GamePlayController gamePlayController;
+	
+	private PlayerModel playerModel;
+	
+	
 	
 	/*
 	 * (non-Javadoc) Card controller initializer, loading currentPlayer and current
@@ -79,14 +84,22 @@ public class PlayerSelectionController {
 	 */
 	public void loadAllPlayers() {
 		playerType = new ChoiceBox<>();
-		
+
 		playerType.getItems().add(PlayerType.HUMAN.toString());
 		playerType.getItems().add(PlayerType.AGGRESSIVE.toString());
 		playerType.getItems().add(PlayerType.BENEVOLENT.toString());
 		playerType.getItems().add(PlayerType.CHEATER.toString());
 		playerType.getItems().add(PlayerType.RANDOM.toString());
 		
+
 		playerIdShow = new Label();
+
+		int numberOfPlayers = gamePlayController.getNumberOfPlayersSelected();
+				
+//		for (int i = 0; i < numberOfPlayers; i++){
+//			playerType = new ChoiceBox<>();
+//		}
+		
 		playerIdShow.setText("hello");
 		vBoxPane.getChildren().addAll(playerType, playerIdShow);
 	}	
