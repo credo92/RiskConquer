@@ -83,7 +83,7 @@ public class GamePlayController implements Initializable, Observer {
 	/**
 	 * The @playerModel.
 	 */
-	private PlayerGamePhase playerModel;
+	private PlayerGamePhase playerGamePhase;
 
 	/**
 	 * The @worldDomination.
@@ -207,9 +207,9 @@ public class GamePlayController implements Initializable, Observer {
 	public GamePlayController(Map map) {
 		this.map = map;
 		this.gameModel = new GameModel();
-		this.playerModel = new PlayerGamePhase();
+		this.playerGamePhase = new PlayerGamePhase();
 		this.cardModel = new CardModel();
-		playerModel.addObserver(this);
+		playerGamePhase.addObserver(this);
 		cardModel.addObserver(this);
 		worldDomination = new PlayerWorldDomination();
 		worldDomination.addObserver(this);
@@ -227,13 +227,14 @@ public class GamePlayController implements Initializable, Observer {
 
 				gamePlayerList.clear();
 				MapUtil.appendTextToGameConsole("===Setup Phase started!===\n", gameConsole);
-				gamePlayerList = playerModel.createPlayer(getNumberOfPlayersSelected(), gamePlayerList, gameConsole);
+				gamePlayerList = playerGamePhase.createPlayer(getNumberOfPlayersSelected(), gamePlayerList,
+						gameConsole);
 				MapUtil.appendTextToGameConsole("===Players creation complete===\n", gameConsole);
 
 				numberOfPlayers.setDisable(true);
 				playerIterator = gamePlayerList.iterator();
 
-				playerModel.assignArmiesToPlayers(gamePlayerList, gameConsole);
+				playerGamePhase.assignArmiesToPlayers(gamePlayerList, gameConsole);
 				assignTerritoryToPlayer();
 				MapUtil.appendTextToGameConsole("===Terriotry assignation complete===\n", gameConsole);
 				loadPlayerSelectionWindow();
@@ -346,7 +347,7 @@ public class GamePlayController implements Initializable, Observer {
 	@FXML
 	private void noMoreAttack(ActionEvent event) {
 		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
-		if (playerModel.getTerritoryWon() > 0) {
+		if (playerGamePhase.getTerritoryWon() > 0) {
 			assignCardToPlayer();
 		}
 		MapUtil.appendTextToGameConsole("===Attack phase ended!===\n", gameConsole);
@@ -359,18 +360,18 @@ public class GamePlayController implements Initializable, Observer {
 	private void assignCardToPlayer() {
 		Card cardToBeAdded = cardStack.pop();
 		playerPlaying.getPlayerCardList().add(cardToBeAdded);
-		playerModel.setTerritoryWon(0);
-		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " has been assigned a card with type "+ cardToBeAdded.getCardType().toString() + " and territory " + cardToBeAdded.getTerritory().getName() + "\n", gameConsole);
+		playerGamePhase.setTerritoryWon(0);
+		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " has been assigned a card with type "
+				+ cardToBeAdded.getCardType().toString() + " and territory " + cardToBeAdded.getTerritory().getName()
+				+ "\n", gameConsole);
 	}
 
 	/**
 	 * Attack on the defending territory.
 	 */
 	private void attack() {
-		Territory attackingTerritory = selectedTerritoryList.getSelectionModel().getSelectedItem();
-		Territory defendingTerritory = adjTerritoryList.getSelectionModel().getSelectedItem();
 		try {
-			playerModel.attackPhase(attackingTerritory, defendingTerritory);
+			playerGamePhase.attackPhase(selectedTerritoryList, adjTerritoryList);
 		} catch (InvalidGameMoveException ex) {
 			MapUtil.infoBox(ex.getMessage(), "Message", "");
 			return;
@@ -388,7 +389,7 @@ public class GamePlayController implements Initializable, Observer {
 		Territory selectedTerritory = this.selectedTerritoryList.getSelectionModel().getSelectedItem();
 		Territory adjTerritory = this.adjTerritoryList.getSelectionModel().getSelectedItem();
 
-		playerModel.fortificationPhase(selectedTerritory, adjTerritory, gameConsole);
+		playerGamePhase.fortificationPhase(selectedTerritory, adjTerritory, gameConsole);
 		selectedTerritoryList.refresh();
 		adjTerritoryList.refresh();
 		loadMapData();
@@ -404,7 +405,7 @@ public class GamePlayController implements Initializable, Observer {
 	private void endTurn(ActionEvent event) {
 		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " ended his turn.\n", gameConsole);
-		if (playerModel.getTerritoryWon() > 0) {
+		if (playerGamePhase.getTerritoryWon() > 0) {
 			assignCardToPlayer();
 		}
 		initializeReinforcement();
@@ -419,7 +420,7 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private void placeArmy(ActionEvent event) {
-		playerModel.placeArmy(playerPlaying, selectedTerritoryList, gamePlayerList, gameConsole);
+		playerGamePhase.placeArmy(playerPlaying, selectedTerritoryList, gamePlayerList, gameConsole);
 	}
 
 	/**
@@ -436,7 +437,7 @@ public class GamePlayController implements Initializable, Observer {
 			MapUtil.infoBox("You have five or more Risk Card, please exchange these cards for army.", "Info", "");
 			return;
 		}
-		playerModel.reinforcementPhase(territory, gameConsole);
+		playerGamePhase.reinforcementPhase(selectedTerritoryList.getItems(), territory, gameConsole);
 		selectedTerritoryList.refresh();
 		loadMapData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
@@ -475,9 +476,9 @@ public class GamePlayController implements Initializable, Observer {
 			}
 		}
 		playerPlaying = newPLayer;
-		playerModel.setPlayerPlaying(playerPlaying);
-		playerModel.setStartegy(new HumanStrategy());
-		playerModel.setTerritoryWon(0);
+		playerGamePhase.setPlayerPlaying(playerPlaying);
+		playerGamePhase.setStartegy(new HumanStrategy());
+		playerGamePhase.setTerritoryWon(0);
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "!....started playing.\n", gameConsole);
 		selectedTerritoryList.getItems().clear();
@@ -494,7 +495,7 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	public void calculateReinforcementArmies() {
 		if (this.playerPlaying != null) {
-			playerPlaying = playerModel.calculateReinforcementArmies(map, playerPlaying);
+			playerPlaying = playerGamePhase.calculateReinforcementArmies(map, playerPlaying);
 			playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
 		} else {
 			MapUtil.appendTextToGameConsole("Error!. No player playing.", gameConsole);
@@ -541,12 +542,16 @@ public class GamePlayController implements Initializable, Observer {
 	private void initializeAttack() {
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("===Attack phase started! === \n", gameConsole);
-		if (playerModel.playerHasAValidAttackMove(selectedTerritoryList, gameConsole)) {
+		if (playerGamePhase.playerHasAValidAttackMove(selectedTerritoryList, gameConsole)) {
 			gamePhase.setText("Phase: Attack");
 			MapUtil.disableControl(reinforcement, placeArmy);
 			MapUtil.enableControl(attack);
 			attack.requestFocus();
-			setLaunchAttackEvent();
+			if (playerGamePhase.getStartegy() instanceof HumanStrategy) {
+				setLaunchAttackEvent();
+			} else {
+				attack();
+			}
 		}
 	}
 
@@ -580,7 +585,7 @@ public class GamePlayController implements Initializable, Observer {
 	 * Check If Any Player Lost the game.
 	 */
 	private void checkIfAnyPlayerLostTheGame() {
-		Player playerLost = playerModel.checkIfAnyPlayerLostTheGame(gamePlayerList);
+		Player playerLost = playerGamePhase.checkIfAnyPlayerLostTheGame(gamePlayerList);
 		if (playerLost != null) {
 			gamePlayerList.remove(playerLost);
 			playerIterator = gamePlayerList.iterator();
@@ -635,7 +640,7 @@ public class GamePlayController implements Initializable, Observer {
 		populateWorldDominationData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");
 		if (!checkIfPlayerWonTheGame()) {
-			playerModel.playerHasAValidAttackMove(selectedTerritoryList, gameConsole);
+			playerGamePhase.playerHasAValidAttackMove(selectedTerritoryList, gameConsole);
 		}
 	}
 
@@ -652,7 +657,7 @@ public class GamePlayController implements Initializable, Observer {
 	 * check if there is a valid fortification phase.
 	 */
 	private void isValidFortificationPhase() {
-		playerModel.isFortificationPhaseValid(map, playerPlaying);
+		playerGamePhase.isFortificationPhaseValid(map, playerPlaying);
 	}
 
 	/**
@@ -693,7 +698,7 @@ public class GamePlayController implements Initializable, Observer {
 	public void tradeCardsForArmy(CardModel cm) {
 		List<Card> tradedCards = cm.getCardsToBeExchange();
 		setNumberOfCardSetExchanged(getNumberOfCardSetExchanged() + 1);
-		playerModel.tradeCardsForArmy(tradedCards, getNumberOfCardSetExchanged(), gameConsole);
+		playerGamePhase.tradeCardsForArmy(tradedCards, getNumberOfCardSetExchanged(), gameConsole);
 		playerPlaying.getPlayerCardList().removeAll(tradedCards);
 		cardStack.addAll(tradedCards);
 		Collections.shuffle(cardStack);
