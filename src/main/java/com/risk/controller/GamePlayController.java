@@ -12,6 +12,8 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
@@ -24,6 +26,7 @@ import com.risk.model.CardModel;
 import com.risk.model.GameModel;
 import com.risk.model.PlayerGamePhase;
 import com.risk.model.PlayerWorldDomination;
+import com.risk.strategy.AggressiveStrategy;
 import com.risk.strategy.HumanStrategy;
 
 import javafx.beans.value.ChangeListener;
@@ -407,6 +410,10 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private void reinforcement(ActionEvent event) {
+		reinforcementProcess();
+	}
+	
+	public void reinforcementProcess() {
 		Territory territory = selectedTerritoryList.getSelectionModel().getSelectedItem();
 		if (playerPlaying.getPlayerCardList().size() >= 5) {
 			MapUtil.infoBox("You have five or more Risk Card, please exchange these cards for army.", "Info", "");
@@ -417,6 +424,7 @@ public class GamePlayController implements Initializable, Observer {
 		loadMapData();
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
 	}
+	
 
 	/**
 	 * Load map data on the game screen.
@@ -452,7 +460,7 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		playerPlaying = newPLayer;
 		playerGamePhase.setPlayerPlaying(playerPlaying);
-		playerGamePhase.setStartegy(new HumanStrategy());
+		playerGamePhase.setStartegy(new AggressiveStrategy());
 		playerGamePhase.setTerritoryWon(0);
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "!....started playing.\n", gameConsole);
@@ -493,7 +501,6 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	private void initializeReinforcement() {
 		loadPlayingPlayer();
-
 		gamePhase.setText("Phase: Reinforcement");
 		MapUtil.disableControl(placeArmy, fortify, attack);
 		MapUtil.enableControl(reinforcement);
@@ -501,6 +508,9 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("===Reinforcement phase started! ===\n", gameConsole);
 		calculateReinforcementArmies();
+		if(!(playerGamePhase.getStartegy() instanceof HumanStrategy)) {
+			reinforcementProcess();	
+		}
 	}
 
 	/**
