@@ -6,7 +6,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import com.risk.constant.MapConstant;
-import com.risk.controller.DiceRollController;
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
@@ -16,6 +15,7 @@ import com.risk.exception.InvalidGameMoveException;
 import com.risk.map.util.MapUtil;
 import com.risk.strategy.PlayerBehaviorStrategy;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 
@@ -165,8 +165,8 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 * @param gameConsole
 	 *            the Game Console
 	 */
-	public void reinforcementPhase(Territory territory, TextArea gameConsole) {
-		behaviorStrategy.reinforcementPhase(territory, gameConsole, playerPlaying);
+	public void reinforcementPhase(ObservableList<Territory> territoryList, Territory territory, TextArea gameConsole) {
+		behaviorStrategy.reinforcementPhase(territoryList, territory, gameConsole, playerPlaying);
 		// start attack phase
 		if (playerPlaying.getArmies() <= 0) {
 			MapUtil.appendTextToGameConsole("===Reinforcement phase Ended! ===\n", gameConsole);
@@ -185,15 +185,9 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 * @throws InvalidGameMoveException
 	 *             invalid game exception
 	 */
-	public void attackPhase(Territory attackingTerritory, Territory defendingTerritory)
+	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList)
 			throws InvalidGameMoveException {
-		
-		DiceModel diceModel = new DiceModel(attackingTerritory, defendingTerritory);
-		diceModel.addObserver(this);
-		
-		DiceRollController diceController = new DiceRollController(diceModel);
-		
-		behaviorStrategy.attackPhase(attackingTerritory, defendingTerritory, diceController);
+		behaviorStrategy.attackPhase(attackingTerritoryList, defendingTerritoryList, this);
 	}
 
 	/**

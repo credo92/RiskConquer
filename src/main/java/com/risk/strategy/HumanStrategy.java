@@ -7,7 +7,10 @@ import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
 import com.risk.map.util.MapUtil;
+import com.risk.model.DiceModel;
+import com.risk.model.PlayerGamePhase;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,7 +20,8 @@ import javafx.stage.Stage;
 
 public class HumanStrategy implements PlayerBehaviorStrategy {
 
-	public void reinforcementPhase(Territory territory, TextArea gameConsole, Player playerPlaying) {
+	public void reinforcementPhase(ObservableList<Territory> territoryList, Territory territory, TextArea gameConsole,
+			Player playerPlaying) {
 		if (playerPlaying.getArmies() > 0) {
 			if (territory == null) {
 				MapUtil.infoBox("Select a territory to place army on.", "Message", "");
@@ -36,8 +40,15 @@ public class HumanStrategy implements PlayerBehaviorStrategy {
 		}
 	}
 
-	public void attackPhase(Territory attackingTerritory, Territory defendingTerritory,
-			DiceRollController diceController) throws InvalidGameMoveException{
+	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList,
+			PlayerGamePhase gamePhase) throws InvalidGameMoveException {
+		Territory attackingTerritory = attackingTerritoryList.getSelectionModel().getSelectedItem();
+		Territory defendingTerritory = defendingTerritoryList.getSelectionModel().getSelectedItem();
+		DiceModel diceModel = new DiceModel(attackingTerritory, defendingTerritory);
+		diceModel.addObserver(gamePhase);
+
+		DiceRollController diceController = new DiceRollController(diceModel);
+
 		if (attackingTerritory != null && defendingTerritory != null) {
 			isAValidAttackMove(attackingTerritory, defendingTerritory);
 			final Stage newMapStage = new Stage();
