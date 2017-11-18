@@ -54,13 +54,13 @@ public class PlayerSelectionController {
 	 */
 	@FXML
 	private TextField playerName;
-	
-	private GamePlayController gamePlayController;
-	
-	private PlayerModel playerModel;
+		
 	
 	private List<Player> playerList;
 	
+	public PlayerSelectionController(List<Player> playerList) {
+		this.playerList = playerList;
+	}
 	
 	
 	/*
@@ -78,19 +78,15 @@ public class PlayerSelectionController {
 	 * Load All players.
 	 */
 	public void loadAllPlayers() {
+		playerType = new ChoiceBox<>();
+		
 		playerType.getItems().add(PlayerType.HUMAN.toString());
 		playerType.getItems().add(PlayerType.AGGRESSIVE.toString());
 		playerType.getItems().add(PlayerType.BENEVOLENT.toString());
 		playerType.getItems().add(PlayerType.CHEATER.toString());
 		playerType.getItems().add(PlayerType.RANDOM.toString());
 		
-		playerType = new ChoiceBox<>();
-		int numberOfPlayers = gamePlayController.getNumberOfPlayersSelected();
-				
-//		for (int i = 0; i < numberOfPlayers; i++){
-//			playerType = new ChoiceBox<>();
-//		}
-		
+		playerIdShow = new Label();
 		playerIdShow.setText("hello");
 		vBoxPane.getChildren().addAll(playerType, playerIdShow);
 	}	
