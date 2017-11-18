@@ -44,9 +44,8 @@ public class Player {
 	 * @param name
 	 *            for player name 
 	 */
-	public Player(int id, String name) {
+	public Player(int id) {
 		this.id = id;
-		this.name = name;
 		this.assignedTerritory = new ArrayList<>();
 		this.playerCardList = new ArrayList<>();
 	}
@@ -163,6 +162,6 @@ public class Player {
 		}
 
 		Player player = (Player) obj;
-		return player.getName().equalsIgnoreCase(name);
+		return player.getId() == id;
 	}
 }

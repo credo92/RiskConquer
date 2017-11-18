@@ -92,9 +92,8 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 */
 	public List<Player> createPlayer(int noOfPlayer, List<Player> players, TextArea textArea) {
 		for (int i = 0; i < noOfPlayer; i++) {
-			String name = "Player" + i;
-			players.add(new Player(i, name));
-			MapUtil.appendTextToGameConsole(name + " created!\n", textArea);
+			players.add(new Player(i));
+			//MapUtil.appendTextToGameConsole(name + " created!\n", textArea);
 		}
 		return players;
 	}
