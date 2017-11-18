@@ -22,7 +22,7 @@ import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
 import com.risk.model.CardModel;
 import com.risk.model.GameModel;
-import com.risk.model.PlayerModel;
+import com.risk.model.PlayerGamePhase;
 import com.risk.model.PlayerWorldDomination;
 import com.risk.strategy.HumanStrategy;
 
@@ -78,7 +78,7 @@ public class GamePlayController implements Initializable, Observer {
 	/**
 	 * The @playerModel.
 	 */
-	private PlayerModel playerModel;
+	private PlayerGamePhase playerModel;
 
 	/**
 	 * The @worldDomination.
@@ -202,7 +202,7 @@ public class GamePlayController implements Initializable, Observer {
 	public GamePlayController(Map map) {
 		this.map = map;
 		this.gameModel = new GameModel();
-		this.playerModel = new PlayerModel();
+		this.playerModel = new PlayerGamePhase();
 		this.cardModel = new CardModel();
 		playerModel.addObserver(this);
 		cardModel.addObserver(this);

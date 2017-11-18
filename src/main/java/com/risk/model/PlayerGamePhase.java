@@ -25,7 +25,7 @@ import javafx.scene.control.TextArea;
  * @author rahul
  * @version 1.0.0
  */
-public class PlayerModel extends Observable implements Observer {
+public class PlayerGamePhase extends Observable implements Observer {
 
 	/**
 	 * the @playerPlaying reference
