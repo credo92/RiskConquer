@@ -2,6 +2,7 @@ package com.risk.controller;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ import javafx.scene.layout.VBox;
  * @version 1.0.0
  */
 
-public class PlayerSelectionController implements Initializable {
+public class PlayerSelectionController extends Observable implements Initializable {
 
 	/**
 	 * The @vBoxPane .
@@ -52,16 +53,13 @@ public class PlayerSelectionController implements Initializable {
 	@FXML
 	private Button okButton;
 
-	/**
-	 * The @cancelButton.
-	 */
-	@FXML
-	private Button cancelButton;
-
 	private List<Player> playerList;
+	
+	public boolean flag;
+	
 
 	public PlayerSelectionController(List<Player> playerList) {
-		this.playerList = playerList;
+		this.playerList = playerList;	
 	}
 
 	/*
@@ -72,8 +70,8 @@ public class PlayerSelectionController implements Initializable {
 	 */
 	public void initialize(URL location, ResourceBundle resources) {
 		loadAllPlayers();
-
 	}
+
 
 	public HBox getElementsWindow(int playerId) {
 		ChoiceBox<PlayerType> playerType = new ChoiceBox<>();
@@ -147,7 +145,6 @@ public class PlayerSelectionController implements Initializable {
 	 *            action event
 	 */
 	public void savePlayerType(ActionEvent event) {
-		boolean flag = false;
 		ObservableList<Node> hBoxList = vBoxPane.getChildren();
 		if (validateTextFields(hBoxList)) {
 			for (Node n : hBoxList) {
@@ -165,14 +162,14 @@ public class PlayerSelectionController implements Initializable {
 					PlayerBehaviorStrategy strategy = getStrategyObject(selectedPlayerType.toString());
 					players.get(0).setStrategy(strategy);
 				}
-
 			}
 		}
 		if (flag) {
+			setChanged();
+			notifyObservers("playersCreated");
 			GameUtil.closeScreen(okButton);
 		} else {
 			MapUtil.infoBox("Please fill all the details", "Message", "");
 		}
-
 	}
 }

@@ -49,6 +49,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * Game play controller to control all the
@@ -96,6 +97,7 @@ public class GamePlayController implements Initializable, Observer {
 	@FXML
 	private ChoiceBox<Integer> numberOfPlayers;
 
+	private PlayerSelectionController playerSelectionController;
 	/**
 	 * The @attack button.
 	 */
@@ -238,10 +240,6 @@ public class GamePlayController implements Initializable, Observer {
 				assignTerritoryToPlayer();
 				MapUtil.appendTextToGameConsole("===Terriotry assignation complete===\n", gameConsole);
 				loadPlayerSelectionWindow();
-				loadMapData();
-				loadPlayingPlayer();
-				populateWorldDominationData();
-				MapUtil.enableControl(cards);
 			}
 		});
 	}
@@ -300,7 +298,8 @@ public class GamePlayController implements Initializable, Observer {
 	public void loadPlayerSelectionWindow() {
 		final Stage newMapStage = new Stage();
 		newMapStage.setTitle("Player Selection Window");	 
-		PlayerSelectionController playerSelectionController = new PlayerSelectionController(gamePlayerList);	
+		PlayerSelectionController playerSelectionController = new PlayerSelectionController(gamePlayerList);
+		playerSelectionController.addObserver(this);
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("PlayerSelection.fxml"));
 		loader.setController(playerSelectionController);
 		Parent root = null;
@@ -312,6 +311,16 @@ public class GamePlayController implements Initializable, Observer {
 		Scene scene = new Scene(root);
 		newMapStage.setScene(scene);
 		newMapStage.show();
+		newMapStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent event) {
+				if(gamePlayerList.get(0).getName() == null) {
+					event.consume();
+					MapUtil.infoBox("Please Enter fiedls", "Message", "");
+				} 
+				
+			}
+		});
 		
 	}
 
@@ -751,6 +760,12 @@ public class GamePlayController implements Initializable, Observer {
 		if (view.equals("cardsTrade")) {
 			CardModel cm = (CardModel) o;
 			tradeCardsForArmy(cm);
+		}
+		if (view.equals("playersCreated")) {
+			loadMapData();
+			loadPlayingPlayer();
+			populateWorldDominationData();
+			MapUtil.enableControl(cards);
 		}
 	}
 
