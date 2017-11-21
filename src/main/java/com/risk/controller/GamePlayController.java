@@ -489,7 +489,7 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");
 	}
-
+	
 	/**
 	 * Calculate reinforcement armies based on the game rules.
 	 */
