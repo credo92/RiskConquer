@@ -3,6 +3,8 @@ package com.risk.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.risk.strategy.PlayerBehaviorStrategy;
+
 /**
  * This is an entity class for Player with id, name, armies and assignedTerritories as its member variables.
  * @author rahul
@@ -35,6 +37,10 @@ public class Player {
 	 */
 	private List<Card> playerCardList;
 	
+	private PlayerBehaviorStrategy strategy;
+	
+	
+
 	/**
 	 * Constructor for Player
 	 * 
@@ -143,6 +149,14 @@ public class Player {
 	 */
 	public void setPlayerCardList(List<Card> playerCardList) {
 		this.playerCardList = playerCardList;
+	}
+	
+	public PlayerBehaviorStrategy getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(PlayerBehaviorStrategy strategy) {
+		this.strategy = strategy;
 	}
 
 	/*
