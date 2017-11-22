@@ -1,6 +1,7 @@
 package com.risk.strategy;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,6 @@ import com.risk.model.PlayerGamePhase;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
@@ -34,33 +34,35 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 			MapUtil.appendTextToGameConsole(armies + ": assigned to territory " + randomTerritory.getName() + "\n",
 					gameConsole);
 		}
+
 	}
 
 	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList,
-			PlayerGamePhase gamePhase) throws InvalidGameMoveException {
+			PlayerGamePhase gamePhase, TextArea gameConsole) throws InvalidGameMoveException {
 
 		ObservableList<Territory> attackTerList = attackingTerritoryList.getItems();
-		int count = 0;
-		boolean foundAnAttackMove = true;
-		while (foundAnAttackMove && count <= attackTerList.size()) {
-			Territory attackingTerritory = getRandomAttackingTerritory(attackTerList);
+		Iterator<Territory> terrIterator = attackTerList.iterator();
+		while (terrIterator.hasNext()) {
+			Territory attackingTerritory = terrIterator.next();
 			List<Territory> defendingTerritories = getDefendingTerritory(attackingTerritory);
 			if (defendingTerritories.size() == 0) {
-				count++;
 				continue;
 			}
-			attack(attackingTerritory, defendingTerritories.get(0));
+			attack(attackingTerritory, defendingTerritories.get(0), gamePhase, gameConsole);
+			break;
 		}
+		
+		System.out.println("NO attacking territory found");
 	}
 
 	public boolean fortificationPhase(ListView<Territory> selectedTerritoryList, ListView<Territory> adjTerritoryList,
 			TextArea gameConsole, Player playerPlaying) {
 		boolean isFortificationDone = false;
 		ObservableList<Territory> selectedTerritory = selectedTerritoryList.getItems();
-		int territoryCount = selectedTerritory.size();
 		boolean fortifiyingStarted = true;
-		while (fortifiyingStarted) {
-			Territory fortifyingTerritory = selectedTerritory.get(randomNumber(territoryCount - 1));
+		Iterator<Territory> iterateTerritory = selectedTerritory.iterator();
+		while (fortifiyingStarted && iterateTerritory.hasNext()) {
+			Territory fortifyingTerritory = iterateTerritory.next();
 			if (fortifyingTerritory.getArmies() > 1) {
 				List<Territory> adjTerritory = fortifyingTerritory.getAdjacentTerritories().stream()
 						.filter(t -> fortifyingTerritory.getPlayer().equals(t.getPlayer()))
@@ -78,6 +80,7 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 				} else {
 					continue;
 				}
+
 			}
 		}
 		return isFortificationDone;
@@ -86,10 +89,11 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
 		boolean hasAValidMove = false;
 		for (Territory territory : territories.getItems()) {
-			if (territory.getArmies() > 1) {
+			if (territory.getArmies() > 1 && getDefendingTerritory(territory).size() > 0) {
 				hasAValidMove = true;
 			}
 		}
+
 		if (!hasAValidMove) {
 			MapUtil.appendTextToGameConsole("No valid attack move avialble move to Fortification phase.\n",
 					gameConsole);
@@ -100,20 +104,6 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 
 	}
 
-	/**
-	 * @param attackingTerritoryList
-	 * @return
-	 */
-	private Territory getRandomAttackingTerritory(ObservableList<Territory> attackTerList) {
-
-		int territoryCount = attackTerList.size();
-		Territory attackingTerritory = attackTerList.get(randomNumber(territoryCount - 1));
-		if (attackingTerritory.getArmies() <= 1) {
-			getRandomAttackingTerritory(attackTerList);
-		}
-		return attackingTerritory;
-	}
-
 	private List<Territory> getDefendingTerritory(Territory attackingTerritory) {
 		List<Territory> defendingTerritories = attackingTerritory.getAdjacentTerritories().stream()
 				.filter(t -> (attackingTerritory.getPlayer() != t.getPlayer())).collect(Collectors.toList());
@@ -122,10 +112,11 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 
 	}
 
-	private void attack(Territory attacking, Territory defending) {
+	private void attack(Territory attacking, Territory defending, PlayerGamePhase gamePhase, TextArea gameConsole) {
 		DiceModel diceModel = new DiceModel(attacking, defending);
+		diceModel.addObserver(gamePhase);
 
-		DiceRollController diceController = new DiceRollController(diceModel, this);
+		DiceRollController diceController = new DiceRollController(diceModel, this, gameConsole);
 
 		final Stage newMapStage = new Stage();
 		newMapStage.setTitle("Attack Window");
@@ -140,9 +131,10 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 			e.printStackTrace();
 		}
 
-		Scene scene = new Scene(root);
-		newMapStage.setScene(scene);
-		newMapStage.show();
+		/*
+		 * Scene scene = new Scene(root); newMapStage.setScene(scene);
+		 * newMapStage.show();
+		 */
 	}
 
 	/**

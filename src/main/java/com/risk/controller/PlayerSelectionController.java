@@ -103,7 +103,7 @@ public class PlayerSelectionController extends Observable implements Initializab
 
 	public PlayerBehaviorStrategy getStrategyObject(String strategyType) {
 		PlayerBehaviorStrategy strategy = null;
-		if (strategyType.equals("Human")) {
+		if (strategyType.equals("HUMAN")) {
 			strategy = new HumanStrategy();
 		} else if (strategyType.equals("AGGRESSIVE")) {
 			strategy = new AggressiveStrategy();
