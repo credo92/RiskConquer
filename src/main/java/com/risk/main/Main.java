@@ -38,12 +38,12 @@ public class Main extends Application {
 
 			Group root = new Group();
 			
-			Scene scene = new Scene(root, 300, 300);
+			Scene scene = new Scene(root, 300, 350);
 			scene.getStylesheets().add("application.css");
 			
 			VBox vbox = new VBox();
 			vbox.setAlignment(Pos.BOTTOM_CENTER);
-			vbox.getChildren().addAll(startGameButton(scene), mapEditorButton(scene), exitButton(scene));			
+			vbox.getChildren().addAll(startNewGameButton(scene), startSavedGameButton(scene), tournamentButton(scene), mapEditorButton(scene), exitButton(scene));			
 			
 			BorderPane borderPane = new BorderPane();
 			borderPane.setBottom(vbox);
@@ -117,14 +117,35 @@ public class Main extends Application {
 	 * @param scene {@link Scene} to depict UI screen.
 	 * @return {@link Button} wherein button loads a chosen map and starts the game.
 	 */
-	public static Button startGameButton(Scene scene) {
-		Button startGameButton = new Button("Load Map and Start Game");
-		/*startGameButton.setOnAction(new MapEditor());
-		startGameButton.setMaxWidth(scene.getWidth());*/
-		startGameButton.setOnAction(new GamePlay());
-		startGameButton.setMaxWidth(scene.getWidth());
-
-		return startGameButton;
+	public static Button startNewGameButton(Scene scene) {
+		Button startNewGameButton = new Button("Start New Game");
+		startNewGameButton.setOnAction(new GamePlay());
+		startNewGameButton.setMaxWidth(scene.getWidth());
+		return startNewGameButton;
+	}
+	
+	/**
+	 * Start game button
+	 * @param scene {@link Scene} to depict UI screen.
+	 * @return {@link Button} wherein button loads a chosen map and starts the game.
+	 */
+	public static Button startSavedGameButton(Scene scene) {
+		Button startSavedGameButton = new Button("Start Saved Game");
+		//TODO
+		startSavedGameButton.setMaxWidth(scene.getWidth());
+		return startSavedGameButton;
+	}
+	
+	/**
+	 * Tournament button.
+	 * @param scene {@link Scene} to depict tournament screen.
+	 * @return {@link Button} wherein button loads a tournament screen.
+	 */
+	public static Button tournamentButton(Scene scene) {
+		Button tournamentButton = new Button("Tournament Mode");
+		tournamentButton.setOnAction(new TournamentPlay());
+		tournamentButton.setMaxWidth(scene.getWidth());
+		return tournamentButton;
 	}
 
 	/**
