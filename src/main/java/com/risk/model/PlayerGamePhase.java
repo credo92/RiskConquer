@@ -13,7 +13,6 @@ import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
 import com.risk.map.util.MapUtil;
-import com.risk.strategy.PlayerBehaviorStrategy;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
@@ -31,8 +30,6 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 * the @playerPlaying reference
 	 */
 	Player playerPlaying;
-
-	PlayerBehaviorStrategy behaviorStrategy;
 
 	/**
 	 * @return player playing
@@ -93,7 +90,7 @@ public class PlayerGamePhase extends Observable implements Observer {
 	public List<Player> createPlayer(int noOfPlayer, List<Player> players, TextArea textArea) {
 		for (int i = 0; i < noOfPlayer; i++) {
 			players.add(new Player(i));
-			//MapUtil.appendTextToGameConsole(name + " created!\n", textArea);
+			// MapUtil.appendTextToGameConsole(name + " created!\n", textArea);
 		}
 		return players;
 	}
@@ -165,7 +162,7 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 *            the Game Console
 	 */
 	public void reinforcementPhase(ObservableList<Territory> territoryList, Territory territory, TextArea gameConsole) {
-		behaviorStrategy.reinforcementPhase(territoryList, territory, gameConsole, playerPlaying);
+		playerPlaying.getStrategy().reinforcementPhase(territoryList, territory, gameConsole, playerPlaying);
 		// start attack phase
 		if (playerPlaying.getArmies() <= 0) {
 			MapUtil.appendTextToGameConsole("===Reinforcement phase Ended! ===\n", gameConsole);
@@ -186,7 +183,7 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 */
 	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList)
 			throws InvalidGameMoveException {
-		behaviorStrategy.attackPhase(attackingTerritoryList, defendingTerritoryList, this);
+		playerPlaying.getStrategy().attackPhase(attackingTerritoryList, defendingTerritoryList, this);
 	}
 
 	/**
@@ -199,8 +196,9 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 * @param gameConsole
 	 *            gameConsole
 	 */
-	public void fortificationPhase(ListView<Territory> selectedTerritory, ListView<Territory> adjTerritory, TextArea gameConsole) {
-		boolean isFortificationDone = behaviorStrategy.fortificationPhase(selectedTerritory, adjTerritory, gameConsole,
+	public void fortificationPhase(ListView<Territory> selectedTerritory, ListView<Territory> adjTerritory,
+			TextArea gameConsole) {
+		boolean isFortificationDone = playerPlaying.getStrategy().fortificationPhase(selectedTerritory, adjTerritory, gameConsole,
 				playerPlaying);
 
 		if (isFortificationDone) {
@@ -313,7 +311,7 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 * @return hasAValidMove true if player has valid move else false
 	 */
 	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
-		boolean hasValidAttackMove = behaviorStrategy.playerHasAValidAttackMove(territories, gameConsole);
+		boolean hasValidAttackMove = playerPlaying.getStrategy().playerHasAValidAttackMove(territories, gameConsole);
 		if (!hasValidAttackMove) {
 			setChanged();
 			notifyObservers("checkIfFortificationPhaseValid");
@@ -415,20 +413,5 @@ public class PlayerGamePhase extends Observable implements Observer {
 			setChanged();
 			notifyObservers("rollDiceComplete");
 		}
-	}
-
-	/**
-	 * @return the startegy
-	 */
-	public PlayerBehaviorStrategy getStartegy() {
-		return behaviorStrategy;
-	}
-
-	/**
-	 * @param startegy
-	 *            the startegy to set
-	 */
-	public void setStartegy(PlayerBehaviorStrategy startegy) {
-		this.behaviorStrategy = startegy;
 	}
 }

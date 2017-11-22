@@ -484,7 +484,6 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		playerPlaying = newPLayer;
 		playerGamePhase.setPlayerPlaying(playerPlaying);
-		playerGamePhase.setStartegy(new HumanStrategy());
 		playerGamePhase.setTerritoryWon(0);
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "!....started playing.\n", gameConsole);
@@ -531,7 +530,7 @@ public class GamePlayController implements Initializable, Observer {
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("===Reinforcement phase started! ===\n", gameConsole);
 		calculateReinforcementArmies();
-		if (!(playerGamePhase.getStartegy() instanceof HumanStrategy)) {
+		if (!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
 			startReinforcement(null);
 		} else {
 			MapUtil.enableControl(reinforcement);
@@ -558,7 +557,7 @@ public class GamePlayController implements Initializable, Observer {
 			MapUtil.disableControl(reinforcement, placeArmy);
 			MapUtil.enableControl(attack);
 			attack.requestFocus();
-			if (playerGamePhase.getStartegy() instanceof HumanStrategy) {
+			if (playerPlaying.getStrategy() instanceof HumanStrategy) {
 				setLaunchAttackEvent();
 			} else {
 				attack();
@@ -576,7 +575,7 @@ public class GamePlayController implements Initializable, Observer {
 		fortify.requestFocus();
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("====Fortification phase started! ====== \n", gameConsole);
-		if (!(playerGamePhase.getStartegy() instanceof HumanStrategy)){
+		if (!(playerPlaying.getStrategy() instanceof HumanStrategy)){
 			startFortification();
 		}
 	}
