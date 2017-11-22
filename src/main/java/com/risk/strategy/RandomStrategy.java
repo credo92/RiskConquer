@@ -1,7 +1,6 @@
 package com.risk.strategy;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,19 +39,18 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList,
 			PlayerGamePhase gamePhase) throws InvalidGameMoveException {
 
-		int numberOfAttack = randomNumber(5);
-
-		ArrayList<Territory> territoryVisited = new ArrayList<>();
 		ObservableList<Territory> attackTerList = attackingTerritoryList.getItems();
-
-	//	while (territoryVisited.size() <= attackTerList.size() || numberOfAttack == 0) {
-			Territory attackingTerritory = getRandomAttackingTerritory(attackTerList, territoryVisited);
+		int count = 0;
+		boolean foundAnAttackMove = true;
+		while (foundAnAttackMove && count <= attackTerList.size()) {
+			Territory attackingTerritory = getRandomAttackingTerritory(attackTerList);
 			List<Territory> defendingTerritories = getDefendingTerritory(attackingTerritory);
-			//for (Territory defendingTerritory : defendingTerritories) {
-				attack(attackingTerritory, defendingTerritories.get(0));
-				//break;
-		//	}
-	//	}
+			if (defendingTerritories.size() == 0) {
+				count++;
+				continue;
+			}
+			attack(attackingTerritory, defendingTerritories.get(0));
+		}
 	}
 
 	public boolean fortificationPhase(ListView<Territory> selectedTerritoryList, ListView<Territory> adjTerritoryList,
@@ -106,16 +104,12 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 	 * @param attackingTerritoryList
 	 * @return
 	 */
-	private Territory getRandomAttackingTerritory(ObservableList<Territory> attackTerList,
-			ArrayList<Territory> territoryVisited) {
+	private Territory getRandomAttackingTerritory(ObservableList<Territory> attackTerList) {
 
 		int territoryCount = attackTerList.size();
 		Territory attackingTerritory = attackTerList.get(randomNumber(territoryCount - 1));
 		if (attackingTerritory.getArmies() <= 1) {
-			if (!territoryVisited.contains(attackingTerritory)) {
-				territoryVisited.add(attackingTerritory);
-			}
-			getRandomAttackingTerritory(attackTerList, territoryVisited);
+			getRandomAttackingTerritory(attackTerList);
 		}
 		return attackingTerritory;
 	}

@@ -202,18 +202,15 @@ public class DiceRollController implements Initializable {
 	}
 
 	private void autoRollDice() {
-		selectVisibleDice(attackerDice1,attackerDice2,attackerDice3,defenderDice1,defenderDice2);
-		
+		selectVisibleDice(attackerDice1, attackerDice2, attackerDice3, defenderDice1, defenderDice2);
+
 		rollDice(null);
-		System.out.println("hello");
-//		try {
-//			Thread.sleep(20000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		if (continueRoll.isDisabled()) {
-			
+		if (!continueRoll.isDisabled()) {
+			continueDiceRoll(null);
+		} else if (continueRoll.isDisabled() && !cancelDiceRoll.isDisabled()) {
+			cancelDiceRoll(null);
+		} else if (moveArmiesView.isVisible()) {
+			moveAllArmies(null);
 		}
 	}
 
@@ -286,7 +283,7 @@ public class DiceRollController implements Initializable {
 	 * Cancel Dice Roll
 	 */
 	@FXML
-	private void cancelDiceRoll() {
+	private void cancelDiceRoll(ActionEvent event) {
 		diceModel.cancelDiceRoll();
 		GameUtil.closeScreen(cancelDiceRoll);
 	}

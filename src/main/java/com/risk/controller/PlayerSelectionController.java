@@ -6,17 +6,16 @@ import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import com.risk.model.PlayerGamePhase;
+import com.risk.constant.PlayerType;
+import com.risk.entity.Player;
+import com.risk.map.util.GameUtil;
+import com.risk.map.util.MapUtil;
 import com.risk.strategy.AggressiveStrategy;
 import com.risk.strategy.BenevolentStrategy;
 import com.risk.strategy.CheaterStrategy;
 import com.risk.strategy.HumanStrategy;
 import com.risk.strategy.PlayerBehaviorStrategy;
 import com.risk.strategy.RandomStrategy;
-import com.risk.constant.PlayerType;
-import com.risk.entity.Player;
-import com.risk.map.util.GameUtil;
-import com.risk.map.util.MapUtil;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,11 +23,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -159,6 +156,7 @@ public class PlayerSelectionController extends Observable implements Initializab
 				}
 				if (node.get(2) instanceof ChoiceBox<?>) {
 					PlayerType selectedPlayerType = (PlayerType) ((ChoiceBox<?>) node.get(2)).getSelectionModel().getSelectedItem();
+					players.get(0).setType(selectedPlayerType);
 					PlayerBehaviorStrategy strategy = getStrategyObject(selectedPlayerType.toString());
 					players.get(0).setStrategy(strategy);
 				}

@@ -228,20 +228,25 @@ public class GamePlayController implements Initializable, Observer {
 				setNumberOfPlayersSelected(numberOfPlayers.getSelectionModel().getSelectedItem());
 
 				gamePlayerList.clear();
-				MapUtil.appendTextToGameConsole("===Setup Phase started!===\n", gameConsole);
 				gamePlayerList = playerGamePhase.createPlayer(getNumberOfPlayersSelected(), gamePlayerList,
 						gameConsole);
-				MapUtil.appendTextToGameConsole("===Players creation complete===\n", gameConsole);
-
 				numberOfPlayers.setDisable(true);
 				playerIterator = gamePlayerList.iterator();
-
-				playerGamePhase.assignArmiesToPlayers(gamePlayerList, gameConsole);
-				assignTerritoryToPlayer();
-				MapUtil.appendTextToGameConsole("===Terriotry assignation complete===\n", gameConsole);
 				loadPlayerSelectionWindow();
 			}
 		});
+	}
+	
+	public void loadStartUpPhase() {
+		MapUtil.appendTextToGameConsole("===Setup Phase started!===\n", gameConsole);
+		MapUtil.appendTextToGameConsole("===Players creation complete===\n", gameConsole);
+		playerGamePhase.assignArmiesToPlayers(gamePlayerList, gameConsole);
+		assignTerritoryToPlayer();
+		MapUtil.appendTextToGameConsole("===Terriotry assignation complete===\n", gameConsole);
+		loadMapData();
+		loadPlayingPlayer();
+		populateWorldDominationData();
+		MapUtil.enableControl(cards);
 	}
 
 	/*
@@ -314,11 +319,8 @@ public class GamePlayController implements Initializable, Observer {
 		newMapStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent event) {
-				if(gamePlayerList.get(0).getName() == null) {
-					event.consume();
-					MapUtil.infoBox("Please Enter fiedls", "Message", "");
-				} 
-				
+				gamePlayerList =  new ArrayList<>();
+				numberOfPlayers.setDisable(false);
 			}
 		});
 		
@@ -447,7 +449,7 @@ public class GamePlayController implements Initializable, Observer {
 		playerGamePhase.reinforcementPhase(selectedTerritoryList.getItems(), territory, gameConsole);
 		selectedTerritoryList.refresh();
 		loadMapData();
-		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
+		playerChosen.setText(playerPlaying.getName() + "("+ playerPlaying.getType()+"):- " + playerPlaying.getArmies() + " armies left.");
 	}
 
 	/**
@@ -493,7 +495,7 @@ public class GamePlayController implements Initializable, Observer {
 		for (Territory territory : playerPlaying.getAssignedTerritory()) {
 			selectedTerritoryList.getItems().add(territory);
 		}
-		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");
+		playerChosen.setText(playerPlaying.getName() + "("+ playerPlaying.getType()+"):- " + playerPlaying.getArmies() + " armies left.\n");
 	}
 	
 	/**
@@ -502,7 +504,7 @@ public class GamePlayController implements Initializable, Observer {
 	public void calculateReinforcementArmies() {
 		if (this.playerPlaying != null) {
 			playerPlaying = playerGamePhase.calculateReinforcementArmies(map, playerPlaying);
-			playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.");
+			playerChosen.setText(playerPlaying.getName() + "("+ playerPlaying.getType()+"):- " + playerPlaying.getArmies() + " armies left.");
 		} else {
 			MapUtil.appendTextToGameConsole("Error!. No player playing.", gameConsole);
 		}
@@ -658,9 +660,13 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		loadMapData();
 		populateWorldDominationData();
-		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");
+		playerChosen.setText(playerPlaying.getName() + "("+ playerPlaying.getType()+"):- " + playerPlaying.getArmies() + " armies left.\n");
 		if (!checkIfPlayerWonTheGame()) {
-			playerGamePhase.playerHasAValidAttackMove(selectedTerritoryList, gameConsole);
+			if(playerGamePhase.playerHasAValidAttackMove(selectedTerritoryList, gameConsole)) {
+				if ((playerPlaying.getStrategy() instanceof HumanStrategy)) {
+					attack();
+				}
+			}
 		}
 	}
 
@@ -726,7 +732,7 @@ public class GamePlayController implements Initializable, Observer {
 		adjTerritoryList.refresh();
 		loadMapData();
 		populateWorldDominationData();
-		playerChosen.setText(playerPlaying.getName() + ":- " + playerPlaying.getArmies() + " armies left.\n");
+		playerChosen.setText(playerPlaying.getName() + "("+ playerPlaying.getType()+"):- " + playerPlaying.getArmies() + " armies left.\n");
 	}
 
 	/*
@@ -773,10 +779,7 @@ public class GamePlayController implements Initializable, Observer {
 			tradeCardsForArmy(cm);
 		}
 		if (view.equals("playersCreated")) {
-			loadMapData();
-			loadPlayingPlayer();
-			populateWorldDominationData();
-			MapUtil.enableControl(cards);
+			loadStartUpPhase();
 		}
 	}
 
