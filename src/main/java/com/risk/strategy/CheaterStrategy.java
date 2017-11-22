@@ -25,15 +25,15 @@ public class CheaterStrategy implements PlayerBehaviorStrategy {
 		
 	}
 
+
 	@Override
-	public boolean fortificationPhase(Territory selectedTerritory, Territory adjTerritory, TextArea gameConsole,
-			Player playerPlaying) {
+	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
+	public boolean fortificationPhase(ListView<Territory> selectedTerritory, ListView<Territory> adjTerritory,
+			TextArea gameConsole, Player playerPlaying) {
 		// TODO Auto-generated method stub
 		return false;
 	}

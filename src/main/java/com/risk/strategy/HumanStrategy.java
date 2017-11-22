@@ -47,7 +47,7 @@ public class HumanStrategy implements PlayerBehaviorStrategy {
 		DiceModel diceModel = new DiceModel(attackingTerritory, defendingTerritory);
 		diceModel.addObserver(gamePhase);
 
-		DiceRollController diceController = new DiceRollController(diceModel);
+		DiceRollController diceController = new DiceRollController(diceModel, this);
 
 		if (attackingTerritory != null && defendingTerritory != null) {
 			isAValidAttackMove(attackingTerritory, defendingTerritory);
@@ -73,8 +73,10 @@ public class HumanStrategy implements PlayerBehaviorStrategy {
 
 	}
 
-	public boolean fortificationPhase(Territory selectedTerritory, Territory adjTerritory, TextArea gameConsole,
-			Player playerPlaying) {
+	public boolean fortificationPhase(ListView<Territory> selectedTerritoryList, ListView<Territory> adjTerritoryList,
+			TextArea gameConsole, Player playerPlaying) {
+		Territory selectedTerritory = selectedTerritoryList.getSelectionModel().getSelectedItem();
+		Territory adjTerritory = adjTerritoryList.getSelectionModel().getSelectedItem();
 		if (selectedTerritory == null) {
 			MapUtil.infoBox("Please choose Selected Territory as source.", "Message", "");
 			return false;
