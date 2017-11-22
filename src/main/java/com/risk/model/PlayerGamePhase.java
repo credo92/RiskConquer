@@ -199,7 +199,7 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 * @param gameConsole
 	 *            gameConsole
 	 */
-	public void fortificationPhase(Territory selectedTerritory, Territory adjTerritory, TextArea gameConsole) {
+	public void fortificationPhase(ListView<Territory> selectedTerritory, ListView<Territory> adjTerritory, TextArea gameConsole) {
 		boolean isFortificationDone = behaviorStrategy.fortificationPhase(selectedTerritory, adjTerritory, gameConsole,
 				playerPlaying);
 

@@ -32,7 +32,7 @@ public interface PlayerBehaviorStrategy {
 	 * @param adjTerritory
 	 * @param gameConsole
 	 */
-	boolean fortificationPhase(Territory selectedTerritory, Territory adjTerritory, TextArea gameConsole,
+	boolean fortificationPhase(ListView<Territory> selectedTerritory, ListView<Territory> adjTerritory, TextArea gameConsole,
 			Player playerPlaying);
 
 	boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole);

@@ -5,9 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-
-import com.risk.controller.DiceRollController;
-
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
@@ -38,25 +35,23 @@ public class AggressiveStrategy implements PlayerBehaviorStrategy{
 		
 	}
 
-	@Override
 	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList,
 			PlayerGamePhase gamePhase) throws InvalidGameMoveException {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public boolean fortificationPhase(Territory selectedTerritory, Territory adjTerritory, TextArea gameConsole,
-			Player playerPlaying) {
+	public boolean fortificationPhase(ListView<Territory> selectedTerritory, ListView<Territory> adjTerritory,
+			TextArea gameConsole, Player playerPlaying) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 
 
 

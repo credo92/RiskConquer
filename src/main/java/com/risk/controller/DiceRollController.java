@@ -11,19 +11,23 @@ import com.risk.entity.Territory;
 import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
 import com.risk.model.DiceModel;
+import com.risk.strategy.HumanStrategy;
+import com.risk.strategy.PlayerBehaviorStrategy;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 /**
- * DiceRollController controller to control all the 
- * @author Gurpreet Singh 
+ * DiceRollController controller to control all the
+ * 
+ * @author Gurpreet Singh
  * @version 1.0.0
  */
 public class DiceRollController implements Initializable {
@@ -159,12 +163,17 @@ public class DiceRollController implements Initializable {
 	 */
 	private DiceModel diceModel;
 
+	private PlayerBehaviorStrategy strategy;
+
 	/**
 	 * Constructor for dice roll controller.
-	 * @param diceModel dice model object
+	 * 
+	 * @param diceModel
+	 *            dice model object
 	 */
-	public DiceRollController(DiceModel diceModel) {
+	public DiceRollController(DiceModel diceModel, PlayerBehaviorStrategy strategy) {
 		this.diceModel = diceModel;
+		this.strategy = strategy;
 	}
 
 	/*
@@ -179,6 +188,33 @@ public class DiceRollController implements Initializable {
 
 		loadAttackScreen();
 		showDice();
+		if (!(strategy instanceof HumanStrategy)) {
+			autoRollDice();
+		}
+	}
+
+	private void selectVisibleDice(Control... controls) {
+		for (Control control : controls) {
+			if (control.isVisible()) {
+				((CheckBox) control).setSelected(true);
+			}
+		}
+	}
+
+	private void autoRollDice() {
+		selectVisibleDice(attackerDice1,attackerDice2,attackerDice3,defenderDice1,defenderDice2);
+		
+		rollDice(null);
+		System.out.println("hello");
+//		try {
+//			Thread.sleep(20000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		if (continueRoll.isDisabled()) {
+			
+		}
 	}
 
 	/**

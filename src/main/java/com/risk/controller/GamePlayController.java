@@ -395,13 +395,7 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private void fortify(ActionEvent event) {
-		Territory selectedTerritory = this.selectedTerritoryList.getSelectionModel().getSelectedItem();
-		Territory adjTerritory = this.adjTerritoryList.getSelectionModel().getSelectedItem();
-
-		playerGamePhase.fortificationPhase(selectedTerritory, adjTerritory, gameConsole);
-		selectedTerritoryList.refresh();
-		adjTerritoryList.refresh();
-		loadMapData();
+		startFortification();
 	}
 
 	/**
@@ -446,6 +440,10 @@ public class GamePlayController implements Initializable, Observer {
 			MapUtil.infoBox("You have five or more Risk Card, please exchange these cards for army.", "Info", "");
 			return;
 		}
+		startReinforcement(territory);
+	}
+
+	private void startReinforcement(Territory territory) {
 		playerGamePhase.reinforcementPhase(selectedTerritoryList.getItems(), territory, gameConsole);
 		selectedTerritoryList.refresh();
 		loadMapData();
@@ -530,11 +528,15 @@ public class GamePlayController implements Initializable, Observer {
 
 		gamePhase.setText("Phase: Reinforcement");
 		MapUtil.disableControl(placeArmy, fortify, attack);
-		MapUtil.enableControl(reinforcement);
-		reinforcement.requestFocus();
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("===Reinforcement phase started! ===\n", gameConsole);
 		calculateReinforcementArmies();
+		if (!(playerGamePhase.getStartegy() instanceof HumanStrategy)) {
+			startReinforcement(null);
+		} else {
+			MapUtil.enableControl(reinforcement);
+			reinforcement.requestFocus();
+		}
 	}
 
 	/**
@@ -574,6 +576,16 @@ public class GamePlayController implements Initializable, Observer {
 		fortify.requestFocus();
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole("====Fortification phase started! ====== \n", gameConsole);
+		if (!(playerGamePhase.getStartegy() instanceof HumanStrategy)){
+			startFortification();
+		}
+	}
+
+	private void startFortification() {
+		playerGamePhase.fortificationPhase(selectedTerritoryList, adjTerritoryList, gameConsole);
+		selectedTerritoryList.refresh();
+		adjTerritoryList.refresh();
+		loadMapData();
 	}
 
 	/**
