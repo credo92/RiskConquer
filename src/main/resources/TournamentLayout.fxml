@@ -1,15 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="714.0" prefWidth="879.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<HBox layoutX="14.0" layoutY="8.0" prefHeight="40.0" prefWidth="379.0">
-         <children>
-            <!-- <Label prefHeight="36.0" prefWidth="140.0" text="Number of players: " /> -->
-            <!-- <ChoiceBox fx:id="numberOfPlayers" prefHeight="31.0" prefWidth="95.0" /> -->
-         </children>
-      </HBox>
+		<HBox layoutX="14.0" layoutY="100.0" prefHeight="29.0" prefWidth="274.0">
+        	<children>
+            	<Label prefHeight="36.0" prefWidth="140.0" text="Number of Turns: " />
+            	<ChoiceBox fx:id="numberOfTurns" prefHeight="29.0" prefWidth="115.0" />
+         	</children>
+      	</HBox>
+      	<HBox layoutX="14.0" layoutY="50.0" prefHeight="29.0" prefWidth="274.0">
+        	<children>
+            	<Label prefHeight="36.0" prefWidth="140.0" text="Number of Games: " />
+            	<ChoiceBox fx:id="numberOfGames" prefHeight="29.0" prefWidth="115.0" />
+         	</children>
+      	</HBox>
+      	
+      	<Label layoutX="50.0" layoutY="145.0" text="Maps">
+	        <font>
+	           <Font name="System Bold" size="13.0" />
+	        </font>
+	     </Label>
+	     <Label layoutX="186.0" layoutY="145.0" prefHeight="19.0" prefWidth="46.0" text="Players">
+	        <font>
+	           <Font name="System Bold" size="13.0" />
+	        </font>
+	     </Label>
+      
+      <Button fx:id="mapButton1" layoutX="14.0" layoutY="171.0" mnemonicParsing="false" onAction="#uploadMap1" prefHeight="29.0" prefWidth="115.0" text="Choose Map 1" />
+      <Button fx:id="mapButton2" layoutX="14.0" layoutY="215.0" mnemonicParsing="false" onAction="#uploadMap2" prefHeight="29.0" prefWidth="115.0" text="Choose Map 2" />
+      <Button fx:id="mapButton3" layoutX="14.0" layoutY="258.0" mnemonicParsing="false" onAction="#uploadMap3" prefHeight="29.0" prefWidth="115.0" text="Choose Map 3" />
+      <Button fx:id="mapButton4" layoutX="14.0" layoutY="300.0" mnemonicParsing="false" onAction="#uploadMap4" prefHeight="29.0" prefWidth="115.0" text="Choose Map 4" />
+      <Button fx:id="mapButton5" layoutX="14.0" layoutY="342.0" mnemonicParsing="false" onAction="#uploadMap5" prefHeight="29.0" prefWidth="115.0" text="Choose Map 5" />
+      
+      <ChoiceBox fx:id="player1" layoutX="151.0" layoutY="171.0" prefHeight="29.0" prefWidth="115.0" />
+      <ChoiceBox fx:id="player2" layoutX="151.0" layoutY="215.0" prefHeight="29.0" prefWidth="115.0" />
+      <ChoiceBox fx:id="player3" layoutX="151.0" layoutY="258.0" prefHeight="29.0" prefWidth="115.0" />
+      <ChoiceBox fx:id="player4" layoutX="151.0" layoutY="300.0" prefHeight="29.0" prefWidth="115.0" />
+      
+      <TextArea fx:id="tConsole" editable="false" layoutX="411.0" layoutY="46.0" prefHeight="649.0" prefWidth="455.0" style="-fx-background-color: #fff; -fx-border-color: #000;" wrapText="true" />
+      <Button fx:id="playButton" alignment="CENTER" layoutX="83.0" layoutY="490.0" mnemonicParsing="false" onAction="#playTournament" prefHeight="29.0" prefWidth="121.0" text="Play Tournament" />
+      <Label fx:id="errorLine" alignment="CENTER" layoutX="20.0" layoutY="536.0" prefHeight="19.0" prefWidth="236.0" textFill="RED" />
+            	
 	</children>
 </Pane>
