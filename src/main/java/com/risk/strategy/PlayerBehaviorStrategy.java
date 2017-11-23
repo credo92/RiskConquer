@@ -1,8 +1,12 @@
 package com.risk.strategy;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
+import com.risk.map.util.MapUtil;
 import com.risk.model.PlayerGamePhase;
 
 import javafx.collections.ObservableList;
@@ -35,6 +39,31 @@ public interface PlayerBehaviorStrategy {
 	 */
 	boolean fortificationPhase(ListView<Territory> selectedTerritory, ListView<Territory> adjTerritory,
 			TextArea gameConsole, Player playerPlaying);
+	
 
-	boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole);
+	default public List<Territory> getDefendingTerritory(Territory attackingTerritory) {
+		List<Territory> defendingTerritories = attackingTerritory.getAdjacentTerritories().stream()
+				.filter(t -> (attackingTerritory.getPlayer() != t.getPlayer())).collect(Collectors.toList());
+
+		return defendingTerritories;
+
+	}
+
+	default boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
+		boolean hasAValidMove = false;
+		for (Territory territory : territories.getItems()) {
+			if (territory.getArmies() > 1 && getDefendingTerritory(territory).size() > 0) {
+				hasAValidMove = true;
+			}
+		}
+
+		if (!hasAValidMove) {
+			MapUtil.appendTextToGameConsole("No valid attack move avialble move to Fortification phase.\n",
+					gameConsole);
+			MapUtil.appendTextToGameConsole("===Attack phase ended! === \n", gameConsole);
+			return hasAValidMove;
+		}
+		return hasAValidMove;
+	}
+
 }
