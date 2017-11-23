@@ -82,31 +82,8 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 		return isFortificationDone;
 	}
 
-	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
-		boolean hasAValidMove = false;
-		for (Territory territory : territories.getItems()) {
-			if (territory.getArmies() > 1 && getDefendingTerritory(territory).size() > 0) {
-				hasAValidMove = true;
-			}
-		}
 
-		if (!hasAValidMove) {
-			MapUtil.appendTextToGameConsole("No valid attack move avialble move to Fortification phase.\n",
-					gameConsole);
-			MapUtil.appendTextToGameConsole("===Attack phase ended! === \n", gameConsole);
-			return hasAValidMove;
-		}
-		return hasAValidMove;
 
-	}
-
-	public List<Territory> getDefendingTerritory(Territory attackingTerritory) {
-		List<Territory> defendingTerritories = attackingTerritory.getAdjacentTerritories().stream()
-				.filter(t -> (attackingTerritory.getPlayer() != t.getPlayer())).collect(Collectors.toList());
-
-		return defendingTerritories;
-
-	}
 
 	private void attack(Territory attacking, Territory defending, PlayerGamePhase gamePhase, TextArea gameConsole) {
 		System.out.println("Attack Random started!++++++++++++++++++++++++++++++++++++++++++++++");
