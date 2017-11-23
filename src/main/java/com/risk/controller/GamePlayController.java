@@ -415,7 +415,7 @@ public class GamePlayController implements Initializable, Observer {
 			assignCardToPlayer();
 		}
 		initializeReinforcement();
-		cardModel.openCardWindow(playerPlaying, cardModel);
+		//cardModel.openCardWindow(playerPlaying, cardModel);
 	}
 
 	/**
@@ -765,7 +765,7 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		if (view.equals("Reinforcement")) {
 			initializeReinforcement();
-			cardModel.openCardWindow(playerPlaying, cardModel);
+			//cardModel.openCardWindow(playerPlaying, cardModel);
 		}
 		if (view.equals("Fortification")) {
 			initializeFortification();
@@ -781,7 +781,7 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		if (view.equals("noFortificationMove")) {
 			noFortificationPhase();
-			cardModel.openCardWindow(playerPlaying, cardModel);
+			//cardModel.openCardWindow(playerPlaying, cardModel);
 		}
 		if (view.equals("rollDiceComplete")) {
 

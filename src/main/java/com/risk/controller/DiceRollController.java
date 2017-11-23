@@ -24,7 +24,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 /**
  * DiceRollController controller to control all the
@@ -164,7 +163,7 @@ public class DiceRollController implements Initializable {
 	 * The @diceModel reference to class DiceModel.
 	 */
 	private DiceModel diceModel;
-	
+
 	private TextArea gameConsole;
 
 	private PlayerBehaviorStrategy strategy;
@@ -190,7 +189,12 @@ public class DiceRollController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		loadAttackScreen();
+		showDice();
+	}
 
+	public void autoStartDiceRollController() {
+		autoInitialize();
 		loadAttackScreen();
 		showDice();
 		if (!(strategy instanceof HumanStrategy)) {
@@ -210,7 +214,7 @@ public class DiceRollController implements Initializable {
 		selectVisibleDice(attackerDice1, attackerDice2, attackerDice3, defenderDice1, defenderDice2);
 
 		rollDice(null);
-		if (!continueRoll.isDisabled()) {
+		if (!continueRoll.isDisabled() && !cancelDiceRoll.isDisabled()) {
 			continueDiceRoll(null);
 		} else if (continueRoll.isDisabled() && !cancelDiceRoll.isDisabled()) {
 			diceModel.cancelDiceRoll();
@@ -303,6 +307,9 @@ public class DiceRollController implements Initializable {
 	private void continueDiceRoll(ActionEvent event) {
 		diceModel.setAttackerDiceValues(new ArrayList<>());
 		diceModel.setDefenderDiceValues(new ArrayList<>());
+		/*
+		 * if (!(strategy instanceof HumanStrategy)) { autoInitialize(); }
+		 */
 		loadAttackScreen();
 		showDice();
 		if (!(strategy instanceof HumanStrategy)) {
@@ -382,7 +389,7 @@ public class DiceRollController implements Initializable {
 		rollDefenderDice(defenderDice1, defenderDice2);
 
 		List<String> playResult = diceModel.getPlayResultAfterDiceThrown();
-		
+
 		Territory attackingTerritory = diceModel.getAttackingTerritory();
 		Territory defendingTerritory = diceModel.getDefendingTerritory();
 		if (defendingTerritory.getArmies() <= 0) {
@@ -395,15 +402,44 @@ public class DiceRollController implements Initializable {
 		} else if (attackingTerritory.getArmies() < 2) {
 			playResult.add(attackingTerritory.getPlayer().getName() + " lost the match");
 			GameUtil.disableControl(roll, continueRoll);
+			GameUtil.enableControl(cancelDiceRoll);
+			GameUtil.disableViewPane(moveArmiesView);
 		} else {
+			GameUtil.disableViewPane(moveArmiesView);
 			GameUtil.disableControl(roll);
-			GameUtil.enableControl(continueRoll);
+			GameUtil.enableControl(continueRoll, cancelDiceRoll);
 		}
-		MapUtil.appendTextToGameConsole(playResult.toString() + "\n",
-				gameConsole);
+		MapUtil.appendTextToGameConsole(playResult.toString() + "\n", gameConsole);
 		defenderArmies.setText("Armies: " + String.valueOf(defendingTerritory.getArmies()));
 		attackerArmies.setText("Armies: " + String.valueOf(attackingTerritory.getArmies()));
 		winnerName.setText(playResult.toString());
 		winnerName.setVisible(true);
+	}
+
+	public void autoInitialize() {
+		roll = new Button();
+		continueRoll = new Button();
+		moveAllArmies = new Button();
+		skipMoveArmy = new Button();
+		moveArmies = new Button();
+		cancelDiceRoll = new Button();
+		attackerPlayerName = new Label();
+		winnerName = new Label();
+		numberOfArmies = new Label();
+		defenderPlayerName = new Label();
+		numberOfArmies = new Label();
+		defenderArmies = new Label();
+		attackerTerritoryName = new Label();
+		attackerArmies = new Label();
+		defenderTerritoryName = new Label();
+		defenderArmies = new Label();
+		attackerDice1 = new CheckBox();
+		attackerDice2 = new CheckBox();
+		attackerDice3 = new CheckBox();
+		defenderDice1 = new CheckBox();
+		defenderDice2 = new CheckBox();
+		moveArmiesView = new Pane();
+		numberOfArmiesInput = new TextField();
+
 	}
 }
