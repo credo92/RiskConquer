@@ -415,7 +415,7 @@ public class GamePlayController implements Initializable, Observer {
 			assignCardToPlayer();
 		}
 		initializeReinforcement();
-		//cardModel.openCardWindow(playerPlaying, cardModel);
+		// cardModel.openCardWindow(playerPlaying, cardModel);
 	}
 
 	/**
@@ -611,6 +611,7 @@ public class GamePlayController implements Initializable, Observer {
 	 * Check If Any Player Lost the game.
 	 */
 	private void checkIfAnyPlayerLostTheGame() {
+		System.out.println("Checking if player lost the game");
 		Player playerLost = playerGamePhase.checkIfAnyPlayerLostTheGame(gamePlayerList);
 		if (playerLost != null) {
 			gamePlayerList.remove(playerLost);
@@ -656,6 +657,7 @@ public class GamePlayController implements Initializable, Observer {
 	 * Refresh View
 	 */
 	private void refreshView() {
+		System.out.println("Inside referesh view");
 		checkIfAnyPlayerLostTheGame();
 		selectedTerritoryList.getItems().clear();
 		adjTerritoryList.getItems().clear();
@@ -755,7 +757,8 @@ public class GamePlayController implements Initializable, Observer {
 	public void update(Observable o, Object arg) {
 
 		String view = (String) arg;
-
+		MapUtil.appendTextToGameConsole(view + "++++++++++++++++++++++++++++++++++++++++++++++\n", gameConsole);
+		System.out.println("+++++++++++++++++++++ " + view + " +++++++++++++++++++++++++++");
 		if (view.equals("Attack")) {
 			initializeAttack();
 		}
@@ -765,7 +768,7 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		if (view.equals("Reinforcement")) {
 			initializeReinforcement();
-			//cardModel.openCardWindow(playerPlaying, cardModel);
+			// cardModel.openCardWindow(playerPlaying, cardModel);
 		}
 		if (view.equals("Fortification")) {
 			initializeFortification();
@@ -781,10 +784,12 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		if (view.equals("noFortificationMove")) {
 			noFortificationPhase();
-			//cardModel.openCardWindow(playerPlaying, cardModel);
+			// cardModel.openCardWindow(playerPlaying, cardModel);
 		}
 		if (view.equals("rollDiceComplete")) {
-
+			MapUtil.appendTextToGameConsole(
+					"Roll Dice Control observer!++++++++++++++++++++++++++++++++++++++++++++++\n", gameConsole);
+			System.out.println("Roll Dice Control observer!++++++++++++++++++++++++++++++++++++++++++++++");
 			refreshView();
 		}
 		if (view.equals("cardsTrade")) {
