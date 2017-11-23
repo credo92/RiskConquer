@@ -3,6 +3,7 @@ package com.risk.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.risk.constant.PlayerType;
 import com.risk.strategy.PlayerBehaviorStrategy;
 
 /**
@@ -36,6 +37,8 @@ public class Player {
 	 * The @playerCardList
 	 */
 	private List<Card> playerCardList;
+	
+	private PlayerType type;
 	
 	private PlayerBehaviorStrategy strategy;
 	
@@ -157,6 +160,20 @@ public class Player {
 
 	public void setStrategy(PlayerBehaviorStrategy strategy) {
 		this.strategy = strategy;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public PlayerType getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(PlayerType type) {
+		this.type = type;
 	}
 
 	/*

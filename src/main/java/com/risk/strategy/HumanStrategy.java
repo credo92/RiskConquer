@@ -41,13 +41,13 @@ public class HumanStrategy implements PlayerBehaviorStrategy {
 	}
 
 	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList,
-			PlayerGamePhase gamePhase) throws InvalidGameMoveException {
+			PlayerGamePhase gamePhase, TextArea gameConsole) throws InvalidGameMoveException {
 		Territory attackingTerritory = attackingTerritoryList.getSelectionModel().getSelectedItem();
 		Territory defendingTerritory = defendingTerritoryList.getSelectionModel().getSelectedItem();
 		DiceModel diceModel = new DiceModel(attackingTerritory, defendingTerritory);
 		diceModel.addObserver(gamePhase);
 
-		DiceRollController diceController = new DiceRollController(diceModel, this);
+		DiceRollController diceController = new DiceRollController(diceModel, this, gameConsole);
 
 		if (attackingTerritory != null && defendingTerritory != null) {
 			isAValidAttackMove(attackingTerritory, defendingTerritory);

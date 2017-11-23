@@ -181,9 +181,9 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 * @throws InvalidGameMoveException
 	 *             invalid game exception
 	 */
-	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList)
+	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList, TextArea gameConsole)
 			throws InvalidGameMoveException {
-		playerPlaying.getStrategy().attackPhase(attackingTerritoryList, defendingTerritoryList, this);
+		playerPlaying.getStrategy().attackPhase(attackingTerritoryList, defendingTerritoryList, this, gameConsole);
 	}
 
 	/**

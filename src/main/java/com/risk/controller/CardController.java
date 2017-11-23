@@ -7,6 +7,7 @@ import com.risk.entity.Card;
 import com.risk.entity.Player;
 import com.risk.map.util.GameUtil;
 import com.risk.model.CardModel;
+import com.risk.strategy.HumanStrategy;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -104,9 +105,19 @@ public class CardController implements Initializable {
 		else {
 			trade.setDisable(false);
 		}
-		loadAllCards();		
+		if (!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
+			tryCardTrade();
+		} else {
+			loadAllCards();	
+		}
 	}
 	
+	public void tryCardTrade() {
+		List<Card> cards= cardModel.getValidCardComibination(playerCards);
+		if(cards != null && cards.size() ==3) {
+			cardModel.setCardsExchangable(cards);
+		}
+	}
 	/**
 	 * Load All cards of a player.
 	 */

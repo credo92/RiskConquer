@@ -18,22 +18,23 @@ public interface PlayerBehaviorStrategy {
 	 * @param territory
 	 * @param gameConsole
 	 */
-	void reinforcementPhase(ObservableList<Territory> territoryList, Territory territory, TextArea gameConsole, Player playerPlaying);
+	void reinforcementPhase(ObservableList<Territory> territoryList, Territory territory, TextArea gameConsole,
+			Player playerPlaying);
 
 	/**
 	 * @param attackingTerritory
 	 * @param defendingTerritory
 	 */
-	void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList, PlayerGamePhase gamePhase)
-			throws InvalidGameMoveException;
+	void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList,
+			PlayerGamePhase gamePhase, TextArea gameConsole) throws InvalidGameMoveException;
 
 	/**
 	 * @param selectedTerritory
 	 * @param adjTerritory
 	 * @param gameConsole
 	 */
-	boolean fortificationPhase(ListView<Territory> selectedTerritory, ListView<Territory> adjTerritory, TextArea gameConsole,
-			Player playerPlaying);
+	boolean fortificationPhase(ListView<Territory> selectedTerritory, ListView<Territory> adjTerritory,
+			TextArea gameConsole, Player playerPlaying);
 
 	boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole);
 }

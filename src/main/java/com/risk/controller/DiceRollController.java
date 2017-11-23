@@ -21,8 +21,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 /**
  * DiceRollController controller to control all the
@@ -162,6 +164,8 @@ public class DiceRollController implements Initializable {
 	 * The @diceModel reference to class DiceModel.
 	 */
 	private DiceModel diceModel;
+	
+	private TextArea gameConsole;
 
 	private PlayerBehaviorStrategy strategy;
 
@@ -171,9 +175,10 @@ public class DiceRollController implements Initializable {
 	 * @param diceModel
 	 *            dice model object
 	 */
-	public DiceRollController(DiceModel diceModel, PlayerBehaviorStrategy strategy) {
+	public DiceRollController(DiceModel diceModel, PlayerBehaviorStrategy strategy, TextArea gameConsole) {
 		this.diceModel = diceModel;
 		this.strategy = strategy;
+		this.gameConsole = gameConsole;
 	}
 
 	/*
@@ -202,18 +207,15 @@ public class DiceRollController implements Initializable {
 	}
 
 	private void autoRollDice() {
-		selectVisibleDice(attackerDice1,attackerDice2,attackerDice3,defenderDice1,defenderDice2);
-		
+		selectVisibleDice(attackerDice1, attackerDice2, attackerDice3, defenderDice1, defenderDice2);
+
 		rollDice(null);
-		System.out.println("hello");
-//		try {
-//			Thread.sleep(20000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		if (continueRoll.isDisabled()) {
-			
+		if (!continueRoll.isDisabled()) {
+			continueDiceRoll(null);
+		} else if (continueRoll.isDisabled() && !cancelDiceRoll.isDisabled()) {
+			diceModel.cancelDiceRoll();
+		} else if (moveArmiesView.isVisible()) {
+			diceModel.moveAllArmies();
 		}
 	}
 
@@ -286,7 +288,7 @@ public class DiceRollController implements Initializable {
 	 * Cancel Dice Roll
 	 */
 	@FXML
-	private void cancelDiceRoll() {
+	private void cancelDiceRoll(ActionEvent event) {
 		diceModel.cancelDiceRoll();
 		GameUtil.closeScreen(cancelDiceRoll);
 	}
@@ -303,6 +305,9 @@ public class DiceRollController implements Initializable {
 		diceModel.setDefenderDiceValues(new ArrayList<>());
 		loadAttackScreen();
 		showDice();
+		if (!(strategy instanceof HumanStrategy)) {
+			autoRollDice();
+		}
 	}
 
 	/**
@@ -377,7 +382,7 @@ public class DiceRollController implements Initializable {
 		rollDefenderDice(defenderDice1, defenderDice2);
 
 		List<String> playResult = diceModel.getPlayResultAfterDiceThrown();
-
+		
 		Territory attackingTerritory = diceModel.getAttackingTerritory();
 		Territory defendingTerritory = diceModel.getDefendingTerritory();
 		if (defendingTerritory.getArmies() <= 0) {
@@ -385,6 +390,7 @@ public class DiceRollController implements Initializable {
 					attackingTerritory.getPlayer().getName() + " won the territory: " + defendingTerritory.getName());
 			diceModel.setNumOfTerritoriesWon(diceModel.getNumOfTerritoriesWon() + 1);
 			GameUtil.enableViewPane(moveArmiesView);
+			GameUtil.disableControl(roll, continueRoll, cancelDiceRoll);
 			GameUtil.hideControl(roll, continueRoll, cancelDiceRoll);
 		} else if (attackingTerritory.getArmies() < 2) {
 			playResult.add(attackingTerritory.getPlayer().getName() + " lost the match");
@@ -393,6 +399,8 @@ public class DiceRollController implements Initializable {
 			GameUtil.disableControl(roll);
 			GameUtil.enableControl(continueRoll);
 		}
+		MapUtil.appendTextToGameConsole(playResult.toString() + "\n",
+				gameConsole);
 		defenderArmies.setText("Armies: " + String.valueOf(defendingTerritory.getArmies()));
 		attackerArmies.setText("Armies: " + String.valueOf(attackingTerritory.getArmies()));
 		winnerName.setText(playResult.toString());

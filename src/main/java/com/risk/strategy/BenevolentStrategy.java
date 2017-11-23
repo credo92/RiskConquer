@@ -18,7 +18,7 @@ public class BenevolentStrategy implements PlayerBehaviorStrategy{
 	}
 
 	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList,
-			PlayerGamePhase gamePhase) throws InvalidGameMoveException {
+			PlayerGamePhase gamePhase, TextArea gameConsole) throws InvalidGameMoveException {
 		// TODO Auto-generated method stub
 		
 	}
