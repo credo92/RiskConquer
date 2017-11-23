@@ -1,6 +1,5 @@
 package com.risk.strategy;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,11 +13,8 @@ import com.risk.model.DiceModel;
 import com.risk.model.PlayerGamePhase;
 
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
 
 public class RandomStrategy implements PlayerBehaviorStrategy {
 
@@ -51,8 +47,6 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 			attack(attackingTerritory, defendingTerritories.get(0), gamePhase, gameConsole);
 			break;
 		}
-		
-		System.out.println("NO attacking territory found");
 	}
 
 	public boolean fortificationPhase(ListView<Territory> selectedTerritoryList, ListView<Territory> adjTerritoryList,
@@ -93,24 +87,7 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 		diceModel.addObserver(gamePhase);
 
 		DiceRollController diceController = new DiceRollController(diceModel, this, gameConsole);
-
-		final Stage newMapStage = new Stage();
-		newMapStage.setTitle("Attack Window");
-
-		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("DiceView.fxml"));
-		loader.setController(diceController);
-		Parent root = null;
-		try {
-			root = (Parent) loader.load();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		/*
-		 * Scene scene = new Scene(root); newMapStage.setScene(scene);
-		 * newMapStage.show();
-		 */
+		diceController.autoStartDiceRollController();
 	}
 
 	/**

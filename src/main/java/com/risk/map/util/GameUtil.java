@@ -1,5 +1,7 @@
 package com.risk.map.util;
 
+import com.risk.constant.PlayerType;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -28,6 +30,45 @@ public class GameUtil {
 		numberOfPlayers.getItems().addAll(3, 4, 5, 6);
 
 		return numberOfPlayers;
+	}
+	
+	/**
+	 * Initialize number of turns in tournament.
+	 * @param numberOfTurns numberOfTurns.
+	 * @return numberOfTurns
+	 * 						number of turns ChoiceBox
+	 */
+	public static ChoiceBox<Integer> initializeTotalTurnsInTournament(ChoiceBox<Integer> numberOfTurns) {
+		numberOfTurns.getItems().removeAll(numberOfTurns.getItems());
+		for(int i=10; i<=30; i++) {
+			numberOfTurns.getItems().add(i);
+		}
+		return numberOfTurns;
+	}
+	
+	/**
+	 * Initialize number of games in tournament.
+	 * @param numberOfGames numberOfGames.
+	 * @return numberOfGames
+	 * 						number of games ChoiceBox
+	 */
+	public static ChoiceBox<Integer> initializeTotalGamesInTournament(ChoiceBox<Integer> numberOfGames) {
+		numberOfGames.getItems().removeAll(numberOfGames.getItems());
+		numberOfGames.getItems().addAll(1, 2, 3, 4, 5);
+		return numberOfGames;
+	}
+	
+	/**
+	 * Initialize type of players in tournament.
+	 * @param typeOfPlayers typeOfPlayers.
+	 * @return typeOfPlayers
+	 * 						typeOfPlayers ChoiceBox
+	 */
+	public static ChoiceBox<String> initializePlayersInTournament(ChoiceBox<String> player) {
+		player.getItems().removeAll(player.getItems());
+		player.getItems().addAll(PlayerType.AGGRESSIVE.toString(), PlayerType.BENEVOLENT.toString(),
+				PlayerType.CHEATER.toString(), PlayerType.RANDOM.toString());
+		return player;
 	}
 	
 	/**
