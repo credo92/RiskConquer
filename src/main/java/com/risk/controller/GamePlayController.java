@@ -13,12 +13,17 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
+import com.risk.entity.GameState;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
+import com.risk.exception.InvalidJsonException;
 import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
 import com.risk.model.CardModel;
@@ -201,6 +206,12 @@ public class GamePlayController implements Initializable, Observer {
 	 * The @numberOfCardSetExchanged.
 	 */
 	private int numberOfCardSetExchanged;
+	
+	/**
+	 * The @saveGame button.
+	 */
+	@FXML
+	private Button saveGame;
 
 	/**
 	 * Constructor for GamePlayController
@@ -819,4 +830,23 @@ public class GamePlayController implements Initializable, Observer {
 	public void setNumberOfCardSetExchanged(int numberOfCardSetExchanged) {
 		this.numberOfCardSetExchanged = numberOfCardSetExchanged;
 	}
+	
+	/**
+	 * Save Game 
+	 * @param event
+	 *            event
+	 * @throws IOException 
+	 * @throws InvalidJsonException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 * @throws NullPointerException 
+	 */
+	@FXML
+	private void saveGame(ActionEvent event) throws JsonGenerationException, JsonMappingException, InvalidJsonException, IOException,NullPointerException {
+		GameState gameState = new GameState(map,selectedTerritoryList,adjTerritoryList,playerChosen,gamePhase,numberOfPlayersSelected,gamePlayerList,playerPlaying,cardStack,numberOfCardSetExchanged,playerIterator);
+		GameUtil.saveGame(gameState);
+		MapUtil.infoBox("Saved Game! ", "Info", "");
+		GameUtil.closeScreen(saveGame);
+	}
+
 }

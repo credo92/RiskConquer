@@ -40,6 +40,7 @@
                </children>
             </VBox>
          </content>
-      </TitledPane>      
+      </TitledPane>
+      <Button fx:id="saveGame" layoutX="708.0" layoutY="465.0" mnemonicParsing="false" onAction="#saveGame" text="Save" />      
     </children>
 </Pane>
