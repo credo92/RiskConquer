@@ -14,7 +14,9 @@ import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
 import com.risk.map.util.MapUtil;
+import com.risk.strategy.BenevolentStrategy;
 import com.risk.strategy.CheaterStrategy;
+import com.risk.strategy.HumanStrategy;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
@@ -183,11 +185,13 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 * @throws InvalidGameMoveException
 	 *             invalid game exception
 	 */
-	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList, TextArea gameConsole)
-			throws InvalidGameMoveException {
+	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList,
+			TextArea gameConsole) throws InvalidGameMoveException {
 		playerPlaying.getStrategy().attackPhase(attackingTerritoryList, defendingTerritoryList, this, gameConsole);
-		if(playerPlaying.getStrategy() instanceof CheaterStrategy) {
-			fortificationPhase(attackingTerritoryList, null, gameConsole);
+		if (playerPlaying.getStrategy() instanceof CheaterStrategy
+				|| playerPlaying.getStrategy() instanceof BenevolentStrategy) {
+			setChanged();
+			notifyObservers("SkipAttack");
 		}
 	}
 
@@ -203,8 +207,8 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 */
 	public void fortificationPhase(ListView<Territory> selectedTerritory, ListView<Territory> adjTerritory,
 			TextArea gameConsole) {
-		boolean isFortificationDone = playerPlaying.getStrategy().fortificationPhase(selectedTerritory, adjTerritory, gameConsole,
-				playerPlaying);
+		boolean isFortificationDone = playerPlaying.getStrategy().fortificationPhase(selectedTerritory, adjTerritory,
+				gameConsole, playerPlaying);
 
 		if (isFortificationDone) {
 			setChanged();
@@ -262,14 +266,18 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 */
 	public void placeArmy(Player playerPlaying, ListView<Territory> selectedTerritoryList, List<Player> gamePlayerList,
 			TextArea gameConsole) {
-		int playerArmies = playerPlaying.getArmies();
-		if (playerArmies > 0) {
-			Territory territory = selectedTerritoryList.getSelectionModel().getSelectedItem();
-			if (territory == null) {
-				territory = selectedTerritoryList.getItems().get(0);
+		if (playerPlaying.getStrategy() instanceof HumanStrategy) {
+			int playerArmies = playerPlaying.getArmies();
+			if (playerArmies > 0) {
+				Territory territory = selectedTerritoryList.getSelectionModel().getSelectedItem();
+				if (territory == null) {
+					territory = selectedTerritoryList.getItems().get(0);
+				}
+				territory.setArmies(territory.getArmies() + 1);
+				playerPlaying.setArmies(playerArmies - 1);
 			}
-			territory.setArmies(territory.getArmies() + 1);
-			playerPlaying.setArmies(playerArmies - 1);
+		} else {
+			autoAssignPlayerArmiesToTerritory(playerPlaying, gameConsole);
 		}
 
 		boolean armiesExhausted = checkIfPlayersArmiesExhausted(gamePlayerList);
@@ -370,6 +378,22 @@ public class PlayerGamePhase extends Observable implements Observer {
 			}
 		}
 		return playerPlaying;
+	}
+
+	public void autoAssignPlayerArmiesToTerritory(Player player, TextArea console) {
+		if (player.getArmies() > 0) {
+			Territory territory = player.getAssignedTerritory()
+					.get(randomNumber(player.getAssignedTerritory().size() - 1));
+			territory.setArmies(territory.getArmies() + 1);
+			player.setArmies(player.getArmies() - 1);
+		}
+	}
+
+	/**
+	 * @return Int randomNumber
+	 */
+	public int randomNumber(int count) {
+		return (int) (Math.random() * count) + 0;
 	}
 
 	/**

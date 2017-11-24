@@ -163,9 +163,9 @@ public class PlayerSelectionController extends Observable implements Initializab
 			}
 		}
 		if (flag) {
-			setChanged();
-			notifyObservers("playersCreated");
 			GameUtil.closeScreen(okButton);
+			setChanged();
+			notifyObservers("playersCreated");		
 		} else {
 			MapUtil.infoBox("Please fill all the details", "Message", "");
 		}

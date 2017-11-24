@@ -260,6 +260,9 @@ public class GamePlayController implements Initializable, Observer {
 		loadPlayingPlayer();
 		populateWorldDominationData();
 		MapUtil.enableControl(cards);
+		if(!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
+			placeArmy(null);
+		}
 	}
 
 	/*
@@ -371,7 +374,7 @@ public class GamePlayController implements Initializable, Observer {
 	private void noMoreAttack(ActionEvent event) {
 		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
 		if (playerGamePhase.getTerritoryWon() > 0) {
-			assignCardToPlayer();
+			//assignCardToPlayer();
 		}
 		MapUtil.appendTextToGameConsole("===Attack phase ended!===\n", gameConsole);
 		isValidFortificationPhase();
@@ -423,7 +426,7 @@ public class GamePlayController implements Initializable, Observer {
 		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " ended his turn.\n", gameConsole);
 		if (playerGamePhase.getTerritoryWon() > 0) {
-			assignCardToPlayer();
+			//assignCardToPlayer();
 		}
 		initializeReinforcement();
 		// cardModel.openCardWindow(playerPlaying, cardModel);
@@ -693,6 +696,22 @@ public class GamePlayController implements Initializable, Observer {
 			}
 		}
 	}
+	
+	private void skipAttack() {
+		checkIfAnyPlayerLostTheGame();
+		selectedTerritoryList.getItems().clear();
+		adjTerritoryList.getItems().clear();
+		for (Territory territory : playerPlaying.getAssignedTerritory()) {
+			selectedTerritoryList.getItems().add(territory);
+		}
+		loadMapData();
+		populateWorldDominationData();
+		playerChosen.setText(playerPlaying.getName() + "(" + playerPlaying.getType() + "):- "
+				+ playerPlaying.getArmies() + " armies left.\n");
+		if (!checkIfPlayerWonTheGame()) {
+			noMoreAttack(null);
+		}
+	}
 
 	/**
 	 * Initialize place army view.
@@ -701,6 +720,9 @@ public class GamePlayController implements Initializable, Observer {
 		loadMapData();
 		selectedTerritoryList.refresh();
 		loadPlayingPlayer();
+		if(!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
+			placeArmy(null);
+		}
 	}
 
 	/**
@@ -809,6 +831,10 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		if (view.equals("playersCreated")) {
 			loadStartUpPhase();
+		}
+		
+		if (view.equals("SkipAttack")) {
+			skipAttack();
 		}
 	}
 
