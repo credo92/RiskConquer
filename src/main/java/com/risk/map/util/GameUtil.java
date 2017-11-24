@@ -1,6 +1,17 @@
 package com.risk.map.util;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.annotate.JsonMethod;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import com.risk.constant.PlayerType;
+import com.risk.entity.GameState;
+import com.risk.exception.InvalidJsonException;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -9,6 +20,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -183,6 +195,27 @@ public class GameUtil {
 		alert.setHeaderText(headerMessage);
 		alert.setContentText(infoMessage);
 		alert.showAndWait();
+	}
+	
+	/**
+	 * This method is used to save GamePlay objects into a json file.
+	 * @param file file object
+	 * @param GameState saveGame object
+	 * @throws InvalidJsonException invalid map file exception
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	public static void saveGame(GameState saveGame) throws InvalidJsonException, JsonGenerationException, JsonMappingException, IOException {
+		File file;
+		FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Json files (*.json)", "*.json");
+		fileChooser.getExtensionFilters().add(extFilter);
+		file = fileChooser.showSaveDialog(null);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);
+		mapper.writeValue(file, saveGame);
+
 	}
 
 }

@@ -70,7 +70,9 @@ public class DiceModel extends Observable {
 		List<String> playResult = new ArrayList<>();
 		Collections.sort(attackerDiceValues, Collections.reverseOrder());
 		Collections.sort(defenderDiceValues, Collections.reverseOrder());
-
+		System.out.println("Number of attacker dice" + attackerDiceValues.size());
+		System.out.println("Number of defender dice" + defenderDiceValues.size());
+		
 		for (Integer defenderDiceValue : defenderDiceValues) {
 			for (Integer attackerDiceValue : attackerDiceValues) {
 				updateArmiesAfterAttack(defenderDiceValue, attackerDiceValue, playResult);
@@ -94,6 +96,12 @@ public class DiceModel extends Observable {
 	 *            List playResult
 	 */
 	public void updateArmiesAfterAttack(Integer defenderDiceValue, Integer attackerDiceValue, List<String> playResult) {
+		System.out.println("Attacking territory armies" + attackingTerritory.getArmies());
+		System.out.println("Defending territory armies" + defendingTerritory.getArmies());
+		System.out.println("attackerDiceValue   " + attackerDiceValue);
+		System.out.println("defenderDiceValue   " + defenderDiceValue);
+		
+		
 		if (attackerDiceValue.compareTo(defenderDiceValue) == 0) {
 			playResult.add("Attacker lost 1 army.");
 			if (attackingTerritory.getArmies() > 1) {
@@ -110,6 +118,9 @@ public class DiceModel extends Observable {
 				attackingTerritory.setArmies(attackingTerritory.getArmies() - 1);
 			}
 		}
+		
+		System.out.println("After attack Attacking territory armies" + attackingTerritory.getArmies());
+		System.out.println("After attack Defending territory armies" + defendingTerritory.getArmies());
 	}
 
 	/**

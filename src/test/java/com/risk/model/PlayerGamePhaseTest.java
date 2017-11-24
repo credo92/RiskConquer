@@ -123,7 +123,7 @@ public class PlayerGamePhaseTest {
 	public void beforeTest() {
 		territoryListView = new ListView<>();
 		map = new Map();
-		player = new Player(1, "Sonu");
+		player = new Player(1);
 		continent = new Continent();
 		territory1 = new Territory();
 		territory2 = new Territory();
@@ -220,7 +220,7 @@ public class PlayerGamePhaseTest {
 	@Test
 	public void checkIfPlayersArmiesExhausted() {
 		players = new ArrayList<>();
-		players.add(new Player(0, "Player0"));
+		players.add(new Player(0));
 		players.get(0).setArmies(0);
 		Assert.assertTrue(playerModel.checkIfPlayersArmiesExhausted(players));
 	}
@@ -231,7 +231,7 @@ public class PlayerGamePhaseTest {
 	@Test
 	public void checkIfPlayersArmiesExhaustedFalseCase() {
 		players = new ArrayList<>();
-		players.add(new Player(0, "Player0"));
+		players.add(new Player(0));
 		players.get(0).setArmies(1);
 		Assert.assertFalse(playerModel.checkIfPlayersArmiesExhausted(players));
 	}
@@ -264,7 +264,7 @@ public class PlayerGamePhaseTest {
 	@Test
 	public void checkIfAnyPlayerLostTheGame() {
 		players = new ArrayList<>();
-		players.add(new Player(0, "Player0"));
+		players.add(new Player(0));
 		players.get(0).setAssignedTerritory(new ArrayList<>());
 		Player playerLost = playerModel.checkIfAnyPlayerLostTheGame(players);
 		Assert.assertEquals(0, playerLost.getAssignedTerritory().size());
@@ -277,9 +277,9 @@ public class PlayerGamePhaseTest {
 	public void createPlayer() {
 		List<Player> playerTest = new ArrayList<>();
 		players = new ArrayList<>();
-		players.add(new Player(0, "Player0"));
-		players.add(new Player(1, "Player1"));
-		players.add(new Player(2, "Player2"));
+		players.add(new Player(0));
+		players.add(new Player(1));
+		players.add(new Player(2));
 		playerModel.createPlayer(players.size(), playerTest, textArea);
 		Assert.assertEquals(3, playerTest.size());
 	}
@@ -319,7 +319,7 @@ public class PlayerGamePhaseTest {
 	 */
 	@Test
 	public void isAValidAttackMoveTrue() throws InvalidGameMoveException {
-		Player player2 = new Player(2, "Monu");
+		Player player2 = new Player(2);
 		territory1.setPlayer(player);
 		territory2.setPlayer(player2);
 		territory1.setArmies(3);
@@ -346,39 +346,39 @@ public class PlayerGamePhaseTest {
 	@Test
 	public void assignArmiesToPlayers() {
 		players = new ArrayList<>();
-		players.add(new Player(1, "sonu"));
-		players.add(new Player(2, "Monu"));
-		players.add(new Player(3, "Nonu"));
+		players.add(new Player(1));
+		players.add(new Player(2));
+		players.add(new Player(3));
 		boolean resultPlayerThree = playerModel.assignArmiesToPlayers(players, textArea);
 		Assert.assertTrue(resultPlayerThree);
 		Assert.assertEquals(MapConstant.ARMIES_THREE_PLAYER, (Integer) players.get(0).getArmies());
 
 		players = new ArrayList<>();
-		players.add(new Player(1, "sonu"));
-		players.add(new Player(2, "Monu"));
-		players.add(new Player(3, "Nonu"));
-		players.add(new Player(4, "Sam"));
+		players.add(new Player(1));
+		players.add(new Player(2));
+		players.add(new Player(3));
+		players.add(new Player(4));
 		boolean resultPlayerFour = playerModel.assignArmiesToPlayers(players, textArea);
 		Assert.assertTrue(resultPlayerFour);
 		Assert.assertEquals(MapConstant.ARMIES_FOUR_PLAYER, (Integer) players.get(0).getArmies());
 
 		players = new ArrayList<>();
-		players.add(new Player(1, "sonu"));
-		players.add(new Player(2, "Monu"));
-		players.add(new Player(3, "Nonu"));
-		players.add(new Player(4, "Sam"));
-		players.add(new Player(5, "John"));
+		players.add(new Player(1));
+		players.add(new Player(2));
+		players.add(new Player(3));
+		players.add(new Player(4));
+		players.add(new Player(5));
 		boolean resultPlayerFive = playerModel.assignArmiesToPlayers(players, textArea);
 		Assert.assertTrue(resultPlayerFive);
 		Assert.assertEquals(MapConstant.ARMIES_FIVE_PLAYER, (Integer) players.get(0).getArmies());
 
 		players = new ArrayList<>();
-		players.add(new Player(1, "sonu"));
-		players.add(new Player(2, "Monu"));
-		players.add(new Player(3, "Nonu"));
-		players.add(new Player(4, "Sam"));
-		players.add(new Player(5, "John"));
-		players.add(new Player(6, "Harry"));
+		players.add(new Player(1));
+		players.add(new Player(2));
+		players.add(new Player(3));
+		players.add(new Player(4));
+		players.add(new Player(5));
+		players.add(new Player(6));
 		boolean resultPlayerSix = playerModel.assignArmiesToPlayers(players, textArea);
 		Assert.assertTrue(resultPlayerSix);
 		Assert.assertEquals(MapConstant.ARMIES_SIX_PLAYER, (Integer) players.get(0).getArmies());

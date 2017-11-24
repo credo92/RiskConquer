@@ -40,12 +40,14 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 		Iterator<Territory> terrIterator = attackTerList.iterator();
 		while (terrIterator.hasNext()) {
 			Territory attackingTerritory = terrIterator.next();
-			List<Territory> defendingTerritories = getDefendingTerritory(attackingTerritory);
-			if (defendingTerritories.size() == 0) {
-				continue;
+			if (attackingTerritory.getArmies() > 1) {
+				List<Territory> defendingTerritories = getDefendingTerritory(attackingTerritory);
+				if (defendingTerritories.size() == 0) {
+					continue;
+				}
+				attack(attackingTerritory, defendingTerritories.get(0), gamePhase, gameConsole);
+				break;
 			}
-			attack(attackingTerritory, defendingTerritories.get(0), gamePhase, gameConsole);
-			break;
 		}
 	}
 
@@ -82,7 +84,11 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 
 
 
+
 	private void attack(Territory attacking, Territory defending, PlayerGamePhase gamePhase, TextArea gameConsole) {
+		System.out.println("Attack Random started!++++++++++++++++++++++++++++++++++++++++++++++");
+		MapUtil.appendTextToGameConsole("Attack Random started!++++++++++++++++++++++++++++++++++++++++++++++ \n",
+				gameConsole);
 		DiceModel diceModel = new DiceModel(attacking, defending);
 		diceModel.addObserver(gamePhase);
 

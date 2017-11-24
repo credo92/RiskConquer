@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import com.risk.constant.MapConstant;
+import com.risk.constant.PlayerType;
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
@@ -13,6 +14,7 @@ import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
 import com.risk.map.util.MapUtil;
+import com.risk.strategy.CheaterStrategy;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
@@ -184,6 +186,9 @@ public class PlayerGamePhase extends Observable implements Observer {
 	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList, TextArea gameConsole)
 			throws InvalidGameMoveException {
 		playerPlaying.getStrategy().attackPhase(attackingTerritoryList, defendingTerritoryList, this, gameConsole);
+		if(playerPlaying.getStrategy() instanceof CheaterStrategy) {
+			fortificationPhase(attackingTerritoryList, null, gameConsole);
+		}
 	}
 
 	/**

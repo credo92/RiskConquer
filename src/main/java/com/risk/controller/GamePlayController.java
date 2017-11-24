@@ -13,12 +13,17 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
+import com.risk.entity.GameState;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
+import com.risk.exception.InvalidJsonException;
 import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
 import com.risk.model.CardModel;
@@ -201,6 +206,12 @@ public class GamePlayController implements Initializable, Observer {
 	 * The @numberOfCardSetExchanged.
 	 */
 	private int numberOfCardSetExchanged;
+	
+	/**
+	 * The @saveGame button.
+	 */
+	@FXML
+	private Button saveGame;
 
 	/**
 	 * Constructor for GamePlayController
@@ -415,7 +426,7 @@ public class GamePlayController implements Initializable, Observer {
 			assignCardToPlayer();
 		}
 		initializeReinforcement();
-		//cardModel.openCardWindow(playerPlaying, cardModel);
+		// cardModel.openCardWindow(playerPlaying, cardModel);
 	}
 
 	/**
@@ -611,6 +622,7 @@ public class GamePlayController implements Initializable, Observer {
 	 * Check If Any Player Lost the game.
 	 */
 	private void checkIfAnyPlayerLostTheGame() {
+		System.out.println("Checking if player lost the game");
 		Player playerLost = playerGamePhase.checkIfAnyPlayerLostTheGame(gamePlayerList);
 		if (playerLost != null) {
 			gamePlayerList.remove(playerLost);
@@ -656,6 +668,7 @@ public class GamePlayController implements Initializable, Observer {
 	 * Refresh View
 	 */
 	private void refreshView() {
+		System.out.println("Inside referesh view");
 		checkIfAnyPlayerLostTheGame();
 		selectedTerritoryList.getItems().clear();
 		adjTerritoryList.getItems().clear();
@@ -755,7 +768,8 @@ public class GamePlayController implements Initializable, Observer {
 	public void update(Observable o, Object arg) {
 
 		String view = (String) arg;
-
+		MapUtil.appendTextToGameConsole(view + "++++++++++++++++++++++++++++++++++++++++++++++\n", gameConsole);
+		System.out.println("+++++++++++++++++++++ " + view + " +++++++++++++++++++++++++++");
 		if (view.equals("Attack")) {
 			initializeAttack();
 		}
@@ -765,7 +779,7 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		if (view.equals("Reinforcement")) {
 			initializeReinforcement();
-			//cardModel.openCardWindow(playerPlaying, cardModel);
+			// cardModel.openCardWindow(playerPlaying, cardModel);
 		}
 		if (view.equals("Fortification")) {
 			initializeFortification();
@@ -781,10 +795,12 @@ public class GamePlayController implements Initializable, Observer {
 		}
 		if (view.equals("noFortificationMove")) {
 			noFortificationPhase();
-			//cardModel.openCardWindow(playerPlaying, cardModel);
+			// cardModel.openCardWindow(playerPlaying, cardModel);
 		}
 		if (view.equals("rollDiceComplete")) {
-
+			MapUtil.appendTextToGameConsole(
+					"Roll Dice Control observer!++++++++++++++++++++++++++++++++++++++++++++++\n", gameConsole);
+			System.out.println("Roll Dice Control observer!++++++++++++++++++++++++++++++++++++++++++++++");
 			refreshView();
 		}
 		if (view.equals("cardsTrade")) {
@@ -814,4 +830,23 @@ public class GamePlayController implements Initializable, Observer {
 	public void setNumberOfCardSetExchanged(int numberOfCardSetExchanged) {
 		this.numberOfCardSetExchanged = numberOfCardSetExchanged;
 	}
+	
+	/**
+	 * Save Game 
+	 * @param event
+	 *            event
+	 * @throws IOException 
+	 * @throws InvalidJsonException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 * @throws NullPointerException 
+	 */
+	@FXML
+	private void saveGame(ActionEvent event) throws JsonGenerationException, JsonMappingException, InvalidJsonException, IOException,NullPointerException {
+		GameState gameState = new GameState(map,selectedTerritoryList,adjTerritoryList,playerChosen,gamePhase,numberOfPlayersSelected,gamePlayerList,playerPlaying,cardStack,numberOfCardSetExchanged,playerIterator);
+		GameUtil.saveGame(gameState);
+		MapUtil.infoBox("Saved Game! ", "Info", "");
+		GameUtil.closeScreen(saveGame);
+	}
+
 }
