@@ -25,7 +25,7 @@ public class AggressiveStrategy implements PlayerBehaviorStrategy {
 	public void reinforcementPhase(ObservableList<Territory> territoryList, Territory territory, TextArea gameConsole,
 			Player playerPlaying) {
 
-		List<Territory> sortedList = getMaximumArmyFromTerritory(territoryList);
+		List<Territory> sortedList = getMaximumAdjacentAndArmy(territoryList);
 		territory = sortedList.get(0);
 		territory.setArmies(territory.getArmies() + playerPlaying.getArmies());
 		playerPlaying.setArmies(0);
@@ -45,7 +45,7 @@ public class AggressiveStrategy implements PlayerBehaviorStrategy {
 	public boolean fortificationPhase(ListView<Territory> selectedTerritoryList, ListView<Territory> adjTerritoryList,
 			TextArea gameConsole, Player playerPlaying) {
 
-		List<Territory> sortedList = getMaximumArmyFromTerritory(selectedTerritoryList.getItems());
+		List<Territory> sortedList = getMaximumAdjacentAndArmy(selectedTerritoryList.getItems());
 		for (Territory territory : sortedList) {
 			if (territory.getArmies() > 1) {
 				List<Territory> fortifyingtTerritory = getTerritoryOwnedByCurrentPlayer(territory);
@@ -93,7 +93,7 @@ public class AggressiveStrategy implements PlayerBehaviorStrategy {
 
 	public Territory checkIfTerritoryNull(ListView<Territory> attackingTerritoryList) {
 		if (territory == null || (territory.getArmies() <= 1 || getDefendingTerritory(territory).size() == 0)) {
-			List<Territory> sortedList = getMaximumArmyFromTerritory(attackingTerritoryList.getItems());
+			List<Territory> sortedList = getMaximumAdjacentAndArmy(attackingTerritoryList.getItems());
 			for (Territory t : sortedList) {
 				if (t.getArmies() > 1) {
 					territory = t;
@@ -111,7 +111,7 @@ public class AggressiveStrategy implements PlayerBehaviorStrategy {
 		return listWithValidAdjacentTerriroty;
 	}
 
-	public List<Territory> getMaximumArmyFromTerritory(List<Territory> list) {
+	public List<Territory> getMaximumAdjacentAndArmy(List<Territory> list) {
 		Collections.sort(list, new Comparator<Territory>() {
 			@Override
 			public int compare(Territory o1, Territory o2) {
