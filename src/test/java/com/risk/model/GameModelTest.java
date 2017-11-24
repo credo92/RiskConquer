@@ -113,7 +113,7 @@ public class GameModelTest {
 		territory1 = new Territory();
 		territory2 = new Territory();
 		map = new Map();
-		player = new Player(1, "Sonu");
+		player = new Player(1);
 		listOfContinents = new ArrayList<>();
 		listOfTerritories = new ArrayList<>();
 		listOfPlayers = new ArrayList<>();
