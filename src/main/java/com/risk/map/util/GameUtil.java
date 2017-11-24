@@ -209,15 +209,11 @@ public class GameUtil {
 	public static void saveGame(GameState saveGame) throws InvalidJsonException, JsonGenerationException, JsonMappingException, IOException {
 		File file;
 		FileChooser fileChooser = new FileChooser();
-		// Set extension filter
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Json files (*.json)", "*.json");
 		fileChooser.getExtensionFilters().add(extFilter);
-
-		// Show save file dialog
 		file = fileChooser.showSaveDialog(null);
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);
-		//Object to JSON in file
 		mapper.writeValue(file, saveGame);
 
 	}
