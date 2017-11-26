@@ -74,7 +74,10 @@ public class GamePlayController implements Initializable, Observer {
 	 * The @gameModel reference.
 	 */
 	private GameModel gameModel;
-
+	
+	/**
+	 * The @attackCount .
+	 */
 	private int attackCount = 5;
 
 	/**
@@ -103,8 +106,12 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private ChoiceBox<Integer> numberOfPlayers;
-
+	
+	/**
+	 * The @playerSelectionController playerSelectionController
+	 */
 	private PlayerSelectionController playerSelectionController;
+	
 	/**
 	 * The @attack button.
 	 */
