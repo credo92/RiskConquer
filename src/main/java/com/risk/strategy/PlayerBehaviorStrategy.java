@@ -3,6 +3,8 @@ package com.risk.strategy;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.risk.entity.Continent;
+import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
@@ -64,6 +66,26 @@ public interface PlayerBehaviorStrategy {
 			return hasAValidMove;
 		}
 		return hasAValidMove;
+	}
+	
+	default boolean isFortificationPhaseValid(Map map, Player playerPlaying) {
+		boolean isFortificationAvaialble = false;
+		outer: for (Continent continent : map.getContinents()) {
+			for (Territory territory : continent.getTerritories()) {
+				if (territory.getPlayer().equals(playerPlaying)) {
+					if (territory.getArmies() > 1) {
+						for (Territory adjterritory : territory.getAdjacentTerritories()) {
+							if (adjterritory.getPlayer().equals(playerPlaying)) {
+								isFortificationAvaialble = true;
+								break outer;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return isFortificationAvaialble;
 	}
 
 }
