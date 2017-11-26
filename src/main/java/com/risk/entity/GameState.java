@@ -78,10 +78,17 @@ public class GameState implements EventHandler<ActionEvent> {
 	 */
 	private Iterator<Player> playerIterator;
 	
+	/**
+	 * @return map object
+	 */
 	public Map getMap() {
 		return map;
 	}
 
+	/**
+	 * @param map
+	 *            the map to set
+	 */
 	public void setMap(Map map) {
 		this.map = map;
 	}
@@ -117,11 +124,18 @@ public class GameState implements EventHandler<ActionEvent> {
 	public void setGamePhase(Label gamePhase) {
 		this.gamePhase = gamePhase;
 	}
-
+	
+	/**
+	 * @return numberOfPlayersSelected
+	 */
 	public int getNumberOfPlayersSelected() {
 		return numberOfPlayersSelected;
 	}
 
+	/**
+	 * @param setNumberOfPlayersSelected
+	 *            the setNumberOfPlayersSelected to set
+	 */
 	public void setNumberOfPlayersSelected(int numberOfPlayersSelected) {
 		this.numberOfPlayersSelected = numberOfPlayersSelected;
 	}
@@ -133,11 +147,18 @@ public class GameState implements EventHandler<ActionEvent> {
 	public void setGamePlayerList(List<Player> gamePlayerList) {
 		this.gamePlayerList = gamePlayerList;
 	}
-
+	
+	/**
+	 * @return playerPlaying Object
+	 */
 	public Player getPlayerPlaying() {
 		return playerPlaying;
 	}
-
+	
+	/**
+	 * @param playerPlaying
+	 *            the playerPlaying to set
+	 */
 	public void setPlayerPlaying(Player playerPlaying) {
 		this.playerPlaying = playerPlaying;
 	}
@@ -149,11 +170,18 @@ public class GameState implements EventHandler<ActionEvent> {
 	public void setCardStack(Stack<Card> cardStack) {
 		this.cardStack = cardStack;
 	}
-
+	
+	/**
+	 * @return numberOfCardSetExchanged 
+	 */
 	public int getNumberOfCardSetExchanged() {
 		return numberOfCardSetExchanged;
 	}
-
+	
+	/**
+	 * @param numberOfCardSetExchanged
+	 *            the numberOfCardSetExchanged to set
+	 */
 	public void setNumberOfCardSetExchanged(int numberOfCardSetExchanged) {
 		this.numberOfCardSetExchanged = numberOfCardSetExchanged;
 	}
