@@ -188,6 +188,7 @@ public class PlayerGamePhase extends Observable implements Observer {
 	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList,
 			TextArea gameConsole) throws InvalidGameMoveException {
 		playerPlaying.getStrategy().attackPhase(attackingTerritoryList, defendingTerritoryList, this, gameConsole);
+
 		if (playerPlaying.getStrategy() instanceof CheaterStrategy
 				|| playerPlaying.getStrategy() instanceof BenevolentStrategy) {
 			setChanged();
@@ -227,21 +228,7 @@ public class PlayerGamePhase extends Observable implements Observer {
 	 * @return isFortificationAvaialble is fortification of armies available.
 	 */
 	public boolean isFortificationPhaseValid(Map map, Player playerPlaying) {
-		boolean isFortificationAvaialble = false;
-		outer: for (Continent continent : map.getContinents()) {
-			for (Territory territory : continent.getTerritories()) {
-				if (territory.getPlayer().equals(playerPlaying)) {
-					if (territory.getArmies() > 1) {
-						for (Territory adjterritory : territory.getAdjacentTerritories()) {
-							if (adjterritory.getPlayer().equals(playerPlaying)) {
-								isFortificationAvaialble = true;
-								break outer;
-							}
-						}
-					}
-				}
-			}
-		}
+		boolean isFortificationAvaialble = playerPlaying.getStrategy().isFortificationPhaseValid(map, playerPlaying);
 		if (isFortificationAvaialble) {
 			setChanged();
 			notifyObservers("Fortification");

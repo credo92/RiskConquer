@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.risk.controller.DiceRollController;
+import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
@@ -54,19 +55,9 @@ public class CheaterStrategy implements PlayerBehaviorStrategy {
 		attackingTerritoryList.getItems().addAll(territoryWon);
 	}		
 	
-	/*private void attack(Territory attacking, Territory defending, PlayerGamePhase gamePhase, TextArea gameConsole) {
-		MapUtil.appendTextToGameConsole("Attack Cheater started!++++++++++++++++++++++++++++++++++++++++++ \n", gameConsole);
-		DiceModel diceModel = new DiceModel(attacking, defending);
-		diceModel.addObserver(gamePhase);
-
-		DiceRollController diceController = new DiceRollController(diceModel, this, gameConsole);
-		diceController.cheaterAttack();
-	}*/
 	
 	public boolean fortificationPhase(ListView<Territory> selectedTerritoryList, ListView<Territory> adjTerritoryList,
 			TextArea gameConsole, Player playerPlaying) {
-		
-		boolean isFortificationDone = false;
 		
 		ObservableList<Territory> selectedTerrList = selectedTerritoryList.getItems();		
 		Iterator<Territory> iterateTerritory = selectedTerrList.iterator();
@@ -80,11 +71,15 @@ public class CheaterStrategy implements PlayerBehaviorStrategy {
 			for (Territory t : particularFortifyingTerritory) {
 				t.setArmies(t.getArmies()*2);
 				MapUtil.appendTextToGameConsole("Armies have been doubled on territory " + t.getName() + "\n", gameConsole);
-				isFortificationDone = true;
 			}
 		}
-		return isFortificationDone;
+		return true;
 	}
+	
+	@Override
+	public boolean isFortificationPhaseValid(Map map, Player playerPlaying) {
+		return true;
+	} 
 
 	@Override
 	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
