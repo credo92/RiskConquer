@@ -77,7 +77,10 @@ public class GameState implements EventHandler<ActionEvent> {
 	 * The @playerIterator.
 	 */
 	private Iterator<Player> playerIterator;
-
+	
+	/**
+	 * The @playerIterator.
+	 */
 	public Map getMap() {
 		return map;
 	}
@@ -165,7 +168,22 @@ public class GameState implements EventHandler<ActionEvent> {
 	public void setPlayerIterator(Iterator<Player> playerIterator) {
 		this.playerIterator = playerIterator;
 	}
-
+	
+	/**
+	 * Constructor for GameState
+	 * 
+	 * @param map
+	 * @param selectedTerritoryList2
+	 * @param adjTerritoryList2
+	 * @param playerChosen
+	 * @param gamePhase
+	 * @param numberOfPlayersSelected
+	 * @param gamePlayerList
+	 * @param playerPlaying  
+	 * @param cardStack 
+	 * @param numberOfCardSetExchanged   
+	 * @param playerIterator     
+	 */
 	public GameState(Map map,ListView<Territory> selectedTerritoryList2,ListView<Territory> adjTerritoryList2,Label playerChosen,Label gamePhase,int numberOfPlayersSelected,List<Player> gamePlayerList, Player playerPlaying,Stack<Card> cardStack,int numberOfCardSetExchanged,Iterator<Player> playerIterator)  { 
 		this.map = map;
 		this.selectedTerritoryList=(List<Territory>) selectedTerritoryList2.getItems();
