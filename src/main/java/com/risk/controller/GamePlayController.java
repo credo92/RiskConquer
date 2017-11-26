@@ -249,7 +249,11 @@ public class GamePlayController implements Initializable, Observer {
 			}
 		});
 	}
-
+	
+	/**
+	 * Load Startup Phase and assign territories to Players
+	 * 
+	 */
 	public void loadStartUpPhase() {
 		MapUtil.appendTextToGameConsole("===Setup Phase started!===\n", gameConsole);
 		MapUtil.appendTextToGameConsole("===Players creation complete===\n", gameConsole);
@@ -314,7 +318,10 @@ public class GamePlayController implements Initializable, Observer {
 			}
 		});
 	}
-
+	
+	/**
+	 * Player Selection Window 
+	 */
 	public void loadPlayerSelectionWindow() {
 		final Stage newMapStage = new Stage();
 		newMapStage.setTitle("Player Selection Window");
@@ -599,7 +606,10 @@ public class GamePlayController implements Initializable, Observer {
 			startFortification();
 		}
 	}
-
+	
+	/**
+	 * Start of Fortification
+	 */
 	private void startFortification() {
 		playerGamePhase.fortificationPhase(selectedTerritoryList, adjTerritoryList, gameConsole);
 		selectedTerritoryList.refresh();
@@ -697,6 +707,9 @@ public class GamePlayController implements Initializable, Observer {
 		}
 	}
 	
+	/**
+	 * Skip Attack
+	 */
 	private void skipAttack() {
 		checkIfAnyPlayerLostTheGame();
 		selectedTerritoryList.getItems().clear();

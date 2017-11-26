@@ -78,9 +78,6 @@ public class GameState implements EventHandler<ActionEvent> {
 	 */
 	private Iterator<Player> playerIterator;
 	
-	/**
-	 * The @playerIterator.
-	 */
 	public Map getMap() {
 		return map;
 	}
