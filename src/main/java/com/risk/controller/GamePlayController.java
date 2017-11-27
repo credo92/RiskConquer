@@ -34,6 +34,7 @@ import com.risk.model.CardModel;
 import com.risk.model.GameModel;
 import com.risk.model.PlayerGamePhase;
 import com.risk.model.PlayerWorldDomination;
+import com.risk.strategy.CheaterStrategy;
 import com.risk.strategy.HumanStrategy;
 import com.risk.validate.MapValidator;
 
@@ -79,7 +80,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * The @gameModel reference.
 	 */
 	private GameModel gameModel;
-	
+
 	/**
 	 * The @attackCount .
 	 */
@@ -119,12 +120,12 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	@FXML
 	private ChoiceBox<Integer> numberOfPlayers;
-	
+
 	/**
 	 * The @playerSelectionController playerSelectionController
 	 */
 	private PlayerSelectionController playerSelectionController;
-	
+
 	/**
 	 * The @attack button.
 	 */
@@ -226,17 +227,17 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * The @numberOfCardSetExchanged.
 	 */
 	private int numberOfCardSetExchanged;
-	
+
 	/**
 	 * The @saveGame button.
 	 */
 	@FXML
 	private Button saveGame;
-	
+
 	public GamePlayController() {
-		
+
 	}
-	
+
 	/**
 	 * Constructor for GamePlayController
 	 * 
@@ -273,7 +274,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			}
 		});
 	}
-	
+
 	/**
 	 * Load Startup Phase and assign territories to Players
 	 * 
@@ -288,7 +289,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		loadPlayingPlayer();
 		populateWorldDominationData();
 		MapUtil.enableControl(cards);
-		if(!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
+		if (!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
 			placeArmy(null);
 		}
 	}
@@ -342,9 +343,9 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			}
 		});
 	}
-	
+
 	/**
-	 * Player Selection Window 
+	 * Player Selection Window
 	 */
 	public void loadPlayerSelectionWindow() {
 		final Stage newMapStage = new Stage();
@@ -405,7 +406,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	private void noMoreAttack(ActionEvent event) {
 		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
 		if (playerGamePhase.getTerritoryWon() > 0) {
-			//assignCardToPlayer();
+			// assignCardToPlayer();
 		}
 		MapUtil.appendTextToGameConsole("===Attack phase ended!===\n", gameConsole);
 		isValidFortificationPhase();
@@ -457,7 +458,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " ended his turn.\n", gameConsole);
 		if (playerGamePhase.getTerritoryWon() > 0) {
-			//assignCardToPlayer();
+			// assignCardToPlayer();
 		}
 		initializeReinforcement();
 		// cardModel.openCardWindow(playerPlaying, cardModel);
@@ -630,7 +631,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			startFortification();
 		}
 	}
-	
+
 	/**
 	 * Start of Fortification
 	 */
@@ -730,7 +731,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			}
 		}
 	}
-	
+
 	/**
 	 * Skip Attack
 	 */
@@ -746,7 +747,15 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		playerChosen.setText(playerPlaying.getName() + "(" + playerPlaying.getType() + "):- "
 				+ playerPlaying.getArmies() + " armies left.\n");
 		if (!checkIfPlayerWonTheGame()) {
-			noMoreAttack(null);
+			if (playerPlaying.getStrategy() instanceof CheaterStrategy) {
+				if (playerGamePhase.playerHasAValidAttackMove(selectedTerritoryList, gameConsole)) {
+					attack();
+				} else {
+					noMoreAttack(null);
+				}
+			} else {
+				noMoreAttack(null);
+			}
 		}
 	}
 
@@ -757,7 +766,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		loadMapData();
 		selectedTerritoryList.refresh();
 		loadPlayingPlayer();
-		if(!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
+		if (!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
 			placeArmy(null);
 		}
 	}
@@ -869,7 +878,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		if (view.equals("playersCreated")) {
 			loadStartUpPhase();
 		}
-		
+
 		if (view.equals("SkipAttack")) {
 			skipAttack();
 		}
@@ -893,24 +902,25 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	public void setNumberOfCardSetExchanged(int numberOfCardSetExchanged) {
 		this.numberOfCardSetExchanged = numberOfCardSetExchanged;
 	}
-	
+
 	/**
-	 * Save Game 
+	 * Save Game
+	 * 
 	 * @param event
 	 *            event
-	 * @throws IOException 
-	 * @throws InvalidJsonException 
-	 * @throws JsonMappingException 
-	 * @throws JsonGenerationException 
-	 * @throws NullPointerException 
+	 * @throws IOException
+	 * @throws InvalidJsonException
+	 * @throws JsonMappingException
+	 * @throws JsonGenerationException
+	 * @throws NullPointerException
 	 */
 	@FXML
 	private void saveGame(ActionEvent event) {
 		GameState gameState = new GameState();
 		try {
 			gameState.writeObject(this);
-			
-			//GameP map = gameState.readObject();
+
+			// GameP map = gameState.readObject();
 			try {
 				MapValidator.validateMap(map);
 			} catch (InvalidMapException e) {
@@ -930,7 +940,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		out.writeObject(gameModel);
 		out.writeObject(playerPlaying);
 		out.writeObject(playerGamePhase);
-		
+
 	}
 
 	@Override
