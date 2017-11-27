@@ -1,6 +1,8 @@
 package com.risk.model;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,6 +14,11 @@ import com.risk.exception.InvalidGameMoveException;
 import com.risk.exception.InvalidMapException;
 import com.risk.map.util.MapFileParser;
 import com.risk.map.util.MapUtil;
+import com.risk.strategy.AggressiveStrategy;
+import com.risk.strategy.BenevolentStrategy;
+import com.risk.strategy.CheaterStrategy;
+import com.risk.strategy.PlayerBehaviorStrategy;
+import com.risk.strategy.RandomStrategy;
 
 import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;
@@ -21,22 +28,33 @@ public class TournamentModel {
 
 	private PlayerGamePhase playerGamePhase;
 
+	private HashMap<String, HashMap<String, String>> tournamentResult;
+
 	private GameModel gameModel;
 
 	/**
 	 * This method converts string to enum.
 	 */
-	public PlayerType returnPlayerType(String playerType) {
+	public Player returnPlayerType(String playerType, Player player) {
+		PlayerType type = null;
+		PlayerBehaviorStrategy strategy = null;
 		if (PlayerType.AGGRESSIVE.toString().equals(playerType)) {
-			return PlayerType.AGGRESSIVE;
+			type = PlayerType.AGGRESSIVE;
+			strategy = new AggressiveStrategy();
 		} else if (PlayerType.BENEVOLENT.toString().equals(playerType)) {
-			return PlayerType.BENEVOLENT;
+			type = PlayerType.BENEVOLENT;
+			strategy = new BenevolentStrategy();
 		} else if (PlayerType.CHEATER.toString().equals(playerType)) {
-			return PlayerType.CHEATER;
+			type = PlayerType.CHEATER;
+			strategy = new CheaterStrategy();
 		} else if (PlayerType.RANDOM.toString().equals(playerType)) {
-			return PlayerType.RANDOM;
+			type = PlayerType.RANDOM;
+			strategy = new RandomStrategy();
 		}
-		return null;
+
+		player.setType(type);
+		player.setStrategy(strategy);
+		return player;
 	}
 
 	public File uploadMap(List<Map> mapList) {
@@ -53,28 +71,34 @@ public class TournamentModel {
 		return file;
 	}
 
-	public void startTournamentGame(List<Player> players, Map map, int numberOfTurn, TextArea console) {
+	public void startTournamentGame(List<Player> players, Map map, int numberOfTurn, TextArea console,
+			Integer gameNumber) {
+		Player winningPlayer = null;
+		List<Player> currentGamePlayer = new ArrayList<>(players);
 		playerGamePhase = new PlayerGamePhase();
 		gameModel = new GameModel();
-		Iterator<Player> playerIterator = players.iterator();
 		MapUtil.appendTextToGameConsole("===Startup phase===\n", console);
-		playerGamePhase.assignArmiesToPlayers(players, console);
+		playerGamePhase.assignArmiesToPlayers(currentGamePlayer, console);
 
 		MapUtil.appendTextToGameConsole("===Assigning territories===\n", console);
-		gameModel.assignTerritoryToPlayer(map, players, console);
+		gameModel.assignTerritoryToPlayer(map, currentGamePlayer, console);
 
 		MapUtil.appendTextToGameConsole("===Assigning player armies to territories===\n", console);
-		players.stream().forEach(p -> playerGamePhase.autoAssignPlayerArmiesToTerritory(p, console));
+		currentGamePlayer.stream().forEach(p -> playerGamePhase.autoAssignPlayerArmiesTournament(p, console));
 		MapUtil.appendTextToGameConsole("===Startup phase ended===\n", console);
 
-		while (numberOfTurn > 0) {
+		outer: while (numberOfTurn > 0) {
+			Iterator<Player> playerIterator = currentGamePlayer.iterator();
 			while (playerIterator.hasNext()) {
 				Player player = playerIterator.next();
+				MapUtil.appendTextToGameConsole("===Player: " + player.getName() + " started playing===\n", console);
+				playerGamePhase.setPlayerPlaying(player);
+
+				// calculate reinforcemenr
+				playerGamePhase.calculateReinforcementArmies(map, player);
 
 				// Reinforcement phase
 				if (player.getArmies() > 0) {
-					MapUtil.appendTextToGameConsole("===Player: " + player.getName() + " started playing===\n",
-							console);
 					MapUtil.appendTextToGameConsole("===Rienforcement phase started===\n", console);
 					player.getStrategy().reinforcementPhase(
 							FXCollections.observableArrayList(player.getAssignedTerritory()), null, console, player);
@@ -85,17 +109,72 @@ public class TournamentModel {
 				MapUtil.appendTextToGameConsole("===Attack phase started===\n", console);
 				ListView<Territory> attackingTerritory = new ListView<>(
 						FXCollections.observableArrayList(player.getAssignedTerritory()));
-
 				while (player.getStrategy().playerHasAValidAttackMove(attackingTerritory, console)) {
 					try {
 						player.getStrategy().attackPhase(attackingTerritory, null, null, console);
+						// check if any player lost the game
+						Player lostPlayer = playerGamePhase.checkIfAnyPlayerLostTheGame(currentGamePlayer);
+						if (lostPlayer != null) {
+							currentGamePlayer.remove(lostPlayer);
+							playerIterator = currentGamePlayer.iterator();
+						}
+						// check if any player won the game
+						if (playerGamePhase.checkIfPlayerWonTheGame(currentGamePlayer)) {
+							winningPlayer = currentGamePlayer.get(0);
+							break outer;
+						}
 					} catch (InvalidGameMoveException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
+				MapUtil.appendTextToGameConsole("===Attack phase Ended===\n", console);
+
 				// Fortification phase
+				MapUtil.appendTextToGameConsole("===Fortification phase Started===\n", console);
+				if (player.getStrategy().isFortificationPhaseValid(map, player)) {
+					player.getStrategy().fortificationPhase(attackingTerritory, null, console, player);
+				} else {
+					MapUtil.appendTextToGameConsole("===No fortification move avilable to fortify the armies===\n",
+							console);
+				}
+				MapUtil.appendTextToGameConsole("===Fortification phase ended===\n", console);
 			}
+			MapUtil.appendTextToGameConsole("Turn complete" + numberOfTurn + "\n", console);
+			numberOfTurn--;
 		}
+		String winner = null;
+		String mapName = map.getMapData().get("image");
+		if (winningPlayer != null) {
+			winner = winningPlayer.getStrategy().toString();
+		} else {
+			winner = "Draw";
+		}
+
+		if (tournamentResult.containsKey(mapName)) {
+			HashMap<String, String> data = tournamentResult.get(mapName);
+			data.put("Game" + gameNumber, winner);
+			tournamentResult.put(mapName, data);
+		} else {
+			HashMap<String, String> data = new HashMap<>();
+			data.put("Game" + gameNumber, winner);
+			tournamentResult.put(mapName, data);
+		}
+
+	}
+
+	/**
+	 * @return the tournamentResult
+	 */
+	public HashMap<String, HashMap<String, String>> getTournamentResult() {
+		return tournamentResult;
+	}
+
+	/**
+	 * @param tournamentResult
+	 *            the tournamentResult to set
+	 */
+	public void setTournamentResult(HashMap<String, HashMap<String, String>> tournamentResult) {
+		this.tournamentResult = tournamentResult;
 	}
 }

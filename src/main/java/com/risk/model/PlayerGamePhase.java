@@ -7,7 +7,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import com.risk.constant.MapConstant;
-import com.risk.constant.PlayerType;
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
@@ -29,7 +28,7 @@ import javafx.scene.control.TextArea;
  * @author rahul
  * @version 1.0.0
  */
-public class PlayerGamePhase extends Observable implements Observer, Serializable{
+public class PlayerGamePhase extends Observable implements Observer, Serializable {
 
 	/**
 	 * the @playerPlaying reference
@@ -340,6 +339,14 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 		return playerLost;
 	}
 
+	public boolean checkIfPlayerWonTheGame(List<Player> player) {
+		boolean playerWon = false;
+		if (player.size() == 1) {
+			playerWon = true;
+		}
+		return playerWon;
+	}
+
 	/**
 	 * This method is used to trade armies for valid combination of cards.
 	 * 
@@ -373,6 +380,16 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 			Territory territory = player.getAssignedTerritory()
 					.get(randomNumber(player.getAssignedTerritory().size() - 1));
 			territory.setArmies(territory.getArmies() + 1);
+			player.setArmies(player.getArmies() - 1);
+		}
+	}
+
+	public void autoAssignPlayerArmiesTournament(Player player, TextArea console) {
+		while (player.getArmies() > 0) {
+			Territory territory = player.getAssignedTerritory()
+					.get(randomNumber(player.getAssignedTerritory().size() - 1));
+			territory.setArmies(territory.getArmies() + 1);
+			MapUtil.appendTextToGameConsole(territory.getName() + " assigned 1 army\n", console);
 			player.setArmies(player.getArmies() - 1);
 		}
 	}

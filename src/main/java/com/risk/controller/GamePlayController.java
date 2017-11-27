@@ -694,7 +694,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	private boolean checkIfPlayerWonTheGame(String view) {
 		boolean playerWon = false;
 		if (gamePlayerList.size() == 1) {
-			System.out.println("*****************player won the game................ "+view);
 			MapUtil.infoBox("Player: " + gamePlayerList.get(0).getName() + " won the game!", "Info", "");
 			playerWon = true;
 			disableGamePanel();

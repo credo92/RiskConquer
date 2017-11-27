@@ -70,8 +70,9 @@ public class AggressiveStrategy implements PlayerBehaviorStrategy {
 
 	private void attack(Territory attacking, Territory defending, PlayerGamePhase gamePhase, TextArea gameConsole) {
 		DiceModel diceModel = new DiceModel(attacking, defending);
-		diceModel.addObserver(gamePhase);
-
+		if (gamePhase != null) {
+			diceModel.addObserver(gamePhase);
+		}
 		DiceRollController diceController = new DiceRollController(diceModel, this, gameConsole);
 		diceController.autoStartDiceRollController();
 	}
