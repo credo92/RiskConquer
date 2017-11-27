@@ -79,7 +79,10 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * The @gameModel reference.
 	 */
 	private GameModel gameModel;
-
+	
+	/**
+	 * The @attackCount .
+	 */
 	private int attackCount = 5;
 
 	/**
@@ -116,8 +119,12 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	@FXML
 	private ChoiceBox<Integer> numberOfPlayers;
-
+	
+	/**
+	 * The @playerSelectionController playerSelectionController
+	 */
 	private PlayerSelectionController playerSelectionController;
+	
 	/**
 	 * The @attack button.
 	 */
@@ -266,7 +273,11 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			}
 		});
 	}
-
+	
+	/**
+	 * Load Startup Phase and assign territories to Players
+	 * 
+	 */
 	public void loadStartUpPhase() {
 		MapUtil.appendTextToGameConsole("===Setup Phase started!===\n", gameConsole);
 		MapUtil.appendTextToGameConsole("===Players creation complete===\n", gameConsole);
@@ -331,7 +342,10 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			}
 		});
 	}
-
+	
+	/**
+	 * Player Selection Window 
+	 */
 	public void loadPlayerSelectionWindow() {
 		final Stage newMapStage = new Stage();
 		newMapStage.setTitle("Player Selection Window");
@@ -616,7 +630,10 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			startFortification();
 		}
 	}
-
+	
+	/**
+	 * Start of Fortification
+	 */
 	private void startFortification() {
 		playerGamePhase.fortificationPhase(selectedTerritoryList, adjTerritoryList, gameConsole);
 		selectedTerritoryList.refresh();
@@ -714,6 +731,9 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		}
 	}
 	
+	/**
+	 * Skip Attack
+	 */
 	private void skipAttack() {
 		checkIfAnyPlayerLostTheGame();
 		selectedTerritoryList.getItems().clear();
