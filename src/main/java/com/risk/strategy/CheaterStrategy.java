@@ -12,6 +12,7 @@ import com.risk.exception.InvalidGameMoveException;
 import com.risk.map.util.MapUtil;
 import com.risk.model.PlayerGamePhase;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -25,7 +26,7 @@ import javafx.scene.control.TextArea;
  */
 public class CheaterStrategy implements PlayerBehaviorStrategy {
 
-	ObservableList<Territory> attackTerList = null;
+	ObservableList<Territory> attackTerList = FXCollections.observableArrayList();
 
 	/*
 	 * (non-Javadoc) This method is an implementation of reinforcement phase in
@@ -43,7 +44,8 @@ public class CheaterStrategy implements PlayerBehaviorStrategy {
 			MapUtil.appendTextToGameConsole("Armies have been doubled on territory " + terr.getName() + "\n",
 					gameConsole);
 		}
-		attackTerList = territoryList;
+		attackTerList.clear();
+		attackTerList.addAll(territoryList);
 		playerPlaying.setArmies(0);
 	}
 
@@ -123,8 +125,8 @@ public class CheaterStrategy implements PlayerBehaviorStrategy {
 	@Override
 	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
 		boolean hasAValidMove = false;
-		if (attackTerList == null) {
-			attackTerList = territories.getItems();
+		if (attackTerList == null || attackTerList.isEmpty()) {
+			attackTerList.addAll(attackTerList);
 		}
 		for (Territory territory : attackTerList) {
 			if (getDefendingTerritory(territory).size() > 0) {

@@ -691,9 +691,10 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	/**
 	 * Check If Any Player Won the game.
 	 */
-	private boolean checkIfPlayerWonTheGame() {
+	private boolean checkIfPlayerWonTheGame(String view) {
 		boolean playerWon = false;
 		if (gamePlayerList.size() == 1) {
+			System.out.println("*****************player won the game................ "+view);
 			MapUtil.infoBox("Player: " + gamePlayerList.get(0).getName() + " won the game!", "Info", "");
 			playerWon = true;
 			disableGamePanel();
@@ -717,7 +718,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		populateWorldDominationData();
 		playerChosen.setText(playerPlaying.getName() + "(" + playerPlaying.getType() + "):- "
 				+ playerPlaying.getArmies() + " armies left.\n");
-		if (!checkIfPlayerWonTheGame()) {
+		if (!checkIfPlayerWonTheGame("reresh")) {
 			if (playerGamePhase.playerHasAValidAttackMove(selectedTerritoryList, gameConsole)) {
 				if (!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
 					if (attackCount > 0) {
@@ -746,7 +747,8 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		populateWorldDominationData();
 		playerChosen.setText(playerPlaying.getName() + "(" + playerPlaying.getType() + "):- "
 				+ playerPlaying.getArmies() + " armies left.\n");
-		if (!checkIfPlayerWonTheGame()) {
+		if (!checkIfPlayerWonTheGame("skipattack")) {
+			System.out.println("Player did not won the game.");
 			if (playerPlaying.getStrategy() instanceof CheaterStrategy) {
 				if (playerGamePhase.playerHasAValidAttackMove(selectedTerritoryList, gameConsole)) {
 					attack();

@@ -1,6 +1,5 @@
 package com.risk.strategy;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -27,9 +26,11 @@ public class AggressiveStrategy implements PlayerBehaviorStrategy {
 			Player playerPlaying) {
 
 		List<Territory> sortedList = getMaximumAdjacentAndArmy(territoryList);
-		territory = sortedList.get(0);
-		territory.setArmies(territory.getArmies() + playerPlaying.getArmies());
-		playerPlaying.setArmies(0);
+		if (!sortedList.isEmpty()) {
+			territory = sortedList.get(0);
+			territory.setArmies(territory.getArmies() + playerPlaying.getArmies());
+			playerPlaying.setArmies(0);
+		}
 
 	}
 
