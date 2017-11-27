@@ -18,8 +18,17 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 
+/**
+ * This class is an implementation of Cheater Strategy based on Strategy pattern.
+ * @author Garvpreet Singh
+ * @version 1.0.1
+ */
 public class CheaterStrategy implements PlayerBehaviorStrategy {
 
+	/* (non-Javadoc)
+	 * This method is an implementation of reinforcement phase in Cheater Strategy.
+	 * @see com.risk.strategy.PlayerBehaviorStrategy#reinforcementPhase(javafx.collections.ObservableList, com.risk.entity.Territory, javafx.scene.control.TextArea, com.risk.entity.Player)
+	 */
 	@Override
 	public void reinforcementPhase(ObservableList<Territory> territoryList, Territory territory, TextArea gameConsole,
 			Player playerPlaying) {		
@@ -31,6 +40,10 @@ public class CheaterStrategy implements PlayerBehaviorStrategy {
 		playerPlaying.setArmies(0);
 	}
 
+	/* (non-Javadoc)
+	 * This method is an implementation of attack phase in Cheater Strategy.
+	 * @see com.risk.strategy.PlayerBehaviorStrategy#attackPhase(javafx.scene.control.ListView, javafx.scene.control.ListView, com.risk.model.PlayerGamePhase, javafx.scene.control.TextArea)
+	 */
 	@Override
 	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList,
 			PlayerGamePhase gamePhase, TextArea gameConsole) throws InvalidGameMoveException {
@@ -56,6 +69,10 @@ public class CheaterStrategy implements PlayerBehaviorStrategy {
 	}		
 	
 	
+	/* (non-Javadoc)
+	 * This method is an implementation of fortification phase in Cheater Strategy.
+	 * @see com.risk.strategy.PlayerBehaviorStrategy#fortificationPhase(javafx.scene.control.ListView, javafx.scene.control.ListView, javafx.scene.control.TextArea, com.risk.entity.Player)
+	 */
 	public boolean fortificationPhase(ListView<Territory> selectedTerritoryList, ListView<Territory> adjTerritoryList,
 			TextArea gameConsole, Player playerPlaying) {
 		
