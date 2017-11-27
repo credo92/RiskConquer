@@ -1,6 +1,9 @@
 package com.risk.controller;
 
+import java.io.Externalizable;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +27,7 @@ import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
 import com.risk.exception.InvalidJsonException;
+import com.risk.exception.InvalidMapException;
 import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
 import com.risk.model.CardModel;
@@ -31,6 +35,7 @@ import com.risk.model.GameModel;
 import com.risk.model.PlayerGamePhase;
 import com.risk.model.PlayerWorldDomination;
 import com.risk.strategy.HumanStrategy;
+import com.risk.validate.MapValidator;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -63,7 +68,7 @@ import javafx.stage.WindowEvent;
  * @version 1.0.0
  *
  */
-public class GamePlayController implements Initializable, Observer {
+public class GamePlayController implements Initializable, Observer, Externalizable {
 
 	/**
 	 * The @map reference.
@@ -92,6 +97,14 @@ public class GamePlayController implements Initializable, Observer {
 	 * The @playerModel.
 	 */
 	private PlayerGamePhase playerGamePhase;
+
+	public Map getMap() {
+		return map;
+	}
+
+	public void setMap(Map map) {
+		this.map = map;
+	}
 
 	/**
 	 * The @worldDomination.
@@ -212,7 +225,11 @@ public class GamePlayController implements Initializable, Observer {
 	 */
 	@FXML
 	private Button saveGame;
-
+	
+	public GamePlayController() {
+		
+	}
+	
 	/**
 	 * Constructor for GamePlayController
 	 * 
@@ -868,11 +885,41 @@ public class GamePlayController implements Initializable, Observer {
 	 * @throws NullPointerException 
 	 */
 	@FXML
-	private void saveGame(ActionEvent event) throws JsonGenerationException, JsonMappingException, InvalidJsonException, IOException,NullPointerException {
-		GameState gameState = new GameState(map,selectedTerritoryList,adjTerritoryList,playerChosen,gamePhase,numberOfPlayersSelected,gamePlayerList,playerPlaying,cardStack,numberOfCardSetExchanged,playerIterator);
-		GameUtil.saveGame(gameState);
-		MapUtil.infoBox("Saved Game! ", "Info", "");
-		GameUtil.closeScreen(saveGame);
+	private void saveGame(ActionEvent event) {
+		GameState gameState = new GameState();
+		try {
+			gameState.writeObject(this);
+			
+			//GameP map = gameState.readObject();
+			try {
+				MapValidator.validateMap(map);
+			} catch (InvalidMapException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		// TODO Auto-generated method stub
+		out.writeObject(map);
+		out.writeObject(gameModel);
+		out.writeObject(playerPlaying);
+		out.writeObject(playerGamePhase);
+		
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		// TODO Auto-generated method stub
+		map = (Map) in.readObject();
+		gameModel = (GameModel) in.readObject();
+		playerPlaying = (Player) in.readObject();
+		playerGamePhase = (PlayerGamePhase) in.readObject();
 	}
 
 }

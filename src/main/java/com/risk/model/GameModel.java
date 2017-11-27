@@ -1,5 +1,6 @@
 package com.risk.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +21,7 @@ import javafx.scene.control.TextArea;
  * @author rahul
  * @version 1.0.0.
  */
-public class GameModel {
+public class GameModel implements Serializable{
 
 	/**
 	 * Load card.

@@ -1,5 +1,6 @@
 package com.risk.strategy;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ import javafx.scene.control.TextArea;
  * @author rahul
  *
  */
-public interface PlayerBehaviorStrategy {
+public interface PlayerBehaviorStrategy extends Serializable {
 	/**
 	 * @param territory
 	 * @param gameConsole

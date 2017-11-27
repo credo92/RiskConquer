@@ -1,5 +1,6 @@
 package com.risk.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * @version 1.0.0
  * 
  */
-public class Territory {
+public class Territory implements Serializable{
 	
 	/**
 	 * The @name.

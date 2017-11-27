@@ -131,7 +131,7 @@ public class Main extends Application {
 	 */
 	public static Button startSavedGameButton(Scene scene) {
 		Button startSavedGameButton = new Button("Start Saved Game");
-		//TODO
+		startSavedGameButton.setOnAction(new LoadGamePlay());
 		startSavedGameButton.setMaxWidth(scene.getWidth());
 		return startSavedGameButton;
 	}

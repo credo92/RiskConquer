@@ -1,5 +1,6 @@
 package com.risk.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  * @author rahul
  * @version 1.0.0
  */
-public class Continent {
+public class Continent implements Serializable{
 	
 	/**
 	 * The @name .

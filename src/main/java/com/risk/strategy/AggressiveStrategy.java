@@ -1,5 +1,6 @@
 package com.risk.strategy;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;

@@ -1,16 +1,13 @@
 package com.risk.entity;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonBackReference;
 
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import com.risk.controller.GamePlayController;
 
 /**
  * This class is used to store Game State.
@@ -19,175 +16,36 @@ import javafx.scene.control.ListView;
  *
  */
 @JsonAutoDetect
-public class GameState implements EventHandler<ActionEvent> {
-
-	/**
-	 * The @map reference.
-	 */
-	private Map map;
-
-	/**
-	 * The @selectedTerritoryList list of territories drop down.
-	 */
-	@JsonBackReference
-	private List<Territory> selectedTerritoryList;
-
-	/**
-	 * The @adjTerritoryList adjacent territory list.
-	 */
-	@JsonBackReference 
-	private ObservableList<Territory> adjTerritoryList;
-
-	/**
-	 * The @playerChosen current player playing.
-	 */
-	private Label playerChosen;
-
-	/**
-	 * The @gamePhase display current phase .
-	 */
-	private Label gamePhase;
-
-	/**
-	 * The @numberOfPlayersSelected .
-	 */
-	private int numberOfPlayersSelected;
-
-	/**
-	 * The @gamePlayerList list of players in the game.
-	 */
-	private List<Player> gamePlayerList;
-
-	/**
-	 * The @playerPlaying current player playing.
-	 */
-	private Player playerPlaying;
-
-	/**
-	 * The @cardStack.
-	 */
-	private Stack<Card> cardStack;
-
-	/**
-	 * The @numberOfCardSetExchanged.
-	 */
-	private int numberOfCardSetExchanged;
-
-	/**
-	 * The @playerIterator.
-	 */
-	private Iterator<Player> playerIterator;
-
-	public Map getMap() {
-		return map;
+public class GameState{
+		
+	public final void writeObject(GamePlayController gamePlayController) throws IOException{
+	      try {
+	          FileOutputStream fileOut =
+	          new FileOutputStream("player.ser");
+	          ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	          out.writeObject(gamePlayController);
+	          out.close();
+	          fileOut.close();
+	          System.out.printf("Serialized data is saved in player.ser");
+	       } catch (IOException i) {
+	          i.printStackTrace();
+	       }
+	}
+	
+	
+	public final GamePlayController readObject() {
+		GamePlayController e = null;
+	      try {
+	         FileInputStream fileIn = new FileInputStream("player.ser");
+	         ObjectInputStream in = new ObjectInputStream(fileIn);
+	         e = (GamePlayController) in.readObject();
+	         in.close();
+	         fileIn.close();
+	      } catch (Exception i) {
+	         i.printStackTrace();
+	      }
+	      return e;
 	}
 
-	public void setMap(Map map) {
-		this.map = map;
-	}
-
-	public List<Territory> getSelectedTerritoryList() {
-		return selectedTerritoryList;
-	}
-
-	public void setSelectedTerritoryList(List<Territory> selectedTerritoryList) {
-		this.selectedTerritoryList = selectedTerritoryList;
-	}
-
-	public ObservableList<Territory> getAdjTerritoryList() {
-		return adjTerritoryList;
-	}
-
-	public void setAdjTerritoryList(ObservableList<Territory> adjTerritoryList) {
-		this.adjTerritoryList = adjTerritoryList;
-	}
-
-	public Label getPlayerChosen() {
-		return playerChosen;
-	}
-
-	public void setPlayerChosen(Label playerChosen) {
-		this.playerChosen = playerChosen;
-	}
-
-	public Label getGamePhase() {
-		return gamePhase;
-	}
-
-	public void setGamePhase(Label gamePhase) {
-		this.gamePhase = gamePhase;
-	}
-
-	public int getNumberOfPlayersSelected() {
-		return numberOfPlayersSelected;
-	}
-
-	public void setNumberOfPlayersSelected(int numberOfPlayersSelected) {
-		this.numberOfPlayersSelected = numberOfPlayersSelected;
-	}
-
-	public List<Player> getGamePlayerList() {
-		return gamePlayerList;
-	}
-
-	public void setGamePlayerList(List<Player> gamePlayerList) {
-		this.gamePlayerList = gamePlayerList;
-	}
-
-	public Player getPlayerPlaying() {
-		return playerPlaying;
-	}
-
-	public void setPlayerPlaying(Player playerPlaying) {
-		this.playerPlaying = playerPlaying;
-	}
-
-	public Stack<Card> getCardStack() {
-		return cardStack;
-	}
-
-	public void setCardStack(Stack<Card> cardStack) {
-		this.cardStack = cardStack;
-	}
-
-	public int getNumberOfCardSetExchanged() {
-		return numberOfCardSetExchanged;
-	}
-
-	public void setNumberOfCardSetExchanged(int numberOfCardSetExchanged) {
-		this.numberOfCardSetExchanged = numberOfCardSetExchanged;
-	}
-
-	public Iterator<Player> getPlayerIterator() {
-		return playerIterator;
-	}
-
-	public void setPlayerIterator(Iterator<Player> playerIterator) {
-		this.playerIterator = playerIterator;
-	}
-
-	public GameState(Map map,ListView<Territory> selectedTerritoryList2,ListView<Territory> adjTerritoryList2,Label playerChosen,Label gamePhase,int numberOfPlayersSelected,List<Player> gamePlayerList, Player playerPlaying,Stack<Card> cardStack,int numberOfCardSetExchanged,Iterator<Player> playerIterator)  { 
-		this.map = map;
-		this.selectedTerritoryList=(List<Territory>) selectedTerritoryList2.getItems();
-		this.adjTerritoryList = adjTerritoryList2.getItems();
-		this.playerChosen=playerChosen;
-		this.gamePhase=gamePhase;
-		this.numberOfPlayersSelected=numberOfPlayersSelected;
-		this.gamePlayerList = gamePlayerList;
-		this.playerPlaying=playerPlaying;
-		this.cardStack=cardStack;
-		this.numberOfCardSetExchanged = numberOfCardSetExchanged;
-		this.playerIterator = playerIterator;
-	}
-
-	//Introducing the dummy constructor to remove org.codehaus.jackson.map.JsonMappingException error
-	public GameState() {
-	}
-
-	@Override
-	public void handle(ActionEvent event) {
-		// TODO Auto-generated method stub
-
-	}
 
 }

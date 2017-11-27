@@ -81,6 +81,15 @@ public class MapUtil {
 		file = fileChooser.showOpenDialog(null);
 		return file;
 	}
+	
+	public static File savedGameFileChooser() {
+		FileChooser fileChooser = new FileChooser();
+		File file = null;
+		FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Saved Game files (*.ser)", "*.ser");
+		fileChooser.getExtensionFilters().add(extensionFilter);
+		file = fileChooser.showOpenDialog(null);
+		return file;
+	}
 
 	/**
 	 * This method is used to save map object into a map file.

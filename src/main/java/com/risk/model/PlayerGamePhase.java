@@ -1,5 +1,6 @@
 package com.risk.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -28,7 +29,7 @@ import javafx.scene.control.TextArea;
  * @author rahul
  * @version 1.0.0
  */
-public class PlayerGamePhase extends Observable implements Observer {
+public class PlayerGamePhase extends Observable implements Observer, Serializable{
 
 	/**
 	 * the @playerPlaying reference

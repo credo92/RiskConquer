@@ -1,5 +1,6 @@
 package com.risk.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import com.risk.strategy.PlayerBehaviorStrategy;
  * @author rahul
  * @version 1.0.0
  */
-public class Player {
+public class Player implements Serializable {
 	
 	/**
 	 * The @id.
