@@ -16,9 +16,6 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.GameState;
@@ -26,7 +23,6 @@ import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
-import com.risk.exception.InvalidJsonException;
 import com.risk.exception.InvalidMapException;
 import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
@@ -101,16 +97,16 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * The @playerModel.
 	 */
 	private PlayerGamePhase playerGamePhase;
-	
+
 	/**
 	 * Get Map
 	 * 
-	 * @return map 
+	 * @return map
 	 */
 	public Map getMap() {
 		return map;
 	}
-	
+
 	/**
 	 * Set Map
 	 * 
@@ -244,7 +240,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	@FXML
 	private Button saveGame;
-	
+
 	/**
 	 * Constructor for GamePlayController
 	 */
@@ -407,7 +403,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	private void loadGameCard() {
 		cardStack = gameModel.assignCardToTerritory(map, gameConsole);
-		MapUtil.appendTextToGameConsole("===Game card loaded===\n", gameConsole);
+		MapUtil.appendTextToGameConsole("======" + cardStack.size() + " Game card loaded===\n", gameConsole);
 	}
 
 	/**
@@ -420,7 +416,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	private void noMoreAttack(ActionEvent event) {
 		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
 		if (playerGamePhase.getTerritoryWon() > 0) {
-			// assignCardToPlayer();
+			assignCardToPlayer();
 		}
 		MapUtil.appendTextToGameConsole("===Attack phase ended!===\n", gameConsole);
 		isValidFortificationPhase();
@@ -472,10 +468,9 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " ended his turn.\n", gameConsole);
 		if (playerGamePhase.getTerritoryWon() > 0) {
-			// assignCardToPlayer();
+			assignCardToPlayer();
 		}
 		initializeReinforcement();
-		// cardModel.openCardWindow(playerPlaying, cardModel);
 	}
 
 	/**
@@ -505,9 +500,9 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		}
 		startReinforcement(territory);
 	}
-	
+
 	/**
-	 * Start reinforcement. 
+	 * Start reinforcement.
 	 * 
 	 * @param territory
 	 *            territory
@@ -603,10 +598,12 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		MapUtil.appendTextToGameConsole("===Reinforcement phase started! ===\n", gameConsole);
 		calculateReinforcementArmies();
 		if (!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
+			cardModel.autoCardWindow(playerPlaying, cardModel);
 			startReinforcement(null);
 		} else {
 			MapUtil.enableControl(reinforcement);
 			reinforcement.requestFocus();
+			cardModel.openCardWindow(playerPlaying, cardModel);
 		}
 	}
 
@@ -712,9 +709,8 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * Check If Any Player Won the game.
 	 * 
 	 * @param view
-	 * 			  		view
-	 * @return playerWon
-	 * 					playerWon
+	 *            view
+	 * @return playerWon playerWon
 	 */
 	private boolean checkIfPlayerWonTheGame(String view) {
 		boolean playerWon = false;
@@ -873,7 +869,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		}
 		if (view.equals("Reinforcement")) {
 			initializeReinforcement();
-			// cardModel.openCardWindow(playerPlaying, cardModel);
 		}
 		if (view.equals("Fortification")) {
 			initializeFortification();
@@ -889,7 +884,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		}
 		if (view.equals("noFortificationMove")) {
 			noFortificationPhase();
-			// cardModel.openCardWindow(playerPlaying, cardModel);
 		}
 		if (view.equals("rollDiceComplete")) {
 			MapUtil.appendTextToGameConsole(
@@ -953,7 +947,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Write External
 	 * 
@@ -970,14 +964,14 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		out.writeObject(playerGamePhase);
 
 	}
-	
+
 	/**
 	 * Read External
 	 * 
 	 * @param in
 	 *            in
-	 *@throws IOException   
-	 *@throws ClassNotFoundException         
+	 * @throws IOException
+	 * @throws ClassNotFoundException
 	 */
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
