@@ -81,6 +81,7 @@ public class CheaterStrategy implements PlayerBehaviorStrategy {
 				territoryWon.add(defendingTerr);
 				MapUtil.appendTextToGameConsole(defendingTerr.getName() + " has been conquered by "
 						+ attackingTerritory.getPlayer().getName() + "\n", gameConsole);
+				break;
 			} else {
 				continue;
 			}
