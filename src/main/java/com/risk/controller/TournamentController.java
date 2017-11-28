@@ -35,10 +35,14 @@ import javafx.scene.layout.VBox;
  * @version 1.0.0
  */
 public class TournamentController implements Initializable {
-
-	private TournamentModel model;
+		
 	/**
-	 * The @numberOfPlayers count of players.
+	 * The @model reference to TournamentModel.
+	 */
+	private TournamentModel model;
+	
+	/**
+	 * The @numberOfTurns number of turns.
 	 */
 	@FXML
 	private ChoiceBox<Integer> numberOfTurns;
@@ -121,11 +125,14 @@ public class TournamentController implements Initializable {
 	@FXML
 	private TextArea tConsole;
 	
+	/**
+	 * The @tableBox VBox tableBox.
+	 */
 	@FXML
 	private VBox tableBox;
 
 	/**
-	 * The @numberOfPlayersSelected .
+	 * The @numberOfTurnsSelected.
 	 */
 	private int numberOfTurnsSelected;
 
@@ -143,31 +150,63 @@ public class TournamentController implements Initializable {
 	 * The @listOfPlayerss .
 	 */
 	private List<Player> listOfPlayers;
-
+	
+	/**
+	 * Get List of Maps
+	 * 
+	 * @return listOfMaps
+	 */
 	public List<Map> getListOfMaps() {
 		return listOfMaps;
 	}
-
+	
+	/**
+	 * Get List of Players
+	 * 
+	 * @return listOfPlayers
+	 */
 	public List<Player> getListOfPlayers() {
 		return listOfPlayers;
 	}
-
-	public int getNumberOfGamesSelected() {
+	
+	/**
+	 * Number Of Games Selected
+	 * 
+	 * @return numberOfGamesSelected
+	 */
+	public int numberOfGamesSelected() {
 		return numberOfGamesSelected;
 	}
-
+	
+	/**
+	 * @param numberOfgamesSelected
+	 *            the number Of games  to set
+	 */
 	public void setNumberOfGamesSelected(int numberOfgamesSelected) {
 		this.numberOfGamesSelected = numberOfgamesSelected;
 	}
-
+	
+	/**
+	 * Get Number Of Turns 
+	 * 
+	 * @return numberOfTurnsSelected
+	 *            
+	 */
 	public int getNumberOfTurnsSelected() {
 		return numberOfTurnsSelected;
 	}
-
+	
+	/**
+	 * @param numberOfTurnsSelected
+	 *            the number Of Turns to set
+	 */
 	public void setNumberOfTurnsSelected(int numberOfTurnsSelected) {
 		this.numberOfTurnsSelected = numberOfTurnsSelected;
 	}
-
+	
+	/**
+	 * Constructor for TournamentController
+	 */
 	public TournamentController() {
 		listOfMaps = new ArrayList<>();
 		listOfPlayers = new ArrayList<>();
@@ -247,7 +286,6 @@ public class TournamentController implements Initializable {
 	 * 
 	 * @param event
 	 *            action event
-	 * @return
 	 */
 	@FXML
 	private void uploadMap1(ActionEvent event) {
@@ -260,7 +298,6 @@ public class TournamentController implements Initializable {
 	 * 
 	 * @param event
 	 *            action event
-	 * @return
 	 */
 	@FXML
 	private void uploadMap2(ActionEvent event) {
@@ -273,7 +310,6 @@ public class TournamentController implements Initializable {
 	 * 
 	 * @param event
 	 *            action event
-	 * @return
 	 */
 	@FXML
 	private void uploadMap3(ActionEvent event) {
@@ -286,7 +322,6 @@ public class TournamentController implements Initializable {
 	 * 
 	 * @param event
 	 *            action event
-	 * @return
 	 */
 	@FXML
 	private void uploadMap4(ActionEvent event) {
@@ -299,14 +334,19 @@ public class TournamentController implements Initializable {
 	 * 
 	 * @param event
 	 *            action event
-	 * @return
 	 */
 	@FXML
 	private void uploadMap5(ActionEvent event) {
 		File file = model.uploadMap(listOfMaps);
 		mapButton5.setText(file.getName());
 	}
-
+	
+	/**
+	 * Function to play tournament
+	 * 
+	 * @param event
+	 *            action event
+	 */
 	@FXML
 	private void playTournament(ActionEvent event) {
 		errorLine.setText(null);
