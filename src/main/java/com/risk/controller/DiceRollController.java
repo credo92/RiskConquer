@@ -163,9 +163,15 @@ public class DiceRollController implements Initializable {
 	 * The @diceModel reference to class DiceModel.
 	 */
 	private DiceModel diceModel;
-
+	
+	/**
+	 * The @gameConsole 
+	 */
 	private TextArea gameConsole;
-
+	
+	/**
+	 * The @strategy reference to class PlayerBehaviorStrategy.
+	 */
 	private PlayerBehaviorStrategy strategy;
 
 	/**
@@ -192,7 +198,10 @@ public class DiceRollController implements Initializable {
 		loadAttackScreen();
 		showDice();
 	}
-
+	
+	/**
+	 * The Auto Start Dice Roll Controller
+	 */
 	public void autoStartDiceRollController() {
 		autoInitialize();
 		loadAttackScreen();
@@ -201,7 +210,10 @@ public class DiceRollController implements Initializable {
 			autoRollDice();
 		}
 	}
-
+	
+	/**
+	 * The Select Visible Dice
+	 */
 	private void selectVisibleDice(Control... controls) {
 		for (Control control : controls) {
 			if (control.isVisible()) {
@@ -209,7 +221,10 @@ public class DiceRollController implements Initializable {
 			}
 		}
 	}
-
+	
+	/**
+	 * The Auto Roll Dice
+	 */
 	private void autoRollDice() {
 		selectVisibleDice(attackerDice1, attackerDice2, attackerDice3, defenderDice1, defenderDice2);
 
@@ -415,7 +430,10 @@ public class DiceRollController implements Initializable {
 		winnerName.setText(playResult.toString());
 		winnerName.setVisible(true);
 	}
-
+	
+	/**
+	 * Auto Initialize .
+	 */
 	public void autoInitialize() {
 		roll = new Button();
 		continueRoll = new Button();
