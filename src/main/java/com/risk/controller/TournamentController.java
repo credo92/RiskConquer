@@ -1,10 +1,12 @@
 package com.risk.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 import com.risk.entity.Map;
@@ -21,7 +23,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 
 /**
  * Controller class for Tournament.
@@ -115,6 +120,9 @@ public class TournamentController implements Initializable {
 	 */
 	@FXML
 	private TextArea tConsole;
+	
+	@FXML
+	private VBox tableBox;
 
 	/**
 	 * The @numberOfPlayersSelected .
@@ -312,17 +320,24 @@ public class TournamentController implements Initializable {
 			errorLine.setText("Select all 4 players.");
 			return;
 		} else {
+
 			MapUtil.appendTextToGameConsole("===Tournament started!===\n", tConsole);
 			for (Map map : listOfMaps) {
 				int count = 0;
 				while (count != numberOfGamesSelected) {
-					model.startTournamentGame(listOfPlayers, map, numberOfTurnsSelected, tConsole, count);
+					Map newMap = null;
+					try {
+						newMap = model.createMapClone(map);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					model.startTournamentGame(listOfPlayers, newMap, numberOfTurnsSelected, tConsole, count);
 					count++;
 				}
 			}
 			MapUtil.appendTextToGameConsole("===Tournament ended!===\n", tConsole);
 		}
-
 		System.out.println(model.getTournamentResult());
 	}
 

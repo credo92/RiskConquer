@@ -1,6 +1,11 @@
 package com.risk.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -69,6 +74,29 @@ public class TournamentModel {
 			MapUtil.infoBox(ex.getMessage(), "Error", "Invalid Map");
 		}
 		return file;
+	}
+
+	public Map createMapClone(Map map) throws IOException {
+		ObjectOutputStream outPut = null;
+		ObjectInputStream inPut = null;
+		Map clonedMap = null;
+		try {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			outPut = new ObjectOutputStream(bos);
+			// serialize and pass the object
+			outPut.writeObject(map);
+			outPut.flush();
+			ByteArrayInputStream bin = new ByteArrayInputStream(bos.toByteArray());
+			inPut = new ObjectInputStream(bin);
+			clonedMap = (Map) inPut.readObject();
+		} catch (Exception e) {
+			System.out.println("Exception in ObjectCloner = " + e);
+		} finally {
+			outPut.close();
+			inPut.close();
+		}
+		return clonedMap;
+
 	}
 
 	public void startTournamentGame(List<Player> players, Map map, int numberOfTurn, TextArea console,
