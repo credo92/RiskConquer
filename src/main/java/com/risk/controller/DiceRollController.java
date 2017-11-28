@@ -213,6 +213,9 @@ public class DiceRollController implements Initializable {
 	
 	/**
 	 * The Select Visible Dice
+	 * 
+	 * @param controls
+	 * 				  Control... controls
 	 */
 	private void selectVisibleDice(Control... controls) {
 		for (Control control : controls) {
@@ -305,6 +308,9 @@ public class DiceRollController implements Initializable {
 
 	/**
 	 * Cancel Dice Roll
+	 * 
+	 * @param event
+	 *            action event
 	 */
 	@FXML
 	private void cancelDiceRoll(ActionEvent event) {

@@ -101,11 +101,22 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * The @playerModel.
 	 */
 	private PlayerGamePhase playerGamePhase;
-
+	
+	/**
+	 * Get Map
+	 * 
+	 * @return map 
+	 */
 	public Map getMap() {
 		return map;
 	}
-
+	
+	/**
+	 * Set Map
+	 * 
+	 * @param map
+	 *            the map to set
+	 */
 	public void setMap(Map map) {
 		this.map = map;
 	}
@@ -233,7 +244,10 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	@FXML
 	private Button saveGame;
-
+	
+	/**
+	 * Constructor for GamePlayController
+	 */
 	public GamePlayController() {
 
 	}
@@ -491,7 +505,13 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		}
 		startReinforcement(territory);
 	}
-
+	
+	/**
+	 * Start reinforcement. 
+	 * 
+	 * @param territory
+	 *            territory
+	 */
 	private void startReinforcement(Territory territory) {
 		playerGamePhase.reinforcementPhase(selectedTerritoryList.getItems(), territory, gameConsole);
 		selectedTerritoryList.refresh();
@@ -690,6 +710,11 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 
 	/**
 	 * Check If Any Player Won the game.
+	 * 
+	 * @param view
+	 * 			  		view
+	 * @return playerWon
+	 * 					playerWon
 	 */
 	private boolean checkIfPlayerWonTheGame(String view) {
 		boolean playerWon = false;
@@ -909,11 +934,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * 
 	 * @param event
 	 *            event
-	 * @throws IOException
-	 * @throws InvalidJsonException
-	 * @throws JsonMappingException
-	 * @throws JsonGenerationException
-	 * @throws NullPointerException
 	 */
 	@FXML
 	private void saveGame(ActionEvent event) {
@@ -933,7 +953,14 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Write External
+	 * 
+	 * @param out
+	 *            out
+	 * @throws IOException
+	 */
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
 		// TODO Auto-generated method stub
@@ -943,7 +970,15 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		out.writeObject(playerGamePhase);
 
 	}
-
+	
+	/**
+	 * Read External
+	 * 
+	 * @param in
+	 *            in
+	 *@throws IOException   
+	 *@throws ClassNotFoundException         
+	 */
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 		// TODO Auto-generated method stub
