@@ -16,6 +16,11 @@ import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
+import com.risk.strategy.BenevolentStrategy;
+import com.risk.strategy.CheaterStrategy;
+import com.risk.strategy.HumanStrategy;
+import com.risk.strategy.RandomStrategy;
+
 import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -241,6 +246,7 @@ public class PlayerGamePhaseTest {
 	 */
 	@Test
 	public void playerHasAValidAttackMove() {
+		player.setStrategy(new HumanStrategy());
 		territory1.setArmies(5);
 		territory2.setArmies(3);
 		boolean actualResult = playerModel.playerHasAValidAttackMove(territoryListView, textArea);
@@ -252,6 +258,7 @@ public class PlayerGamePhaseTest {
 	 */
 	@Test
 	public void playerHasAValidAttackMoveFalseCase() {
+		player.setStrategy(new CheaterStrategy());
 		territory1.setArmies(1);
 		territory2.setArmies(1);
 		boolean actualResult = playerModel.playerHasAValidAttackMove(territoryListView, textArea);
@@ -290,6 +297,7 @@ public class PlayerGamePhaseTest {
 	 */
 	@Test
 	public void isFortificationPhaseValidTrue() {
+		player.setStrategy(new RandomStrategy());
 		territory1.setPlayer(player);
 		territory1.setArmies(2);
 		territory2.setPlayer(player);
@@ -303,6 +311,7 @@ public class PlayerGamePhaseTest {
 	 */
 	@Test
 	public void isFortificationPhaseValidFalse() {
+		player.setStrategy(new BenevolentStrategy());
 		territory1.setPlayer(player);
 		territory1.setArmies(0);
 		territory2.setPlayer(player);
