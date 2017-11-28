@@ -47,7 +47,12 @@
       <TextArea fx:id="tConsole" editable="false" layoutX="628.0" layoutY="18.0" prefHeight="748.0" prefWidth="455.0" style="-fx-background-color: #fff; -fx-border-color: #000;" wrapText="true" />
       <Button fx:id="playButton" alignment="CENTER" layoutX="12.0" layoutY="440.0" mnemonicParsing="false" onAction="#playTournament" prefHeight="31.0" prefWidth="172.0" text="Play Tournament" />
       <Label fx:id="errorLine" alignment="CENTER" layoutX="20.0" layoutY="536.0" prefHeight="19.0" prefWidth="236.0" textFill="RED" />
-      <VBox fx:id="tableBox" layoutX="22.0" layoutY="536.0" prefHeight="200.0" prefWidth="590.0" />
+      <TitledPane layoutX="14.0" layoutY="526.0" text="Tournament Result">
+         <content>
+            <TextArea fx:id="resultTextArea" layoutX="14.0" layoutY="536.0" prefHeight="200.0" prefWidth="587.0" />
+         </content>
+      </TitledPane>
+      <Button fx:id="closeButton" alignment="CENTER" layoutX="202.0" layoutY="440.0" mnemonicParsing="false" onAction="#close" prefHeight="31.0" prefWidth="115.0" text="Close" />
             	
 	</children>
 </Pane>
