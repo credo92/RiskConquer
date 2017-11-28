@@ -112,6 +112,9 @@ public class CardController implements Initializable {
 		}
 	}
 	
+	/**
+	 * Try Card Trade.
+	 */
 	public void tryCardTrade() {
 		List<Card> cards= cardModel.getValidCardComibination(playerCards);
 		if(cards != null && cards.size() ==3) {
