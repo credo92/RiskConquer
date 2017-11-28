@@ -120,12 +120,12 @@ public class MapValidator {
 			throw new InvalidMapException(
 					"Territory: " + territory.getName() + " is not forming a connected sub graph.");
 		} else {
-			for (Territory adjTerritory : adjTerritoryList) {
+/*			for (Territory adjTerritory : adjTerritoryList) {
 				if (!adjTerritory.getAdjacentTerritories().contains(territory)) {
 					throw new InvalidMapException("Territory " + territory.getName().toUpperCase()
 							+ " is not an linked to all its adjacent territory " + adjTerritory.getName());
 				}
-			}
+			}*/
 		}
 	}
 
