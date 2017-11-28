@@ -773,6 +773,8 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 				if (playerGamePhase.playerHasAValidAttackMove(selectedTerritoryList, gameConsole)) {
 					attack();
 				} else {
+					//Cheater always wins a territory so he will be assigned a single card.
+					playerGamePhase.setTerritoryWon(1);
 					noMoreAttack(null);
 				}
 			} else {
