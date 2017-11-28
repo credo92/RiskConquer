@@ -23,8 +23,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 
@@ -120,9 +118,12 @@ public class TournamentController implements Initializable {
 	 */
 	@FXML
 	private TextArea tConsole;
+
+	@FXML
+	private TextArea resultTextArea;
 	
 	@FXML
-	private VBox tableBox;
+	private Button closeButton;
 
 	/**
 	 * The @numberOfPlayersSelected .
@@ -242,6 +243,10 @@ public class TournamentController implements Initializable {
 		});
 	}
 
+	@FXML
+	private void close(ActionEvent event) {
+		GameUtil.closeScreen(closeButton);
+	}
 	/**
 	 * Function to upload map 1
 	 * 
@@ -338,7 +343,14 @@ public class TournamentController implements Initializable {
 			}
 			MapUtil.appendTextToGameConsole("===Tournament ended!===\n", tConsole);
 		}
-		System.out.println(model.getTournamentResult());
+		for(Entry<String, HashMap<String, String>> entry : model.getTournamentResult().entrySet()) {
+			MapUtil.appendTextToGameConsole(entry.getKey()+"\n", resultTextArea);
+			for (Entry<String, String> data : entry.getValue().entrySet()) {
+				MapUtil.appendTextToGameConsole(data.getKey()+" : "+data.getValue()+"\n", resultTextArea);
+			}
+			MapUtil.appendTextToGameConsole("=============================================\n", resultTextArea);
+		}
+		
 	}
 
 	/*

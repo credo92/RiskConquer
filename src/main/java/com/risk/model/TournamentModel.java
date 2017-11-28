@@ -174,7 +174,7 @@ public class TournamentModel {
 		String winner = null;
 		String mapName = map.getMapData().get("image");
 		if (winningPlayer != null) {
-			winner = winningPlayer.getStrategy().toString();
+			winner = winningPlayer.getType().toString();
 		} else {
 			winner = "Draw";
 		}
