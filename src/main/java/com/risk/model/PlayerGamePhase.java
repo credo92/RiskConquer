@@ -180,9 +180,9 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 	/**
 	 * Attack phase
 	 * 
-	 * @param attackingTerritory
+	 * @param attackingTerritoryList
 	 *            attacking territory
-	 * @param defendingTerritory
+	 * @param defendingTerritoryList
 	 *            defending territory
 	 * @param gameConsole
 	 *            the Game Console
