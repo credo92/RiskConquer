@@ -177,7 +177,7 @@ public class TournamentController implements Initializable {
 	 * 
 	 * @return numberOfGamesSelected
 	 */
-	public int numberOfGamesSelected() {
+	public int getNumberOfGamesSelected() {
 		return numberOfGamesSelected;
 	}
 
@@ -384,14 +384,19 @@ public class TournamentController implements Initializable {
 	 */
 	@FXML
 	private void playTournament(ActionEvent event) {
-		errorLine.setText(null);
-		if (listOfMaps.isEmpty()) {
-			errorLine.setText("Choose atleast one map");
+		errorLine.setText("");
+		if (getNumberOfGamesSelected() == 0) {
+			errorLine.setText("Select number of games");
 			return;
-		} else if (getNumberOfTurnsSelected() == 0) {
+		}
+		if (getNumberOfTurnsSelected() == 0) {
 			errorLine.setText("Select number of turns");
 			return;
-		} else if (listOfPlayers.size() != 4) {
+		}
+		else if (listOfMaps.isEmpty()) {
+			errorLine.setText("Choose atleast one map");
+			return;
+		}  else if (listOfPlayers.size() != 4) {
 			errorLine.setText("Select all 4 players.");
 			return;
 		} else {
@@ -414,7 +419,7 @@ public class TournamentController implements Initializable {
 			MapUtil.appendTextToGameConsole("===Tournament ended!===\n", tConsole);
 		}
 		for (Entry<String, HashMap<String, String>> entry : model.getTournamentResult().entrySet()) {
-			MapUtil.appendTextToGameConsole(entry.getKey() + "\n", resultTextArea);
+			//MapUtil.appendTextToGameConsole(entry.getKey() + "\n", resultTextArea);
 			for (Entry<String, String> data : entry.getValue().entrySet()) {
 				MapUtil.appendTextToGameConsole(data.getKey() + " : " + data.getValue() + "\n", resultTextArea);
 			}
