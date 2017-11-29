@@ -181,17 +181,13 @@ public class TournamentModel {
 		} else {
 			winner = "Draw";
 		}
-
+		HashMap<String, String> data = new HashMap<>();
 		if (tournamentResult.containsKey(mapName)) {
-			HashMap<String, String> data = tournamentResult.get(mapName);
-			data.put("Game" + gameNumber, winner);
-			tournamentResult.put(mapName, data);
-		} else {
-			HashMap<String, String> data = new HashMap<>();
-			data.put("Game" + gameNumber, winner);
-			tournamentResult.put(mapName, data);
+			data = tournamentResult.get(mapName);
 		}
-
+		int gameNumberToBePrinted = gameNumber+1;
+		data.put("Game " + gameNumberToBePrinted, winner);
+		tournamentResult.put(mapName, data);
 	}
 
 	/**
