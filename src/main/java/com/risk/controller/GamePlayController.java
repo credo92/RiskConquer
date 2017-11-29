@@ -246,13 +246,13 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	@FXML
 	private Button saveGame;
 
-	public GamePlayController(Map map, int numberOfPlayers) {
-		this.map = map;
+	public GamePlayController() {
 		// this.gameModel = gameModel;
 		// this.playerGamePhase = playerGamePhase;
 		// this.cardModel = cardModel;
-		setNumberOfPlayersSelected(numberOfPlayers);
-	}
+		//numberOfPlayers.setValue(numberOf);
+
+		}
 
 	/**
 	 * Constructor for GamePlayController
@@ -941,11 +941,11 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * @throws JsonMappingException
 	 * @throws JsonGenerationException
 	 * @throws NullPointerException
-	 *             ======= >>>>>>> master
+	 *     
 	 */
 	@FXML
 	private void saveGame(ActionEvent event) throws IOException {
-
+	//	GameState gameState = new GameState();
 		FileChooser fileChooser = new FileChooser();
 
 		// Set extension filter
@@ -957,6 +957,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		File file = fileChooser.showSaveDialog(null);
 
 		if (file != null) {
+			//SaveFile(this, file);
 			SaveFile(this, file);
 		}
 	}
@@ -989,6 +990,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		out.writeObject(gameModel);
 		out.writeObject(playerPlaying);
 		out.writeObject(playerGamePhase);
+		out.writeObject(cardStack);
 		// out.writeObject(gameConsole);
 	}
 
@@ -1007,6 +1009,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		gameModel = (GameModel) in.readObject();
 		playerPlaying = (Player) in.readObject();
 		playerGamePhase = (PlayerGamePhase) in.readObject();
+		
 		// gameConsole = (TextArea) in.readObject();
 	}
 

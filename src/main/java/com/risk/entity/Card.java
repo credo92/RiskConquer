@@ -1,5 +1,7 @@
 package com.risk.entity;
 
+import java.io.Serializable;
+
 import com.risk.constant.CardType;
 
 /**
@@ -10,7 +12,7 @@ import com.risk.constant.CardType;
  * @version 1.0.0
  */
 
-public class Card {
+public class Card implements Serializable{
 
 	/**
 	 * The @cardType .

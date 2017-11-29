@@ -38,15 +38,15 @@ public class LoadGamePlay implements EventHandler<ActionEvent>
 	         FileInputStream fileIn = new FileInputStream(file);
 	         ObjectInputStream in = new ObjectInputStream(fileIn);
 	         controller = (GamePlayController) in.readObject();
-	         gameModel = (GameModel) in.readObject();
+	    //     gameModel = (GameModel) in.readObject();
 	         in.close();
 	         fileIn.close();
 	      } catch (Exception i) {
 	         i.printStackTrace();
 	      }
 		
-		GamePlayController newcontroller = new GamePlayController(controller.getMap(), controller.getNumberOfPlayersSelected());
-		
+		GamePlayController newcontroller = new GamePlayController(controller.getMap());
+		//System.out.println(controller.getNumberOfPlayersSelected());
 		// TODO validation of map file selected before proceeding to select
 
 		final Stage mapSelectorStage = new Stage();
@@ -73,7 +73,7 @@ public class LoadGamePlay implements EventHandler<ActionEvent>
 	 */
 	public static Button loadExistingMapButton(Scene scene) {
 		Button loadMapButton = new Button("Load Map");
-		loadMapButton.setOnAction(new MapEditor());
+		loadMapButton.setOnAction(new GamePlay());
 		loadMapButton.setMaxWidth(scene.getWidth());
 
 		return loadMapButton;
