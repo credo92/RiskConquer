@@ -22,23 +22,31 @@ import javafx.scene.control.TextArea;
  */
 public interface PlayerBehaviorStrategy extends Serializable {
 	/**
-	 * @param territory
-	 * @param gameConsole
+	 * @param territoryList observable list.
+	 * @param territory Territory
+	 * @param gameConsole the Game console.
+	 * @param playerPlaying Player.
 	 */
 	void reinforcementPhase(ObservableList<Territory> territoryList, Territory territory, TextArea gameConsole,
 			Player playerPlaying);
 
 	/**
-	 * @param attackingTerritory
-	 * @param defendingTerritory
+	 * This method is to initiate attack phase.
+	 * @param attackingTerritoryList list view of territory.
+	 * @param defendingTerritoryList list view of territory.
+	 * @param gamePhase PlayerGamePhase
+	 * @param gameConsole The game console.
+	 * @throws InvalidGameMoveException InvalidGameMoveException.
 	 */
 	void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList,
 			PlayerGamePhase gamePhase, TextArea gameConsole) throws InvalidGameMoveException;
 
 	/**
-	 * @param selectedTerritory
-	 * @param adjTerritory
-	 * @param gameConsole
+	 * @param selectedTerritory list view of selected territory list.
+	 * @param adjTerritory list view of adjacent territory list.
+	 * @param gameConsole The game console.
+	 * @param playerPlaying Player.
+	 * @return validity endOfForiticatipon phase.
 	 */
 	boolean fortificationPhase(ListView<Territory> selectedTerritory, ListView<Territory> adjTerritory,
 			TextArea gameConsole, Player playerPlaying);
