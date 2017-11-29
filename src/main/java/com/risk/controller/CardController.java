@@ -1,4 +1,5 @@
 package com.risk.controller;
+
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -19,6 +20,7 @@ import javafx.scene.layout.VBox;
 
 /**
  * CardController controller for Card Exchange
+ * 
  * @author Vipul Srivastav
  * @version 1.0.0
  */
@@ -28,7 +30,7 @@ public class CardController implements Initializable {
 	 * The @trade button.
 	 */
 	@FXML
-	private Button trade; 
+	private Button trade;
 
 	/**
 	 * The @currentPlayerName label.
@@ -47,33 +49,33 @@ public class CardController implements Initializable {
 	 */
 	@FXML
 	private VBox cardVbox;
-	
+
 	/**
 	 * The @playerPlaying .
 	 */
 	private Player playerPlaying;
-	
+
 	/**
 	 * The @playerCards .
 	 */
-	private List<Card> playerCards;	
-	
+	private List<Card> playerCards;
+
 	/**
 	 * The @cbs .
 	 */
 	private CheckBox[] cbs;
-	
+
 	/**
 	 * The @cardModel.
 	 */
 	private CardModel cardModel;
-	
+
 	/**
 	 * The @cancelCardView.
 	 */
 	@FXML
 	private Button cancelCardView;
-	
+
 	/**
 	 * Constructor for CardController
 	 * 
@@ -81,13 +83,13 @@ public class CardController implements Initializable {
 	 *            reference to get details about current player playing
 	 * 
 	 * @param cardModel
-	 *            reference to get details about card model 
+	 *            reference to get details about card model
 	 */
-	public CardController(Player playerPlaying, CardModel cardModel){
+	public CardController(Player playerPlaying, CardModel cardModel) {
 		this.playerPlaying = playerPlaying;
 		this.cardModel = cardModel;
 	}
-	
+
 	/*
 	 * (non-Javadoc) Card controller initializer, loading currentPlayer and current
 	 * playerPlaying cardList data.
@@ -96,76 +98,94 @@ public class CardController implements Initializable {
 	 * java.util.ResourceBundle)
 	 */
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {		
-		currentPlayerName.setText("Cards of " + playerPlaying.getName());		
+	public void initialize(URL location, ResourceBundle resources) {
+		currentPlayerName.setText("Cards of " + playerPlaying.getName());
 		playerCards = playerPlaying.getPlayerCardList();
-		if (playerCards.size()<3) {
+		if (playerCards.size() < 3) {
 			trade.setDisable(true);
-		}
-		else {
+		} else {
 			trade.setDisable(false);
 		}
-		if (!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
-			tryCardTrade();
-		} else {
-			loadAllCards();	
-		}
+		loadAllCards();
 	}
-	
+
+	/**
+	 * 
+	 */
+	public void autoInitializeController() {
+		initializeElement();
+		tryCardTrade();
+	}
+
+	/**
+	 * Try Card Trade.
+	 */
 	public void tryCardTrade() {
-		List<Card> cards= cardModel.getValidCardComibination(playerCards);
-		if(cards != null && cards.size() ==3) {
+		playerCards = playerPlaying.getPlayerCardList();
+		List<Card> cards = cardModel.getValidCardComibination(playerCards);
+		if (cards != null && cards.size() == 3) {
 			cardModel.setCardsExchangable(cards);
 		}
 	}
+
 	/**
 	 * Load All cards of a player.
 	 */
 	public void loadAllCards() {
-		int numberOfCards = playerCards.size();		
-		cbs = new CheckBox[numberOfCards];				
-		for (int i = 0; i < numberOfCards; i++){
-			cbs[i] = new CheckBox(playerCards.get(i).getCardType().toString() + " -> " + playerCards.get(i).getTerritory().getName());
+		int numberOfCards = playerCards.size();
+		cbs = new CheckBox[numberOfCards];
+		for (int i = 0; i < numberOfCards; i++) {
+			cbs[i] = new CheckBox(
+					playerCards.get(i).getCardType().toString() + " -> " + playerCards.get(i).getTerritory().getName());
 		}
 		cardVbox.getChildren().addAll(cbs);
-	}	
-	
+	}
+
 	/**
 	 * Close view card screen.
-	 * @param event action event
+	 * 
+	 * @param event
+	 *            action event
 	 */
 	@FXML
 	private void cancelCardView(ActionEvent event) {
 		GameUtil.closeScreen(cancelCardView);
 	}
-	
+
 	/**
 	 * Trade checked cards.
+	 * 
 	 * @param event
 	 *            event.
 	 */
 	@FXML
-	private void checkTrade(ActionEvent event) {		
+	private void checkTrade(ActionEvent event) {
 		trade.setDisable(false);
 		textToShow.setText(null);
 		List<Card> selectedCards = cardModel.retrieveSelectedCardsFromCheckbox(playerCards, cbs);
-		
-		if(selectedCards.size()==3) {
+
+		if (selectedCards.size() == 3) {
 			boolean flag = cardModel.checkTradePossible(selectedCards);
-			
-			if(flag) {
+
+			if (flag) {
 				cardModel.setCardsExchangable(selectedCards);
 				GameUtil.closeScreen(trade);
-			}
-			else {			
+			} else {
 				textToShow.setText("Invalid Combination.");
 				trade.setDisable(false);
 				return;
-			}	
-		}		
-		else {
+			}
+		} else {
 			textToShow.setText("Select only 3 cards");
 			return;
 		}
+	}
+
+	private void initializeElement() {
+		trade = new Button();
+		currentPlayerName = new Label();
+		textToShow = new Label();
+		cardVbox = new VBox();
+		cancelCardView = new Button();
 	}
 }

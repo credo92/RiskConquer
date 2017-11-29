@@ -82,16 +82,14 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 		return isFortificationDone;
 	}
 
-
-
-
 	private void attack(Territory attacking, Territory defending, PlayerGamePhase gamePhase, TextArea gameConsole) {
 		System.out.println("Attack Random started!++++++++++++++++++++++++++++++++++++++++++++++");
 		MapUtil.appendTextToGameConsole("Attack Random started!++++++++++++++++++++++++++++++++++++++++++++++ \n",
 				gameConsole);
 		DiceModel diceModel = new DiceModel(attacking, defending);
-		diceModel.addObserver(gamePhase);
-
+		if (gamePhase != null) {
+			diceModel.addObserver(gamePhase);
+		}
 		DiceRollController diceController = new DiceRollController(diceModel, this, gameConsole);
 		diceController.autoStartDiceRollController();
 	}

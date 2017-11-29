@@ -16,6 +16,11 @@ import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
+import com.risk.strategy.BenevolentStrategy;
+import com.risk.strategy.CheaterStrategy;
+import com.risk.strategy.HumanStrategy;
+import com.risk.strategy.RandomStrategy;
+
 import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -36,7 +41,7 @@ public class PlayerGamePhaseTest {
 	/**
 	 * The @playerModel.
 	 */
-	static PlayerGamePhase playerModel;
+	static PlayerGamePhase playerGamePhase;
 	
 	/**
 	 * The @continent
@@ -112,7 +117,7 @@ public class PlayerGamePhaseTest {
 	public static void beforeClass() {
 		fxPanel = new JFXPanel();
 		gameModel = new GameModel();
-		playerModel = new PlayerGamePhase();
+		playerGamePhase = new PlayerGamePhase();
 		textArea = new TextArea();
 	}
 
@@ -148,7 +153,7 @@ public class PlayerGamePhaseTest {
 		territoryListView.getItems().add(territory1);
 		territoryListView.getItems().add(territory2);
 
-		playerModel.setPlayerPlaying(player);
+		playerGamePhase.setPlayerPlaying(player);
 	}
 
 	/**
@@ -162,7 +167,7 @@ public class PlayerGamePhaseTest {
 		territory1.setPlayer(player);
 		player.getAssignedTerritory().add(territory2);
 		territory2.setPlayer(player);
-		Player returnedPlayer = playerModel.calculateReinforcementArmies(map, player);
+		Player returnedPlayer = playerGamePhase.calculateReinforcementArmies(map, player);
 		Assert.assertEquals(returnedPlayer.getArmies(), 45);
 	}
 
@@ -197,7 +202,7 @@ public class PlayerGamePhaseTest {
 		player.getAssignedTerritory().add(terr);
 		terr.setPlayer(player);
 
-		Player returnedPlayer = playerModel.calculateReinforcementArmies(map, player);
+		Player returnedPlayer = playerGamePhase.calculateReinforcementArmies(map, player);
 		Assert.assertEquals(returnedPlayer.getArmies(), 50);
 	}
 
@@ -209,7 +214,7 @@ public class PlayerGamePhaseTest {
 		List<Continent> returnedContinents = new ArrayList<>();
 		territory1.setPlayer(player);
 		territory2.setPlayer(player);
-		returnedContinents = playerModel.getContinentsOwnedByPlayer(map, player);
+		returnedContinents = playerGamePhase.getContinentsOwnedByPlayer(map, player);
 		Assert.assertEquals("Asia", returnedContinents.get(0).getName());
 		Assert.assertEquals(1, returnedContinents.size());
 	}
@@ -222,7 +227,7 @@ public class PlayerGamePhaseTest {
 		players = new ArrayList<>();
 		players.add(new Player(0));
 		players.get(0).setArmies(0);
-		Assert.assertTrue(playerModel.checkIfPlayersArmiesExhausted(players));
+		Assert.assertTrue(playerGamePhase.checkIfPlayersArmiesExhausted(players));
 	}
 
 	/**
@@ -233,7 +238,7 @@ public class PlayerGamePhaseTest {
 		players = new ArrayList<>();
 		players.add(new Player(0));
 		players.get(0).setArmies(1);
-		Assert.assertFalse(playerModel.checkIfPlayersArmiesExhausted(players));
+		Assert.assertFalse(playerGamePhase.checkIfPlayersArmiesExhausted(players));
 	}
 
 	/**
@@ -241,9 +246,10 @@ public class PlayerGamePhaseTest {
 	 */
 	@Test
 	public void playerHasAValidAttackMove() {
+		player.setStrategy(new HumanStrategy());
 		territory1.setArmies(5);
 		territory2.setArmies(3);
-		boolean actualResult = playerModel.playerHasAValidAttackMove(territoryListView, textArea);
+		boolean actualResult = playerGamePhase.playerHasAValidAttackMove(territoryListView, textArea);
 		Assert.assertTrue(actualResult);
 	}
 
@@ -252,9 +258,10 @@ public class PlayerGamePhaseTest {
 	 */
 	@Test
 	public void playerHasAValidAttackMoveFalseCase() {
+		player.setStrategy(new CheaterStrategy());
 		territory1.setArmies(1);
 		territory2.setArmies(1);
-		boolean actualResult = playerModel.playerHasAValidAttackMove(territoryListView, textArea);
+		boolean actualResult = playerGamePhase.playerHasAValidAttackMove(territoryListView, textArea);
 		Assert.assertFalse(actualResult);
 	}
 
@@ -266,7 +273,7 @@ public class PlayerGamePhaseTest {
 		players = new ArrayList<>();
 		players.add(new Player(0));
 		players.get(0).setAssignedTerritory(new ArrayList<>());
-		Player playerLost = playerModel.checkIfAnyPlayerLostTheGame(players);
+		Player playerLost = playerGamePhase.checkIfAnyPlayerLostTheGame(players);
 		Assert.assertEquals(0, playerLost.getAssignedTerritory().size());
 	}
 
@@ -280,7 +287,7 @@ public class PlayerGamePhaseTest {
 		players.add(new Player(0));
 		players.add(new Player(1));
 		players.add(new Player(2));
-		playerModel.createPlayer(players.size(), playerTest, textArea);
+		playerGamePhase.createPlayer(players.size(), playerTest, textArea);
 		Assert.assertEquals(3, playerTest.size());
 	}
 
@@ -290,10 +297,11 @@ public class PlayerGamePhaseTest {
 	 */
 	@Test
 	public void isFortificationPhaseValidTrue() {
+		player.setStrategy(new RandomStrategy());
 		territory1.setPlayer(player);
 		territory1.setArmies(2);
 		territory2.setPlayer(player);
-		boolean isFortificationPhaseValid = playerModel.isFortificationPhaseValid(map, player);
+		boolean isFortificationPhaseValid = playerGamePhase.isFortificationPhaseValid(map, player);
 		Assert.assertEquals(true, isFortificationPhaseValid);
 	}
 
@@ -303,10 +311,11 @@ public class PlayerGamePhaseTest {
 	 */
 	@Test
 	public void isFortificationPhaseValidFalse() {
+		player.setStrategy(new BenevolentStrategy());
 		territory1.setPlayer(player);
 		territory1.setArmies(0);
 		territory2.setPlayer(player);
-		boolean isFortificationPhaseValid = playerModel.isFortificationPhaseValid(map, player);
+		boolean isFortificationPhaseValid = playerGamePhase.isFortificationPhaseValid(map, player);
 		Assert.assertEquals(false, isFortificationPhaseValid);
 	}
 
@@ -336,7 +345,7 @@ public class PlayerGamePhaseTest {
 		listOfCards.add(new Card(CardType.ARTILLERY));
 		listOfCards.add(new Card(CardType.CAVALRY));
 		listOfCards.add(new Card(CardType.INFANTRY));
-		Player returnedPlayer = playerModel.tradeCardsForArmy(listOfCards, 1, textArea);
+		Player returnedPlayer = playerGamePhase.tradeCardsForArmy(listOfCards, 1, textArea);
 		Assert.assertEquals(5, returnedPlayer.getArmies());
 	}
 
@@ -349,7 +358,7 @@ public class PlayerGamePhaseTest {
 		players.add(new Player(1));
 		players.add(new Player(2));
 		players.add(new Player(3));
-		boolean resultPlayerThree = playerModel.assignArmiesToPlayers(players, textArea);
+		boolean resultPlayerThree = playerGamePhase.assignArmiesToPlayers(players, textArea);
 		Assert.assertTrue(resultPlayerThree);
 		Assert.assertEquals(MapConstant.ARMIES_THREE_PLAYER, (Integer) players.get(0).getArmies());
 
@@ -358,7 +367,7 @@ public class PlayerGamePhaseTest {
 		players.add(new Player(2));
 		players.add(new Player(3));
 		players.add(new Player(4));
-		boolean resultPlayerFour = playerModel.assignArmiesToPlayers(players, textArea);
+		boolean resultPlayerFour = playerGamePhase.assignArmiesToPlayers(players, textArea);
 		Assert.assertTrue(resultPlayerFour);
 		Assert.assertEquals(MapConstant.ARMIES_FOUR_PLAYER, (Integer) players.get(0).getArmies());
 
@@ -368,7 +377,7 @@ public class PlayerGamePhaseTest {
 		players.add(new Player(3));
 		players.add(new Player(4));
 		players.add(new Player(5));
-		boolean resultPlayerFive = playerModel.assignArmiesToPlayers(players, textArea);
+		boolean resultPlayerFive = playerGamePhase.assignArmiesToPlayers(players, textArea);
 		Assert.assertTrue(resultPlayerFive);
 		Assert.assertEquals(MapConstant.ARMIES_FIVE_PLAYER, (Integer) players.get(0).getArmies());
 
@@ -379,9 +388,61 @@ public class PlayerGamePhaseTest {
 		players.add(new Player(4));
 		players.add(new Player(5));
 		players.add(new Player(6));
-		boolean resultPlayerSix = playerModel.assignArmiesToPlayers(players, textArea);
+		boolean resultPlayerSix = playerGamePhase.assignArmiesToPlayers(players, textArea);
 		Assert.assertTrue(resultPlayerSix);
 		Assert.assertEquals(MapConstant.ARMIES_SIX_PLAYER, (Integer) players.get(0).getArmies());
 	}
-
+	
+	/**
+	 * This method tests if any player won the game - SUCCESS.
+	 */
+	@Test
+	public void checkIfPlayerWonTheGameForSuccess() {
+		List<Player> listOfPlayers = new ArrayList<>();
+		listOfPlayers.add(new Player(1));
+		boolean actualResult = playerGamePhase.checkIfPlayerWonTheGame(listOfPlayers);
+		Assert.assertTrue(actualResult);
+	}
+	
+	/**
+	 * This method tests if any player won the game - Failure.
+	 */
+	@Test
+	public void checkIfPlayerWonTheGameForFailure() {
+		List<Player> listOfPlayers = new ArrayList<>();
+		listOfPlayers.add(new Player(1));
+		listOfPlayers.add(new Player(2));
+		boolean actualResult = playerGamePhase.checkIfPlayerWonTheGame(listOfPlayers);
+		Assert.assertFalse(actualResult);
+	}
+	
+	/**
+	 * This method tests assign of armies to a territory in a single match.
+	 */
+	@Test
+	public void autoAssignArmiesToTerritoryInSingleGame() {
+		Player p = new Player(0);
+		p.setArmies(10);
+		List<Territory> listOfTerr = new ArrayList<>();
+		listOfTerr.add(territory1);
+		listOfTerr.add(territory2);
+		p.setAssignedTerritory(listOfTerr);
+		playerGamePhase.autoAssignPlayerArmiesToTerritory(p, null);
+		Assert.assertEquals(9, p.getArmies());
+	}
+	
+	/**
+	 * This method tests assign of armies to a territory in a tournament.
+	 */
+	@Test
+	public void autoAssignArmiesToTerritoryInTournament() {
+		Player p = new Player(0);
+		p.setArmies(20);
+		List<Territory> listOfTerr = new ArrayList<>();
+		listOfTerr.add(territory1);
+		listOfTerr.add(territory2);
+		p.setAssignedTerritory(listOfTerr);
+		playerGamePhase.autoAssignPlayerArmiesToTerritory(p, null);
+		Assert.assertEquals(19, p.getArmies());
+	}
 }

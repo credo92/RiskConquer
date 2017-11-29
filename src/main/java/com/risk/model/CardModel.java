@@ -3,18 +3,15 @@ package com.risk.model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.risk.constant.CardType;
 import com.risk.controller.CardController;
 import com.risk.entity.Card;
 import com.risk.entity.Player;
-import com.risk.strategy.HumanStrategy;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -81,11 +78,16 @@ public class CardModel extends Observable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (player.getStrategy() instanceof HumanStrategy) {
-			Scene scene = new Scene(root);
-			newMapStage.setScene(scene);
-			newMapStage.show();
-		}
+
+		Scene scene = new Scene(root);
+		newMapStage.setScene(scene);
+		newMapStage.show();
+	}
+
+	public void autoCardWindow(Player player, CardModel cardModel) {
+		this.playerPlaying = player;
+		CardController cardController = new CardController(player, cardModel);
+		cardController.autoInitializeController();
 	}
 
 	/**
@@ -140,6 +142,11 @@ public class CardModel extends Observable {
 	}
 
 	public List<Card> getValidCardComibination(List<Card> selectedCards) {
+		System.out.println("================Cards avaliable with the player====================");
+		for (Card card : selectedCards) {
+			System.out.println("Cards :" + card.getCardType().toString());
+		}
+		System.out.println("====================================================================");
 		HashMap<String, Integer> map = new HashMap<>();
 		for (Card card : selectedCards) {
 			if (map.containsKey(card.getCardType().toString())) {
@@ -147,7 +154,7 @@ public class CardModel extends Observable {
 			} else {
 				map.put(card.getCardType().toString(), 1);
 			}
-			
+
 		}
 		for (Map.Entry<String, Integer> entry : map.entrySet()) {
 			if (entry.getValue() >= 3) {
@@ -155,6 +162,7 @@ public class CardModel extends Observable {
 						.collect(Collectors.toList());
 			}
 		}
+		System.out.println("Cards being exchangeds " + map);
 		return null;
 	}
 

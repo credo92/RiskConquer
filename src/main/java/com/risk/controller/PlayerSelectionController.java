@@ -49,12 +49,23 @@ public class PlayerSelectionController extends Observable implements Initializab
 	 */
 	@FXML
 	private Button okButton;
-
-	private List<Player> playerList;
 	
+	/**
+	 * The @playerList.
+	 */
+	private List<Player> playerList;
+
+	/**
+	 * The @flag.
+	 */
 	public boolean flag;
 	
-
+	/**
+	 * Constructor for PlayerSelectionController
+	 * 
+	 * @param playerList
+	 *            reference to get playerList
+	 */
 	public PlayerSelectionController(List<Player> playerList) {
 		this.playerList = playerList;	
 	}
@@ -69,7 +80,13 @@ public class PlayerSelectionController extends Observable implements Initializab
 		loadAllPlayers();
 	}
 
-
+	/**
+	 * Get Elements Window.
+	 * 
+	 * @param playerId 
+	 * 				   int playerId
+	 * @return hBox
+	 */
 	public HBox getElementsWindow(int playerId) {
 		ChoiceBox<PlayerType> playerType = new ChoiceBox<>();
 		playerType.getItems().addAll(PlayerType.values());
@@ -100,7 +117,14 @@ public class PlayerSelectionController extends Observable implements Initializab
 		}
 
 	}
-
+	
+	/**
+	 * Get Strategy Object
+	 * 
+	 * @param  strategyType
+	 * 					   String strategyType
+	 * @return strategy
+	 */
 	public PlayerBehaviorStrategy getStrategyObject(String strategyType) {
 		PlayerBehaviorStrategy strategy = null;
 		if (strategyType.equals("HUMAN")) {
@@ -120,7 +144,14 @@ public class PlayerSelectionController extends Observable implements Initializab
 		}
 		return strategy;
 	}
-
+	
+	/**
+	 * Validate Text Fields
+	 * 
+	 * @param  hBoxList
+	 * 					   ObservableList<Node> hBoxList
+	 * @return true or false
+	 */
 	public boolean validateTextFields(ObservableList<Node> hBoxList) {
 		for (Node n : hBoxList) {
 			HBox box = (HBox) n;
