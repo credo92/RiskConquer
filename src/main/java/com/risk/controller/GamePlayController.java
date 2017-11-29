@@ -19,16 +19,12 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
-import com.risk.exception.InvalidJsonException;
 import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
 import com.risk.model.CardModel;
@@ -132,11 +128,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	@FXML
 	private ChoiceBox<Integer> numberOfPlayers;
-
-	/**
-	 * The @playerSelectionController playerSelectionController
-	 */
-	private PlayerSelectionController playerSelectionController;
 
 	/**
 	 * The @attack button.
@@ -245,27 +236,27 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	@FXML
 	private Button saveGame;
-	
+
 	/**
 	 * The @isSavedGame
 	 */
 	private boolean isSavedGame = false;
-	
+
 	/**
 	 * The @gamePhaseString
 	 */
 	private String gamePhaseString;
-	
+
 	/**
 	 * The @gameData
 	 */
 	private String gameData;
-	
+
 	/**
 	 * The @playerChosenData
 	 */
 	private String playerChosenData;
-	
+
 	/**
 	 * Constructor for GamePlayController
 	 */
@@ -445,9 +436,10 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
 		if (playerGamePhase.getTerritoryWon() > 0) {
 			assignCardToPlayer();
-			MapUtil.appendTextToGameConsole("===Attack phase ended!===\n", gameConsole);
-			isValidFortificationPhase();
 		}
+		MapUtil.appendTextToGameConsole("===Attack phase ended!===\n", gameConsole);
+		isValidFortificationPhase();
+
 	}
 
 	/**
@@ -705,7 +697,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * Check If Any Player Lost the game.
 	 */
 	private void checkIfAnyPlayerLostTheGame() {
-		System.out.println("Checking if player lost the game");
 		Player playerLost = playerGamePhase.checkIfAnyPlayerLostTheGame(gamePlayerList);
 		if (playerLost != null) {
 			gamePlayerList.remove(playerLost);
@@ -755,7 +746,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * Refresh View
 	 */
 	private void refreshView() {
-		System.out.println("Inside referesh view");
 		checkIfAnyPlayerLostTheGame();
 		selectedTerritoryList.getItems().clear();
 		adjTerritoryList.getItems().clear();
@@ -796,7 +786,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		playerChosen.setText(playerPlaying.getName() + "(" + playerPlaying.getType() + "):- "
 				+ playerPlaying.getArmies() + " armies left.\n");
 		if (!checkIfPlayerWonTheGame("skipattack")) {
-			System.out.println("Player did not won the game.");
 			if (playerPlaying.getStrategy() instanceof CheaterStrategy) {
 				if (playerGamePhase.playerHasAValidAttackMove(selectedTerritoryList, gameConsole)) {
 					attack();
@@ -889,7 +878,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 
 		String view = (String) arg;
 		MapUtil.appendTextToGameConsole(view + "++++++++++++++++++++++++++++++++++++++++++++++\n", gameConsole);
-		System.out.println("+++++++++++++++++++++ " + view + " +++++++++++++++++++++++++++");
 		if (view.equals("Attack")) {
 			initializeAttack();
 		}
@@ -916,9 +904,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			noFortificationPhase();
 		}
 		if (view.equals("rollDiceComplete")) {
-			MapUtil.appendTextToGameConsole(
-					"Roll Dice Control observer!++++++++++++++++++++++++++++++++++++++++++++++\n", gameConsole);
-			System.out.println("Roll Dice Control observer!++++++++++++++++++++++++++++++++++++++++++++++");
 			refreshView();
 		}
 		if (view.equals("cardsTrade")) {
@@ -977,7 +962,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			SaveFile(this, file);
 		}
 	}
-	
+
 	/**
 	 * Save File
 	 * 
@@ -1057,7 +1042,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		cardModel.addObserver(this);
 		worldDomination.addObserver(this);
 	}
-	
+
 	/**
 	 * Map Data After Load Game
 	 */

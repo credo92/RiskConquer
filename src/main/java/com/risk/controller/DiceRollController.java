@@ -163,12 +163,12 @@ public class DiceRollController implements Initializable {
 	 * The @diceModel reference to class DiceModel.
 	 */
 	private DiceModel diceModel;
-	
+
 	/**
-	 * The @gameConsole 
+	 * The @gameConsole
 	 */
 	private TextArea gameConsole;
-	
+
 	/**
 	 * The @strategy reference to class PlayerBehaviorStrategy.
 	 */
@@ -182,7 +182,7 @@ public class DiceRollController implements Initializable {
 	 * @param strategy
 	 *            Player Behavior Strategy object
 	 * @param gameConsole
-	 * 			  TextArea object          
+	 *            TextArea object
 	 */
 	public DiceRollController(DiceModel diceModel, PlayerBehaviorStrategy strategy, TextArea gameConsole) {
 		this.diceModel = diceModel;
@@ -202,7 +202,7 @@ public class DiceRollController implements Initializable {
 		loadAttackScreen();
 		showDice();
 	}
-	
+
 	/**
 	 * The Auto Start Dice Roll Controller
 	 */
@@ -214,12 +214,12 @@ public class DiceRollController implements Initializable {
 			autoRollDice();
 		}
 	}
-	
+
 	/**
 	 * The Select Visible Dice
 	 * 
 	 * @param controls
-	 * 				  Control... controls
+	 *            Control... controls
 	 */
 	private void selectVisibleDice(Control... controls) {
 		for (Control control : controls) {
@@ -228,7 +228,7 @@ public class DiceRollController implements Initializable {
 			}
 		}
 	}
-	
+
 	/**
 	 * The Auto Roll Dice
 	 */
@@ -332,9 +332,6 @@ public class DiceRollController implements Initializable {
 	private void continueDiceRoll(ActionEvent event) {
 		diceModel.setAttackerDiceValues(new ArrayList<>());
 		diceModel.setDefenderDiceValues(new ArrayList<>());
-		/*
-		 * if (!(strategy instanceof HumanStrategy)) { autoInitialize(); }
-		 */
 		loadAttackScreen();
 		showDice();
 		if (!(strategy instanceof HumanStrategy)) {
@@ -440,7 +437,7 @@ public class DiceRollController implements Initializable {
 		winnerName.setText(playResult.toString());
 		winnerName.setVisible(true);
 	}
-	
+
 	/**
 	 * Auto Initialize .
 	 */
