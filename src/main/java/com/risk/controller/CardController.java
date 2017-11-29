@@ -8,7 +8,6 @@ import com.risk.entity.Card;
 import com.risk.entity.Player;
 import com.risk.map.util.GameUtil;
 import com.risk.model.CardModel;
-import com.risk.strategy.HumanStrategy;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
