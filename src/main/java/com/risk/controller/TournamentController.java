@@ -419,7 +419,7 @@ public class TournamentController implements Initializable {
 			MapUtil.appendTextToGameConsole("===Tournament ended!===\n", tConsole);
 		}
 		for (Entry<String, HashMap<String, String>> entry : model.getTournamentResult().entrySet()) {
-			//MapUtil.appendTextToGameConsole(entry.getKey() + "\n", resultTextArea);
+			MapUtil.appendTextToGameConsole(entry.getKey() + "\n", resultTextArea);
 			for (Entry<String, String> data : entry.getValue().entrySet()) {
 				MapUtil.appendTextToGameConsole(data.getKey() + " : " + data.getValue() + "\n", resultTextArea);
 			}
