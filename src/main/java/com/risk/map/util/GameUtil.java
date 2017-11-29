@@ -72,7 +72,7 @@ public class GameUtil {
 	
 	/**
 	 * Initialize type of players in tournament.
-	 * @param typeOfPlayers typeOfPlayers.
+	 * @param player choice box for player.
 	 * @return typeOfPlayers
 	 * 						typeOfPlayers ChoiceBox
 	 */
@@ -199,8 +199,7 @@ public class GameUtil {
 	
 	/**
 	 * This method is used to save GamePlay objects into a json file.
-	 * @param file file object
-	 * @param GameState saveGame object
+	 * @param saveGame GameState object
 	 * @throws InvalidJsonException invalid map file exception
 	 * @throws IOException 
 	 * @throws JsonMappingException 
