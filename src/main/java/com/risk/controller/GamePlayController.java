@@ -240,6 +240,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	private int numberOfCardSetExchanged;
 
+	private String gameData;
 	/**
 	 * The @saveGame button.
 	 */
@@ -250,9 +251,9 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		// this.gameModel = gameModel;
 		// this.playerGamePhase = playerGamePhase;
 		// this.cardModel = cardModel;
-		//numberOfPlayers.setValue(numberOf);
+		// numberOfPlayers.setValue(numberOf);
 
-		}
+	}
 
 	/**
 	 * Constructor for GamePlayController
@@ -270,6 +271,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		worldDomination = new PlayerWorldDomination();
 		worldDomination.addObserver(this);
 		this.setNumberOfCardSetExchanged(0);
+		gamePlayerList = new ArrayList<>();
 	}
 
 	/**
@@ -318,7 +320,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		gamePlayerList = new ArrayList<>();
 		GameUtil.initializeTotalPlayers(numberOfPlayers);
 		playerSelectionListner();
 		loadGameCard();
@@ -941,11 +942,11 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * @throws JsonMappingException
 	 * @throws JsonGenerationException
 	 * @throws NullPointerException
-	 *     
+	 * 
 	 */
 	@FXML
 	private void saveGame(ActionEvent event) throws IOException {
-	//	GameState gameState = new GameState();
+		// GameState gameState = new GameState();
 		FileChooser fileChooser = new FileChooser();
 
 		// Set extension filter
@@ -957,7 +958,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		File file = fileChooser.showSaveDialog(null);
 
 		if (file != null) {
-			//SaveFile(this, file);
+			// SaveFile(this, file);
 			SaveFile(this, file);
 		}
 	}
@@ -990,8 +991,13 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		out.writeObject(gameModel);
 		out.writeObject(playerPlaying);
 		out.writeObject(playerGamePhase);
+		out.writeObject(cardModel);
 		out.writeObject(cardStack);
-		// out.writeObject(gameConsole);
+		out.writeObject(gamePlayerList);
+		//out.writeObject(playerIterator);
+		out.writeObject(gameConsole.getText());
+		out.writeInt(numberOfCardSetExchanged);
+		out.writeInt(attackCount);
 	}
 
 	/**
@@ -1009,8 +1015,13 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		gameModel = (GameModel) in.readObject();
 		playerPlaying = (Player) in.readObject();
 		playerGamePhase = (PlayerGamePhase) in.readObject();
-		
-		// gameConsole = (TextArea) in.readObject();
+		cardModel = (CardModel) in.readObject();
+		cardStack = (Stack<Card>) in.readObject();
+		gamePlayerList = (List<Player>) in.readObject();
+		//playerIterator = (Iterator<Player>) in.readObject();
+		gameData = (String) in.readObject();
+		numberOfCardSetExchanged = in.readInt();
+		attackCount = in.readInt();
 	}
 
 }

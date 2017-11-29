@@ -1,6 +1,7 @@
 package com.risk.model;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +26,7 @@ import javafx.stage.Stage;
  * @author Vipul Srivastav
  * @version 1.0.0
  */
-public class CardModel extends Observable {
+public class CardModel extends Observable implements Serializable {
 
 	/**
 	 * The @playerPlaying .
