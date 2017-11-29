@@ -110,7 +110,7 @@ public class CardController implements Initializable {
 	}
 
 	/**
-	 * 
+	 * Auto Intialize Card Controller.
 	 */
 	public void autoInitializeController() {
 		initializeElement();
@@ -180,7 +180,10 @@ public class CardController implements Initializable {
 			return;
 		}
 	}
-
+	
+	/**
+	 * Intialize Element.
+	 */
 	private void initializeElement() {
 		trade = new Button();
 		currentPlayerName = new Label();

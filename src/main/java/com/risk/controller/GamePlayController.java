@@ -88,7 +88,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	private int attackCount = 5;
 
 	/**
-	 * The @gameModel reference.
+	 * The @cardModel reference.
 	 */
 	private CardModel cardModel;
 
@@ -99,7 +99,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	private PieChart dominationChart;
 
 	/**
-	 * The @playerModel.
+	 * The @playerGamePhase.
 	 */
 	private PlayerGamePhase playerGamePhase;
 
@@ -245,15 +245,30 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	@FXML
 	private Button saveGame;
-
+	
+	/**
+	 * The @isSavedGame
+	 */
 	private boolean isSavedGame = false;
-
+	
+	/**
+	 * The @gamePhaseString
+	 */
 	private String gamePhaseString;
-
+	
+	/**
+	 * The @gameData
+	 */
 	private String gameData;
-
+	
+	/**
+	 * The @playerChosenData
+	 */
 	private String playerChosenData;
-
+	
+	/**
+	 * Constructor for GamePlayController
+	 */
 	public GamePlayController() {
 	}
 
@@ -498,7 +513,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	}
 
 	/**
-	 * Game reinforcement phase. Assinging armies to the player and player assinging
+	 * Game reinforcement phase. Assigning armies to the player and player assigning
 	 * armies to their territory.
 	 * 
 	 * @param event
@@ -943,11 +958,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * 
 	 * @param event
 	 * @throws IOException
-	 * @throws InvalidJsonException
-	 * @throws JsonMappingException
-	 * @throws JsonGenerationException
-	 * @throws NullPointerException
-	 * 
 	 */
 	@FXML
 	private void saveGame(ActionEvent event) throws IOException {
@@ -967,7 +977,14 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			SaveFile(this, file);
 		}
 	}
-
+	
+	/**
+	 * Save File
+	 * 
+	 * @param gamePlayController
+	 * @param file
+	 * @throws IOException
+	 */
 	private void SaveFile(GamePlayController gamePlayController, File file) throws IOException {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(file);
@@ -1040,7 +1057,10 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		cardModel.addObserver(this);
 		worldDomination.addObserver(this);
 	}
-
+	
+	/**
+	 * Map Data After Load Game
+	 */
 	public void mapDataAfterLoadGame() {
 		MapUtil.disableControl(numberOfPlayers);
 		gamePhase.setText(gamePhaseString);
