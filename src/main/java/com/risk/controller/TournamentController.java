@@ -81,25 +81,25 @@ public class TournamentController implements Initializable {
 	private Button mapButton1;
 
 	/**
-	 * The @mapButton1 map button 2.
+	 * The @mapButton2 map button 2.
 	 */
 	@FXML
 	private Button mapButton2;
 
 	/**
-	 * The @mapButton1 map button 3.
+	 * The @mapButton3 map button 3.
 	 */
 	@FXML
 	private Button mapButton3;
 
 	/**
-	 * The @mapButton1 map button 4.
+	 * The @mapButton4 map button 4.
 	 */
 	@FXML
 	private Button mapButton4;
 
 	/**
-	 * The @mapButton1 map button 5.
+	 * The @mapButton5 map button 5.
 	 */
 	@FXML
 	private Button mapButton5;
@@ -121,12 +121,15 @@ public class TournamentController implements Initializable {
 	 */
 	@FXML
 	private TextArea tConsole;
-
+	
+	/**
+	 * The @resultTextArea.
+	 */
 	@FXML
 	private TextArea resultTextArea;
 
 	/**
-	 * The @tableBox VBox tableBox.
+	 * The @closeButton.
 	 */
 	@FXML
 	private Button closeButton;
@@ -179,6 +182,8 @@ public class TournamentController implements Initializable {
 	}
 
 	/**
+	 * Set Number of Games Selected
+	 * 
 	 * @param numberOfgamesSelected
 	 *            the number Of games to set
 	 */
@@ -197,6 +202,8 @@ public class TournamentController implements Initializable {
 	}
 
 	/**
+	 * Set Number Of Turns Selected
+	 * 
 	 * @param numberOfTurnsSelected
 	 *            the number Of Turns to set
 	 */
@@ -237,9 +244,11 @@ public class TournamentController implements Initializable {
 	}
 
 	/**
+	 * Check If	Player	Exist
+	 * 
 	 * @param players
 	 * @param id
-	 * @return
+	 * @return player
 	 */
 	public Player checkIfPlayerExist(List<Player> players, int id) {
 		Player player = null;
@@ -295,7 +304,13 @@ public class TournamentController implements Initializable {
 			}
 		});
 	}
-
+	
+	/**
+	 * Close
+	 * 
+	 * @param event
+	 *            action event
+	 */
 	@FXML
 	private void close(ActionEvent event) {
 		GameUtil.closeScreen(closeButton);
