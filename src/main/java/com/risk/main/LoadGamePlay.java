@@ -7,6 +7,9 @@ import java.io.ObjectInputStream;
 
 import com.risk.controller.GamePlayController;
 import com.risk.map.util.MapUtil;
+import com.risk.model.CardModel;
+import com.risk.model.GameModel;
+import com.risk.model.PlayerGamePhase;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,17 +31,21 @@ public class LoadGamePlay implements EventHandler<ActionEvent>
 
 		File file = MapUtil.savedGameFileChooser();
 		GamePlayController controller = null;
+		GameModel gameModel = null;
+		PlayerGamePhase playerGamePhase = null;
+		CardModel cardModel = null;
 		try {
 	         FileInputStream fileIn = new FileInputStream(file);
 	         ObjectInputStream in = new ObjectInputStream(fileIn);
 	         controller = (GamePlayController) in.readObject();
+	         gameModel = (GameModel) in.readObject();
 	         in.close();
 	         fileIn.close();
 	      } catch (Exception i) {
 	         i.printStackTrace();
 	      }
 		
-		GamePlayController newcontroller = new GamePlayController(controller.getMap());
+		GamePlayController newcontroller = new GamePlayController(controller.getMap(), controller.getNumberOfPlayersSelected());
 		
 		// TODO validation of map file selected before proceeding to select
 

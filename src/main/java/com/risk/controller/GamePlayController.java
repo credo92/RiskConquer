@@ -1,9 +1,13 @@
 package com.risk.controller;
 
 import java.io.Externalizable;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,6 +62,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -79,7 +84,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * The @gameModel reference.
 	 */
 	private GameModel gameModel;
-	
+
 	/**
 	 * The @attackCount .
 	 */
@@ -119,12 +124,12 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	@FXML
 	private ChoiceBox<Integer> numberOfPlayers;
-	
+
 	/**
 	 * The @playerSelectionController playerSelectionController
 	 */
 	private PlayerSelectionController playerSelectionController;
-	
+
 	/**
 	 * The @attack button.
 	 */
@@ -226,17 +231,25 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * The @numberOfCardSetExchanged.
 	 */
 	private int numberOfCardSetExchanged;
-	
+
 	/**
 	 * The @saveGame button.
 	 */
 	@FXML
 	private Button saveGame;
-	
+
 	public GamePlayController() {
-		
+
 	}
-	
+
+	public GamePlayController(Map map, int numberOfPlayers) {
+		this.map = map;
+		// this.gameModel = gameModel;
+		// this.playerGamePhase = playerGamePhase;
+		// this.cardModel = cardModel;
+		setNumberOfPlayersSelected(numberOfPlayers);
+	}
+
 	/**
 	 * Constructor for GamePlayController
 	 * 
@@ -273,7 +286,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			}
 		});
 	}
-	
+
 	/**
 	 * Load Startup Phase and assign territories to Players
 	 * 
@@ -288,7 +301,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		loadPlayingPlayer();
 		populateWorldDominationData();
 		MapUtil.enableControl(cards);
-		if(!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
+		if (!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
 			placeArmy(null);
 		}
 	}
@@ -342,9 +355,9 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			}
 		});
 	}
-	
+
 	/**
-	 * Player Selection Window 
+	 * Player Selection Window
 	 */
 	public void loadPlayerSelectionWindow() {
 		final Stage newMapStage = new Stage();
@@ -405,7 +418,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	private void noMoreAttack(ActionEvent event) {
 		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
 		if (playerGamePhase.getTerritoryWon() > 0) {
-			//assignCardToPlayer();
+			// assignCardToPlayer();
 		}
 		MapUtil.appendTextToGameConsole("===Attack phase ended!===\n", gameConsole);
 		isValidFortificationPhase();
@@ -457,7 +470,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		adjTerritoryList.setOnMouseClicked(e -> System.out.print(""));
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + " ended his turn.\n", gameConsole);
 		if (playerGamePhase.getTerritoryWon() > 0) {
-			//assignCardToPlayer();
+			// assignCardToPlayer();
 		}
 		initializeReinforcement();
 		// cardModel.openCardWindow(playerPlaying, cardModel);
@@ -630,7 +643,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			startFortification();
 		}
 	}
-	
+
 	/**
 	 * Start of Fortification
 	 */
@@ -730,7 +743,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			}
 		}
 	}
-	
+
 	/**
 	 * Skip Attack
 	 */
@@ -757,7 +770,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		loadMapData();
 		selectedTerritoryList.refresh();
 		loadPlayingPlayer();
-		if(!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
+		if (!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
 			placeArmy(null);
 		}
 	}
@@ -869,7 +882,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		if (view.equals("playersCreated")) {
 			loadStartUpPhase();
 		}
-		
+
 		if (view.equals("SkipAttack")) {
 			skipAttack();
 		}
@@ -893,33 +906,46 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	public void setNumberOfCardSetExchanged(int numberOfCardSetExchanged) {
 		this.numberOfCardSetExchanged = numberOfCardSetExchanged;
 	}
-	
+
 	/**
-	 * Save Game 
+	 * Save Game
+	 * 
 	 * @param event
 	 *            event
-	 * @throws IOException 
-	 * @throws InvalidJsonException 
-	 * @throws JsonMappingException 
-	 * @throws JsonGenerationException 
-	 * @throws NullPointerException 
+	 * @throws IOException
+	 * @throws InvalidJsonException
+	 * @throws JsonMappingException
+	 * @throws JsonGenerationException
+	 * @throws NullPointerException
 	 */
 	@FXML
-	private void saveGame(ActionEvent event) {
-		GameState gameState = new GameState();
+	private void saveGame(ActionEvent event) throws IOException {
+		
+		FileChooser fileChooser = new FileChooser();
+
+		// Set extension filter
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Serialization  (*.ser)", "*.ser");
+		fileChooser.getExtensionFilters().add(extFilter);
+		fileChooser.setInitialFileName("player");
+
+		// Show save file dialog
+		File file = fileChooser.showSaveDialog(null);
+
+		if (file != null) {
+			SaveFile(this, file);
+		}
+	}
+
+	private void SaveFile(GamePlayController gamePlayController, File file) throws IOException {
 		try {
-			gameState.writeObject(this);
-			
-			//GameP map = gameState.readObject();
-			try {
-				MapValidator.validateMap(map);
-			} catch (InvalidMapException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FileOutputStream fileOut = new FileOutputStream(file);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(gamePlayController);
+			out.close();
+			fileOut.close();
+			System.out.printf("Serialized data is saved in player.ser");
+		} catch (IOException i) {
+			i.printStackTrace();
 		}
 	}
 
@@ -930,7 +956,8 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		out.writeObject(gameModel);
 		out.writeObject(playerPlaying);
 		out.writeObject(playerGamePhase);
-		
+		// out.writeObject(gameConsole);
+
 	}
 
 	@Override
@@ -940,6 +967,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		gameModel = (GameModel) in.readObject();
 		playerPlaying = (Player) in.readObject();
 		playerGamePhase = (PlayerGamePhase) in.readObject();
+		// gameConsole = (TextArea) in.readObject();
 	}
 
 }
