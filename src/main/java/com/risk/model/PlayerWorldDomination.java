@@ -1,5 +1,6 @@
 package com.risk.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Observable;
@@ -14,7 +15,7 @@ import com.risk.entity.Territory;
  * @author rahul
  * @version 1.0.0
  */
-public class PlayerWorldDomination extends Observable {
+public class PlayerWorldDomination extends Observable implements Serializable{
 	
 	/**
 	 * Populate World Domination Data according to playerTerritoryCount

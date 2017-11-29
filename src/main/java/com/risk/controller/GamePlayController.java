@@ -240,12 +240,20 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	private int numberOfCardSetExchanged;
 
-	private String gameData;
 	/**
 	 * The @saveGame button.
 	 */
 	@FXML
 	private Button saveGame;
+	
+	private boolean isSavedGame = false; 
+	
+	private String gamePhaseString;
+	
+	private String gameData;
+
+	
+	
 
 	public GamePlayController() {
 		// this.gameModel = gameModel;
@@ -359,6 +367,10 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 				}
 			}
 		});
+		
+		if(isSavedGame) {
+			mapDataAfterLoadGame();
+		}
 	}
 
 	/**
@@ -936,7 +948,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * Save Game
 	 * 
 	 * @param event
-	 *            event <<<<<<< HEAD
 	 * @throws IOException
 	 * @throws InvalidJsonException
 	 * @throws JsonMappingException
@@ -995,7 +1006,12 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		out.writeObject(cardStack);
 		out.writeObject(gamePlayerList);
 		//out.writeObject(playerIterator);
+		
+		//writing all the fxml objects
 		out.writeObject(gameConsole.getText());
+		out.writeObject(gamePhase.getText());
+		out.writeObject(worldDomination);
+		
 		out.writeInt(numberOfCardSetExchanged);
 		out.writeInt(attackCount);
 	}
@@ -1011,6 +1027,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 		// TODO Auto-generated method stub
+		isSavedGame = true;
 		map = (Map) in.readObject();
 		gameModel = (GameModel) in.readObject();
 		playerPlaying = (Player) in.readObject();
@@ -1019,9 +1036,22 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		cardStack = (Stack<Card>) in.readObject();
 		gamePlayerList = (List<Player>) in.readObject();
 		//playerIterator = (Iterator<Player>) in.readObject();
+		
 		gameData = (String) in.readObject();
+		gamePhaseString = (String) in.readObject();
+		worldDomination = (PlayerWorldDomination) in.readObject();
+		
 		numberOfCardSetExchanged = in.readInt();
 		attackCount = in.readInt();
 	}
+	
+	public void mapDataAfterLoadGame() {
+		
+	//	selectedTerritoryList.setItems((ObservableList<Territory>) playerPlaying.getAssignedTerritory());
+		MapUtil.disableControl(numberOfPlayers);
+		gamePhase.setText(gamePhaseString);
+		MapUtil.appendTextToGameConsole(gameData, gameConsole);
+	}
+	
 
 }
