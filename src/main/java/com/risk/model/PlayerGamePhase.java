@@ -160,6 +160,8 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 	/**
 	 * Reinforcement Phase
 	 * 
+	 * @param territoryList
+	 *            territoryList Observable list.				
 	 * @param territory
 	 *            territory Object
 	 * @param gameConsole
@@ -182,6 +184,8 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 	 *            attacking territory
 	 * @param defendingTerritory
 	 *            defending territory
+	 * @param gameConsole
+	 *            the Game Console
 	 * @throws InvalidGameMoveException
 	 *             invalid game exception
 	 */
@@ -395,6 +399,7 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 	}
 
 	/**
+	 * @param count highest integer for random number generation.
 	 * @return Int randomNumber
 	 */
 	public int randomNumber(int count) {
