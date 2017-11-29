@@ -32,12 +32,12 @@ import javafx.scene.control.TextArea;
  * @version 1.0.0
  */
 public class TournamentController implements Initializable {
-		
+
 	/**
 	 * The @model reference to TournamentModel.
 	 */
 	private TournamentModel model;
-	
+
 	/**
 	 * The @numberOfTurns number of turns.
 	 */
@@ -124,7 +124,7 @@ public class TournamentController implements Initializable {
 
 	@FXML
 	private TextArea resultTextArea;
-	
+
 	/**
 	 * The @tableBox VBox tableBox.
 	 */
@@ -150,7 +150,7 @@ public class TournamentController implements Initializable {
 	 * The @listOfPlayerss .
 	 */
 	private List<Player> listOfPlayers;
-	
+
 	/**
 	 * Get List of Maps
 	 * 
@@ -159,7 +159,7 @@ public class TournamentController implements Initializable {
 	public List<Map> getListOfMaps() {
 		return listOfMaps;
 	}
-	
+
 	/**
 	 * Get List of Players
 	 * 
@@ -168,7 +168,7 @@ public class TournamentController implements Initializable {
 	public List<Player> getListOfPlayers() {
 		return listOfPlayers;
 	}
-	
+
 	/**
 	 * Number Of Games Selected
 	 * 
@@ -177,25 +177,25 @@ public class TournamentController implements Initializable {
 	public int numberOfGamesSelected() {
 		return numberOfGamesSelected;
 	}
-	
+
 	/**
 	 * @param numberOfgamesSelected
-	 *            the number Of games  to set
+	 *            the number Of games to set
 	 */
 	public void setNumberOfGamesSelected(int numberOfgamesSelected) {
 		this.numberOfGamesSelected = numberOfgamesSelected;
 	}
-	
+
 	/**
-	 * Get Number Of Turns 
+	 * Get Number Of Turns
 	 * 
 	 * @return numberOfTurnsSelected
-	 *            
+	 * 
 	 */
 	public int getNumberOfTurnsSelected() {
 		return numberOfTurnsSelected;
 	}
-	
+
 	/**
 	 * @param numberOfTurnsSelected
 	 *            the number Of Turns to set
@@ -203,7 +203,7 @@ public class TournamentController implements Initializable {
 	public void setNumberOfTurnsSelected(int numberOfTurnsSelected) {
 		this.numberOfTurnsSelected = numberOfTurnsSelected;
 	}
-	
+
 	/**
 	 * Constructor for TournamentController
 	 */
@@ -237,46 +237,61 @@ public class TournamentController implements Initializable {
 	}
 
 	/**
+	 * @param players
+	 * @param id
+	 * @return
+	 */
+	public Player checkIfPlayerExist(List<Player> players, int id) {
+		Player player = null;
+		for (Player p : players) {
+			if (p.getId() == id) {
+				player = p;
+			}
+		}
+		if (player == null) {
+			player = new Player(id);
+			players.add(player);
+		}
+		return player;
+	}
+
+	/**
 	 * Decides type of players in a tournament.
 	 */
 	public void tournamentPlayersSelectionListner() {
 		player1.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				Player p1 = new Player(0);
+				Player p1 = checkIfPlayerExist(listOfPlayers, 0);
 				p1.setName("Player" + 0);
 				model.returnPlayerType(player1.getSelectionModel().getSelectedItem(), p1);
-				listOfPlayers.add(p1);
 			}
 		});
 
 		player2.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				Player p2 = new Player(1);
+				Player p2 = checkIfPlayerExist(listOfPlayers, 1);
 				p2.setName("Player" + 1);
 				model.returnPlayerType(player2.getSelectionModel().getSelectedItem(), p2);
-				listOfPlayers.add(p2);
 			}
 		});
 
 		player3.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				Player p3 = new Player(2);
+				Player p3 = checkIfPlayerExist(listOfPlayers, 2);
 				p3.setName("Player" + 2);
 				model.returnPlayerType(player3.getSelectionModel().getSelectedItem(), p3);
-				listOfPlayers.add(p3);
 			}
 		});
 
 		player4.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				Player p4 = new Player(3);
+				Player p4 = checkIfPlayerExist(listOfPlayers, 3);
 				p4.setName("Player" + 3);
 				model.returnPlayerType(player4.getSelectionModel().getSelectedItem(), p4);
-				listOfPlayers.add(p4);
 			}
 		});
 	}
@@ -285,6 +300,7 @@ public class TournamentController implements Initializable {
 	private void close(ActionEvent event) {
 		GameUtil.closeScreen(closeButton);
 	}
+
 	/**
 	 * Function to upload map 1
 	 * 
@@ -344,7 +360,7 @@ public class TournamentController implements Initializable {
 		File file = model.uploadMap(listOfMaps);
 		mapButton5.setText(file.getName());
 	}
-	
+
 	/**
 	 * Function to play tournament
 	 * 
@@ -382,14 +398,14 @@ public class TournamentController implements Initializable {
 			}
 			MapUtil.appendTextToGameConsole("===Tournament ended!===\n", tConsole);
 		}
-		for(Entry<String, HashMap<String, String>> entry : model.getTournamentResult().entrySet()) {
-			MapUtil.appendTextToGameConsole(entry.getKey()+"\n", resultTextArea);
+		for (Entry<String, HashMap<String, String>> entry : model.getTournamentResult().entrySet()) {
+			MapUtil.appendTextToGameConsole(entry.getKey() + "\n", resultTextArea);
 			for (Entry<String, String> data : entry.getValue().entrySet()) {
-				MapUtil.appendTextToGameConsole(data.getKey()+" : "+data.getValue()+"\n", resultTextArea);
+				MapUtil.appendTextToGameConsole(data.getKey() + " : " + data.getValue() + "\n", resultTextArea);
 			}
 			MapUtil.appendTextToGameConsole("=============================================\n", resultTextArea);
 		}
-		
+
 	}
 
 	/*
