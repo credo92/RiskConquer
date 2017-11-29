@@ -39,6 +39,9 @@ public class TournamentModel {
 
 	/**
 	 * This method converts string to enum.
+	 * @param playerType String.
+	 * @param player Player.
+	 * @return player Player.
 	 */
 	public Player returnPlayerType(String playerType, Player player) {
 		PlayerType type = null;
