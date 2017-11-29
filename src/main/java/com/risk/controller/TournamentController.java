@@ -246,8 +246,8 @@ public class TournamentController implements Initializable {
 	/**
 	 * Check If	Player	Exist
 	 * 
-	 * @param players
-	 * @param id
+	 * @param players player
+	 * @param id      player id
 	 * @return player
 	 */
 	public Player checkIfPlayerExist(List<Player> players, int id) {
