@@ -179,6 +179,10 @@ public class DiceRollController implements Initializable {
 	 * 
 	 * @param diceModel
 	 *            dice model object
+	 * @param strategy
+	 *            Player Behavior Strategy object
+	 * @param gameConsole
+	 * 			  TextArea object          
 	 */
 	public DiceRollController(DiceModel diceModel, PlayerBehaviorStrategy strategy, TextArea gameConsole) {
 		this.diceModel = diceModel;
