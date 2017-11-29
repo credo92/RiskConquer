@@ -3,7 +3,6 @@ package com.risk.controller;
 import java.io.Externalizable;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -20,14 +19,16 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+
 import com.risk.entity.Card;
 import com.risk.entity.Continent;
-import com.risk.entity.GameState;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
 import com.risk.exception.InvalidGameMoveException;
-import com.risk.exception.InvalidMapException;
+import com.risk.exception.InvalidJsonException;
 import com.risk.map.util.GameUtil;
 import com.risk.map.util.MapUtil;
 import com.risk.model.CardModel;
@@ -36,7 +37,6 @@ import com.risk.model.PlayerGamePhase;
 import com.risk.model.PlayerWorldDomination;
 import com.risk.strategy.CheaterStrategy;
 import com.risk.strategy.HumanStrategy;
-import com.risk.validate.MapValidator;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -245,22 +245,16 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	@FXML
 	private Button saveGame;
-	
-	private boolean isSavedGame = false; 
-	
+
+	private boolean isSavedGame = false;
+
 	private String gamePhaseString;
-	
+
 	private String gameData;
 
-	
-	
+	private String playerChosenData;
 
 	public GamePlayController() {
-		// this.gameModel = gameModel;
-		// this.playerGamePhase = playerGamePhase;
-		// this.cardModel = cardModel;
-		// numberOfPlayers.setValue(numberOf);
-
 	}
 
 	/**
@@ -367,8 +361,8 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 				}
 			}
 		});
-		
-		if(isSavedGame) {
+
+		if (isSavedGame) {
 			mapDataAfterLoadGame();
 		}
 	}
@@ -997,7 +991,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
-		// TODO Auto-generated method stub
 		out.writeObject(map);
 		out.writeObject(gameModel);
 		out.writeObject(playerPlaying);
@@ -1005,15 +998,15 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		out.writeObject(cardModel);
 		out.writeObject(cardStack);
 		out.writeObject(gamePlayerList);
-		//out.writeObject(playerIterator);
-		
-		//writing all the fxml objects
+
+		// writing all the fxml objects
 		out.writeObject(gameConsole.getText());
 		out.writeObject(gamePhase.getText());
 		out.writeObject(worldDomination);
-		
+
 		out.writeInt(numberOfCardSetExchanged);
 		out.writeInt(attackCount);
+		out.writeObject(playerChosen.getText());
 	}
 
 	/**
@@ -1026,7 +1019,6 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 */
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		// TODO Auto-generated method stub
 		isSavedGame = true;
 		map = (Map) in.readObject();
 		gameModel = (GameModel) in.readObject();
@@ -1035,23 +1027,35 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		cardModel = (CardModel) in.readObject();
 		cardStack = (Stack<Card>) in.readObject();
 		gamePlayerList = (List<Player>) in.readObject();
-		//playerIterator = (Iterator<Player>) in.readObject();
-		
+
+		// Reading fxml view data
 		gameData = (String) in.readObject();
 		gamePhaseString = (String) in.readObject();
 		worldDomination = (PlayerWorldDomination) in.readObject();
-		
+
 		numberOfCardSetExchanged = in.readInt();
 		attackCount = in.readInt();
+		playerChosenData = (String) in.readObject();
+		playerGamePhase.addObserver(this);
+		cardModel.addObserver(this);
+		worldDomination.addObserver(this);
 	}
-	
+
 	public void mapDataAfterLoadGame() {
-		
-	//	selectedTerritoryList.setItems((ObservableList<Territory>) playerPlaying.getAssignedTerritory());
 		MapUtil.disableControl(numberOfPlayers);
 		gamePhase.setText(gamePhaseString);
 		MapUtil.appendTextToGameConsole(gameData, gameConsole);
+		playerChosen.setText(playerChosenData);
+		populateWorldDominationData();
+		ObservableList<Territory> selectionList = FXCollections
+				.observableArrayList(playerPlaying.getAssignedTerritory());
+		selectedTerritoryList.getItems().addAll(selectionList);
+		playerIterator = gamePlayerList.iterator();
+		while (playerIterator.hasNext()) {
+			if (playerIterator.next().equals(playerPlaying)) {
+				break;
+			}
+		}
 	}
-	
 
 }
