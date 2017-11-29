@@ -201,9 +201,9 @@ public class GameUtil {
 	 * This method is used to save GamePlay objects into a json file.
 	 * @param saveGame GameState object
 	 * @throws InvalidJsonException invalid map file exception
-	 * @throws IOException 
-	 * @throws JsonMappingException 
-	 * @throws JsonGenerationException 
+	 * @throws IOException  IOException
+	 * @throws JsonMappingException  JsonMappingException
+	 * @throws JsonGenerationException  JsonGenerationException
 	 */
 	public static void saveGame(GameState saveGame) throws InvalidJsonException, JsonGenerationException, JsonMappingException, IOException {
 		File file;
