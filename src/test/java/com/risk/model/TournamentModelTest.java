@@ -1,9 +1,13 @@
 package com.risk.model;
 
 import static org.junit.Assert.*;
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import javafx.scene.control.ListView;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,8 +18,13 @@ import com.risk.entity.Continent;
 import com.risk.entity.Map;
 import com.risk.entity.Player;
 import com.risk.entity.Territory;
+import com.risk.exception.InvalidGameMoveException;
 import com.risk.exception.InvalidMapException;
+import com.risk.strategy.CheaterStrategy;
+import com.risk.strategy.HumanStrategy;
+import javafx.collections.FXCollections;
 
+import javafx.scene.control.TextArea;
 /**
  * Tournament Model Test class.
  * 
@@ -59,7 +68,7 @@ public class TournamentModelTest {
 	 */
 	@Before
 	public void beforeTest() {
-		playerGamePhase.setPlayerPlaying(new Player(1));
+		
 
 	}
 
@@ -106,5 +115,6 @@ public class TournamentModelTest {
 		Assert.assertEquals(map.getContinents().get(1).getTerritories().get(0).getName(),
 				clonedMap.getContinents().get(1).getTerritories().get(0).getName());
 	}
-
+	
+	
 }
