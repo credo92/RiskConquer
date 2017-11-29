@@ -10,6 +10,6 @@ import org.junit.runners.Suite.SuiteClasses;
  * @version 1.0.0
  */
 @RunWith(Suite.class)
-@SuiteClasses({MapModelTest.class, PlayerGamePhaseTest.class, CardModelTest.class, DiceModelTest.class, GameModelTest.class})
+@SuiteClasses({MapModelTest.class, PlayerGamePhaseTest.class, CardModelTest.class, DiceModelTest.class, GameModelTest.class,TournamentModelTest.class})
 public class ModelTestSuite {
 }
