@@ -95,7 +95,7 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 	}
 
 	/**
-	 * @return Int randomNumber
+	 * @return count randomNumber
 	 */
 	public int randomNumber(int count) {
 		return (int) (Math.random() * count) + 0;
