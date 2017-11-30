@@ -413,6 +413,7 @@ public class TournamentController implements Initializable {
 						e.printStackTrace();
 					}
 					model.startTournamentGame(listOfPlayers, newMap, numberOfTurnsSelected, tConsole, count);
+					System.out.flush();
 					count++;
 				}
 			}

@@ -83,9 +83,6 @@ public class RandomStrategy implements PlayerBehaviorStrategy {
 	}
 
 	private void attack(Territory attacking, Territory defending, PlayerGamePhase gamePhase, TextArea gameConsole) {
-		System.out.println("Attack Random started!++++++++++++++++++++++++++++++++++++++++++++++");
-		MapUtil.appendTextToGameConsole("Attack Random started!++++++++++++++++++++++++++++++++++++++++++++++ \n",
-				gameConsole);
 		DiceModel diceModel = new DiceModel(attacking, defending);
 		if (gamePhase != null) {
 			diceModel.addObserver(gamePhase);

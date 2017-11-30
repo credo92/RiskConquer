@@ -61,7 +61,6 @@ public class CheaterStrategy implements PlayerBehaviorStrategy {
 	@Override
 	public void attackPhase(ListView<Territory> attackingTerritoryList, ListView<Territory> defendingTerritoryList,
 			PlayerGamePhase gamePhase, TextArea gameConsole) throws InvalidGameMoveException {
-
 		List<Territory> territoryWon = new ArrayList<Territory>();
 		ObservableList<Territory> attackTerList = this.attackTerList;
 		Iterator<Territory> terrIterator = attackTerList.iterator();
@@ -72,12 +71,12 @@ public class CheaterStrategy implements PlayerBehaviorStrategy {
 				Territory defendingTerr = defendingTerritories.get(0);
 				defendingTerr.setArmies(1);
 				attackingTerritory.setArmies(attackingTerritory.getArmies() - 1);
-				
+
 				defendingTerr.getPlayer().getAssignedTerritory().remove(defendingTerr);
 				defendingTerr.setPlayer(attackingTerritory.getPlayer());
-				
+
 				attackingTerritory.getPlayer().getAssignedTerritory().add(defendingTerr);
-				
+
 				territoryWon.add(defendingTerr);
 				MapUtil.appendTextToGameConsole(defendingTerr.getName() + " has been conquered by "
 						+ attackingTerritory.getPlayer().getName() + "\n", gameConsole);
@@ -101,8 +100,9 @@ public class CheaterStrategy implements PlayerBehaviorStrategy {
 	public boolean fortificationPhase(ListView<Territory> selectedTerritoryList, ListView<Territory> adjTerritoryList,
 			TextArea gameConsole, Player playerPlaying) {
 
-		ObservableList<Territory> selectedTerrList = selectedTerritoryList.getItems();
-		Iterator<Territory> iterateTerritory = selectedTerrList.iterator();
+		// ObservableList<Territory> selectedTerrList =
+		// selectedTerritoryList.getItems();
+		Iterator<Territory> iterateTerritory = attackTerList.iterator();
 
 		while (iterateTerritory.hasNext()) {
 			Territory fortifyingTerritory = iterateTerritory.next();
@@ -120,14 +120,28 @@ public class CheaterStrategy implements PlayerBehaviorStrategy {
 
 	@Override
 	public boolean isFortificationPhaseValid(Map map, Player playerPlaying) {
-		return true;
+		boolean isFortificationAvaialble = false;
+		outer: for (Territory territory : attackTerList) {
+			if (territory.getPlayer().equals(playerPlaying)) {
+				if (territory.getArmies() > 1) {
+					for (Territory adjterritory : territory.getAdjacentTerritories()) {
+						if (adjterritory.getPlayer().equals(playerPlaying)) {
+							isFortificationAvaialble = true;
+							break outer;
+						}
+					}
+				}
+			}
+		}
+
+		return isFortificationAvaialble;
 	}
 
 	@Override
 	public boolean playerHasAValidAttackMove(ListView<Territory> territories, TextArea gameConsole) {
 		boolean hasAValidMove = false;
 		if (attackTerList == null || attackTerList.isEmpty()) {
-			attackTerList.addAll(attackTerList);
+			attackTerList.addAll(territories.getItems());
 		}
 		for (Territory territory : attackTerList) {
 			if (getDefendingTerritory(territory).size() > 0) {
