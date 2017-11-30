@@ -148,8 +148,7 @@ public class PlayerSelectionController extends Observable implements Initializab
 	/**
 	 * Validate Text Fields
 	 * 
-	 * @param  hBoxList
-	 * 					   ObservableList<Node> hBoxList
+	 * @param  hBoxList hBoxList
 	 * @return true or false
 	 */
 	public boolean validateTextFields(ObservableList<Node> hBoxList) {

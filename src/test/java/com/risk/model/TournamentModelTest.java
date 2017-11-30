@@ -106,5 +106,13 @@ public class TournamentModelTest {
 		Assert.assertEquals(map.getContinents().get(1).getTerritories().get(0).getName(),
 				clonedMap.getContinents().get(1).getTerritories().get(0).getName());
 	}
-
+	
+	/**
+	 * This method tests player type.
+	 */
+	@Test
+	public void returnPlayerType() {
+		Player p = tournamentModel.returnPlayerType("RANDOM", new Player(0));
+		Assert.assertEquals("RANDOM", p.getType().toString());
+	} 
 }
