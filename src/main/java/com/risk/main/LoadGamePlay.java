@@ -52,8 +52,10 @@ public class LoadGamePlay implements EventHandler<ActionEvent> {
 		return gpc;		
 	}
 
+
 	/**
-	 * @return GamePlayController controller
+	 * @param file file
+	 * @return GamePlayController GamePlayController
 	 */
 	public GamePlayController loadSavedFile(File file) {
 		GamePlayController controller = null;
@@ -68,5 +70,4 @@ public class LoadGamePlay implements EventHandler<ActionEvent> {
 		}
 		return controller;
 	}
-
 }
