@@ -24,7 +24,7 @@ public class LoadGamePlay implements EventHandler<ActionEvent> {
 	@Override
 	public void handle(ActionEvent event) {
 
-		GamePlayController controller = loadSavedFile();
+		GamePlayController controller = fileChooser();
 
 		final Stage mapSelectorStage = new Stage();
 		mapSelectorStage.setTitle("Game Screen");
@@ -42,12 +42,20 @@ public class LoadGamePlay implements EventHandler<ActionEvent> {
 		mapSelectorStage.setScene(scene);
 		mapSelectorStage.show();
 	}
+	
+	/**
+	 * @return gpc GamePlayController object.
+	 */
+	public GamePlayController fileChooser() {
+		File file = MapUtil.savedGameFileChooser();
+		GamePlayController gpc = loadSavedFile(file);
+		return gpc;		
+	}
 
 	/**
 	 * @return GamePlayController controller
 	 */
-	public GamePlayController loadSavedFile() {
-		File file = MapUtil.savedGameFileChooser();
+	public GamePlayController loadSavedFile(File file) {
 		GamePlayController controller = null;
 		try {
 			FileInputStream fileIn = new FileInputStream(file);
