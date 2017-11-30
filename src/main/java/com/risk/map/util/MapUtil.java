@@ -220,7 +220,7 @@ public class MapUtil {
 	 *            game console object
 	 */
 	public static void appendTextToGameConsole(String valueOf, TextArea gameConsole) {
-		Platform.runLater(() -> gameConsole.appendText(valueOf));
+		Platform. runLater(() -> gameConsole.appendText(valueOf));
 	}
 
 	/**

@@ -170,6 +170,8 @@ public class TournamentModel {
 							console);
 				}
 				MapUtil.appendTextToGameConsole("===Fortification phase ended===\n", console);
+				
+				System.out.flush();
 			}
 			MapUtil.appendTextToGameConsole("Turn complete" + numberOfTurn + "\n", console);
 			numberOfTurn--;

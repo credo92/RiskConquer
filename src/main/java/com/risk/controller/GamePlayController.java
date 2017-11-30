@@ -490,7 +490,9 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		if (playerGamePhase.getTerritoryWon() > 0) {
 			assignCardToPlayer();
 		}
-		initializeReinforcement();
+		if (gamePlayerList.size() > 1) {
+			initializeReinforcement();
+		}
 	}
 
 	/**
@@ -569,6 +571,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		}
 		playerPlaying = newPLayer;
 		playerGamePhase.setPlayerPlaying(playerPlaying);
+		playerGamePhase.setGamePlayerList(gamePlayerList);
 		playerGamePhase.setTerritoryWon(0);
 		MapUtil.appendTextToGameConsole("============================ \n", gameConsole);
 		MapUtil.appendTextToGameConsole(playerPlaying.getName() + "!....started playing.\n", gameConsole);
@@ -701,6 +704,11 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		if (playerLost != null) {
 			gamePlayerList.remove(playerLost);
 			playerIterator = gamePlayerList.iterator();
+			while (playerIterator.hasNext()) {
+				if (playerIterator.next() == playerPlaying) {
+					break;
+				}
+			}
 			MapUtil.infoBox("Player: " + playerLost.getName() + " lost all his territory and is out of the game",
 					"Info", "");
 			MapUtil.appendTextToGameConsole(playerLost.getName() + " lost all territories and lost the game.\n",
@@ -737,6 +745,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 			MapUtil.infoBox("Player: " + gamePlayerList.get(0).getName() + " won the game!", "Info", "");
 			playerWon = true;
 			disableGamePanel();
+			System.out.flush();
 		}
 
 		return playerWon;
@@ -761,10 +770,14 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 				if (!(playerPlaying.getStrategy() instanceof HumanStrategy)) {
 					if (attackCount > 0) {
 						attackCount--;
-						attack();
+						if (gamePlayerList.size() > 1) {
+							attack();
+						}
 					} else {
 						attackCount = 5;
-						noMoreAttack(null);
+						if (gamePlayerList.size() > 1) {
+							noMoreAttack(null);
+						}
 					}
 				}
 			}
@@ -788,14 +801,20 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 		if (!checkIfPlayerWonTheGame("skipattack")) {
 			if (playerPlaying.getStrategy() instanceof CheaterStrategy) {
 				if (playerGamePhase.playerHasAValidAttackMove(selectedTerritoryList, gameConsole)) {
-					attack();
+					if (gamePlayerList.size() > 1) {
+						attack();
+					}
 				} else {
 					// Cheater always wins a territory so he will be assigned a single card.
-					playerGamePhase.setTerritoryWon(1);
-					noMoreAttack(null);
+					// playerGamePhase.setTerritoryWon(1);
+					if (gamePlayerList.size() > 1) {
+						noMoreAttack(null);
+					}
 				}
 			} else {
-				noMoreAttack(null);
+				if (gamePlayerList.size() > 1) {
+					noMoreAttack(null);
+				}
 			}
 		}
 	}
@@ -877,45 +896,48 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	public void update(Observable o, Object arg) {
 
 		String view = (String) arg;
-		MapUtil.appendTextToGameConsole(view + "++++++++++++++++++++++++++++++++++++++++++++++\n", gameConsole);
-		if (view.equals("Attack")) {
-			initializeAttack();
-		}
-		if (view.equals("FirstAttack")) {
-			loadPlayingPlayer();
-			initializeAttack();
-		}
-		if (view.equals("Reinforcement")) {
-			initializeReinforcement();
-		}
-		if (view.equals("Fortification")) {
-			initializeFortification();
-		}
-		if (view.equals("placeArmy")) {
-			initializePlaceArmy();
-		}
-		if (view.equals("WorldDomination")) {
-			populateWorldDominationData();
-		}
-		if (view.equals("checkIfFortificationPhaseValid")) {
-			isValidFortificationPhase();
-		}
-		if (view.equals("noFortificationMove")) {
-			noFortificationPhase();
-		}
-		if (view.equals("rollDiceComplete")) {
-			refreshView();
-		}
-		if (view.equals("cardsTrade")) {
-			CardModel cm = (CardModel) o;
-			tradeCardsForArmy(cm);
-		}
-		if (view.equals("playersCreated")) {
-			loadStartUpPhase();
-		}
+		MapUtil.appendTextToGameConsole(view + "Inside gameController Update method\n", gameConsole);
+		if (gamePlayerList.size() > 1) {
+			if (view.equals("Attack")) {
+				initializeAttack();
+			}
+			if (view.equals("FirstAttack")) {
+				loadPlayingPlayer();
+				initializeAttack();
+			}
+			if (view.equals("Reinforcement")) {
+				initializeReinforcement();
+			}
+			if (view.equals("Fortification")) {
+				initializeFortification();
+			}
+			if (view.equals("placeArmy")) {
+				initializePlaceArmy();
+			}
+			if (view.equals("WorldDomination")) {
+				populateWorldDominationData();
+			}
+			if (view.equals("checkIfFortificationPhaseValid")) {
+				isValidFortificationPhase();
+			}
+			if (view.equals("noFortificationMove")) {
+				noFortificationPhase();
+			}
+			if (view.equals("rollDiceComplete")) {
+				refreshView();
+			}
+			if (view.equals("cardsTrade")) {
+				CardModel cm = (CardModel) o;
+				tradeCardsForArmy(cm);
+			}
+			if (view.equals("playersCreated")) {
+				loadStartUpPhase();
+			}
 
-		if (view.equals("SkipAttack")) {
-			skipAttack();
+			if (view.equals("SkipAttack")) {
+				MapUtil.appendTextToGameConsole(gamePlayerList.size() + " number of players leftt \n", gameConsole);
+				skipAttack();
+			}
 		}
 	}
 

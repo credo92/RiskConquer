@@ -35,6 +35,8 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 	 */
 	Player playerPlaying;
 
+	List<Player> gamePlayerList;
+
 	/**
 	 * @return player playing
 	 */
@@ -161,7 +163,7 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 	 * Reinforcement Phase
 	 * 
 	 * @param territoryList
-	 *            territoryList Observable list.				
+	 *            territoryList Observable list.
 	 * @param territory
 	 *            territory Object
 	 * @param gameConsole
@@ -170,7 +172,7 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 	public void reinforcementPhase(ObservableList<Territory> territoryList, Territory territory, TextArea gameConsole) {
 		playerPlaying.getStrategy().reinforcementPhase(territoryList, territory, gameConsole, playerPlaying);
 		// start attack phase
-		if (playerPlaying.getArmies() <= 0) {
+		if (playerPlaying.getArmies() <= 0 && gamePlayerList.size() > 1) {
 			MapUtil.appendTextToGameConsole("===Reinforcement phase Ended! ===\n", gameConsole);
 			setChanged();
 			notifyObservers("Attack");
@@ -193,8 +195,11 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 			TextArea gameConsole) throws InvalidGameMoveException {
 		playerPlaying.getStrategy().attackPhase(attackingTerritoryList, defendingTerritoryList, this, gameConsole);
 
-		if (playerPlaying.getStrategy() instanceof CheaterStrategy
-				|| playerPlaying.getStrategy() instanceof BenevolentStrategy) {
+		if ((playerPlaying.getStrategy() instanceof CheaterStrategy
+				|| playerPlaying.getStrategy() instanceof BenevolentStrategy) && gamePlayerList.size() > 1) {
+			MapUtil.appendTextToGameConsole(
+					playerPlaying.getType().toString() + "startegy from attack phase going to call skipAttack\n",
+					gameConsole);
 			setChanged();
 			notifyObservers("SkipAttack");
 		}
@@ -215,7 +220,7 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 		boolean isFortificationDone = playerPlaying.getStrategy().fortificationPhase(selectedTerritory, adjTerritory,
 				gameConsole, playerPlaying);
 
-		if (isFortificationDone) {
+		if (isFortificationDone && gamePlayerList.size() > 1) {
 			setChanged();
 			notifyObservers("Reinforcement");
 		}
@@ -399,7 +404,8 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 	}
 
 	/**
-	 * @param count highest integer for random number generation.
+	 * @param count
+	 *            highest integer for random number generation.
 	 * @return Int randomNumber
 	 */
 	public int randomNumber(int count) {
@@ -433,6 +439,21 @@ public class PlayerGamePhase extends Observable implements Observer, Serializabl
 	 */
 	public void setTerritoryWon(int territoryWon) {
 		this.territoryWon = territoryWon;
+	}
+
+	/**
+	 * @return the gamePlayerList
+	 */
+	public List<Player> getGamePlayerList() {
+		return gamePlayerList;
+	}
+
+	/**
+	 * @param gamePlayerList
+	 *            the gamePlayerList to set
+	 */
+	public void setGamePlayerList(List<Player> gamePlayerList) {
+		this.gamePlayerList = gamePlayerList;
 	}
 
 	/**
