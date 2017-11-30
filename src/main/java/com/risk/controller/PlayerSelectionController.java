@@ -147,7 +147,6 @@ public class PlayerSelectionController extends Observable implements Initializab
 	
 	/**
 	 * Validate Text Fields
-	 * 
 	 * @param  hBoxList hBoxList
 	 * @return true or false
 	 */
