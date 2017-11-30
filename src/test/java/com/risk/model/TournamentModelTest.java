@@ -134,7 +134,7 @@ public class TournamentModelTest {
 	
 	/**
 	 * Tournament Game Test.
-	 * @throws InvalidGameMoveException 
+	 * @throws InvalidGameMoveException InvalidGameMoveException
 	 */
 	@Test
 	public void startTournamentGameTest() throws InvalidGameMoveException {
