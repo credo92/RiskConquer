@@ -51,8 +51,6 @@ public class Player implements Serializable {
 	 * @param id
 	 *            for player id
 	 * 
-	 * @param name
-	 *            for player name 
 	 */
 	public Player(int id) {
 		this.id = id;

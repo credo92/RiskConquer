@@ -1011,7 +1011,7 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * 
 	 * @param out
 	 *            out
-	 * @throws IOException
+	 * @throws IOException IOException
 	 */
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
@@ -1038,8 +1038,8 @@ public class GamePlayController implements Initializable, Observer, Externalizab
 	 * 
 	 * @param in
 	 *            in
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+	 * @throws IOException IOException
+	 * @throws ClassNotFoundException ClassNotFoundException
 	 */
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {

@@ -66,9 +66,9 @@ public class TournamentModelTest {
 	/**
 	 * Create Map Clone Test.
 	 * 
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 * @throws InvalidMapException
+	 * @throws IOException IOException
+	 * @throws ClassNotFoundException ClassNotFoundException
+	 * @throws InvalidMapException InvalidMapException
 	 */
 	@Test
 	public void createMapCloneTest() throws IOException, ClassNotFoundException, InvalidMapException {
